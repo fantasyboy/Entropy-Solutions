@@ -1,6 +1,6 @@
 
-using Aimtec;
-using Aimtec.SDK.Events;
+using Entropy;
+using Entropy.SDK.Events;
 using AIO.Utilities;
 
 namespace AIO.Champions

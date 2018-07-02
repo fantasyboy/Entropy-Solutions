@@ -1,7 +1,7 @@
 ﻿
-using Aimtec.SDK.Extensions;
-using Aimtec.SDK.Menu.Components;
-using Aimtec.SDK.Orbwalking;
+using Entropy.SDK.Extensions;
+using Entropy.SDK.Menu.Components;
+using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
 
 #pragma warning disable 1587

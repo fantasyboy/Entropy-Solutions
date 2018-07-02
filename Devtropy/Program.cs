@@ -1,5 +1,5 @@
 ﻿
-using Aimtec.SDK.Orbwalking;
+using Entropy.SDK.Orbwalking;
 
 namespace AimDev
 {
@@ -7,10 +7,10 @@ namespace AimDev
     using System.Drawing;
     using System.Linq;
 
-    using Aimtec;
-    using Aimtec.SDK.Extensions;
-    using Aimtec.SDK.Menu;
-    using Aimtec.SDK.Menu.Components;
+    using Entropy;
+    using Entropy.SDK.Extensions;
+    using Entropy.SDK.Menu;
+    using Entropy.SDK.Menu.Components;
 
     internal static class Program
     {

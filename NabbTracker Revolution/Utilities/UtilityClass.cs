@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
-using Aimtec;
+using Entropy;
 
 namespace NabbTracker
 {

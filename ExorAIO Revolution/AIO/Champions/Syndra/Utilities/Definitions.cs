@@ -3,9 +3,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Damage;
-using Aimtec.SDK.Extensions;
+using Entropy;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions;
 using AIO.Utilities;
 
 #pragma warning disable 1587

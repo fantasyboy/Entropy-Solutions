@@ -1,4 +1,4 @@
-﻿using Aimtec.SDK.Menu;
+﻿using Entropy.SDK.Menu;
 
 namespace AIO.Utilities
 {

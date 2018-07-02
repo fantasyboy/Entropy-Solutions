@@ -1,8 +1,8 @@
-using Aimtec;
-using Aimtec.SDK.Extensions;
-using Aimtec.SDK.Prediction.Skillshots;
+using Entropy;
+using Entropy.SDK.Extensions;
+using Entropy.SDK.Prediction.Skillshots;
 using AIO.Utilities;
-using Spell = Aimtec.SDK.Spell;
+using Spell = Entropy.SDK.Spell;
 
 namespace AIO.Champions
 {

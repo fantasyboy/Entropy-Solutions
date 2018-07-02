@@ -5,7 +5,7 @@ namespace AIO.Champions
 {
     using Utilities;
 
-    using Aimtec.SDK.Menu.Components;
+    using Entropy.SDK.Menu.Components;
 
     /// <summary>
     ///     The champion class.

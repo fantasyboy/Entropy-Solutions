@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Extensions;
-using Aimtec.SDK.Util.ThirdParty;
+using Entropy;
+using Entropy.SDK.Extensions;
+using Entropy.SDK.Util.ThirdParty;
 
 namespace AIO.Utilities
 {

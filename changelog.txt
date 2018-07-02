@@ -1,5 +1,5 @@
-# Aimtec-Repository
-My Aimtec Solutions
+# Entropy-Repository
+My Entropy Solutions
 
 ExorAIO: Revolution Changelog:
 7.14.0.0:
@@ -1170,3 +1170,11 @@ ExorAIO: Revolution Changelog:
 
 8.1.0.0:
   AIO: Extensions usage and code cleanup.
+
+8.13.0.0:
+  AIO: Added Stormrazor wait options on the General menu (If you have Stormrazor it will stop AA'ing on X mode until the effect is ready again).
+  AIO: Removed checks for Manaflow Band and Presence of Mind in the Mana preservation logic, since now they don't allow you to cast 1 ManaCost-Free spell anymore.
+  Ahri: Removed Combo patterns, since now it's useless to not start the Combo with E.
+  Taliyah: Now Ignores Manamanagers while casting Q on Worked Ground.
+  Varus: Added new W Menu, with options to cast W on all modes, (It will use it before Q starts to charge).
+  

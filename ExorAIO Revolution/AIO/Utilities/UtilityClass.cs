@@ -2,8 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Damage;
+using Entropy;
+using Entropy.SDK.Damage;
 
 #pragma warning disable 1587
 
@@ -452,7 +452,7 @@ namespace AIO.Utilities
         /// <param name="spell">The spell.</param>
         /// <param name="obj">The object.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public static bool CastOnUnit(this Aimtec.SDK.Spell spell, GameObject obj)
+        public static bool CastOnUnit(this Entropy.SDK.Spell spell, GameObject obj)
         {
             if (!spell.Ready || MenuGUI.IsChatOpen() || MenuGUI.IsShopOpen())
             {

@@ -1,4 +1,4 @@
-using Aimtec.SDK.Orbwalking;
+using Entropy.SDK.Orbwalking;
 
 namespace AIO.Champions
 {

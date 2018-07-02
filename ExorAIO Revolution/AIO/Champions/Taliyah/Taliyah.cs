@@ -1,10 +1,10 @@
 
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Extensions;
-using Aimtec.SDK.Menu.Components;
-using Aimtec.SDK.Orbwalking;
-using Aimtec.SDK.Util;
+using Entropy;
+using Entropy.SDK.Extensions;
+using Entropy.SDK.Menu.Components;
+using Entropy.SDK.Orbwalking;
+using Entropy.SDK.Util;
 using AIO.Utilities;
 
 #pragma warning disable 1587

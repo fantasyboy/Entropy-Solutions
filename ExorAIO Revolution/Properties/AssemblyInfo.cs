@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("ExorAIO Revolution")]
 [assembly: AssemblyDescription("The Revolution introduced me to art, and in turn, art introduced me to the Revolution.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Aimtec")]
+[assembly: AssemblyCompany("Entropy")]
 [assembly: AssemblyProduct("ExorAIO Revolution")]
-[assembly: AssemblyCopyright("Copyright © Aimtec 2017-2018")]
+[assembly: AssemblyCopyright("Copyright © Entropy 2018-2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

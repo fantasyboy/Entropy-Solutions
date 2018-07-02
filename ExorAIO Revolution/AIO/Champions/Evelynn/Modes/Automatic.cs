@@ -1,6 +1,6 @@
 
-using Aimtec;
-using Aimtec.SDK.Extensions;
+using Entropy;
+using Entropy.SDK.Extensions;
 using AIO.Utilities;
 
 #pragma warning disable 1587

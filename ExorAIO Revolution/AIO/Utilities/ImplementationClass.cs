@@ -5,9 +5,9 @@
 
 namespace AIO.Utilities
 {
-    using Aimtec.SDK.Orbwalking;
-    using Aimtec.SDK.Prediction.Health;
-    using Aimtec.SDK.TargetSelector;
+    using Entropy.SDK.Orbwalking;
+    using Entropy.SDK.Prediction.Health;
+    using Entropy.SDK.TargetSelector;
 
     /// <summary>
     ///     The Implementation class.
@@ -32,6 +32,6 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the Prediction implementation.
         /// </summary>
-        public static Aimtec.SDK.Prediction.Skillshots.Prediction Prediction => Aimtec.SDK.Prediction.Skillshots.Prediction.Instance;
+        public static Entropy.SDK.Prediction.Skillshots.Prediction Prediction => Entropy.SDK.Prediction.Skillshots.Prediction.Instance;
     }
 }

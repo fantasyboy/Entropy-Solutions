@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Extensions;
-using Aimtec.SDK.Menu.Components;
-using Aimtec.SDK.TargetSelector;
+using Entropy;
+using Entropy.SDK.Extensions;
+using Entropy.SDK.Menu.Components;
+using Entropy.SDK.TargetSelector;
 
 namespace AIO.Utilities
 {

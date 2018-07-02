@@ -1,5 +1,5 @@
 
-using Aimtec.SDK.Orbwalking;
+using Entropy.SDK.Orbwalking;
 
 #pragma warning disable 1587
 namespace AIO.Champions

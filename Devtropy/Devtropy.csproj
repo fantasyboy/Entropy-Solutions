@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{56E6DCC8-968E-4F5C-B578-E61E32B029A4}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>AimDev</RootNamespace>
-    <AssemblyName>AimDev</AssemblyName>
+    <RootNamespace>Devtropy</RootNamespace>
+    <AssemblyName>Devtropy</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

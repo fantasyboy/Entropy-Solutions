@@ -1,6 +1,6 @@
 ﻿
-using Aimtec.SDK.Events;
-using Aimtec.SDK.Util;
+using Entropy.SDK.Events;
+using Entropy.SDK.Util;
 
 #pragma warning disable 1587
 namespace AIO

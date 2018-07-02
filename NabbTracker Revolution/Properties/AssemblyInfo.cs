@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("NabbTracker Revolution")]
 [assembly: AssemblyDescription("~New generation easy and lightweight Spells and Experience tracking.~")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Aimtec")]
+[assembly: AssemblyCompany("Entropy")]
 [assembly: AssemblyProduct("NabbTracker Revolution")]
-[assembly: AssemblyCopyright("Copyright © Aimtec 2017-2018")]
+[assembly: AssemblyCopyright("Copyright © Entropy 2018-2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

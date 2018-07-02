@@ -1,4 +1,4 @@
-using Aimtec;
+using Entropy;
 using AIO.Utilities;
 
 namespace AIO.Champions

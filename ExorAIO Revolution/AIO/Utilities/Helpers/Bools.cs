@@ -1,9 +1,9 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Events;
-using Aimtec.SDK.Extensions;
+using Entropy;
+using Entropy.SDK.Events;
+using Entropy.SDK.Extensions;
 
 namespace AIO.Utilities
 {

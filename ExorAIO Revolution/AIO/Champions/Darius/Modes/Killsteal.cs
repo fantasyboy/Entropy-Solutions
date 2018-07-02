@@ -1,9 +1,9 @@
 
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Damage;
-using Aimtec.SDK.Damage.JSON;
-using Aimtec.SDK.Menu.Components;
+using Entropy;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Damage.JSON;
+using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
 
 #pragma warning disable 1587

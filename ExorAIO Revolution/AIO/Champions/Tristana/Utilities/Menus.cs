@@ -1,8 +1,8 @@
 
 using System.Linq;
-using Aimtec.SDK.Menu;
-using Aimtec.SDK.Menu.Components;
-using Aimtec.SDK.Util;
+using Entropy.SDK.Menu;
+using Entropy.SDK.Menu.Components;
+using Entropy.SDK.Util;
 using AIO.Utilities;
 
 #pragma warning disable 1587

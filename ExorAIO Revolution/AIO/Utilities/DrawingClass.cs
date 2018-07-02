@@ -2,7 +2,7 @@
 
 
 using System.Collections.Generic;
-using Aimtec;
+using Entropy;
 
 #pragma warning disable 1587
 

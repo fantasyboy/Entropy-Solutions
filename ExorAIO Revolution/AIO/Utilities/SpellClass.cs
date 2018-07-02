@@ -1,4 +1,4 @@
-﻿using Aimtec.SDK;
+﻿using Entropy.SDK;
 
 namespace AIO.Utilities
 {

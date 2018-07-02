@@ -1,4 +1,4 @@
-﻿using Aimtec.SDK.Menu;
+﻿using Entropy.SDK.Menu;
 
 namespace AIO.Utilities
 {
@@ -6,8 +6,8 @@ namespace AIO.Utilities
     using System.Collections.Generic;
     using System.Linq;
 
-    using Aimtec;
-    using Aimtec.SDK.Extensions;
+    using Entropy;
+    using Entropy.SDK.Extensions;
 
     public static class Gapcloser
     {

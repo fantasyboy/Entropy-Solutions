@@ -5,8 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Extensions;
+using Entropy;
+using Entropy.SDK.Extensions;
 
 namespace AIO.Utilities
 {

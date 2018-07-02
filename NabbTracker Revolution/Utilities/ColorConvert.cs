@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Aimtec.SDK.Menu.Components;
+using Entropy.SDK.Menu.Components;
 
 namespace NabbTracker
 {
