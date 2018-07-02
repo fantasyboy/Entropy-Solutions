@@ -1,0 +1,1172 @@
+# Aimtec-Repository
+My Aimtec Solutions
+
+ExorAIO: Revolution Changelog:
+7.14.0.0:
+  Release.
+
+7.14.0.1:
+  Ezreal: Fixed Nullref spamming.
+
+7.14.0.2:
+  Ahri: Fixed Combo.
+
+7.14.0.3:
+  AIO: Removed come useless code
+  Jhin: Implemented Don't W Combo if any enemy is inside AA range option (except when reloading)
+
+7.14.0.4:
+  AIO: Fixed Console Errors.
+
+7.14.0.5:
+  Jinx: Fixed W being used in Laneclear (wasn't intended)
+
+7.14.0.6:
+  Ahri: Jungleclear Fixes.
+  Caitlyn: TEMPTATIVE FPS Drop fixes.
+  Jinx: TEMPTATIVE FPS Drop fixes.
+  Jinx: Fixed ManaManager for Q in Laneclear and Jungleclear.
+  Jinx: Little Fix on AoE E Logic.
+  Jinx: Menu Clarification.
+
+7.14.0.7:
+  Corki: Now casts spells more often, like he should.
+  Ashe: Now casts spell more often, like she should.
+  Ezreal: Now casts spell more often, like he should.
+  Ezreal: Fixed Tear stacking logic.
+
+7.14.0.8:
+  AIO: Reduced the menu's width for many champions
+  Ashe: Fixed Combo Q stopping sometimes
+  Caitlyn: Fixed Range Updating
+  Caitlyn: Fixed FPS Drops.
+  Jinx: Fixed Range Updating
+  Jinx: Fixed FPS Drops
+  Jinx: Moved Safety W option into the W Customization menu.
+  Jinx: Fixed Combo/Laneclear/Jungleclear Switches.
+  Jinx: Implemented Force Switch to PowPow on OrbwalkingMode change
+  Kog'Maw: Fixed Range Updating
+  Kog'Maw: Fixed FPS Drops
+  Taliyah: Fixed Range Updating
+  Taliyah: Fixed FPS Drops
+
+7.14.0.9
+  Twitch: Fixed Nullreference.
+  
+7.14.0.10
+  Ahri: Added Q on CC'ed enemies option.
+
+7.14.0.11
+  Xayah: Added E before Death option
+  Twitch: Fixed rare Nullref.
+
+7.14.0.12
+  Tristana: Fixed FPS Drops.
+  Ezreal: Fixed Console debug Spamming.
+
+7.14.0.13
+  AIO: Improved IsImmobile and GetTarget checks.
+  AIO: Fixed a rare critical error.
+  Vayne: Don't condemn if dashing.
+  Corki: Completely fixed spell usage.
+  Ahri: Fixed On-CC Logics.
+  Caitlyn: Fixed On-CC Logics.
+  Jhin: Fixed On-CC Logics.
+  Jinx: Fixed On-CC Logics.
+  Kog'Maw: Fixed On-CC Logics.
+  Taliyah; Fixed On-CC Logics.
+
+7.14.0.14
+  Corki: Fixed E being used randomly.
+
+7.14.0.15:
+  AIO: Fixed Minion Selection (It wont cast spell to random units like traps anymore).
+  
+7.14.0.16:
+  Lucian: Fixed Engager E Option.
+  
+7.14.0.17:
+  AIO; Code cleanup.
+  Taliyah: Fixed Jungleclear Nullref.
+  Ahri: Fixed Jungleclear Nullref.
+  Orianna: Fixed Jungleclear Nullref.
+  Kalista: Fixed Jungleclear Nullref.
+
+7.14.0.18:
+  Vayne: Faster and more accurate condemn.
+  Vayne: Fixed small jungle monsters condemning.
+
+7.14.0.19:
+  Ezreal: Should now cast Q out of aa range more often.
+  Jinx: Shouldn't spaz anymore while switching Q.
+  Jinx: E should now cast more often,
+  Jinx: Fixed R not being casted.
+  Vayne: Q killsteal fix.
+
+7.14.0.20:
+  Kalista: Minion Orbwalk fixed, and now works even without runaans.
+  Vayne: Little Q Killsteal improvement.
+
+7.14.0.21:
+  Jhin: Should now cast spells more often.
+
+7.14.0.22:
+  AIO: Fixed a critical minion getter error.
+  Kalista: COmpletely fixed farming, harassing and minion orbwalking.
+
+7.14.0.23:
+  AIO: Fps should now drop less, if you still are experiencing problems, just F5 and the drops will go away.
+  Ashe: Won't Q randomly in combo anymore, now it will if theres any aenemy in AA range.
+  Taliyah: Q combo fixes.
+  Taliyah: Now E will not cast out of range anymore.
+  Lucian: Fixed Nullrefs.
+  Akali: Added options to not use Spells/AAs during stealth.
+  Vayne: Now it wont try to lasthit with q your current minion target anymore
+  Vayne: Now it wont Q to lasthit in a dangerous position anymore.
+  Vayne: Added Don't try to stun if enemy can die in X autos option.
+  Vayne: Added don't break stealth if >= x enemies in AA Range option.
+
+7.14.0.24:
+  Taliyah: Less wasted Es.
+  
+7.14.0.25:
+  Taliyah: E range fixes.
+  Kog'Maw: Fixed W Range drawing.
+  Kog'Maw: Fixed W in combo.
+  Jhin: Now should cast W more often.
+  Corki: E now casts on AA.
+
+7.14.1.0:
+  Syndra: BETA Released!
+  Jinx: Finally 100% Fixed FPS Drops!
+  Caitlyn: Finally 100% Fixed FPS Drops!
+  Tristana: Finally 100% Fixed FPS Drops!
+  Kog'Maw: Finally 100% Fined FPS Drops!
+  Taliyah: Finally 100% Fixed FPS Drops! (May still be heavy cause good logics)
+  Jhin: Now he will never cancel his ult anymore (Unless manually movement)
+
+7.14.1.1:
+  AIO: Some code cleanup.
+  Syndra: Little Performance Improvement.
+  Syndra: Added R Damage on healthbar drawing.
+  Orianna: Little Performance Improvement.
+  Kog'Maw: Finally fixed W Range.
+  Tristana: Fixed Random damage drawings all over the screen.
+
+7.14.1.2:
+  Kog'Maw: Little Combo R Logic cleanup.
+  Kog'Maw: Improved R Logic and Prediction.
+  Kog'Maw: Fixed a bug on the stacksmanager.
+
+7.14.1.3:
+  Orianna: Changed R Combo option to R AoE.
+  Orianna: Added Killsteal R.
+  Orianna: Fixed Killsteal W,
+  Vayne: Tentative Orbwalking fixes.
+
+7.14.1.4:
+  AIO: W spell drawings are now Yellow instead of Purple.
+  Ahri: Improved Charm.
+  Xayah: Fixed Nullref.
+  Xayah: Fixed Buildingclear.
+  Orianna: Spellcasting should be fixed.
+  Vayne: Now also takes into account buildings for condemn.
+  Syndra: Now has a Catchmode stringlist, to let you choose whether to use E-> Q or Q -> E to catch enemies out of Q range, or not try to catch enemies out of range at all.
+
+7.14.1.5:
+  Ezreal; Code fixes.
+  Ezreal: W to allies Fix attempt.
+  Jhin: Only W Combo if slowed turned OFF by default,
+  Kalista: Added Rend only if Killable Minions >= x Slider.
+  Orianna: Added Farmhelper Q if killable minions out of aa range with ManaManager.
+  Syndra: Prediction Improvement Attempt.
+  Tristana: Added Semi-Automatic Ult to nearest Whitelisted enemy (Default Key: T)
+  Vayne: Q Range drawing fix.
+  Vayne: Added Engager Q (Q to enemy out of AA range but inside AA+Q range) [Default: OFF]
+  Vayne: Added E Prediction Drawings
+
+7.14.1.6:
+  AIO; Overall Prediction fixes attempt.
+  Vayne: Added Semi-Automatic E to nearest target in range (Default Key: T)
+  
+7.14.1.7:
+  Caitlyn: Reversed E default: OFF
+  Caitlyn: Prediction changes.
+  Corki: Prediction changes.
+
+7.14.1.8:
+  AIO: Q drawings back to LightGreen.
+  Orianna: Ball's Drawing color changed to Black.
+  Orianna: Option to enhance the Ball's drawing, so you can see it better.
+  Orianna: Completely fixed, and improved prediction.
+  Syndra: Completely fixed, and improved prediction.
+  Syndra: Fixed W usage.
+  Syndra: Improved W Killsteal.
+  Syndra: Improved E->Q casting.
+  Syndra: Fixed R Killsteal.
+  Caitlyn: Added Option to not use Q if enemies in AA Range >= X (Customizable).
+  
+7.14.1.9:
+  Jinx: Fixed W not being used.
+  Jinx: Fixed E on-Teleport.
+  Jhin: Fixed E on-Teleport.
+  Caitlyn: Fixed W on-Teleport.
+  Caitlyn: Fixed On-CC Traps.
+  Caitlyn: Fixed R not being used.
+
+7.14.1.10:
+  Tristana: Whitelist now works for both Harass and Combo.
+  Orianna: Q should now work properly even at max range.
+  Jinx: Fixed W Killsteal.
+  Jinx: Will not W while under enemy turret again.
+  Ezreal: Prediction Improvements.
+  Jinx: Prediction Improvements.
+
+7.14.1.11:
+  AIO; Fixed IsWallInBetween Function.
+  Vayne: Fixed E Prediction Rectangles Drawings.
+  Vayne: Fixed Condemn.
+  Orianna: Slight Change to Q Prediction.
+
+7.14.1.12:
+  AIO; Fixed CompilingError.
+  Jinx: Finally fixed Q switching.
+  Vayne: Fixes to Condemn.
+  Syndra: Faster W.
+  Syndra: Added Force Q after E option.
+  Syndra: Combo Fixes.
+  Orianna: Ball Drawing fixes.
+  Lucian: Fixed Drawings not being shown.
+  Ezreal: Dynamic AD-AP Mode implemented.
+  Ezreal: Fixed W to allies.
+
+7.14.1.13:
+  Ahri: Implemented Anti-Gapcloser E.
+  Ashe: Implemented Anti-Gapcloser R.
+  Caitlyn: Implemented Anti-Gapcloser W.
+  Corki: Implemented Melee Anti-Gapcloser W.
+  Corki: Now should throw skillshots more frequently.
+  Ezreal: Now should throw skillshots more frequently.
+  Ezreal: Implemented Melee Anti-Gapcloser E.
+  Jhin: Implemented Anti-Gapcloser E.
+  Jinx: Implemented Anti-Gapcloser E.
+  Kog'Maw: Implemented Anti-Gapcloser Q-E.
+  Lucian: Implemented Melee Anti-Gapcloser E.
+  Orianna: Implemented Anti-Gapcloser E (For allies and self.)
+  Syndra: Fixed R Damage finally.
+  Syndra: Implemented Anti-Gapcloser Q->E
+  Syndra: Combo works properly now.
+  Taliyah: Implemented Anti-Gapcloser W and E.
+  Taliyah: Fixed E usage without W.
+  Tristana: Implemented Melee Anti-Gapcloser W and R.
+  Twitch: Implemented Anti-Gapcloser W.
+  Vayne: Implemented Anti-Gapcloser E (If you need Anti-Gapcloser Q too just ask).
+  Xayah: Implemented Anti-Gapcloser Q+R combo.
+  Xayah: Now it will not stop in place while using R anymore.
+  
+7.14.2.0:
+  Syndra: More combo fixes.
+  Miss Fortune: Beta Released (Extended Q may be clunky)
+
+7.14.2.1:
+  Syndra: More combo fixes.
+
+7.14.2.2:
+  Vayne: Fixed 2W Target Focus Logic.
+  Tristana: Fixed Charge Focus Logic.
+  Kalista: Fixed Oathsword Focus Logic.
+  Miss Fortune: Fixed Passive Target Switching Logic.
+  Miss Fortune: Completely Fixed Extended Q Logics.
+
+7.14.2.3:
+  Caitlyn: Now it will not whiff Q on traps anymore. 
+
+7.14.2.4:
+  Jinx: Fixed Q switch Nullref in customs.
+
+7.14.2.5:
+  AIO: Added Dynamic Ravenous/Tiamat/Titanic Hydras usage. (General menu)
+  Kog'Maw: R prediction Improvement attempt.
+  Tristana: Fixed NullRef.
+  Tristana Fixed E charged target focus.
+  Tristana: Now attacks inhibitors properly.
+  Miss Fortune: Now uses extended Q in combo on a minion only if the minion is killable.
+
+7.14.2.6:
+  AIO: Added Hydra modes (now you can customize on which modes you want to use them)
+  Orianna: Now should also cast ball at max range.
+  Caitlyn: Rare Trap spam should be fixed.
+  Ashe: Fixed W Killsteal.
+  Ashe: Fixed Nullref.
+
+7.15.0.0:
+  AIO: Fixed Allies declaration.
+  Orianna: Clarified Menu
+  Orianna: E Logic cleanup.
+  Orianna: Won't Randomly E anymore.
+  MissFortune: Passive target fixes.
+  Kog'Maw: Prediction R fix attempt.
+  Caitlyn: Total Logic cleanup (I was drunk dont look at git plz Kappa)
+  Jinx: Fixed Q Harass Switch (Have to test)
+
+7.15.0.1:
+  Taliyah: Re-Added Q Collision check.
+  Kog'Maw: R Prediction fix attempt.
+  Caitlyn: Now shouldn't waste E anymore.
+  Caitlyn: Trap distance treshhold has been diminished.
+
+7.15.0.2:
+  AIO: Fixed Invulnerability Class.
+  AIO: Added missing Invulnerabilities' definitions.
+  Jhin: Fixed Don't W under enemy turret Check.
+  Kog'Maw: Now shouldn't refrain from casting anymore, under certain conditions.
+  Taliyah: Q casting fix.
+  
+7.15.0.3:
+  Syndra: Better W Prediction.
+  Syndra: Force E after Q now only works in combo mode.
+  Syndra: Now E -> Q shouldn't rarely fail anymore.
+  Syndra: Now W should catch objects more often.
+
+7.15.0.4:
+  AIO: Fixed a rare Nullref.
+  Lucian: Now shouldn't miss Extended Q range anymore.
+  Orianna: Q Prediction change.
+  Jinx: W Prediction change.
+  Ezreal: Q and W Prediction changes.
+  Ezreal: Improved Anti-Grab E.
+  Tristana: Improved Anti-Grab W.
+  Syndra: Q and W prediction changes.
+
+7.15.1.0:
+  AIO: Released Sivir (No spellshield).
+  
+7.15.2.0:
+  AIO: Released Olaf (BETA).
+
+7.15.2.1:
+  AIO; Fixed CompilingError for some PC's.
+  Orianna: Fixed Rare Nullref.
+  Olaf: Fixed E BigMinions LastHit.
+
+7.15.2.2:
+  Olaf: Now Will Cast E before attack to not lose CD.
+  Olaf: Will now cast Q more often and with a better prediction.
+
+7.15.2.3:
+  Orianna: Now will use E in combo more accurately.
+  Orianna: Now it should use W a bit more frequently when it can.
+  Sivir: Shield Logic base.
+  Syndra: Now the spells will not try to predict enemy movement anymore, but cast at the center of the enemy position.
+
+7.15.2.4:
+  AIO: Generic target selection improvement, now the champs should not randomly stand still not attacking or casting anymore.
+  Jinx: Will not cast traps anymore upon Thresh/Blitzcrank hooks.
+  Caitlyn: Will not cast traps anymore upon Thresh/Blitzcrank hooks.
+  Orianna: Q Cast and Prediction improvement.
+  Taliyah: Should not sometimes fail E after W anymore.
+  Jhin: Will not shoot his R at invulnerable targets ever again.
+
+7.15.2.5:
+  Orianna: Fixed W and R.
+
+7.15.2.6:
+  Kalista: Now wont use plants or GP barrels to orbwalk anymore.
+  Taliyah: Improved W Prediction?
+  Xayah: Fixed W Laneclear spam.
+
+7.15.2.7:
+  Taliyah: Was sometimes not casting Q, fixed.
+
+7.15.2.8:
+  Kalista: Fixed Orbwalking to plants and code cleaning.
+
+7.15.2.9:
+  AIO: Added Preserve Mana for X Spells Menu on the General Menu (https://f.put.tf/WelldocumentedAdmirableKoalabear)
+  AIO: Added Preserve Spell if target in AA range an Killable within X number of AAs. (https://f.put.tf/PleasingLivelyDobermanpinscher)
+  Orianna: Improved R Killsteal.
+  Vayne: Removed Don't E if killable in X AAs, since now the option is on the General Menu.
+
+7.15.2.10:
+  AIO: Clarified "Preserve Spell if target in AA range an Killable within X number of AAs" Menu Option's description.
+  MissFortune: Now the Passive Switch Option has a slider component which lets the character ignore the option itself if the target is killable within X number of AAs.
+
+7.15.2.11:
+  AIO: Fixed a little General menu bug and clarified options once again.
+  AIO: Improved Mana Preservation logic.
+  AIO: Some code Improvements.
+  Xayah: Now wont Automatically Q->R anymore if manually used.
+  Xayah: Added Semi-Automatic R Mode selection (Q / Q->R)
+  Olaf: Fixed Q Harass.
+  Kalista: Added Balista.
+  Kalista: Added Soulbound Circle Drawing option (Draws X number of circles on the Soulbound character).
+  Kalista: "Modified Soulbound Lifesaver" option into "SoulBound Lifesaver / If SoulBound Health <= x%". (Fixes Soulbound lifesaving and gives the user more customization)
+
+7.15.2.12:
+  AIO: Fixed spells not being used sometimes.
+
+7.15.2.13:
+  Kalista: Soulbound logic fix.
+  Taliyah: Added No E if W on CD option.
+
+7.15.2.14:
+  AIO: Fixed CompilingError with latest SDK Build.
+  AIO: Set ImplementationClass properties as getters.
+  AIO: Set "Prevent SpellCasting if target killable in x AAs" to 0 by default on every spell.
+  Orianna: New precise prediction values!
+  Orianna: Fixed E Gain usage.
+  Orianna: Fixed W missing sometimes.
+  Orianna: Improved R Logic.
+  MissFortune: A LOT FASTER Q Bounce logic.
+
+7.15.2.15:
+  Orianna: Fixes to R Lock logic.
+  Orianna: Fixes to new R Logic.
+  Kalista: Fixed SoulBound declaration.
+  Kalista: Fixed SoulBound Lifesaver.
+
+7.15.2.16:
+  Vayne: Removed KS Q.
+  Vayne: Fixed Strange AA Magneting.
+  Twitch: Now won't break out of stealth anymore to cast anti-gapcloser W.
+
+7.15.2.17:
+  Orianna: Fixed E not being used anymore in Combo.
+  Orianna: Perfected BallPosition Checks.
+  Orianna: More precise Drawings.
+  Orianna: Final Q Prediction Fix, this time should be perfect.
+
+7.15.2.18:
+  Akali: Fixed R stacks counting.
+  Vayne: Fixed Only Q to proc 2W Stacks.
+  Twitch: Fixed Jungleclear W usage.
+  Kog'Maw: Fixed Combo And Killsteal R Stacks counting.
+
+7.16.1.0:
+  Vayne: Now the Condemn Logic has 2 Modes.
+  Ahri: New Q and E Prediction values.
+  Evelynn: Added.
+  
+7.16.2.0:
+  AIO: Generic Anti-Gapcloser Fixes.
+  Akali: Added W Combo/Harass (with Energy Manager) and Anti-Gapcloser.
+  Evelynn: Fixed spellcasting and AoE R.
+  Darius: Added.
+
+7.16.2.1:
+  Kalista: Dynamic Balista, Skalista and Talista Logics and Menus.
+  Xayah: Code polishment.
+  Xayah: Will now cast Spells before Attack instead of after, to not lose feathers.
+  Xayah: Now throws her Q out of AA Range too.
+  Xayah: Added Q->W Animation cancel (Q-> W-> AA) instead of (AA Q AA W AA).
+
+7.16.2.2:
+  Taliyah: Now every single mode supports an option to switch between Full Q or Full+ Partial Q.
+  Lucian: Moved E Mode to E customization Menu.
+  Xayah: Now both Combo and Harass support an option to switch between Q Modes.
+  Darius: Cleaned useless options.
+  Taliyah: Cleaned useless options.
+  Lucian: Cleaned useless options.
+
+7.16.3.0:
+  AIO: Health tracking Improvements.
+  AIO: Damage Improvements.
+  Anivia: Added.
+  Corki: Fixed Anti-Gapcloser W.
+  Tristana: Fixed Nullref while attacking enemy Inhibitors.
+
+7.16.3.1:
+  AIO: Changes some prediction casts from UnitPosition to CastPosition.
+  Orianna: Fixed R KIllsteal Calculations.
+  Orianna: Better E usage.
+  Orianna: Added E on Engagers. (With whitelist.)
+  Orianna: Many Logic fixes.
+  Caitlyn: Deleted useless Menu Option.
+  Caitlyn: Fixed Random E on minions/nowhere.
+  Vayne: Added Double Condemn Method (Both by me).
+
+7.16.3.2:
+  AIO: Code cleanup.
+  AIO: Fixed Jungleclear on many champions.
+  Evelynn: Fixed Default Menu options.
+
+7.16.3.3:
+  MissFortune: Removed useless MenuOption.
+  Orianna: Fixed Q not casting sometimes.
+  Darius: Fixed E and Q not casting in combo.
+  Anivia: Fixed Q E and R not casting in combo.
+
+7.16.3.4:
+  Twitch: Changed Combo W option to support a Venom stack manager: (Combo / If Venom stacks <= X)
+  Orianna: R shouldn't now miss anymore.
+  Anivia: Should now properly disable R if target dead or out of circle.
+
+7.16.3.5:
+  Orianna: More W and R Hitrate Improvements.
+  Evelynn: Will not stop casting Q in jungle anymore.
+  Xayah: Fixed Q not being used in Harass mode.
+
+7.16.3.6:
+  Anivia: Shouldnt now save enemies anymore using W.
+  Anivia: Fixed W trying to anti-gapclose over the map.
+  Twitch: Won't W in stealth anymore.
+  Twitch: Combo changed to W Q AA from W AA Q AA, for maximum efficiency.
+
+7.16.3.7:
+  Anivia: Fixed Q Exploding on target.
+  Anivia: Fixed R not deactivating properly if no enemy in range.
+  Anivia: Fixed On-CC W.
+  Anivia: Fixed R Tear stacking on fountain.
+  
+7.16.3.8:
+  Akali: Added Option to not R if enemy in AA Range (doesn't affect KillSteal).
+  
+7.16.3.9:
+  Darius: Will now try to cancel W animation with Q.
+  Darius: Added option to only Q after W in combo.
+
+7.16.3.10:
+  Vayne: Removed option "Always Q after AA", and replaced with:
+	"Don't Q out of AA range from target (ON/OFF)",
+	"Only Q if mouse out of AA Range (ON/OFF)" and
+	"Don't Q if pos has >= X enemies in range(ON/OFF) (Default: 3, Min: 1, Max: Number of enemies in game)"
+	
+7.16.3.11:
+  Vayne: Logic change fixes.
+	
+7.16.3.12:
+  Vayne: Fixed Semi-Automatic Condemn.
+
+7.16.3.13:
+  AIO: Won't use Hydra/Tiamat anymore while attacking structures.
+  Vayne: Removed useless event,
+  Vayne: Won't condemn to anti-gapclose anymore if the target is SpellShielded.
+  Vayne: Less laggy condemn logic.
+  Vayne: Added Anti-Gapcloser Q.
+
+7.16.3.14:
+  Anivia: Fixed Q Exploding.
+  Anivia: Better R cancelling check.
+
+7.16.3.15:
+  Caitlyn: Won't W Trapped enemies repeatedly anymore (A trapped enemy cant be trapped again for 4 seconds).
+
+7.16.3.16:
+  AIO: Fixed Invulnerability check. (And thus, fixed Champions not using spells randomly sometimes after a target which was invulnerable returns targettable).
+  Anivia: Code cleanup.
+  Caitlyn: Code cleanup.
+  Orianna: Fixes to R Block method.
+  Orianna: Ball tracking improved.
+
+7.16.3.17:
+  Caitlyn: Perfected Trap limitation check. 
+  Caitlyn: Added Option to not use E if the position Caitlyn will have after the dash would put her in range of >= X number of enemies.
+
+7.16.3.18:
+  AIO: Fixed InFountain Check.
+  Anivia: Fixed Q Exploding, Ty @Lola for the account.
+  Anivia: Fixed R Tracking, Ty @Lola for the account.
+  Anivia: Fixed R disabling in the fountain.
+  Caitlyn: Added R Damage Drawings.
+
+7.16.3.19:
+  Xayah: Fixed Q Combo out of AA Range.
+
+7.16.3.20:
+  Syndra: Many Fixes to the generic Logic, should feel better overall, please give feedback.
+  
+7.17.0.0:
+  Ezreal: Improved Q casting.
+  Syndra: Spell definition improvements.
+  Taliyah: Slightly better Q pred.
+
+7.17.0.1:
+  Ezreal: Fixed Nullref.
+  
+7.17.0.2:
+  Anivia: Better Q and R Management.
+  Anivia: Improvements related to the Farming.
+  MissFortune: Fixed Nullref.
+
+7.17.0.3:
+  Ashe: Won't use R as Anti-Gapcloser globally anymore.
+  Ezreal: Improved Q usage.
+
+7.17.0.4:
+  Jinx: Smoothened and Reworked Q Logic.
+
+7.17.0.5:
+  Jinx: Perfected new Q Logic.
+  Caitlyn: Better E usage and thus Better E W usage.
+  MissFortune: Won't cancel her R anymore.
+
+7.17.0.6:
+  Ezreal: Dynamic AP Mode Logic Rework, now includes:
+	- Dynamic AD-AP Mode switching and W Logics, it includes an AP slider customizable by the player.
+	- A mode selection to choose in what orbwalking mode you want to buff Allies with W.
+	- An ally whitelist to choose who do you want to buff with your W.
+	- Combo/Harass: Buff if ally hitting Enemies.
+	- Laneclear: Buff if ally hitting objectives.
+
+  Kalista: Better Minion Orbwalking, it won't orbwalk to minions anymore if an ally is on the edge of the AA Range.
+  Caitlyn: Slightly Better E->W Logic.
+
+7.17.0.7:
+  Ezreal: Improved Q.
+  Ezreal: Removed useless code.
+
+7.17.0.8:
+  Ezreal: Better W Combo Logic.
+
+7.17.0.9:
+  Anivia: Improved Jungleclear and Killsteal logics.
+  Anivia: Fixed a bug where sometimes it would make the Q explode instantly after cast.
+
+7.17.0.10:
+  AIO: fixed a little Preserve Mana Logic bug.
+  AIO: Added "Cast to small ones too in Jungleclear" option.
+  Jinx: Added 0 to the W Enemy Check slider.
+
+7.17.0.11:
+  Anivia: Fixed Q Spamming.
+
+7.17.0.12:
+  Jinx: Now starts FishBones when even before the target gets in range to get it ready,
+  Orianna: Further R Prediction check for Killsteal.
+
+7.17.0.13:
+  AIO: Implemented an actual Anti-Gapcloser.
+
+7.17.0.14:
+  AIO: Fixed Anti-Gapcloser and Added Anti-Gapcloser Menu for each Champion.
+
+7.17.0.15:
+  AIO: More Anti-Gapcloser Improvements.
+  Orianna: Fixed W Missing often in Harass mode.
+
+7.17.0.16:
+  Darius: Fixed R Damage Calculations.
+  Darius: Added Anti-Gapcloser E.
+  Darius: Added R Damage Drawings.
+  Darius: Fixed Character not moving while casting Q sometimes.
+
+7.17.0.17:
+  AIO: Added Manual Hydra Option in the general menu,
+  Kalista: Now Correctly rends lesser minions if the Option to include Lesser minions in jungleclear is selected.
+
+7.17.0.18:
+  AIO: Clarified a lot of Menus.
+  AIO: Moved Modes Menus out of Customization Menus.
+  Orianna: Fixed rare Nullreference.
+  Orianna: Fixed E Spam after Anti-Gapcloser update.
+
+7.18.0.0:
+  AIO: Clarified Anti-Gapcloser Menus.
+  AIO: Minor checks improvement.
+  AIO: Anti-Gapcloser code cleanup.
+  AIO: Fixed a Nullreference spamming the console.
+  Ezreal: Fixed rare Nullreference.
+
+7.18.0.1:
+  Caitlyn: Better Trap placement.
+  Jinx: Fixed rare Nullreference.
+
+7.18.0.2:
+ Anti-Gapcloser: Removed Leona E.
+  Taliyah: Fixed Nullref.
+  Ashe: Anti-Gapcloser checks improvement.
+  Ezreal: Fixed little menu Nullref.
+
+7.18.0.3:
+  Xayah: Better Feather Hitbox tracking.
+  Twitch: Fixed a little Nullref.
+  Ashe: Fixed Nullref.
+  Ahri: Added Only R if first cast option.
+  Lucian: Added more E options like Vayne.
+
+7.18.0.4:
+  AIO: Anti-Gapcloser: Removed useless spells from Anti-Gapcloser.
+  AIO: Anti-Gapcloser: Fixed Talon Q tracking.
+
+7.18.0.5:
+  AIO: Preserve Mana Logic fix.
+  Tristana: Fixed a bug where she would focus a minion in combo if it had the E charge.
+
+7.18.0.6:
+  AIO: Finally totally fixed Preserve Mana Option.
+  Jhin: Better R Code.
+  Ezreal: Implemented Rapid Prediction (Test it please and let me know if you prefer it over the current SDK prediction)
+
+7.18.0.7:
+  AIO: Updated RapidPrediction (Reminder: Only Ezreal uses it for now)
+  AIO: More PreserveMana fixes.
+ 
+7.19.0.0:
+  Orianna: Updated for 7.19 Updates.
+  
+7.19.0.1:
+  AIO: Updated RapidPrediction (Reminder: Only Ezreal uses it for now)
+  Kog'Maw: Fixed a little menu warning.
+  
+7.19.0.2:
+  Evelynn: Fixed AoE R.
+  Caitlyn: Removed useless W option.
+  Caitlyn: Fixed E.
+
+7.19.0.3:
+  Ezreal: Q and W usage is back to normal fast combos.
+  Miss Fortune: Tentative R Interrupt fix.
+  Lucian: Added E Menu Options.
+  Vayne: Added No Q Under Enemy Turret Option.
+
+7.19.0.4:
+  AIO: Preserve Mana Logic Improvement.
+  Miss Fortune: Reworked Bouncing logics.
+  Miss Fortune: Added Normal Q Harass with manamanager
+  Miss Fortune: Added Customization menu for Extended Q, now you can select whether to only use Q if minion Killable in Combo and Harass.
+
+7.19.0.5:
+  Miss Fortune: More logic fixes.
+  Miss Fortune: Fixed Spell Ranges.
+  Miss Fortune: Removed debug.
+  Lucian: Fixed Nullref console spam.
+
+7.19.0.6:
+  AIO: More target selection fixes.
+
+7.19.0.7:
+  AIO: Fixed "Don't cast X spell if target can die in X AAs" Logic.
+  Caitlyn: Now only draws R Damage on Non-Invulnerable targets.
+  Darius: Now only draws R Damage on Non-Invulnerable targets.
+  Jhin: Fixed Cone Position Drawing.
+  Kalista: Tweaked Orbwalking on Minions Logic.
+  Kalista: Added Skalista and Talista Logics.
+  Kog'Maw: Doesn't E spellshielded targets anymore.
+  Lucian: Better Extended Q Code.
+  Miss Fortune: More accurate Q Bouncing logic. (BETA)
+  Miss Fortune: Fixed Cone drawings position.
+  Olaf: Fixed Pentakill Olaf Axe drawing.
+  Olaf: Fixed Axe drawing rectangle position.
+  Taliyah: Removed useless code.
+  Taliyah: More accurate W to boulders logic.
+  Vayne: Slightly tweaked condemn.
+  Xayah: Fixed Feathers rectangle positions.
+  Xayah: Improved Feathers' drawings.
+
+  Thanks so much to @Suzuha, his geometry skills have helped me a lot on this update!
+
+7.19.0.8:
+  AIO: Fixed a Nullreference.
+  Kalista: Fixed Q usage. (Was broken since 7.19.0.7)
+  Taliyah: Fixed W usage. (Was broken since 7.19.0.7)
+  Jinx: Fixed a bug where she would keep using Fishbones when not needed in Laneclear. (E.G. Against Towers)
+  
+7.19.0.9:
+  AIO: Fixed a lot of Anti-Gapcloser and Immobile Logics.
+  Ahri: Removed Immobile Q.
+  Ezreal: Fixed Anti-Grab E (test).
+  Tristana: Fixed Anti-Grab W (test).
+
+7.19.0.10:
+  AIO: Improved Casting on Immobile Heroes.
+
+  // Objects: Guardian Angel
+  // Minions: Zac Passive
+  // Buffs: Zilean's Chronoshift, Zhonyas, Aatrox's Blood Well, Anivia Egg
+
+7.19.0.11:
+  Kalista: Added E Lasthit option.
+  Kalista: Improved Soulbound drawing.
+  Kalista: Generic improvement to the minion Harass logic (now takes into account the E range bug)
+  
+7.19.0.12:
+  AIO: Fixed IsBeingGrabbed() check.
+  AIO: Fixed HasImmobileBuff() check.
+
+7.19.0.13:
+  AIO: Fixed Invulnerability checks.
+
+7.19.0.14:
+  AIO: Fixed some Invulnerabilities declarations.
+  Jhin: Fixed R not being used since some updates.
+  Xayah: Fixed E not being used since some updates.
+  Orianna: Fixed E not being used since some updates.
+  Lucian: Fixed Extended Q not being used since some updates.
+
+7.19.0.15:
+  AIO: Fixed Anti-Gapcloser acting strange towards Caitlyn E detection.
+  Anivia: Added Option to not automatically deactivate R.
+  
+7.19.0.16:
+  AIO: Fixes to Anti-Gapcloser logics.
+  AIO: More fixes to Anti-Gapcloser acting strange towards Caitlyn E detection.
+
+7.19.0.17:
+  AIO: Changed "Disable AA in Combo option" to "Disable AA in Combo / If Level >= x" (customizable!)
+  AIO: Cleaned up some Menu words to make the menus less long.
+  Lucian: Some code clearing.
+  Syndra: W Logic rework.
+  Syndra: Added Q on Dashing enemies.
+  Syndra: Fixed Prediction on Q and W.
+  Syndra: Fixed strange movement stuttering.
+  Syndra: Fixed Console Nullref.
+
+7.19.0.18:
+  Syndra: Fixed OnDash Q.
+  Lucian: Fixed Nullref.
+  Lucian: Improved Extended Q check.
+
+7.19.0.19:
+  Lucian: Reworked Extended Q Logics.
+  Syndra: Menu words less long.
+  Syndra: Little Harass fix.
+
+7.19.0.20:
+  AIO: Fixed Tryndamere R and Kindred R invulnerability checks.
+  Kalista: Better Orbwalking to minions check.
+  Lucian: Improved Extended Q Logics' checks.
+  Lucian: Better E Menu default settings.
+  Lucian: Fixed Q and Extended Q ranges.
+
+7.20.0.0:
+  AIO: Some code cleanup.
+  AIO: Menu Name has been made smaller to fix every issue where the menu interface would go out of the screen.
+  Kalista: Fixed Little Nullref.
+
+7.20.1.0:
+  Evelynn: Updated for the Rework.
+  Xayah: Reworked Feather Weaving Logic.
+  
+7.20.1.1:
+  AIO: Removed some trash code.
+  Xayah: Now it will use Anti-Gapcloser R even if target is Invulnerable/Shielded.
+  Evelynn: Added Anti-Gapcloser R with whitelist menu.
+  Evelynn: Updated Manacosts.
+
+7.20.1.2:
+  AIO: Fixed CompilingError.
+  AIO: Fixed Manamanagers, it now takes into account the correct spells' mana costs.
+  AIO: Fixed some spells getting casted against plants on Laneclear.
+  Evelynn: Added R customization Menu:
+   - Blink position safety range slider.
+   - Don't R if >= X enemies in blink position safety range.
+   - Don't R if position under enemy turret.
+  Evelynn: Fixed Jungleclear logic.
+  Evelynn: Added R Blink safety position = range drawing option.
+  Evelynn: Fixed Q Prediction values.
+  Evelynn: Added Don't AA Semi-Allured Targets option.
+
+7.20.1.3:
+  AIO: Fixed CompilingError.
+
+7.20.1.4:
+  AIO: fixed spells not casting on targets with GA buff.
+
+7.20.1.5:
+  AIO: Improved Anti-Gapcloser.
+  AIO: Added Ornn E Anti-Gapcloser option.
+  Ezreal: Removed useless MenuSeparator.
+  Tristana: Removed useless MenuSeparator.
+  Evelynn: Now Q range drawing is dynamic, based on the Q stance she's in.
+  Evelynn: Adjusted Q Prediction values.
+  Evelynn: Now Q Cast is Dynamic (uses prediction for the skillshot, and spams the spikes)
+  Evelynn: Now will always spam the spikes, they consume 0 mana and thus they won't take the manamanager into account anymore.
+  Evelynn: W Jungleclear will now prioritize the nearest monster.
+
+7.20.1.6:
+  AIO: Fixed Anti-Gapcloser Nullreference.
+  Jinx: Fixed W Collision check.
+  Jinx: Fishbones check should be more consistent.
+
+7.20.1.7:
+  AIO: Completely fixed, reworked and improved Anti-Gapcloser, now it's specific per champion with spell-specific custom menus.
+
+7.20.1.8:
+  AIO: Removed some useless Anti-Gapcloser menus.
+  Kalista: The Junglesteal option has now a Level component "Junglesteal / If level >= X", to avoid stealing the ally jungler buffs at level 1.
+
+7.20.1.9:
+  AIO: Better target selection on spells.
+  Vayne: Added Dash prediction on condemn.
+  Vayne: Reworked Condemn Logic and Mode selection.
+
+7.20.1.10:
+  AIO: Spells will no longer be casted against Zombie Sions.
+
+7.20.1.11:
+  AIO: Fixes to Preserve Mana Logic.
+  Jinx: Added option to always switch to PowPow in Lasthit mode.
+  Twitch: Added a Level component to JungleSteal option, now it's "Junglesteal / If Level >= x"
+  Vayne: Fixed and Improved E Killsteal.
+  Vayne: Some condemn tweaks.
+
+7.20.1.12:
+  Kog'Maw: Fixed Q Collision.
+  Kog'Maw: Fixed Killsteal R check.
+  Kog'Maw: Added Only R if target out of AA range option.
+  Kog'Maw: Added Only E if target out of AA range option.
+  Kog'Maw: Added Only R if not using W option.
+  Kog'Maw: Added Only E if not using W option.
+
+7.20.2.0:
+  AIO: Simplified some Menu names.
+  Ashe: Some Check fixes.
+  Lucian: Should now be more free to cast Q mid combo.
+  Vayne: Some condemn check fixes.
+  Varus: Beta Release.
+
+7.20.2.1:
+  Varus: Fixed Nullref.
+  Varus: Added Long Range Q Combo option.
+  Varus: Fixed Spazing while Charging Q.
+  Varus: Fixed Q starting to charge but not casting.
+
+7.20.2.2:
+  Varus: Fixed Q sometimes not Firing after Charging.
+  Varus: Fixed Jungleclear Q.
+  Varus: Fixed Combo Q.
+  Varus: Improved AoE R.
+
+7.20.2.3:
+  AIO: Fixed Some Anti-Gapcloser Menus showing useless or empty sections.
+  Varus: Now Long Range Combo Q takes into account the Harass Whitelist (Won't cast to blacklisted targets).
+  Varus: Fixed Q and E usage if W not learned.
+  Varus: Fixed Nullref.
+  Tristana: Cleaned up a code part.
+
+7.20.2.4:
+  AIO: Fixed Some champions casting spells to jungle monsters different from the one being focused.
+  Kalista: Little rewrite to the offensive R Logics.
+  Kalista: Tweaked Q Collision and Prediction values.
+
+7.20.2.5:
+  Varus: Fixed Spells' Prediction values.
+
+7.20.2.6:
+  Kalista: Fixed Nullref.
+  Vayne: Polished some checks.
+  Vayne: Condemn Fixes.
+
+7.20.2.7:
+  AIO: Fixed CompilingError.
+  Vayne: Applied Condemn rework to Jungleclear condemn too.
+
+7.20.2.8:
+  Varus: Fixed Q sometimes not firing in Harass.
+
+7.20.2.9:
+  AIO: Fixed some invulnerability values.
+  Xayah: Will no longer use E if target is spellshielded.
+  Vayne: Anti-Dash Condemn rework.
+
+7.20.2.10:
+  Caitlyn: Added Anti-Dash E.
+  Caitlyn: Auto W should be faster overall.
+  Caitlyn: Fixed Anti-Gapcloser W and E.
+
+7.20.2.11:
+  AIO: Anti-Gapcloser will not make the character jump under enemy turrets anymore.
+
+7.20.2.12:
+  Caitlyn: More responsive W on CC.
+  Jinx: More responsive E on CC.
+
+7.21.0.0:
+  AIO: More responsive Anti-Gapcloser.
+  Vayne: Code polishment.
+
+7.21.0.1:
+ AIO: Cleared up useless code parts.
+ Ezreal: Increased Q Width.
+ Ezreal: Better Q Laneclear logic.
+ Vayne: Disabled Dash-Prediction condemn against Kalista.
+ Vayne: Now Miscellaneous options are MenuSliderBools instead of MenuSliders.
+
+7.21.0.2:
+  AIO: Minor code changes.
+  Syndra: Minor fix.
+  
+7.22.0.0:
+  Caitlyn: Now the Trap checks are more solid and consistent.
+  Orianna: Fixed a bug where she would cancel manual R usage if it didn't hit any enemy, even if the block manual R option was disabled.
+  Xayah: Fixed Feathers usage, Riot changed the name of the feather objects, that's why it wasn't tracking them anymore.
+
+7.22.0.1:
+  AIO: Fixed Melee AA Resets not working.
+  AIO: Cleaned up Anti-Gapcloser code and Improved some anti-gapclosing spells.
+
+7.22.0.2:
+  AIO: Code cleanup and minor improvements.
+  
+7.22.0.3:
+  Xayah: Fixed Q and W Logics.
+
+7.22.0.4:
+  Orianna: Fixed Ball drawings flickering out while moving.
+  Xayah: Fixed a little Q logic mistake.
+
+7.22.0.5:
+  Vayne: Minor Menu Improvement.
+  Lucian: Minor Menu Improvement.
+  Caitlyn: Now will only cast Q on trapped targets on Combo and Mixed mode.
+
+7.22.0.6:
+  Caitlyn: Fixed Trap usage in Triple Headshot Combo.
+  Caitlyn: Various code cleanup.
+
+7.22.0.7:
+  Taliyah: Totally Fixed E and W Codes Logics.
+  Taliyah: Cleaned a lot of trash code.
+  Taliyah: Fixed a bug where sometimes she wouldn't cast Q.
+
+7.22.0.8:
+  Taliyah: More Logics polishment.
+  Taliyah: More code cleanup.
+
+7.22.0.9:
+  Orianna: Cleaned up useless code parts.
+  Orianna: Removed W Combo to Self Speedup Option.
+
+7.22.0.10:
+  Jhin: Fixed NullRef and some spells not being casted.
+
+7.22.0.11:
+  Kog'Maw: Adjusted Q and R Prediction Values.
+  Taliyah: Adjusted W Prediction Value.
+
+7.22.0.12:
+  Kog'Maw: Improved R Logic.
+  Kog'Maw: Code cleanup.
+
+7.22.0.13:
+  Orianna: Fixed Spells not being used when the ball was attached to an ally.
+
+7.22.1.0:
+  AIO: Improved Not Supported champion warning message on console.
+  AIO: Some code cleanup.
+  Quinn: Released.
+
+7.22.1.1:
+  AIO: Improved Champion Loaded and Not supported warning messages.
+  AIO: Fixed a critical error where some champions like lucian and jinx would not work correctly, this also includes many other champions.
+  AIO: Code cleanup.
+  Orianna: Slightly better Q prediction values.
+
+7.22.1.2:
+  Orianna: Fixed E Spam after last update.
+  Orianna: Added R Killsteal Whitelist.
+
+7.22.1.3:
+  AIO: Fixed strange Console Spam.
+  Quinn: Will no longer use Q while in R stance.
+
+7.22.1.4:
+  AIO: Removed useless file.
+  Ezreal: Adjusted Prediction Values.
+  Kalista: More consistent orb to minions.
+  Kalista: Now Rends Pets too.
+  Lucian: Removed Extended Q Combo.
+
+7.22.1.5:
+  Ezreal: Improved Q and W casting, now more frequent.
+  Orianna: Re-added Caster check for E.
+  Quinn: Code cleanup.
+  Sivir: Fixed Kog Passive and Jax E tracking and E usage on them.
+  Sivir: Added E Anti-Gapcloser with menu.
+  Taliyah: Fixed a bug where Taliyah wouldn't cast E or Q when the Pattern was E->W
+
+7.22.1.6:
+  AIO: Now it will not try to stack tear items (like tear or manamune) if the item is on cooldown.
+  Syndra: Code cleared up.
+  Syndra: Improved Spell casting.
+  Quinn: Code cleanup.
+
+7.22.1.7:
+  Syndra: Removed E->Q and polished up code, this should fix many bugs related to her.
+  Ezreal: Readded Hitchances.
+
+7.22.1.8:
+  Varus: Improved Logics.
+  Varus: Added Invulnerability checks.
+  Varus: Fixed Q sometimes getting stuck at charging.
+
+7.22.1.9:
+  Syndra: Fixed W Combo.
+  Syndra: Fixed E Usage.
+  Syndra: Fixed Nullref.
+  Syndra: Code cleanup.
+
+7.23.0.0:
+  Vayne: Improved "Exory Perfect" Condemn type.
+  Varus: R will not whiff anymore.
+  Miss Fortune: Semi-Automatic R Off by default.
+  Lucian: Semi-Automatic R Off by default.
+  Kalista: Will now only try to attack valid objects.
+
+7.23.0.1:
+  Kalista: Improved Q Usage.
+  Vayne: Final Condemn Tweaks.
+  
+7.23.0.2:
+  Ezreal: Finally fixed Q and W usage, now it will never wait to use them.
+  Kalista: Fixed E not being used in extremely rare cases.
+  Lucian: Code cleanup.
+  Orianna: E on Engagers should now work properly.
+  Quinn: Fixed Q Usage.
+  Quinn: Will no longer try to R in base if enemies near.
+  Xayah: Tweaked Feathers usage.
+
+7.24.0.0:
+  AIO: Updated healthbar drawing positions to 7.24.
+
+7.24.0.1:
+  AIO: Added Xayah and Corki to special healthbar drawings positions.
+
+7.24.0.2:
+  AIO: Fixed targetted spells not being casted if the enemy was at the edge of the range.
+
+7.24.0.3:
+  AIO; Added some missing documentation.
+  Kalista: Added option to not Harass already slowed targets with minions.
+  Kalista: Fixed jungle monsters' healthbar damage drawings' positions.
+  Vayne: Condemn check test.
+
+7.24.0.4:
+  Akali: Fixed E Harass Nullref.
+
+7.24.0.5:
+  AIO: Will now ignore Manamanagers and Spell Limiters when ManaflowBand or Presence of Mind runes' buffs are active.
+  Xayah: Faster E Usage.
+  
+7.24.0.6:
+  Corki: Fixed E Nullref.
+
+7.24.0.7:
+  AIO: Reworked Killsteal Logics entirely.
+  AIO: Some champions stopped casting at times, it has been fixed.
+  AIO: Removed useless code and general polishing.
+  Anivia: Fixed Q explosion check, also better R check.
+  Ezreal: Fixed Nullref.
+  Miss Fortune: Completely reworked the Q Bounce Logics.
+  Miss Fortune: Removed Normal Q Harass (Extended Q Harass is still there)
+  Kog'Maw: Fixed R Killsteal damage calculation.
+  Kalista: Faster E usage.
+  Twitch: Faster E usage + Improved code.
+  Xayah: Faster E usage.
+  
+7.24.0.8:
+  Anivia: Added Q and R Width Drawings.
+  Anivia: Fixed Q explosion.
+
+7.24.0.9:
+  Jinx: Final works on the Q switch Logic.
+  Ezreal: Q Casting on minions should be fixed.
+  Quinn: Q Casting on minions should be fixed. 
+
+7.24.0.10:
+  Ezreal: Should use Q more often now.
+  Quinn: Should use Q more often now.
+  Quinn: Removed useless code.
+
+8.1.0.0:
+  AIO: Extensions usage and code cleanup.
