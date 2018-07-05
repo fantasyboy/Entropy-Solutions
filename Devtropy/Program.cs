@@ -1,7 +1,7 @@
 ﻿
 using Entropy.SDK.Orbwalking;
 
-namespace AimDev
+namespace Devtropy
 {
     using System;
     using System.Drawing;
@@ -29,7 +29,7 @@ namespace AimDev
         /// </summary>
         private static void InitMenu()
         {
-            Menu = new Menu("aimdev", "AimDev", true);
+            Menu = new Menu("devtropy", "Devtropy", true);
             {
                 SubMenu = new Menu("select", "GameObject Tracking Selection:");
                 {
