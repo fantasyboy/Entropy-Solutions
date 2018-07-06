@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Entropy;
+using Entropy.SDK.Extensions.Objects;
 
 namespace AIO.Utilities
 {
@@ -15,17 +16,17 @@ namespace AIO.Utilities
         /// <summary>
         ///     The ally heroes list.
         /// </summary>
-        private static readonly List<Obj_AI_Hero> AllyHeroesList = new List<Obj_AI_Hero>();
+        private static readonly List<AIHeroClient> AllyHeroesList = new List<AIHeroClient>();
 
         /// <summary>
         ///     The ally list.
         /// </summary>
-        private static readonly List<Obj_AI_Base> AllyList = new List<Obj_AI_Base>();
+        private static readonly List<AIBaseClient> AllyList = new List<AIBaseClient>();
 
         /// <summary>
         ///     The ally minions list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> AllyMinionsList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> AllyMinionsList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The ally turrets list.
@@ -35,7 +36,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     The ally wards list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> AllyWardsList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> AllyWardsList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The attackable unit list.
@@ -45,17 +46,17 @@ namespace AIO.Utilities
         /// <summary>
         ///     The enemy heroes list.
         /// </summary>
-        private static readonly List<Obj_AI_Hero> EnemyHeroesList = new List<Obj_AI_Hero>();
+        private static readonly List<AIHeroClient> EnemyHeroesList = new List<AIHeroClient>();
 
         /// <summary>
         ///     The enemy list.
         /// </summary>
-        private static readonly List<Obj_AI_Base> EnemyList = new List<Obj_AI_Base>();
+        private static readonly List<AIBaseClient> EnemyList = new List<AIBaseClient>();
 
         /// <summary>
         ///     The enemy minions list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> EnemyMinionsList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> EnemyMinionsList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The enemy turrets list.
@@ -65,7 +66,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     The enemy wards list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> EnemyWardsList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> EnemyWardsList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The game objects list.
@@ -75,27 +76,27 @@ namespace AIO.Utilities
         /// <summary>
         ///     The heroes list.
         /// </summary>
-        private static readonly List<Obj_AI_Hero> HeroesList = new List<Obj_AI_Hero>();
+        private static readonly List<AIHeroClient> HeroesList = new List<AIHeroClient>();
 
         /// <summary>
         ///     The jungle large list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> JungleLargeList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> JungleLargeList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The jungle legendary list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> JungleLegendaryList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> JungleLegendaryList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The jungle list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> JungleList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> JungleList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The jungle small list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> JungleSmallList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> JungleSmallList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The spawn points list.
@@ -130,7 +131,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     The minions list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> MinionsList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> MinionsList = new List<AIMinionClient>();
 
         /// <summary>
         ///     The small name regex list.
@@ -145,7 +146,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     The wards list.
         /// </summary>
-        private static readonly List<Obj_AI_Minion> WardsList = new List<Obj_AI_Minion>();
+        private static readonly List<AIMinionClient> WardsList = new List<AIMinionClient>();
 
         /// <summary>
         ///     Indicates whether the <see cref="GameObjects" /> stack was initialized and saved required instances.
@@ -206,17 +207,17 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the ally.
         /// </summary>
-        public static IEnumerable<Obj_AI_Base> Ally => AllyList;
+        public static IEnumerable<AIBaseClient> Ally => AllyList;
 
         /// <summary>
         ///     Gets the ally heroes.
         /// </summary>
-        public static IEnumerable<Obj_AI_Hero> AllyHeroes => AllyHeroesList;
+        public static IEnumerable<AIHeroClient> AllyHeroes => AllyHeroesList;
 
         /// <summary>
         ///     Gets the ally minions.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> AllyMinions => AllyMinionsList;
+        public static IEnumerable<AIMinionClient> AllyMinions => AllyMinionsList;
 
         /// <summary>
         ///     Gets the ally turrets.
@@ -226,7 +227,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the ally wards.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> AllyWards => AllyWardsList;
+        public static IEnumerable<AIMinionClient> AllyWards => AllyWardsList;
 
         /// <summary>
         ///     Gets the attackable units.
@@ -236,17 +237,17 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the enemy.
         /// </summary>
-        public static IEnumerable<Obj_AI_Base> Enemy => EnemyList;
+        public static IEnumerable<AIBaseClient> Enemy => EnemyList;
 
         /// <summary>
         ///     Gets the enemy heroes.
         /// </summary>
-        public static IEnumerable<Obj_AI_Hero> EnemyHeroes => EnemyHeroesList;
+        public static IEnumerable<AIHeroClient> EnemyHeroes => EnemyHeroesList;
 
         /// <summary>
         ///     Gets the enemy minions.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> EnemyMinions => EnemyMinionsList;
+        public static IEnumerable<AIMinionClient> EnemyMinions => EnemyMinionsList;
 
         /// <summary>
         ///     Gets the enemy turrets.
@@ -256,42 +257,42 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the enemy wards.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> EnemyWards => EnemyWardsList;
+        public static IEnumerable<AIMinionClient> EnemyWards => EnemyWardsList;
 
         /// <summary>
         ///     Gets the heroes.
         /// </summary>
-        public static IEnumerable<Obj_AI_Hero> Heroes => HeroesList;
+        public static IEnumerable<AIHeroClient> Heroes => HeroesList;
 
         /// <summary>
         ///     Gets the jungle.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> Jungle => JungleList;
+        public static IEnumerable<AIMinionClient> Jungle => JungleList;
 
         /// <summary>
         ///     Gets the jungle large.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> JungleLarge => JungleLargeList;
+        public static IEnumerable<AIMinionClient> JungleLarge => JungleLargeList;
 
         /// <summary>
         ///     Gets the jungle legendary.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> JungleLegendary => JungleLegendaryList;
+        public static IEnumerable<AIMinionClient> JungleLegendary => JungleLegendaryList;
 
         /// <summary>
         ///     Gets the jungle small.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> JungleSmall => JungleSmallList;
+        public static IEnumerable<AIMinionClient> JungleSmall => JungleSmallList;
 
         /// <summary>
         ///     Gets the minions.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> Minions => MinionsList;
+        public static IEnumerable<AIMinionClient> Minions => MinionsList;
 
         /// <summary>
         ///     Gets or sets the player.
         /// </summary>
-        public static Obj_AI_Hero Player { get; set; }
+        public static AIHeroClient Player { get; set; }
 
         /// <summary>
         ///     Gets the turrets.
@@ -301,7 +302,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the wards.
         /// </summary>
-        public static IEnumerable<Obj_AI_Minion> Wards => WardsList;
+        public static IEnumerable<AIMinionClient> Wards => WardsList;
 
         /// <summary>
         ///     Gets the spawn points.
@@ -331,7 +332,7 @@ namespace AIO.Utilities
         public static bool Compare(this GameObject gameObject, GameObject @object)
         {
             return gameObject != null && gameObject.IsValid && @object != null && @object.IsValid
-                   && gameObject.NetworkId == @object.NetworkId;
+                   && gameObject.NetworkID == @object.NetworkID;
         }
 
         /// <summary>
@@ -358,7 +359,7 @@ namespace AIO.Utilities
         /// <returns>
         ///     The <see cref="JungleType" />
         /// </returns>
-        public static JungleType GetJungleType(this Obj_AI_Minion minion)
+        public static JungleType GetJungleType(this AIMinionClient minion)
         {
             if (SmallNameRegex.Any(regex => Regex.IsMatch(minion.Name, regex)))
             {
@@ -411,36 +412,36 @@ namespace AIO.Utilities
 
             Player = UtilityClass.Player;
 
-            HeroesList.AddRange(ObjectManager.Get<Obj_AI_Hero>());
-            MinionsList.AddRange(ObjectManager.Get<Obj_AI_Minion>().Where(o => o.Team != GameObjectTeam.Neutral && !o.Name.Contains("ward")));
+            HeroesList.AddRange(ObjectManager.Get<AIHeroClient>());
+            MinionsList.AddRange(ObjectManager.Get<AIMinionClient>().Where(o => o.Team != GameObjectTeam.Neutral && !o.Name.Contains("ward")));
             TurretsList.AddRange(ObjectManager.Get<Obj_AI_Turret>());
-            JungleList.AddRange(ObjectManager.Get<Obj_AI_Minion>().Where(o => o.Team == GameObjectTeam.Neutral && o.Name != "WardCorpse" && o.Name != "Barrel" && !o.Name.Contains("SRU_Plant_")));
-            WardsList.AddRange(ObjectManager.Get<Obj_AI_Minion>().Where(o => o.Name.Contains("ward")));
+            JungleList.AddRange(ObjectManager.Get<AIMinionClient>().Where(o => o.Team == GameObjectTeam.Neutral && o.Name != "WardCorpse" && o.Name != "Barrel" && !o.Name.Contains("SRU_Plant_")));
+            WardsList.AddRange(ObjectManager.Get<AIMinionClient>().Where(o => o.Name.Contains("ward")));
             SpawnPointsList.AddRange(ObjectManager.Get<GameObject>().Where(o => o.Type == GameObjectType.obj_SpawnPoint));
 
             GameObjectsList.AddRange(ObjectManager.Get<GameObject>());
             AttackableUnitsList.AddRange(ObjectManager.Get<AttackableUnit>());
 
-            EnemyHeroesList.AddRange(HeroesList.Where(o => o.IsEnemy));
-            EnemyMinionsList.AddRange(MinionsList.Where(o => o.IsEnemy));
-            EnemyTurretsList.AddRange(TurretsList.Where(o => o.IsEnemy));
-            EnemyList.AddRange(EnemyHeroesList.Cast<Obj_AI_Base>().Concat(EnemyMinionsList).Concat(EnemyTurretsList));
+            EnemyHeroesList.AddRange(HeroesList.Where(o => o.IsEnemy()()));
+            EnemyMinionsList.AddRange(MinionsList.Where(o => o.IsEnemy()()));
+            EnemyTurretsList.AddRange(TurretsList.Where(o => o.IsEnemy()()));
+            EnemyList.AddRange(EnemyHeroesList.Cast<AIBaseClient>().Concat(EnemyMinionsList).Concat(EnemyTurretsList));
 
             AllyHeroesList.AddRange(HeroesList.Where(o => o.IsAlly));
             AllyMinionsList.AddRange(MinionsList.Where(o => o.IsAlly));
             AllyTurretsList.AddRange(TurretsList.Where(o => o.IsAlly));
             AllyList.AddRange(
-                AllyHeroesList.Cast<Obj_AI_Base>().Concat(AllyMinionsList).Concat(AllyTurretsList));
+                AllyHeroesList.Cast<AIBaseClient>().Concat(AllyMinionsList).Concat(AllyTurretsList));
 
             JungleSmallList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Small));
             JungleLargeList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Large));
             JungleLegendaryList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Legendary));
 
             AllyWardsList.AddRange(WardsList.Where(o => o.IsAlly));
-            EnemyWardsList.AddRange(WardsList.Where(o => o.IsEnemy));
+            EnemyWardsList.AddRange(WardsList.Where(o => o.IsEnemy()()));
 
             AllySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsAlly));
-            EnemySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsEnemy));
+            EnemySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsEnemy()()));
 
             GameObject.OnCreate += OnCreate;
             GameObject.OnDestroy += OnDelete;
@@ -462,11 +463,11 @@ namespace AIO.Utilities
                 AttackableUnitsList.Add(attackableUnit);
             }
 
-            var hero = sender as Obj_AI_Hero;
+            var hero = sender as AIHeroClient;
             if (hero != null)
             {
                 HeroesList.Add(hero);
-                if (hero.IsEnemy)
+                if (hero.IsEnemy()())
                 {
                     EnemyHeroesList.Add(hero);
                     EnemyList.Add(hero);
@@ -480,7 +481,7 @@ namespace AIO.Utilities
                 return;
             }
 
-            var minion = sender as Obj_AI_Minion;
+            var minion = sender as AIMinionClient;
             if (minion != null)
             {
                 if (minion.Team != GameObjectTeam.Neutral)
@@ -488,7 +489,7 @@ namespace AIO.Utilities
                     if (minion.Name.Contains("ward"))
                     {
                         WardsList.Add(minion);
-                        if (minion.IsEnemy)
+                        if (minion.IsEnemy()())
                         {
                             EnemyWardsList.Add(minion);
                         }
@@ -500,7 +501,7 @@ namespace AIO.Utilities
                     else
                     {
                         MinionsList.Add(minion);
-                        if (minion.IsEnemy)
+                        if (minion.IsEnemy()())
                         {
                             EnemyMinionsList.Add(minion);
                             EnemyList.Add(minion);
@@ -536,7 +537,7 @@ namespace AIO.Utilities
             if (turret != null)
             {
                 TurretsList.Add(turret);
-                if (turret.IsEnemy)
+                if (turret.IsEnemy()())
                 {
                     EnemyTurretsList.Add(turret);
                     EnemyList.Add(turret);
@@ -585,13 +586,13 @@ namespace AIO.Utilities
                 }
             }
 
-            var hero = sender as Obj_AI_Hero;
+            var hero = sender as AIHeroClient;
             if (hero != null)
             {
                 foreach (var heroObject in HeroesList.Where(h => h.Compare(hero)).ToList())
                 {
                     HeroesList.Remove(heroObject);
-                    if (hero.IsEnemy)
+                    if (hero.IsEnemy()())
                     {
                         EnemyHeroesList.Remove(heroObject);
                         EnemyList.Remove(heroObject);
@@ -606,7 +607,7 @@ namespace AIO.Utilities
                 return;
             }
 
-            var minion = sender as Obj_AI_Minion;
+            var minion = sender as AIMinionClient;
             if (minion != null)
             {
                 if (minion.Team != GameObjectTeam.Neutral)
@@ -616,7 +617,7 @@ namespace AIO.Utilities
                         foreach (var wardObject in WardsList.Where(w => w.Compare(minion)).ToList())
                         {
                             WardsList.Remove(wardObject);
-                            if (minion.IsEnemy)
+                            if (minion.IsEnemy()())
                             {
                                 EnemyWardsList.Remove(wardObject);
                             }
@@ -631,7 +632,7 @@ namespace AIO.Utilities
                         foreach (var minionObject in MinionsList.Where(m => m.Compare(minion)).ToList())
                         {
                             MinionsList.Remove(minionObject);
-                            if (minion.IsEnemy)
+                            if (minion.IsEnemy()())
                             {
                                 EnemyMinionsList.Remove(minionObject);
                                 EnemyList.Remove(minionObject);
@@ -673,7 +674,7 @@ namespace AIO.Utilities
                 foreach (var turretObject in TurretsList.Where(t => t.Compare(turret)).ToList())
                 {
                     TurretsList.Remove(turretObject);
-                    if (turret.IsEnemy)
+                    if (turret.IsEnemy()())
                     {
                         EnemyTurretsList.Remove(turretObject);
                         EnemyList.Remove(turretObject);
@@ -692,7 +693,7 @@ namespace AIO.Utilities
                 foreach (var spawnPointObject in SpawnPointsList.Where(s => s.Compare(spawnPoint)).ToList())
                 {
                     SpawnPointsList.Remove(spawnPointObject);
-                    if (spawnPoint.IsEnemy)
+                    if (spawnPoint.IsEnemy()())
                     {
                         EnemySpawnPointsList.Remove(spawnPointObject);
                     }

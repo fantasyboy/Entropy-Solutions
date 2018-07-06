@@ -2,9 +2,11 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -20,9 +22,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
-            SpellClass.R.Range = 1500f + 500f * SpellClass.R.Level;
+            SpellClass.R.Range = 1500f + 500f * SpellClass.R.Level();
 
             if (UtilityClass.Player.IsRecalling())
             {
@@ -40,8 +42,8 @@ namespace AIO.Champions
                     t.IsImmobile(SpellClass.W.Delay) &&
                     t.Distance(UtilityClass.Player) < SpellClass.W.Range))
                 {
-                    SpellClass.W.Cast(UtilityClass.Player.ServerPosition.Extend(target.ServerPosition, UtilityClass.Player.Distance(target)+target.BoundingRadius/2));
-                    UpdateEnemyTrapTime(target.NetworkId);
+                    SpellClass.W.Cast(UtilityClass.Player.Position.Extend(target.Position, UtilityClass.Player.Distance(target)+target.BoundingRadius/2));
+                    UpdateEnemyTrapTime(target.NetworkID);
                 }
             }
 
@@ -51,12 +53,12 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Spells["w"]["teleport"].As<MenuBool>().Enabled)
             {
-                foreach (var minion in ObjectManager.Get<Obj_AI_Minion>().Where(m =>
-                    m.IsEnemy &&
+                foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
+                    m.IsEnemy()() &&
                     m.Distance(UtilityClass.Player) <= SpellClass.W.Range &&
-                    m.ValidActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
+                    m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
                 {
-                    SpellClass.W.Cast(minion.ServerPosition);
+                    SpellClass.W.Cast(minion.Position);
                 }
             }
 
@@ -69,14 +71,14 @@ namespace AIO.Champions
                 switch (ImplementationClass.IOrbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
-                    case OrbwalkingMode.Mixed:
+                    case OrbwalkingMode.Harass:
                         foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                             !Invulnerable.Check(t) &&
                             t.IsImmobile(SpellClass.Q.Delay) &&
                             t.IsValidTarget(SpellClass.Q.Range) &&
                             t.HasBuff("caitlynyordletrapdebuff")))
                         {
-                            SpellClass.Q.Cast(target.ServerPosition);
+                            SpellClass.Q.Cast(target.Position);
                         }
                         break;
                 }
@@ -93,11 +95,11 @@ namespace AIO.Champions
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Spells["r"]["whitelist"][t.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
                     .MinBy(o => o.GetRealHealth());
                 if (bestTarget != null)
                 {
-                    UtilityClass.CastOnUnit(SpellClass.R, bestTarget);
+                    SpellClass.R.CastOnUnit(bestTarget);
                 }
             }
         }

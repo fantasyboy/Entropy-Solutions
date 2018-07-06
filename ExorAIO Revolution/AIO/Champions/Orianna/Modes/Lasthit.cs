@@ -1,9 +1,9 @@
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Lasthit()
+        public void LastHit(EntropyEventArgs args)
         {
             if (BallPosition == null)
             {
@@ -29,11 +29,11 @@ namespace AIO.Champions
             ///     The Q Farmhelper Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellSlot.Q, MenuClass.Spells["q"]["farmhelper"]) &&
                 MenuClass.Spells["q"]["farmhelper"].As<MenuSliderBool>().Enabled)
             {
-                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Where(m => !m.IsValidTarget(UtilityClass.Player.GetFullAttackRange(m))))
+                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Where(m => !m.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(m))))
                 {
                     if (minion.GetRealHealth() < UtilityClass.Player.GetSpellDamage(minion, SpellSlot.Q))
                     {

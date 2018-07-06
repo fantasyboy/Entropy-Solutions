@@ -1,11 +1,12 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -46,11 +47,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on spell cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="SpellBookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnCastSpell(Obj_AI_Base sender, SpellBookCastSpellEventArgs args)
+        public void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
-            if (sender.IsMe)
+            if (sender.IsMe())
             {
                 if (args.Slot == SpellSlot.R &&
                     !IsUltimateShooting())
@@ -67,11 +68,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on spell cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="buff">The buff.</param>
-        public void OnRemoveBuff(Obj_AI_Base sender, Buff buff)
+        public void OnRemoveBuff(AIBaseClient sender, Buff buff)
         {
-            if (sender.IsMe &&
+            if (sender.IsMe() &&
                 buff.Name == "missfortunebulletsound")
             {
                 ImplementationClass.IOrbwalker.MovingEnabled = true;
@@ -81,9 +82,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -96,12 +97,12 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy || Invulnerable.Check(sender, DamageType.Magical, false))
+            if (sender == null || !sender.IsEnemy()() || Invulnerable.Check(sender, DamageType.Magical, false))
             {
                 return;
             }
 
-            var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+            var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
             if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
             {
                 return;
@@ -116,13 +117,13 @@ namespace AIO.Champions
                 {
                     case Gapcloser.Type.Targeted:
                         if (sender.IsMelee &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
                             SpellClass.E.Cast(args.EndPosition);
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= SpellClass.E.Range)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.E.Range)
                         {
                             SpellClass.E.Cast(args.EndPosition);
                         }
@@ -134,9 +135,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPostAttack(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPostAttack(OnPostAttackEventArgs args)
         {
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -147,7 +148,7 @@ namespace AIO.Champions
                     Weaving(sender, args);
                     break;
 
-                case OrbwalkingMode.Laneclear:
+                case OrbwalkingMode.LaneClear:
                     Jungleclear(sender, args);
                     Buildingclear(sender, args);
                     break;
@@ -157,9 +158,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on pre attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPreAttack(OnPreAttackEventArgs args)
         {
             if (IsUltimateShooting())
             {
@@ -171,10 +172,10 @@ namespace AIO.Champions
             /// </summary>
             if (MenuClass.Miscellaneous["focusp"].As<MenuSliderBool>().Enabled)
             {
-                var orbTarget = args.Target as Obj_AI_Hero;
+                var orbTarget = args.Target as AIHeroClient;
                 var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
-                        t.NetworkId != LoveTapTargetNetworkId &&
-                        t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t)));
+                        t.NetworkID != LoveTapTargetNetworkId &&
+                        t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
                 if (forceTarget != null &&
                     orbTarget != null &&
                     orbTarget.GetRealHealth() >
@@ -200,7 +201,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -210,12 +211,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -223,15 +224,15 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
 
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
                     break;
 
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
             }
         }

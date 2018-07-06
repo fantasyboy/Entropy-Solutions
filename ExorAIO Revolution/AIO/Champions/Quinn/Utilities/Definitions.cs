@@ -2,8 +2,8 @@
 
 
 using Entropy;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -41,7 +41,7 @@ namespace AIO.Champions
         ///     Returns true if the target is marked by the passive, else, false.
         /// </summary>
         /// <param name="target">The target.</param>
-        public bool IsVulnerable(Obj_AI_Base target)
+        public bool IsVulnerable(AIBaseClient target)
         {
             return target.HasBuff("QuinnW");
         }

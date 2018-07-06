@@ -1,9 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -19,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Extended Q Combo Logic.
@@ -27,11 +27,11 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Spells["q2"]["combo"].As<MenuBool>().Enabled)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t => MenuClass.Spells["q2"]["whitelist"][t.ChampionName.ToLower()].Enabled))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t => MenuClass.Spells["q2"]["whitelist"][t.CharName.ToLower()].Enabled))
                 {
                     var unitsToIterate = Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range)
-                        .Where(m => !m.IsMoving && QCone(m).IsInside((Vector2)target.ServerPosition))
-                        .OrderBy(m => m.Health)
+                        .Where(m => !m.IsMoving && QCone(m).IsInside((Vector2)target.Position))
+                        .OrderBy(m => m.HP)
                         .ToList();
 
                     var killableUnitsToIterate = unitsToIterate
@@ -41,7 +41,7 @@ namespace AIO.Champions
                     var realUnitsToIterate = killableUnitsToIterate.Any() && MenuClass.Spells["q2"]["customization"]["combo"].As<MenuBool>().Enabled ? killableUnitsToIterate : unitsToIterate;
                     foreach (var minion in realUnitsToIterate)
                     {
-                        UtilityClass.CastOnUnit(SpellClass.Q, minion);
+                        SpellClass.Q.CastOnUnit(minion);
                         break;
                     }
                 }

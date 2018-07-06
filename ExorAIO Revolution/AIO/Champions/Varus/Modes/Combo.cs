@@ -1,8 +1,9 @@
 
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -18,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Combo Logic.
@@ -30,9 +31,9 @@ namespace AIO.Champions
                 if (heroTarget != null)
                 {
                     if (!Invulnerable.Check(heroTarget) &&
-                        !heroTarget.IsValidTarget(UtilityClass.Player.GetFullAttackRange(heroTarget)))
+                        !heroTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(heroTarget)))
                     {
-                        if (UtilityClass.Player.SpellBook.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned) ||
+                        if (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned) ||
                             GetBlightStacks(heroTarget) >= MenuClass.Spells["e"]["customization"]["combostacks"].As<MenuSlider>().Value)
                         {
                             SpellClass.E.Cast(heroTarget);
@@ -50,7 +51,7 @@ namespace AIO.Champions
                 if (heroTarget != null)
                 {
                     if (IsChargingPiercingArrow() &&
-                        !heroTarget.IsValidTarget(UtilityClass.Player.GetFullAttackRange(heroTarget)))
+                        !heroTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(heroTarget)))
                     {
                         if (MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
                         {
@@ -61,7 +62,7 @@ namespace AIO.Champions
                     {
                         if (!Invulnerable.Check(heroTarget) &&
                             MenuClass.Spells["q"]["combolong"].As<MenuBool>().Enabled &&
-                            MenuClass.Spells["q"]["whitelist"][heroTarget.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                            MenuClass.Spells["q"]["whitelist"][heroTarget.CharName.ToLower()].As<MenuBool>().Enabled)
                         {
                             PiercingArrowLogicalCast(heroTarget);
                         }

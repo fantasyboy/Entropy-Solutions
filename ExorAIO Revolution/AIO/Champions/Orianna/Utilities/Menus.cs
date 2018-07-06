@@ -1,8 +1,9 @@
 
 using System.Linq;
-using Entropy.SDK.Menu;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -56,7 +57,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList.Add(new MenuBool(target.ChampionName.ToLower(), "Harass: " + target.ChampionName));
+                                MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
                         }
                         MenuClass.Q.Add(MenuClass.WhiteList);
@@ -100,7 +101,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList2.Add(new MenuBool(target.ChampionName.ToLower(), "Harass: " + target.ChampionName));
+                                MenuClass.WhiteList2.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
                         }
                         MenuClass.W.Add(MenuClass.WhiteList2);
@@ -122,7 +123,7 @@ namespace AIO.Champions
                     MenuClass.E.Add(new MenuBool("engager", "Shield (Engagers)"));
                     MenuClass.E.Add(new MenuSeperator("separator"));
 
-                    if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.ChampionName == spell.ChampionName)))
+                    if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                     {
                         /// <summary>
                         ///     Sets the menu for the Anti-Gapcloser E.
@@ -133,14 +134,14 @@ namespace AIO.Champions
                             MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
                             MenuClass.E.Add(MenuClass.Gapcloser);
 
-                            foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.ChampionName == spell.ChampionName)))
+                            foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                             {
-                                MenuClass.SubGapcloser = new Menu(enemy.ChampionName.ToLower(), enemy.ChampionName);
+                                MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
                                 {
-                                    foreach (var spell in Gapcloser.Spells.Where(x => x.ChampionName == enemy.ChampionName))
+                                    foreach (var spell in Gapcloser.Spells.Where(x => x.ChampionName == enemy.CharName))
                                     {
                                         MenuClass.SubGapcloser.Add(new MenuBool(
-                                            $"{enemy.ChampionName.ToLower()}.{spell.SpellName.ToLower()}",
+                                            $"{enemy.CharName.ToLower()}.{spell.SpellName.ToLower()}",
                                             $"Slot: {spell.Slot} ({spell.SpellName})"));
                                     }
                                 }
@@ -166,7 +167,7 @@ namespace AIO.Champions
                         {
                             foreach (var ally in GameObjects.AllyHeroes)
                             {
-                                MenuClass.WhiteList3.Add(new MenuBool(ally.ChampionName.ToLower(), "Use for: " + ally.ChampionName, ally.IsMe));
+                                MenuClass.WhiteList3.Add(new MenuBool(ally.CharName.ToLower(), "Use for: " + ally.CharName, ally.IsMe()));
                             }
                         }
                         MenuClass.E.Add(MenuClass.WhiteList3);
@@ -185,7 +186,7 @@ namespace AIO.Champions
                         {
                             foreach (var ally in GameObjects.AllyHeroes)
                             {
-                                MenuClass.WhiteList4.Add(new MenuSliderBool(ally.ChampionName.ToLower(), "Use for: " + ally.ChampionName + " / if Health < x%", true, 25, 10, 99));
+                                MenuClass.WhiteList4.Add(new MenuSliderBool(ally.CharName.ToLower(), "Use for: " + ally.CharName + " / if Health < x%", true, 25, 10, 99));
                             }
                         }
                         MenuClass.E.Add(MenuClass.WhiteList4);
@@ -195,16 +196,16 @@ namespace AIO.Champions
                         MenuClass.E.Add(new MenuSeperator("exseparator", "Protect Allies Menu not needed."));
                     }
 
-                    if (GameObjects.AllyHeroes.Any(a => !a.IsMe))
+                    if (GameObjects.AllyHeroes.Any(a => !a.IsMe()))
                     {
                         /// <summary>
                         ///     Sets the whitelist menu for the Engagers E.
                         /// </summary>
                         MenuClass.WhiteList5 = new Menu("engagerswhitelist", "Shield (Engagers): Whitelist");
                         {
-                            foreach (var ally in GameObjects.AllyHeroes.Where(a => !a.IsMe))
+                            foreach (var ally in GameObjects.AllyHeroes.Where(a => !a.IsMe()))
                             {
-                                MenuClass.WhiteList5.Add(new MenuBool(ally.ChampionName.ToLower(), "Use for: " + ally.ChampionName));
+                                MenuClass.WhiteList5.Add(new MenuBool(ally.CharName.ToLower(), "Use for: " + ally.CharName));
                             }
                         }
                         MenuClass.E.Add(MenuClass.WhiteList5);
@@ -253,7 +254,7 @@ namespace AIO.Champions
                         {
                             foreach (var enemy in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList6.Add(new MenuBool(enemy.ChampionName.ToLower(), "Killsteal: " + enemy.ChampionName));
+                                MenuClass.WhiteList6.Add(new MenuBool(enemy.CharName.ToLower(), "Killsteal: " + enemy.CharName));
                             }
                         }
                         MenuClass.R.Add(MenuClass.WhiteList6);

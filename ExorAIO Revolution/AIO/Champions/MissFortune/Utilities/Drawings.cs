@@ -1,9 +1,9 @@
-﻿
-using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using Entropy;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 #pragma warning disable 1587
 
@@ -42,12 +42,12 @@ namespace AIO.Champions
                     foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range))
                     {
                         var unitsToIterate = Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range)
-                            .Where(m => !m.IsMoving && QCone(m).IsInside((Vector2)target.ServerPosition))
-                            .OrderBy(m => m.Health)
+                            .Where(m => !m.IsMoving && QCone(m).IsInside((Vector2)target.Position))
+                            .OrderBy(m => m.HP)
                             .ToList();
                         foreach (var minion in unitsToIterate)
                         {
-                            DrawQCone(minion).Draw(QCone(minion).IsInside((Vector2)target.ServerPosition) && MenuClass.Spells["q2"]["whitelist"][target.ChampionName.ToLower()].Enabled
+                            DrawQCone(minion).Draw(QCone(minion).IsInside((Vector2)target.Position) && MenuClass.Spells["q2"]["whitelist"][target.CharName.ToLower()].Enabled
                                 ? Color.Green
                                 : Color.Red);
                         }
@@ -78,7 +78,7 @@ namespace AIO.Champions
             /// </summary>
             if (MenuClass.Drawings["passivetarget"].As<MenuBool>().Enabled)
             {
-                var target = ObjectManager.Get<Obj_AI_Base>().FirstOrDefault(u => u.NetworkId == LoveTapTargetNetworkId);
+                var target = ObjectManager.Get<AIBaseClient>().FirstOrDefault(u => u.NetworkID == LoveTapTargetNetworkId);
                 if (target != null)
                 {
                     Render.Circle(target.Position, target.BoundingRadius, 30, Color.Black);

@@ -2,10 +2,11 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Events;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -46,11 +47,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on spell cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="SpellBookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnCastSpell(Obj_AI_Base sender, SpellBookCastSpellEventArgs args)
+        public void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
-            if (sender.IsMe &&
+            if (sender.IsMe() &&
                 args.Slot == SpellSlot.W &&
                 !IsHoldingForceOfWillObject())
             {
@@ -77,7 +78,7 @@ namespace AIO.Champions
                 {
                     case "Syndra_Base_Q_idle.troy":
                     case "Syndra_Base_Q_Lv5_idle.troy":
-                        DarkSpheres.Add(obj.NetworkId, obj.Position);
+                        DarkSpheres.Add(obj.NetworkID, screenPos);
                         break;
                 }
             }
@@ -90,9 +91,9 @@ namespace AIO.Champions
         {
             if (obj.IsValid)
             {
-                if (DarkSpheres.Any(o => o.Key == obj.NetworkId))
+                if (DarkSpheres.Any(o => o.Key == obj.NetworkID))
                 {
-                    DarkSpheres.Remove(obj.NetworkId);
+                    DarkSpheres.Remove(obj.NetworkID);
                 }
             }
         }
@@ -111,12 +112,12 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming dash.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Dash.DashArgs" /> instance containing the event data.</param>
-        public void OnDash(object sender, Dash.DashArgs args)
+        public void OnDash(Dash.DashArgs args)
         {
-            var heroSender = args.Unit as Obj_AI_Hero;
-            if (heroSender == null || !heroSender.IsEnemy || Invulnerable.Check(heroSender, DamageType.Magical))
+            var heroSender = args.Unit as AIHeroClient;
+            if (heroSender == null || !heroSender.IsEnemy()() || Invulnerable.Check(heroSender, DamageType.Magical))
             {
                 return;
             }
@@ -132,9 +133,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -147,12 +148,12 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy || Invulnerable.Check(sender, DamageType.Magical, false))
+            if (sender == null || !sender.IsEnemy()() || Invulnerable.Check(sender, DamageType.Magical, false))
             {
                 return;
             }
 
-            var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+            var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
             if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
             {
                 return;
@@ -167,7 +168,7 @@ namespace AIO.Champions
                 {
                     case Gapcloser.Type.Targeted:
                         if (sender.IsMelee &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
                             if (SpellClass.Q.Ready)
                             {
@@ -178,7 +179,7 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             if (SpellClass.Q.Ready)
                             {
@@ -195,7 +196,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -205,12 +206,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Reloads the DarkSpheres.
@@ -223,14 +224,14 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
-                    Jungleclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
+                    JungleClear(args);
                     break;
             }
         }

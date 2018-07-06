@@ -48,17 +48,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aimtec, Version=1.0.6481.35674, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Enrico\AppData\Local\AimtecLoader\Data\System\Aimtec.dll</HintPath>
+    <Reference Include="Entropy">
+      <HintPath>..\..\Entropy.AIO\System\Entropy.dll</HintPath>
     </Reference>
-    <Reference Include="Aimtec.SDK, Version=1.0.1.75, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Enrico\AppData\Local\AimtecLoader\Data\System\Aimtec.SDK.dll</HintPath>
+    <Reference Include="Entropy.SDK">
+      <HintPath>..\..\Entropy.AIO\System\Entropy.SDK.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>C:\Users\Enrico\AppData\Local\AimtecLoader\Data\System\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+      <HintPath>..\..\Entropy.AIO\System\SharpDX.Mathematics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -255,6 +256,7 @@
     <Compile Include="AIO\Champions\Vayne\Utilities\Definitions.cs" />
     <Compile Include="AIO\Utilities\Helpers\AntiGapcloser\AntiGapcloser.cs" />
     <Compile Include="AIO\Utilities\Helpers\Geometry\Vector2Geometry.cs" />
+    <Compile Include="AIO\Utilities\Helpers\ItemId.cs" />
     <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Data.cs" />
     <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\CastType.cs" />
     <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\CollisionableObjects.cs" />

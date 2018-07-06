@@ -2,9 +2,11 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -20,13 +22,13 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
             var passiveObject = ObjectManager.Get<GameObject>().FirstOrDefault(o => o.IsValid && o.Name == "Kalista_Base_P_LinkIcon.troy");
             if (passiveObject != null)
             {
                 SoulBound = GameObjects.AllyHeroes
-                    .Where(a => !a.IsMe)
+                    .Where(a => !a.IsMe())
                     .MinBy(o => o.Distance(passiveObject));
             }
 
@@ -45,14 +47,14 @@ namespace AIO.Champions
                 ///     The Lifesaver R Logic.
                 /// </summary>
                 if (SoulBound.CountEnemyHeroesInRange(800f) > 0 &&
-                    SoulBound.HealthPercent() <=
+                    SoulBound.HPPercent() <=
                         MenuClass.Spells["r"]["lifesaver"].As<MenuSliderBool>().Value &&
                     MenuClass.Spells["r"]["lifesaver"].As<MenuSliderBool>().Enabled)
                 {
                     SpellClass.R.Cast();
                 }
 
-                var option = RLogics.FirstOrDefault(k => k.Key == SoulBound.ChampionName).Value;
+                var option = RLogics.FirstOrDefault(k => k.Key == SoulBound.CharName).Value;
                 if (option != null)
                 {
                     var buffName = option.Item1;
@@ -61,11 +63,11 @@ namespace AIO.Champions
                     /// <summary>
                     ///     The Offensive R Logics.
                     /// </summary>
-                    if (RLogics.ContainsKey(SoulBound.ChampionName) &&
+                    if (RLogics.ContainsKey(SoulBound.CharName) &&
                         GameObjects.EnemyHeroes.Any(t =>
                             t.HasBuff(buffName) &&
                             MenuClass.Spells["r"][menuOption].As<MenuBool>().Enabled &&
-                            t.Distance(UtilityClass.Player.ServerPosition) > UtilityClass.Player.GetFullAttackRange(t)))
+                            t.Distance(UtilityClass.Player.Position) > UtilityClass.Player.GetAutoAttackRange(t)))
                     {
                         SpellClass.R.Cast();
                     }
@@ -79,13 +81,13 @@ namespace AIO.Champions
                 !UtilityClass.Player.IsUnderEnemyTurret() &&
                 ImplementationClass.IOrbwalker.Mode == OrbwalkingMode.None &&
                 UtilityClass.Player.CountEnemyHeroesInRange(1500f) == 0 &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["logical"]) &&
                 MenuClass.Spells["w"]["logical"].As<MenuSliderBool>().Enabled)
             {
                 foreach (var loc in Locations.Where(l =>
                     UtilityClass.Player.Distance(l) <= SpellClass.W.Range &&
-                    !ObjectManager.Get<Obj_AI_Minion>().Any(m => m.Distance(l) <= 1000f && m.UnitSkinName.Equals("KalistaSpawn"))))
+                    !ObjectManager.Get<AIMinionClient>().Any(m => m.Distance(l) <= 1000f && m.CharName.Equals("KalistaSpawn"))))
                 {
                     SpellClass.W.Cast(loc);
                 }
@@ -95,7 +97,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendAutomatic()
+        public void RendAutomatic(args)
         {
             /// <summary>
             ///     The Automatic E Logics.

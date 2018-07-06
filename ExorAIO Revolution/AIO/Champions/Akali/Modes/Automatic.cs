@@ -13,7 +13,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
         }
 

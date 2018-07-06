@@ -1,10 +1,8 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -20,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The Q KillSteal Logic.

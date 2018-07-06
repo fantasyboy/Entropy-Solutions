@@ -1,4 +1,6 @@
 
+using Entropy;
+
 #pragma warning disable 1587
 namespace AIO.Champions
 {
@@ -12,7 +14,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Lasthit()
+        public void LastHit(EntropyEventArgs args)
         {
 
         }

@@ -1,8 +1,8 @@
 
 using System.Linq;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The Q KillSteal Logic.
@@ -28,7 +28,7 @@ namespace AIO.Champions
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
                     GetRealPiercingArrowDamage(t) >= t.GetRealHealth() &&
-                    !t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t))))
+                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))))
                 {
                     if (IsChargingPiercingArrow())
                     {
@@ -56,7 +56,7 @@ namespace AIO.Champions
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.E.Range).Where(t =>
                     GetRealHailOfArrowsDamage(t) >= t.GetRealHealth() &&
-                    !t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t))))
+                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))))
                 {
                     SpellClass.E.Cast(target);
                     break;
@@ -71,7 +71,7 @@ namespace AIO.Champions
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.R.Range).Where(t =>
                     GetRealChainOfCorruptionDamage(t) >= t.GetRealHealth() &&
-                    !t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t))))
+                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))))
                 {
                     SpellClass.R.Cast(target);
                     break;

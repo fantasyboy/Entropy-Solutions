@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Drawing;
-using Entropy;
+using Aimtec;
 
 namespace NabbTracker
 {
@@ -19,7 +19,7 @@ namespace NabbTracker
         /// <summary>
         ///     Gets the Player.
         /// </summary>
-        public static Obj_AI_Hero Player = ObjectManager.GetLocalPlayer();
+        public static AIHeroClient Player = ObjectManager.GetLocalPlayer();
 
         /// <summary>
         ///     Gets the spellslots.
@@ -48,7 +48,7 @@ namespace NabbTracker
         /// <summary>
         ///     The cooldown of a determined spell of a determined unit.
         /// </summary>
-        public static string GetUnitSpellCooldown(Obj_AI_Hero unit, int spell)
+        public static string GetUnitSpellCooldown(AIHeroClient unit, int spell)
         {
             var unitSpell = unit.SpellBook.GetSpell(SpellSlots[spell]);
             var cooldownRemaining = unitSpell.CooldownEnd - Game.ClockTime;
@@ -58,7 +58,7 @@ namespace NabbTracker
             }
 
             if (unitSpell.State.HasFlag(SpellState.Disabled) ||
-                unit.IsMe && unitSpell.State.HasFlag(SpellState.Surpressed))
+                unit.IsMe() && unitSpell.State.HasFlag(SpellState.Surpressed))
             {
                 return "X";
             }
@@ -73,7 +73,7 @@ namespace NabbTracker
         /// <summary>
         ///     The color of the string, based on determined events.
         /// </summary>
-        public static Color GetUnitSpellStateColor(Obj_AI_Hero unit, int spell)
+        public static Color GetUnitSpellStateColor(AIHeroClient unit, int spell)
         {
             var unitSpell = unit.SpellBook.GetSpell(SpellSlots[spell]);
             var unitSpellState = unitSpell.State;
@@ -83,7 +83,7 @@ namespace NabbTracker
             }
 
             if (unitSpellState.HasFlag(SpellState.Disabled) ||
-                unit.IsMe && unitSpellState.HasFlag(SpellState.Surpressed))
+                unit.IsMe() && unitSpellState.HasFlag(SpellState.Surpressed))
             {
                 return Color.Purple;
             }
@@ -110,7 +110,7 @@ namespace NabbTracker
         /// <summary>
         ///     The cooldown of a determined summoner spell of a determined unit.
         /// </summary>
-        public static string GetUnitSummonerSpellCooldown(Obj_AI_Hero unit, int summonerSpell)
+        public static string GetUnitSummonerSpellCooldown(AIHeroClient unit, int summonerSpell)
         {
             var cooldownRemaining = unit.SpellBook.GetSpell(SummonerSpellSlots[summonerSpell]).CooldownEnd - Game.ClockTime;
             return cooldownRemaining > 0 ? ((int)cooldownRemaining).ToString() : "READY";
@@ -119,7 +119,7 @@ namespace NabbTracker
         /// <summary>
         ///     Gets the fixed name for reach summonerspell in the game.
         /// </summary>
-        public static string GetUnitSummonerSpellFixedName(Obj_AI_Hero unit, int summonerSpell)
+        public static string GetUnitSummonerSpellFixedName(AIHeroClient unit, int summonerSpell)
         {
             switch (unit.SpellBook.GetSpell(SummonerSpellSlots[summonerSpell]).Name.ToLower())
             {
@@ -141,12 +141,12 @@ namespace NabbTracker
         /// <summary>
         ///     The color of the string, based on determined events.
         /// </summary>
-        public static Color GetUnitSummonerSpellStateColor(Obj_AI_Hero unit, int summonerSpell)
+        public static Color GetUnitSummonerSpellStateColor(AIHeroClient unit, int summonerSpell)
         {
             var unitSummonerSpell = unit.SpellBook.GetSpell(SummonerSpellSlots[summonerSpell]);
             var unitSummonerSpellState = unitSummonerSpell.State;
             if (unitSummonerSpellState.HasFlag(SpellState.Disabled) ||
-                unit.IsMe && unitSummonerSpellState.HasFlag(SpellState.Surpressed))
+                unit.IsMe() && unitSummonerSpellState.HasFlag(SpellState.Surpressed))
             {
                 return Color.Purple;
             }
@@ -168,7 +168,7 @@ namespace NabbTracker
         /// <summary>
         ///     The Exp Healthbars X coordinate adjustment.
         /// </summary>
-        public static int ExpXAdjustment(Obj_AI_Hero target)
+        public static int ExpXAdjustment(AIHeroClient target)
         {
             return 85;
         }
@@ -176,9 +176,9 @@ namespace NabbTracker
         /// <summary>
         ///     The Spells Healthbars Y coordinate adjustment.
         /// </summary>
-        public static int ExpYAdjustment(Obj_AI_Hero target)
+        public static int ExpYAdjustment(AIHeroClient target)
         {
-            if (SpecialChampions.Contains(target.ChampionName))
+            if (SpecialChampions.Contains(target.CharName))
             {
                 return MenuClass.Miscellaneous["name"].Enabled ? -65 : -45;
             }
@@ -189,7 +189,7 @@ namespace NabbTracker
         /// <summary>
         ///     The Healthbars X coordinate adjustment.
         /// </summary>
-        public static int SummonerSpellXAdjustment(Obj_AI_Hero target)
+        public static int SummonerSpellXAdjustment(AIHeroClient target)
         {
             return 28;
         }
@@ -197,9 +197,9 @@ namespace NabbTracker
         /// <summary>
         ///     The Healthbars Y coordinate adjustment.
         /// </summary>
-        public static int SummonerSpellYAdjustment(Obj_AI_Hero target)
+        public static int SummonerSpellYAdjustment(AIHeroClient target)
         {
-            if (SpecialChampions.Contains(target.ChampionName))
+            if (SpecialChampions.Contains(target.CharName))
             {
                 return MenuClass.Miscellaneous["name"].Enabled ? -35 : -15;
             }
@@ -210,7 +210,7 @@ namespace NabbTracker
         /// <summary>
         ///     The Spells Healthbars X coordinate adjustment.
         /// </summary>
-        public static int SpellXAdjustment(Obj_AI_Hero target)
+        public static int SpellXAdjustment(AIHeroClient target)
         {
             return 40;
         }
@@ -218,9 +218,9 @@ namespace NabbTracker
         /// <summary>
         ///     The Spells Healthbars Y coordinate adjustment.
         /// </summary>
-        public static int SpellYAdjustment(Obj_AI_Hero target)
+        public static int SpellYAdjustment(AIHeroClient target)
         {
-            if (SpecialChampions.Contains(target.ChampionName))
+            if (SpecialChampions.Contains(target.CharName))
             {
                 return 40;
             }

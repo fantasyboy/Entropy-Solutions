@@ -1,8 +1,7 @@
-﻿
-using System.Drawing;
-using Entropy;
-using Entropy.SDK.Menu.Components;
-using AIO.Utilities;
+﻿using AIO.Utilities;
+using Entropy.SDK.UI.Components;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 #pragma warning disable 1587
 

@@ -1,11 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -21,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The KillSteal Q Logic.
@@ -30,7 +28,7 @@ namespace AIO.Champions
                 MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-                    !t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t))))
+                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))))
                 {
                     var collisions = SpellClass.Q.GetPrediction(target).CollisionObjects
                         .Where(c => Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.Q.Range).Contains(c))

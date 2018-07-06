@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Events;
 using Entropy.SDK.Extensions;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Spells;
+using SharpDX;
 
 namespace AIO.Utilities
 {
@@ -33,15 +38,6 @@ namespace AIO.Utilities
         }
 
         /// <summary>
-        ///     Returns if a Spell from a determined SpellSlot is usable.
-        /// </summary>
-        /// <param name="slot">The spellslot.</param>
-        public static bool CanUseSpell(SpellSlot slot)
-        {
-            return UtilityClass.SpellStates.All(state => !UtilityClass.Player.SpellBook.GetSpell(slot).State.HasFlag(state));
-        }
-
-        /// <summary>
         ///     Returns if the name is an auto attack
         /// </summary>
         /// <param name="name">Name of spell</param>
@@ -66,7 +62,7 @@ namespace AIO.Utilities
         /// <returns>
         ///     true if an unit has a Sheen-Like buff; otherwise, false.
         /// </returns>
-        public static bool HasSheenLikeBuff(this Obj_AI_Hero unit)
+        public static bool HasSheenLikeBuff(this AIHeroClient unit)
         {
             var sheenLikeBuffNames = new[] { "sheen", "LichBane", "dianaarcready", "ItemFrozenFist", "sonapassiveattack", "AkaliTwinDisciplines" };
             return sheenLikeBuffNames.Any(b => UtilityClass.Player.HasBuff(b));
@@ -75,7 +71,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets a value indicating whether a determined hero has a stackable item.
         /// </summary>
-        public static bool HasTearLikeItem(this Obj_AI_Hero unit)
+        public static bool HasTearLikeItem(this AIHeroClient unit)
         {
             return UtilityClass.TearLikeItems.Any(p => UtilityClass.Player.HasItem(p));
         }
@@ -83,19 +79,19 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets a value indicating whether a determined hero has a stackable item.
         /// </summary>
-        public static bool IsTearLikeItemReady(this Obj_AI_Hero unit)
+        public static bool IsTearLikeItemReady(this AIHeroClient unit)
         {
             if (!UtilityClass.Player.HasTearLikeItem())
             {
                 return false;
             }
 
-            var tearLikeItemSlot = UtilityClass.Player.Inventory.Slots.FirstOrDefault(s => s.SlotTaken && UtilityClass.TearLikeItems.Contains(s.ItemId));
+            var tearLikeItemSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.SlotTaken && UtilityClass.TearLikeItems.Contains(s.ItemId));
             if (tearLikeItemSlot != null)
             {
                 var tearLikeItemSpellSlot = tearLikeItemSlot.SpellSlot;
                 if (tearLikeItemSpellSlot != SpellSlot.Unknown &&
-                    !UtilityClass.Player.SpellBook.GetSpell(tearLikeItemSpellSlot).State.HasFlag(SpellState.Cooldown))
+                    !UtilityClass.Player.Spellbook.GetSpell(tearLikeItemSpellSlot).State.HasFlag(SpellState.Cooldown))
                 {
                     return true;
                 }
@@ -125,9 +121,9 @@ namespace AIO.Utilities
         /// <summary>
         ///     Returns true if a determined hero is a zombie.
         /// </summary>
-        public static bool IsZombie(this Obj_AI_Hero hero)
+        public static bool IsZombie(this AIHeroClient hero)
         {
-            switch (hero.ChampionName)
+            switch (hero.CharName)
             {
                 case "Sion":
                     return hero.HasBuff("sionpassivezombie");
@@ -139,36 +135,36 @@ namespace AIO.Utilities
         /// <summary>
         ///     Returns true if a the player is being grabbed by an enemy unit.
         /// </summary>
-        public static bool IsBeingGrabbed(this Obj_AI_Hero hero)
+        public static bool IsBeingGrabbed(this AIHeroClient hero)
         {
             var grabsBuffs = new[] {"ThreshQ", "rocketgrab2"};
-            return hero.ValidActiveBuffs().Any(b => grabsBuffs.Contains(b.Name));
+            return hero.GetActiveBuffs().Any(b => grabsBuffs.Contains(b.Name));
         }
 
         /// <summary>
         ///     Returns true if a the player is being grabbed by an enemy unit.
         /// </summary>
-        public static bool HasImmobileBuff(this Obj_AI_Hero hero)
+        public static bool HasImmobileBuff(this AIHeroClient hero)
         {
             // Objects: Guardian Angel..
-            var immobileObjectLinked = ObjectManager.Get<GameObject>().FirstOrDefault(t => t.IsValid && t.Name == "LifeAura.troy");
+            var immobileObjectLinked = ObjectCache.AllGameObjects.FirstOrDefault(t => t.IsValid && t.Name == "LifeAura.troy");
             if (immobileObjectLinked != null &&
-                ObjectManager.Get<Obj_AI_Hero>().MinBy(t => t.Distance(immobileObjectLinked)) == hero)
+                ObjectCache.EnemyHeroes.MinBy(t => t.Distance(immobileObjectLinked)) == hero)
             {
                 return true;
             }
 
             // Minions: Zac Passive
-            if (hero.ChampionName == "Zac" &&
+            if (hero.CharName == "Zac" &&
                 !hero.ActionState.HasFlag(ActionState.CanMove) &&
-                ObjectManager.Get<Obj_AI_Minion>().Any(m => m.Team == hero.Team && m.UnitSkinName == "ZacRebirthBloblet" && m.Distance(hero) < 500))
+                ObjectCache.EnemyMinions.Any(m => m.Team == hero.Team && m.CharName == "ZacRebirthBloblet" && m.Distance(hero) < 500))
             {
                 return true;
             }
 
             // Buffs: Zilean's Chronoshift, Zhonyas, Aatrox's Blood Well, Anivia Egg,
             var immobileBuffs = new[] { "chronorevive", "zhonyasringshield", "AatroxPassiveDeath", "rebirth" };
-            if (hero.ValidActiveBuffs().Any(b => immobileBuffs.Contains(b.Name)))
+            if (hero.GetActiveBuffs().Any(b => immobileBuffs.Contains(b.Name)))
             {
                 return true;
             }
@@ -180,7 +176,7 @@ namespace AIO.Utilities
         ///     Returns true if a determined buff is a Hard CC Buff.
         /// </summary>
         // ReSharper disable once InconsistentNaming
-        public static bool IsHardCC(this Buff buff)
+        public static bool IsHardCC(this BuffInstance buff)
         {
             // ReSharper disable once InconsistentNaming
             var hardCCList = new List<BuffType>
@@ -203,9 +199,9 @@ namespace AIO.Utilities
         /// </summary>
         /// <param name="unit">The hero.</param>
         /// <param name="minTime">The minimum time remaining for the CC to trigger this function.</param>
-        public static bool IsImmobile(this Obj_AI_Base unit, double minTime)
+        public static bool IsImmobile(this AIBaseClient unit, double minTime)
         {
-            var hero = unit as Obj_AI_Hero;
+            var hero = unit as AIHeroClient;
             if (hero != null &&
                 hero.HasImmobileBuff())
             {
@@ -220,7 +216,7 @@ namespace AIO.Utilities
                 return false;
             }
 
-            return unit.ValidActiveBuffs().Any(b =>
+            return unit.GetActiveBuffs().Any(b =>
                 b.IsHardCC() &&
                 b.GetRemainingBuffTime() >= minTime);
         }
@@ -228,7 +224,7 @@ namespace AIO.Utilities
         /// <returns>
         ///     true if the sender is a hero, a turret or an important jungle monster; otherwise, false.
         /// </returns>
-        public static bool ShouldShieldAgainstSender(Obj_AI_Base sender)
+        public static bool ShouldShieldAgainstSender(AIBaseClient sender)
         {
             return
                 GameObjects.EnemyHeroes.Contains(sender) ||
@@ -241,7 +237,7 @@ namespace AIO.Utilities
         /// </summary>
         /// <param name="hero">The Hero</param>
         /// <returns>Is Hero in fountain range</returns>
-        public static bool InFountain(this Obj_AI_Hero hero)
+        public static bool InFountain(this AIHeroClient hero)
         {
             var heroTeam = hero.Team == GameObjectTeam.Order ? "Order" : "Chaos";
             var fountainTurret = ObjectManager.Get<GameObject>().FirstOrDefault(o => o.IsValid && o.Name == "Turret_" + heroTeam + "TurretShrine");

@@ -1,6 +1,4 @@
-﻿
-using Entropy.SDK.Events;
-using Entropy.SDK.Util;
+﻿using Entropy.SDK.Utils;
 
 #pragma warning disable 1587
 namespace AIO

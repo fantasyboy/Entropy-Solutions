@@ -2,8 +2,10 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,10 +21,10 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
-            SpellClass.E.Range = UtilityClass.Player.AttackRange;
-            SpellClass.R.Range = UtilityClass.Player.AttackRange;
+            SpellClass.E.Range = UtilityClass.Player.GetAutoAttackRange();
+            SpellClass.R.Range = UtilityClass.Player.GetAutoAttackRange();
 
             /// <summary>
             ///     The Anti-Grab Logic.
@@ -36,7 +38,7 @@ namespace AIO.Champions
                     .MinBy(t => t.Distance(UtilityClass.Player));
                 if (firstTower != null)
                 {
-                    SpellClass.W.Cast(UtilityClass.Player.ServerPosition.Extend(firstTower.ServerPosition, SpellClass.W.Range));
+                    SpellClass.W.Cast(UtilityClass.Player.Position.Extend(firstTower.Position, SpellClass.W.Range));
                 }
             }
 
@@ -53,7 +55,7 @@ namespace AIO.Champions
                     .MinBy(o => o.Distance(UtilityClass.Player));
                 if (bestTarget != null)
                 {
-                    UtilityClass.CastOnUnit(SpellClass.R, bestTarget);
+                    SpellClass.R.CastOnUnit(bestTarget);
                 }
             }
         }

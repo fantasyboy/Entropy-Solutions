@@ -4,8 +4,10 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -21,7 +23,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q Combo Logic.
@@ -34,7 +36,7 @@ namespace AIO.Champions
                     !heroTarget.HasBuff("AkaliMota") &&
                     !Invulnerable.Check(heroTarget, DamageType.Magical))
                 {
-                    UtilityClass.CastOnUnit(SpellClass.Q, heroTarget);
+                    SpellClass.Q.CastOnUnit(heroTarget);
                 }
             }
 
@@ -44,11 +46,11 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
             {
-                var heroTarget = Extensions.GetBestEnemyHeroTargetInRange(UtilityClass.Player.AttackRange + SpellClass.W.Range);
+                var heroTarget = Extensions.GetBestEnemyHeroTargetInRange(UtilityClass.Player.GetAutoAttackRange() + SpellClass.W.Range);
                 if (heroTarget != null &&
                     !Invulnerable.Check(heroTarget))
                 {
-                    SpellClass.W.Cast(UtilityClass.Player.ServerPosition.Extend(heroTarget.ServerPosition, SpellClass.W.Range));
+                    SpellClass.W.Cast(UtilityClass.Player.Position.Extend(heroTarget.Position, SpellClass.W.Range));
                 }
             }
 
@@ -63,7 +65,7 @@ namespace AIO.Champions
                 {
                     heroTarget = Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R.Range).FirstOrDefault(t => t.HasBuff("AkaliMota"));
                 }
-                else if (!heroTarget.IsValidTarget(UtilityClass.Player.AttackRange + SpellClass.W.Range))
+                else if (!heroTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange() + SpellClass.W.Range))
                 {
                     heroTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.R.Range * 2);
                 }
@@ -88,7 +90,7 @@ namespace AIO.Champions
                 if (heroTarget.IsValidTarget(SpellClass.R.Range) &&
                     MenuClass.Spells["r"]["combo"].As<MenuBool>().Enabled)
                 {
-                    if (heroTarget.IsValidTarget(UtilityClass.Player.GetFullAttackRange(heroTarget)) &&
+                    if (heroTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(heroTarget)) &&
                         MenuClass.Spells["r"]["customization"]["noraarange"].As<MenuBool>().Enabled)
                     {
                         return;
@@ -106,9 +108,9 @@ namespace AIO.Champions
                         return;
                     }
 
-                    if (MenuClass.Spells["r"]["whitelist"][heroTarget.ChampionName.ToLower()].Enabled)
+                    if (MenuClass.Spells["r"]["whitelist"][heroTarget.CharName.ToLower()].Enabled)
                     {
-                        UtilityClass.CastOnUnit(SpellClass.R, heroTarget);
+                        SpellClass.R.CastOnUnit(heroTarget);
                     }
                 }
                 else
@@ -121,7 +123,7 @@ namespace AIO.Champions
                     }
 
                     var bestEnemy = Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R.Range * 2)
-                        .FirstOrDefault(t => MenuClass.Spells["r"]["whitelist"][t.ChampionName.ToLower()].Enabled);
+                        .FirstOrDefault(t => MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].Enabled);
                     if (bestEnemy != null)
                     {
                         var bestMinion = Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.R.Range)
@@ -130,7 +132,7 @@ namespace AIO.Champions
 
                         if (bestMinion != null)
                         {
-                            UtilityClass.CastOnUnit(SpellClass.R, bestMinion);
+                            SpellClass.R.CastOnUnit(bestMinion);
                         }
                     }
                 }

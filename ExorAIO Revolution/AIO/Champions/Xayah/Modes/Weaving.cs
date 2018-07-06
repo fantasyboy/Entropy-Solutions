@@ -1,9 +1,7 @@
-
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,11 +17,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void Weaving(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void Weaving(OnPreAttackEventArgs args)
         {
-            var heroTarget = args.Target as Obj_AI_Hero;
+            var heroTarget = args.Target as AIHeroClient;
             if (heroTarget == null)
             {
                 return;

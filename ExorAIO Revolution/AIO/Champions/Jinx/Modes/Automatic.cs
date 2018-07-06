@@ -3,9 +3,11 @@ using System;
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -21,9 +23,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
-            SpellClass.Q2.Range = SpellClass.Q.Range + 50f + 25f * SpellClass.Q.Level;
+            SpellClass.Q2.Range = SpellClass.Q.Range + 50f + 25f * SpellClass.Q.Level();
 
             if (UtilityClass.Player.IsRecalling())
             {
@@ -53,7 +55,7 @@ namespace AIO.Champions
                     t.IsImmobile(SpellClass.E.Delay) &&
                     t.Distance(UtilityClass.Player) <= SpellClass.E.Range))
                 {
-                    SpellClass.E.Cast(target.ServerPosition);
+                    SpellClass.E.Cast(target.Position);
                 }
             }
 
@@ -63,12 +65,12 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.Spells["e"]["teleport"].As<MenuBool>().Enabled)
             {
-                foreach (var minion in ObjectManager.Get<Obj_AI_Minion>().Where(m =>
-                        m.IsEnemy &&
+                foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
+                        m.IsEnemy()() &&
                         m.Distance(UtilityClass.Player) <= SpellClass.E.Range &&
-                        m.ValidActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
+                        m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
                 {
-                    SpellClass.E.Cast(minion.ServerPosition);
+                    SpellClass.E.Cast(minion.Position);
                 }
             }
 
@@ -83,7 +85,7 @@ namespace AIO.Champions
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Spells["r"]["whitelist"][t.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
                     .MinBy(o => o.GetRealHealth());
                 if (bestTarget != null)
                 {

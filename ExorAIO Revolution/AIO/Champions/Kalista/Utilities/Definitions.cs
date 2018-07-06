@@ -3,10 +3,9 @@
 using System;
 using System.Collections.Generic;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -22,7 +21,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Gets or sets the SoulBound.
         /// </summary>
-        public Obj_AI_Hero SoulBound;
+        public AIHeroClient SoulBound;
 
         /// <summary>
         ///     Gets all the Offensive R Logics.
@@ -56,7 +55,7 @@ namespace AIO.Champions
         ///     Gets the total rend damage on a determined unit.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public double GetTotalRendDamage(Obj_AI_Base unit)
+        public double GetTotalRendDamage(AIBaseClient unit)
         {
             var player = UtilityClass.Player;
             return player.GetSpellDamage(unit, SpellSlot.E) +
@@ -67,13 +66,13 @@ namespace AIO.Champions
         ///     Returns true if the target is a perfectly valid rend target.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsPerfectRendTarget(Obj_AI_Base unit)
+        public bool IsPerfectRendTarget(AIBaseClient unit)
         {
             var spellRange = SpellClass.E.Range;
-            var orbTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as Obj_AI_Hero;
+            var orbTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIHeroClient;
 
             if (orbTarget != null &&
-                orbTarget.NetworkId != unit.NetworkId &&
+                orbTarget.NetworkID != unit.NetworkID &&
                 orbTarget.IsValidSpellTarget(SpellClass.E.Range))
             {
                 spellRange = SpellClass.Q.Range;
@@ -82,13 +81,13 @@ namespace AIO.Champions
             if (unit.IsValidSpellTarget(spellRange) &&
                 unit.HasBuff("kalistaexpungemarker"))
             {
-                switch (unit.Type)
+                switch (unit.Type.TypeID)
                 {
-                    case GameObjectType.obj_AI_Minion:
+                    case GameObjectTypeID.AIMinionClient:
                         return true;
 
-                    case GameObjectType.obj_AI_Hero:
-                        var heroUnit = (Obj_AI_Hero)unit;
+                    case GameObjectTypeID.AIHeroClient:
+                        var heroUnit = (AIHeroClient)unit;
                         return !Invulnerable.Check(heroUnit);
                 }
             }

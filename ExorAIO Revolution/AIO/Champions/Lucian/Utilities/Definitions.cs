@@ -1,9 +1,9 @@
 ﻿// ReSharper disable ArrangeMethodOrOperatorBody
 
-
-using Entropy;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -28,11 +28,11 @@ namespace AIO.Champions
         ///     The Q Rectangle.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public Vector2Geometry.Rectangle QRectangle(Obj_AI_Base unit)
+        public Vector2Geometry.Rectangle QRectangle(AIBaseClient unit)
         {
             return new Vector2Geometry.Rectangle(
-                (Vector2)UtilityClass.Player.ServerPosition,
-                (Vector2)UtilityClass.Player.ServerPosition.Extend(unit.ServerPosition, SpellClass.Q2.Range - 100f),
+                (Vector2)UtilityClass.Player.Position,
+                (Vector2)UtilityClass.Player.Position.Extend(unit.Position, SpellClass.Q2.Range - 100f),
                 SpellClass.Q2.Width);
         }
 

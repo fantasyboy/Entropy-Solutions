@@ -1,9 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The R Combo Logic.
@@ -27,7 +27,7 @@ namespace AIO.Champions
             if (SpellClass.R.Ready &&
                 MenuClass.Spells["r"]["combo"].As<MenuBool>().Enabled)
             {
-                switch (UtilityClass.Player.SpellBook.GetSpell(SpellSlot.R).ToggleState)
+                switch (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.R).ToggleState)
                 {
                     case 1 when GlacialStorm == null:
                         var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.R.Range);
@@ -65,7 +65,7 @@ namespace AIO.Champions
                 {
                     var targetPos = SpellClass.W.GetPrediction(bestTarget).CastPosition;
                     var castPosition =
-                        UtilityClass.Player.ServerPosition.Extend(
+                        UtilityClass.Player.Position.Extend(
                             targetPos,
                             UtilityClass.Player.Distance(targetPos) + bestTarget.BoundingRadius*2);
                     if (UtilityClass.Player.Distance(castPosition) <= SpellClass.W.Range)
@@ -81,7 +81,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
             {
-                switch (UtilityClass.Player.SpellBook.GetSpell(SpellSlot.Q).ToggleState)
+                switch (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.Q).ToggleState)
                 {
                     case 1 when FlashFrost == null:
                         var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
@@ -115,10 +115,10 @@ namespace AIO.Champions
                     switch (MenuClass.Spells["e"]["modes"]["combo"].As<MenuList>().Value)
                     {
                         case 0 when IsChilled(bestTarget):
-                            UtilityClass.CastOnUnit(SpellClass.E, bestTarget);
+                            SpellClass.E.CastOnUnit(bestTarget);
                             break;
                         case 1:
-                            UtilityClass.CastOnUnit(SpellClass.E, bestTarget);
+                            SpellClass.E.CastOnUnit(bestTarget);
                             break;
                     }
                 }

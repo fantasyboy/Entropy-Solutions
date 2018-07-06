@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
+using Aimtec;
+using Aimtec.SDK.Menu.Components;
 
 namespace NabbTracker
 {
@@ -22,7 +21,7 @@ namespace NabbTracker
                 !t.IsDead &&
                 t.IsVisible))
             {
-                if (tower.IsEnemy &&
+                if (tower.IsEnemy()() &&
                     !MenuClass.TowerRangeTracker["enemies"].As<MenuBool>().Enabled)
                 {
                     continue;
@@ -35,7 +34,7 @@ namespace NabbTracker
                 }
 
                 var towerAutoAttackRange = 775f + tower.BoundingRadius + UtilityClass.Player.BoundingRadius - 10f;
-                Render.Circle(tower.ServerPosition, towerAutoAttackRange, 30, tower.IsEnemy && UtilityClass.Player.Distance(tower) <= towerAutoAttackRange
+                Render.Circle(tower.Position, towerAutoAttackRange, 30, tower.IsEnemy()() && UtilityClass.Player.Distance(tower) <= towerAutoAttackRange
                     ? Colors.GetRealColor(Color.Red)
                     : Colors.GetRealColor(Color.LightGreen));
             }

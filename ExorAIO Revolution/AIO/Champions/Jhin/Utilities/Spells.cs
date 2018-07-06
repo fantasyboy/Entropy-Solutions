@@ -1,6 +1,6 @@
 using Entropy;
-using Entropy.SDK.Prediction.Skillshots;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
 using Spell = Entropy.SDK.Spell;
 
 namespace AIO.Champions

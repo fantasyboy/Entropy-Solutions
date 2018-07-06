@@ -1,10 +1,10 @@
-
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Util;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using Entropy.SDK.Utils;
 
 #pragma warning disable 1587
 
@@ -20,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
             /// <summary>
             ///     Block Special AoE.
@@ -37,7 +37,7 @@ namespace AIO.Champions
                         {
                             if (getBuff.GetRemainingBuffTime() <= 350 &&
                                 target.Distance(UtilityClass.Player) < 300 + UtilityClass.Player.BoundingRadius &&
-                                MenuClass.Spells["e"]["whitelist"][$"{target.ChampionName.ToLower()}.{buff.ToLower()}"].As<MenuBool>().Enabled)
+                                MenuClass.Spells["e"]["whitelist"][$"{target.CharName.ToLower()}.{buff.ToLower()}"].As<MenuBool>().Enabled)
                             {
                                 SpellClass.E.Cast();
                             }
@@ -51,42 +51,42 @@ namespace AIO.Champions
         /// <summary>
         ///     Called while processing Spellcasting operations.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="Obj_AI_BaseMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void Shield(Obj_AI_Base sender, Obj_AI_BaseMissileClientDataEventArgs args)
+        
+        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
+        public void Shield(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
         {
-            if (sender == null || !sender.IsEnemy)
+            if (sender == null || !sender.IsEnemy()())
             {
                 return;
             }
 
             switch (sender.Type)
             {
-                case GameObjectType.obj_AI_Hero:
+                case GameObjectType.AIHeroClient:
                     if (Invulnerable.Check(UtilityClass.Player, DamageType.Magical, false))
                     {
                         return;
                     }
 
-                    var hero = sender as Obj_AI_Hero;
+                    var hero = sender as AIHeroClient;
                     if (hero != null)
                     {
                         /// <summary>
                         ///     Block Gangplank's Barrels.
                         /// </summary>
-                        if (hero.ChampionName.Equals("Gangplank"))
+                        if (hero.CharName.Equals("Gangplank"))
                         {
-                            if (!(args.Target is Obj_AI_Minion))
+                            if (!(args.Target is AIMinionClient))
                             {
                                 return;
                             }
 
                             if (Bools.IsAutoAttack(args.SpellData.Name) || args.SpellData.Name.Equals("GangplankQProceed"))
                             {
-                                var target = (Obj_AI_Minion)args.Target;
+                                var target = (AIMinionClient)args.Target;
                                 if ((int)target.GetRealHealth() <= 2 &&
                                     target.Distance(UtilityClass.Player) <= 450 &&
-                                    target.UnitSkinName.Equals("gangplankbarrel"))
+                                    target.CharName.Equals("gangplankbarrel"))
                                 {
                                     SpellClass.E.Cast();
                                     return;
@@ -94,9 +94,9 @@ namespace AIO.Champions
                             }
                         }
 
-                        var spellMenu = MenuClass.Spells["e"]["whitelist"][$"{hero.ChampionName.ToLower()}.{args.SpellData.Name.ToLower()}"];
+                        var spellMenu = MenuClass.Spells["e"]["whitelist"][$"{hero.CharName.ToLower()}.{args.SpellData.Name.ToLower()}"];
                         if (args.Target != null &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
                             /// <summary>
                             ///     Check for Special On-Hit CC AutoAttacks.
@@ -112,7 +112,7 @@ namespace AIO.Champions
                                     case "NautilusRavageStrikeAttack":
                                         if (spellMenu != null &&
                                             spellMenu.As<MenuBool>().Value &&
-                                            (!hero.ChampionName.Equals("Udyr") || !UtilityClass.Player.HasBuff("udyrbearstuncheck")))
+                                            (!hero.CharName.Equals("Udyr") || !UtilityClass.Player.HasBuff("udyrbearstuncheck")))
                                         {
                                             SpellClass.E.Cast();
                                         }
@@ -122,9 +122,9 @@ namespace AIO.Champions
                                 /// <summary>
                                 ///     Check for Melee AutoAttack Resets.
                                 /// </summary>
-                                var getReset = hero.ValidActiveBuffs().FirstOrDefault(b => ImplementationClass.IOrbwalker.IsReset(b.Name));
+                                var getReset = hero.GetActiveBuffs().FirstOrDefault(b => ImplementationClass.IOrbwalker.IsReset(b.Name));
                                 var resetMenu = getReset != null
-                                                    ? MenuClass.Spells["e"]["whitelist"][$"{hero.ChampionName.ToLower()}.{getReset.Name.ToLower()}"]
+                                                    ? MenuClass.Spells["e"]["whitelist"][$"{hero.CharName.ToLower()}.{getReset.Name.ToLower()}"]
                                                     : null;
                                 if (resetMenu != null &&
                                     resetMenu.As<MenuBool>().Value)
@@ -162,10 +162,10 @@ namespace AIO.Champions
                                 /// </summary>
                                 case SpellType.Targeted:
                                 case SpellType.TargetedMissile:
-                                    if (args.Target != null && args.Target.IsMe)
+                                    if (args.Target != null && args.Target.IsMe())
                                     {
                                         var delay = MenuClass.Spells["e"]["logical"].As<MenuSliderBool>().Value;
-                                        switch (hero.ChampionName)
+                                        switch (hero.CharName)
                                         {
                                             case "Caitlyn":
                                                 delay = 1050;
@@ -192,7 +192,7 @@ namespace AIO.Champions
                                 ///     Check for AoE Spells.
                                 /// </summary>
                                 case SpellType.SkillshotCircle:
-                                    switch (hero.ChampionName)
+                                    switch (hero.CharName)
                                     {
                                         case "Alistar":
                                             if (hero.Distance(UtilityClass.Player) <= 300 + UtilityClass.Player.BoundingRadius)
@@ -207,13 +207,13 @@ namespace AIO.Champions
                     }
                     break;
 
-                case GameObjectType.obj_AI_Minion:
+                case GameObjectType.AIMinionClient:
                     /// <summary>
                     ///     Block Dragon/Baron/RiftHerald's AutoAttacks.
                     /// </summary>
                     if (args.Target != null &&
-                        args.Target.IsMe &&
-                        sender.UnitSkinName.Contains("SRU_Dragon") &&
+                        args.Target.IsMe() &&
+                        sender.CharName.Contains("SRU_Dragon") &&
                         MenuClass.Spells["e"]["whitelist"]["minions"].As<MenuBool>().Value)
                     {
                         SpellClass.E.Cast();

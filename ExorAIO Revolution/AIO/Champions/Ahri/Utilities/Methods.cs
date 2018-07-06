@@ -17,7 +17,7 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             Render.OnPresent += OnPresent;
-            Obj_AI_Base.OnPerformCast += OnPerformCast;
+            AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Gapcloser.OnGapcloser += OnGapcloser;
         }
 

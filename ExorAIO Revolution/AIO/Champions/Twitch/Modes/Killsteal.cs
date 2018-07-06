@@ -1,7 +1,7 @@
 
 using System.Linq;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -17,14 +17,14 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
         }
 
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void ExpungeKillsteal()
+        public void ExpungeKillsteal(args)
         {
             /// <summary>
             ///     The KillSteal E Logic.

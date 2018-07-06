@@ -1,9 +1,11 @@
 
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -19,33 +21,33 @@ namespace AIO.Champions
         /// <summary>
         ///     The E Combo Logic.
         /// </summary>
-        public void ELogic(Obj_AI_Hero target)
+        public void ELogic(AIHeroClient target)
         {
-            if (UtilityClass.Player.Distance(Game.CursorPos) <= UtilityClass.Player.AttackRange &&
+            if (UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) <= UtilityClass.Player.GetAutoAttackRange() &&
                 MenuClass.Spells["e"]["customization"]["onlyeifmouseoutaarange"].As<MenuBool>().Enabled)
             {
                 return;
             }
 
-            var posAfterE = UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, 300f);
+            var posAfterE = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
             var eRangeCheck = MenuClass.Spells["e"]["customization"]["erangecheck"];
             if (eRangeCheck != null)
             {
                 if (eRangeCheck.As<MenuSliderBool>().Enabled &&
-                    posAfterE.CountEnemyHeroesInRange(UtilityClass.Player.AttackRange + UtilityClass.Player.BoundingRadius) >= eRangeCheck.As<MenuSliderBool>().Value)
+                    posAfterE.CountEnemyHeroesInRange(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= eRangeCheck.As<MenuSliderBool>().Value)
                 {
                     return;
                 }
             }
 
             if (posAfterE.Distance(target) >
-                    UtilityClass.Player.GetFullAttackRange(target) &&
+                    UtilityClass.Player.GetAutoAttackRange(target) &&
                 MenuClass.Spells["e"]["customization"]["noeoutaarange"].As<MenuBool>().Enabled)
             {
                 return;
             }
 
-            if (posAfterE.PointUnderEnemyTurret() &&
+            if (posAfterE.IsUnderEnemyTurret() &&
                 MenuClass.Spells["e"]["customization"]["noeturret"].As<MenuBool>().Enabled)
             {
                 return;
@@ -56,24 +58,24 @@ namespace AIO.Champions
                 case 0:
                     Vector3 point;
                     if (UtilityClass.Player.IsUnderEnemyTurret() ||
-                        UtilityClass.Player.Distance(Game.CursorPos) < UtilityClass.Player.AttackRange)
+                        UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) < UtilityClass.Player.GetAutoAttackRange())
                     {
-                        point = UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, UtilityClass.Player.BoundingRadius);
+                        point = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, UtilityClass.Player.BoundingRadius);
                     }
                     else
                     {
-                        point = UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, 475f);
+                        point = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 475f);
                     }
 
                     SpellClass.E.Cast(point);
                     return;
 
                 case 1:
-                    SpellClass.E.Cast(UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, 425f));
+                    SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 425f));
                     return;
 
                 case 2:
-                    SpellClass.E.Cast(UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, UtilityClass.Player.BoundingRadius));
+                    SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, UtilityClass.Player.BoundingRadius));
                     return;
             }
         }
@@ -81,11 +83,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Weaving(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Weaving(OnPostAttackEventArgs args)
         {
-            var heroTarget = args.Target as Obj_AI_Hero;
+            var heroTarget = args.Target as AIHeroClient;
             if (heroTarget == null)
             {
                 return;
@@ -113,7 +115,7 @@ namespace AIO.Champions
                     if (SpellClass.Q.Ready &&
                         MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
                     {
-                        UtilityClass.CastOnUnit(SpellClass.Q, heroTarget);
+                        SpellClass.Q.CastOnUnit(heroTarget);
                         return;
                     }
                     break;
@@ -140,7 +142,7 @@ namespace AIO.Champions
                     if (SpellClass.Q.Ready &&
                         MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
                     {
-                        UtilityClass.CastOnUnit(SpellClass.Q, heroTarget);
+                        SpellClass.Q.CastOnUnit(heroTarget);
                         return;
                     }
                     break;
@@ -193,7 +195,7 @@ namespace AIO.Champions
                     if (SpellClass.Q.Ready &&
                         MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
                     {
-                        UtilityClass.CastOnUnit(SpellClass.Q, heroTarget);
+                        SpellClass.Q.CastOnUnit(heroTarget);
                     }
                     break;
             }

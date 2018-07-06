@@ -2,11 +2,13 @@
 using System;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO
@@ -21,9 +23,9 @@ namespace AIO
         /// <summary>
         ///     Called on postattack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public static void OnPostAttack(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        private static void OnPostAttack(OnPostAttackEventArgs args)
         {
             if (!UtilityClass.Player.IsMelee || args.Target.IsBuilding())
             {
@@ -33,7 +35,7 @@ namespace AIO
             var hydraItems = new[] { ItemId.TitanicHydra, ItemId.RavenousHydra, ItemId.Tiamat };
             if (MenuClass.Hydra != null)
             {
-                var hydraSlot = UtilityClass.Player.Inventory.Slots.FirstOrDefault(s => s.SlotTaken && hydraItems.Contains(s.ItemId));
+                var hydraSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.SlotTaken && hydraItems.Contains(s.ItemId));
                 if (hydraSlot != null)
                 {
                     switch (ImplementationClass.IOrbwalker.Mode)
@@ -44,19 +46,19 @@ namespace AIO
                                 return;
                             }
                             break;
-                        case OrbwalkingMode.Mixed:
+                        case OrbwalkingMode.Harass:
                             if (!MenuClass.Hydra["mixed"].As<MenuBool>().Enabled)
                             {
                                 return;
                             }
                             break;
-                        case OrbwalkingMode.Laneclear:
+                        case OrbwalkingMode.LaneClear:
                             if (!MenuClass.Hydra["laneclear"].As<MenuBool>().Enabled)
                             {
                                 return;
                             }
                             break;
-                        case OrbwalkingMode.Lasthit:
+                        case OrbwalkingMode.LastHit:
                             if (!MenuClass.Hydra["lasthit"].As<MenuBool>().Enabled)
                             {
                                 return;
@@ -72,9 +74,9 @@ namespace AIO
 
                     var hydraSpellSlot = hydraSlot.SpellSlot;
                     if (hydraSpellSlot != SpellSlot.Unknown &&
-                        UtilityClass.Player.SpellBook.GetSpell(hydraSpellSlot).State.HasFlag(SpellState.Ready))
+                        UtilityClass.Player.Spellbook.GetSpell(hydraSpellSlot).State.HasFlag(SpellState.Ready))
                     {
-                        UtilityClass.Player.SpellBook.CastSpell(hydraSpellSlot);
+                        UtilityClass.Player.Spellbook.CastSpell(hydraSpellSlot);
                     }
                 }
             }
@@ -83,9 +85,9 @@ namespace AIO
         /// <summary>
         ///     Called on preattack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public static void OnPreAttack(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public static void OnPreAttack(OnPreAttackEventArgs args)
         {
             switch (ImplementationClass.IOrbwalker.Mode)
             {
@@ -94,7 +96,7 @@ namespace AIO
                 /// </summary>
                 case OrbwalkingMode.Combo:
                     if (!UtilityClass.Player.HasSheenLikeBuff() &&
-                        UtilityClass.Player.Level >=
+                        UtilityClass.Player.Level() >=
                                 MenuClass.General["disableaa"].As<MenuSliderBool>().Value &&
                         MenuClass.General["disableaa"].As<MenuSliderBool>().Enabled)
                     {
@@ -105,13 +107,13 @@ namespace AIO
                 /// <summary>
                 ///     The 'Support Mode' Logic.
                 /// </summary>
-                case OrbwalkingMode.Mixed:
-                case OrbwalkingMode.Lasthit:
-                case OrbwalkingMode.Laneclear:
+                case OrbwalkingMode.Harass:
+                case OrbwalkingMode.LastHit:
+                case OrbwalkingMode.LaneClear:
                     if (Extensions.GetEnemyLaneMinionsTargets().Contains(args.Target) &&
                         MenuClass.General["supportmode"].As<MenuBool>().Enabled)
                     {
-                        args.Cancel = GameObjects.AllyHeroes.Any(a => !a.IsMe && a.Distance(UtilityClass.Player) < 2500);
+                        args.Cancel = GameObjects.AllyHeroes.Any(a => !a.IsMe() && a.Distance(UtilityClass.Player) < 2500);
                     }
                     break;
             }
@@ -121,7 +123,7 @@ namespace AIO
                 return;
             }
 
-            var stormrazorSlot = UtilityClass.Player.Inventory.Slots.FirstOrDefault(s => s.SlotTaken && s.ItemId == ItemId.Stormrazor);
+            var stormrazorSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.IsValid /*&& s.ItemID == ItemId.Stormrazor*/); //Todo: find stormrazor itemid
             if (stormrazorSlot != null)
             {
                 switch (ImplementationClass.IOrbwalker.Mode)
@@ -132,19 +134,19 @@ namespace AIO
                             return;
                         }
                         break;
-                    case OrbwalkingMode.Mixed:
+                    case OrbwalkingMode.Harass:
                         if (!MenuClass.Stormrazor["mixed"].As<MenuBool>().Enabled)
                         {
                             return;
                         }
                         break;
-                    case OrbwalkingMode.Laneclear:
+                    case OrbwalkingMode.LaneClear:
                         if (!MenuClass.Stormrazor["laneclear"].As<MenuBool>().Enabled)
                         {
                             return;
                         }
                         break;
-                    case OrbwalkingMode.Lasthit:
+                    case OrbwalkingMode.LastHit:
                         if (!MenuClass.Stormrazor["lasthit"].As<MenuBool>().Enabled)
                         {
                             return;
@@ -159,25 +161,23 @@ namespace AIO
             }
         }
 
-        /// <summary>
-        ///     Fired on spell cast.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="SpellBookCastSpellEventArgs" /> instance containing the event data.</param>
-        public static void OnCastSpell(Obj_AI_Base sender, SpellBookCastSpellEventArgs args)
+		/// <summary>
+		///     Fired on spell cast.
+		/// </summary>
+
+		/// <param name="args">The <see cref="SpellbookLocalCastSpellEventArgs" /> instance containing the event data.</param>
+		public static void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
             var slot = args.Slot;
-
-            if (sender.IsMe &&
-                UtilityClass.SpellSlots.Contains(slot))
+            if (UtilityClass.SpellSlots.Contains(slot))
             {
                 /// <summary>
                 ///     The 'Preserve Mana' Logic.
                 /// </summary>
-                var championSpellManaCosts = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.ChampionName).Value;
+                var championSpellManaCosts = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName).Value;
                 if (championSpellManaCosts != null)
                 {
-                    var spellBook = UtilityClass.Player.SpellBook;
+                    var spellBook = UtilityClass.Player.Spellbook;
                     var data = UtilityClass.PreserveManaData;
 
                     var spell = spellBook.GetSpell(slot);
@@ -185,7 +185,7 @@ namespace AIO
                     if (menuOption != null && menuOption.As<MenuBool>().Enabled)
                     {
                         var registeredSpellData = data.FirstOrDefault(d => d.Key == slot).Value;
-                        var actualSpellData = championSpellManaCosts[slot][spell.Level - 1];
+                        var actualSpellData = championSpellManaCosts[slot][spell.Level() - 1];
 
                         if (data.ContainsKey(slot) &&
                             registeredSpellData != actualSpellData)
@@ -194,8 +194,7 @@ namespace AIO
                             Console.WriteLine($"Preserve Mana List: Removed {slot} (Updated ManaCost).");
                         }
 
-                        if (!data.ContainsKey(slot) &&
-                            !spell.State.HasFlag(SpellState.NotLearned))
+                        if (!data.ContainsKey(slot) && spell.Level() > 0)
                         {
                             data.Add(slot, actualSpellData);
                             Console.WriteLine($"Preserve Mana List: Added {slot}, Cost: {actualSpellData}.");
@@ -219,12 +218,12 @@ namespace AIO
                     }
 
                     var spellCost =
-                        championSpellManaCosts[slot][UtilityClass.Player.GetSpell(slot).Level - 1];
-                    var mana = UtilityClass.Player.Mana;
+                        championSpellManaCosts[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level() - 1];
+                    var mana = UtilityClass.Player.MP;
                     if (!data.Keys.Contains(slot) && mana - spellCost < sum)
                     {
                         Console.WriteLine($"Preserve Mana List: Denied Spell {slot} Usage (Mana: {mana}, Cost: {spellCost}), Preserve Mana Quantity: {sum}");
-                        args.Process = false;
+                        args.Execute = false;
                     }
                 }
 
@@ -234,15 +233,15 @@ namespace AIO
                 switch (ImplementationClass.IOrbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
-                    case OrbwalkingMode.Mixed:
-                        var target = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as Obj_AI_Hero;
+                    case OrbwalkingMode.Harass:
+                        var target = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIHeroClient;
                         if (target != null)
                         {
                             if (target.GetRealHealth() <=
                                     UtilityClass.Player.GetAutoAttackDamage(target) *
                                     MenuClass.PreserveSpells[args.Slot.ToString().ToLower()].As<MenuSlider>().Value)
                             {
-                                args.Process = false;
+                                args.Execute = false;
                             }
                         }
                         break;

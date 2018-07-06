@@ -1,9 +1,8 @@
 
 using System.Linq;
-using Entropy.SDK.Menu;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Util;
 using AIO.Utilities;
+using Entropy.SDK.UI;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -54,20 +53,20 @@ namespace AIO.Champions
                         /// </summary>
                         MenuClass.Gapcloser = new Menu("gapcloser", "Anti-Gapcloser");
                         {
-                            if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.ChampionName == spell.ChampionName)))
+                            if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                             {
                                 MenuClass.Gapcloser.Add(new MenuBool("enabled", "Enable"));
                                 MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
                                 MenuClass.W.Add(MenuClass.Gapcloser);
 
-                                foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.ChampionName == spell.ChampionName)))
+                                foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                                 {
-                                    MenuClass.SubGapcloser = new Menu(enemy.ChampionName.ToLower(), enemy.ChampionName);
+                                    MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
                                     {
-                                        foreach (var spell in Gapcloser.Spells.Where(x => x.ChampionName == enemy.ChampionName))
+                                        foreach (var spell in Gapcloser.Spells.Where(x => x.ChampionName == enemy.CharName))
                                         {
                                             MenuClass.SubGapcloser.Add(new MenuBool(
-                                                $"{enemy.ChampionName.ToLower()}.{spell.SpellName.ToLower()}",
+                                                $"{enemy.CharName.ToLower()}.{spell.SpellName.ToLower()}",
                                                 $"Slot: {spell.Slot} ({spell.SpellName})"));
                                         }
                                     }
@@ -117,7 +116,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList.Add(new MenuBool(target.ChampionName.ToLower(), "Use on: " + target.ChampionName));
+                                MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(), "Use on: " + target.CharName));
                             }
                         }
                         MenuClass.E.Add(MenuClass.WhiteList);
@@ -144,20 +143,20 @@ namespace AIO.Champions
                         /// </summary>
                         MenuClass.Gapcloser2 = new Menu("gapcloser", "Anti-Gapcloser");
                         {
-                            if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.ChampionName == spell.ChampionName)))
+                            if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                             {
                                 MenuClass.Gapcloser2.Add(new MenuBool("enabled", "Enable"));
                                 MenuClass.Gapcloser2.Add(new MenuSeperator(string.Empty));
                                 MenuClass.R.Add(MenuClass.Gapcloser2);
 
-                                foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.ChampionName == spell.ChampionName)))
+                                foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                                 {
-                                    MenuClass.SubGapcloser2 = new Menu(enemy.ChampionName.ToLower(), enemy.ChampionName);
+                                    MenuClass.SubGapcloser2 = new Menu(enemy.CharName.ToLower(), enemy.CharName);
                                     {
-                                        foreach (var spell in Gapcloser.Spells.Where(x => x.ChampionName == enemy.ChampionName))
+                                        foreach (var spell in Gapcloser.Spells.Where(x => x.ChampionName == enemy.CharName))
                                         {
                                             MenuClass.SubGapcloser2.Add(new MenuBool(
-                                                $"{enemy.ChampionName.ToLower()}.{spell.SpellName.ToLower()}",
+                                                $"{enemy.CharName.ToLower()}.{spell.SpellName.ToLower()}",
                                                 $"Slot: {spell.Slot} ({spell.SpellName})"));
                                         }
                                     }
@@ -190,7 +189,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList2.Add(new MenuBool(target.ChampionName.ToLower(), "Use on: " + target.ChampionName));
+                                MenuClass.WhiteList2.Add(new MenuBool(target.CharName.ToLower(), "Use on: " + target.CharName));
                             }
                         }
                         MenuClass.R.Add(MenuClass.WhiteList2);

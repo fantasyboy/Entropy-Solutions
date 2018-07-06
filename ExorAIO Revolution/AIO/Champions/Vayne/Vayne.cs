@@ -2,10 +2,13 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Events;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -46,9 +49,8 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPostAttack(object sender, PostAttackEventArgs args)
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPostAttack(OnPostAttackEventArgs args)
         {
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -56,13 +58,13 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Weaving(sender, args);
+                    Weaving(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Lasthit(sender, args);
-                    Laneclear(sender, args);
-                    Jungleclear(sender, args);
-                    Buildingclear(sender, args);
+                case OrbwalkingMode.LaneClear:
+                    Lasthit(args);
+                    Laneclear(args);
+                    Jungleclear(args);
+                    Buildingclear(args);
                     break;
             }
         }
@@ -70,9 +72,8 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on pre attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(object sender, PreAttackEventArgs args)
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPreAttack(OnPreAttackEventArgs args)
         {
             if (!UtilityClass.Player.IsUnderEnemyTurret() &&
                 UtilityClass.Player.HasBuff("vaynetumblefade"))
@@ -92,7 +93,7 @@ namespace AIO.Champions
 
                 if (MenuClass.Miscellaneous["stealthcheck"].As<MenuSliderBool>().Enabled &&
                     GameObjects.EnemyHeroes.Count(t =>
-                        t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t))) >=
+                        t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))) >=
                     MenuClass.Miscellaneous["stealthcheck"].As<MenuSliderBool>().Value)
                 {
                     args.Cancel = true;
@@ -106,7 +107,7 @@ namespace AIO.Champions
             {
                 var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
                         t.GetBuffCount("vaynesilvereddebuff") == 2 &&
-                        t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t)));
+                        t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
                 if (forceTarget != null)
                 {
                     args.Target = forceTarget;
@@ -130,7 +131,7 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    CondemnCombo();
+                    CondemnCombo(args);
                     break;
             }
         }
@@ -138,43 +139,43 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming dash.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Dash.DashArgs" /> instance containing the event data.</param>
-        public void OnDash(object sender, Dash.DashArgs args)
+        public void OnDash(Dash.DashArgs args)
         {
-            var heroSender = args.Unit as Obj_AI_Hero;
-            if (heroSender == null || !heroSender.IsEnemy || Invulnerable.Check(heroSender, DamageType.Magical, false))
+            var heroSender = args.Sender as AIHeroClient;
+            if (heroSender == null || !heroSender.IsEnemy() || Invulnerable.Check(heroSender, DamageType.Magical, false))
             {
                 return;
             }
 
-            if (heroSender.ChampionName.Equals("Kalista"))
+            if (heroSender.CharName.Equals("Kalista"))
             {
                 return;
             }
 
-            var endPos = (Vector3)args.EndPos;
-            var playerPos = UtilityClass.Player.ServerPosition;
+            var endPos = args.EndPosition;
+            var playerPos = UtilityClass.Player.Position;
 
             if (!heroSender.IsValidTarget(SpellClass.E.Range) &&
-                endPos.Distance(playerPos) > SpellClass.E.Range)
+                endPos.Distance((Vector2)playerPos) > SpellClass.E.Range)
             {
                 return;
             }
 
             if (SpellClass.E.Ready &&
                 MenuClass.Spells["e"]["emode"].As<MenuList>().Value != 2 &&
-                MenuClass.Spells["e"]["whitelist"][heroSender.ChampionName.ToLower()].Enabled)
+                MenuClass.Spells["e"]["whitelist"][heroSender.CharName.ToLower()].Enabled)
             {
                 const int condemnPushDistance = 410;
                 for (var i = UtilityClass.Player.BoundingRadius; i < condemnPushDistance; i += 10)
                 {
-                    if (!endPos.Extend(playerPos, -i).IsWall(true))
+                    if (!endPos.Extend((Vector2)playerPos, -i).IsWall(true))
                     {
                         continue;
                     }
 
-                    UtilityClass.CastOnUnit(SpellClass.E, heroSender);
+                    SpellClass.E.CastOnUnit(heroSender);
                 }
             }
         }
@@ -182,16 +183,16 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
             {
                 return;
             }
@@ -207,7 +208,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
                 {
                     return;
@@ -216,10 +217,10 @@ namespace AIO.Champions
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe)
+                        if (args.Target.IsMe())
                         {
-                            var targetPos = UtilityClass.Player.ServerPosition.Extend(args.StartPosition, -SpellClass.Q.Range+UtilityClass.Player.AttackRange);
-                            if (targetPos.PointUnderEnemyTurret())
+                            Vector3 targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -228,13 +229,13 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        var targetPos2 = UtilityClass.Player.ServerPosition.Extend(args.EndPosition, -SpellClass.Q.Range+UtilityClass.Player.AttackRange);
-                        if (targetPos2.PointUnderEnemyTurret())
+                        Vector3 targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
 
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance((Vector2)UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.Q.Cast(targetPos2);
                         }
@@ -254,7 +255,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption2 == null || !spellOption2.As<MenuBool>().Enabled)
                 {
                     return;
@@ -263,15 +264,15 @@ namespace AIO.Champions
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe)
+                        if (args.Target.IsMe())
                         {
-                            UtilityClass.CastOnUnit(SpellClass.E, sender);
+                            SpellClass.E.CastOnUnit(sender);
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance((Vector2)UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
-                            UtilityClass.CastOnUnit(SpellClass.E, sender);
+                            SpellClass.E.CastOnUnit(sender);
                         }
                         break;
                 }
@@ -282,9 +283,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on interruptable spell.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
+        public void OnInterruptableTarget(Events.InterruptableTargetEventArgs args)
         {
             if (UtilityClass.Player.IsDead || Invulnerable.Check(args.Sender, DamageType.Magical, false))
             {
@@ -294,7 +295,7 @@ namespace AIO.Champions
             if (SpellClass.E.State == SpellState.Ready && args.Sender.IsValidTarget(SpellClass.E.SpellData.Range)
                 && MenuClass.Spells["e"]["interrupter"].As<MenuBool>().Enabled)
             {
-                UtilityClass.Player.SpellBook.CastSpell(SpellSlot.E, args.Sender);
+                UtilityClass.Player.Spellbook.CastSpell(SpellSlot.E, args.Sender);
             }
         }
         */
@@ -302,7 +303,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -312,12 +313,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -325,7 +326,7 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
             }
         }

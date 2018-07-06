@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Util.ThirdParty;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.ThirdParty;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 namespace AIO.Utilities
 {

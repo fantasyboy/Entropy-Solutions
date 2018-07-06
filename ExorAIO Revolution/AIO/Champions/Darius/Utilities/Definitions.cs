@@ -1,9 +1,8 @@
 ﻿
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -20,12 +19,12 @@ namespace AIO.Champions
         ///     Returns true if the target is a perfectly valid blade target.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsValidBladeTarget(Obj_AI_Base unit)
+        public bool IsValidBladeTarget(AIBaseClient unit)
         {
             var unitDistanceToPlayer = unit.Distance(UtilityClass.Player);
             return
                 unit.IsValidSpellTarget() &&
-                unitDistanceToPlayer >= UtilityClass.Player.AttackRange &&
+                unitDistanceToPlayer >= UtilityClass.Player.GetAutoAttackRange() &&
                 unitDistanceToPlayer <= SpellClass.Q.Range;
         }
 
@@ -33,7 +32,7 @@ namespace AIO.Champions
         ///     Gets the real Damage the R spell would deal to a determined enemy hero.
         /// </summary>
         /// <param name="target">The target.</param>
-        public double GetTotalNoxianGuillotineDamage(Obj_AI_Hero target)
+        public double GetTotalNoxianGuillotineDamage(AIHeroClient target)
         {
             var player = UtilityClass.Player;
             return

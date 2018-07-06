@@ -1,13 +1,14 @@
 
+using Entropy;
+using Entropy.SDK.UI.Components;
+
 #pragma warning disable 1587
 
 namespace AIO.Champions
 {
     using Utilities;
 
-    using Entropy.SDK.Menu.Components;
-
-    /// <summary>
+	/// <summary>
     ///     The champion class.
     /// </summary>
     internal partial class Quinn
@@ -15,7 +16,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q Combo Logic.
@@ -48,7 +49,7 @@ namespace AIO.Champions
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget))
                 {
-                    UtilityClass.CastOnUnit(SpellClass.E, bestTarget);
+                    SpellClass.E.CastOnUnit(bestTarget);
                 }
             }
         }

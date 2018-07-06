@@ -2,10 +2,8 @@
 
 
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -32,7 +30,7 @@ namespace AIO.Champions
         ///     Gets the total missile damage on a determined unit.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public double GetFrostBiteDamage(Obj_AI_Base unit)
+        public double GetFrostBiteDamage(AIBaseClient unit)
         {
             var player = UtilityClass.Player;
             return IsChilled(unit)
@@ -44,7 +42,7 @@ namespace AIO.Champions
         ///     Returns true if the target is marked by Q or R, else false.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsChilled(Obj_AI_Base unit)
+        public bool IsChilled(AIBaseClient unit)
         {
             return unit.HasBuff("chilled");
         }

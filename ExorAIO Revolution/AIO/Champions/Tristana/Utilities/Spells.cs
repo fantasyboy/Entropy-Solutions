@@ -1,7 +1,7 @@
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Prediction.Skillshots;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
 using Spell = Entropy.SDK.Spell;
 
 namespace AIO.Champions
@@ -22,8 +22,8 @@ namespace AIO.Champions
             SpellClass.W = new Spell(SpellSlot.W, 900f);
 
             var target = ImplementationClass.IOrbwalker.GetOrbwalkingTarget();
-            SpellClass.E = new Spell(SpellSlot.E, target != null ? UtilityClass.Player.GetFullAttackRange(target) : UtilityClass.Player.AttackRange);
-            SpellClass.R = new Spell(SpellSlot.R, target != null ? UtilityClass.Player.GetFullAttackRange(target) : UtilityClass.Player.AttackRange);
+            SpellClass.E = new Spell(SpellSlot.E, target != null ? UtilityClass.Player.GetAutoAttackRange(target) : UtilityClass.Player.GetAutoAttackRange());
+            SpellClass.R = new Spell(SpellSlot.R, target != null ? UtilityClass.Player.GetAutoAttackRange(target) : UtilityClass.Player.GetAutoAttackRange());
 
             SpellClass.W.SetSkillshot(0.75f, 60f, 1000f, false, SkillshotType.Circle);
         }

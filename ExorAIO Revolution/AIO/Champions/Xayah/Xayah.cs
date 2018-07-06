@@ -1,10 +1,11 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -57,7 +58,7 @@ namespace AIO.Champions
                 switch (obj.Name)
                 {
                     case "Xayah_Base_Passive_Dagger_Mark8s":
-                        Feathers.Add(obj.NetworkId, obj.Position);
+                        Feathers.Add(obj.NetworkID, screenPos);
                         break;
                 }
             }
@@ -70,9 +71,9 @@ namespace AIO.Champions
         {
             if (obj.IsValid)
             {
-                if (Feathers.Any(o => o.Key == obj.NetworkId))
+                if (Feathers.Any(o => o.Key == obj.NetworkID))
                 {
-                    Feathers.Remove(obj.NetworkId);
+                    Feathers.Remove(obj.NetworkID);
                 }
             }
         }
@@ -80,9 +81,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPreAttack(OnPreAttackEventArgs args)
         {
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -92,7 +93,7 @@ namespace AIO.Champions
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
                     break;
-                case OrbwalkingMode.Laneclear:
+                case OrbwalkingMode.LaneClear:
                     Buildingclear(sender, args);
                     Jungleclear(sender, args);
                     break;
@@ -112,12 +113,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            BladeCallerKillsteal();
+            BladeCallerKillsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic events.
             /// </summary>
-            BladeCallerAutomatic();
+            BladeCallerAutomatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -125,11 +126,11 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    BladeCallerCombo();
+                    BladeCallerCombo(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    BladeCallerLaneclear();
-                    BladeCallerJungleclear();
+                case OrbwalkingMode.LaneClear:
+                    BladeCallerLaneClear(args);
+                    BladeCallerJungleClear(args);
                     break;
             }
         }
@@ -137,11 +138,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called while processing spellcast operations.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="Obj_AI_BaseMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnProcessSpellCast(Obj_AI_Base sender, Obj_AI_BaseMissileClientDataEventArgs args)
+        
+        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
+        public void OnProcessSpellCast(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
         {
-            if (sender.IsMe)
+            if (sender.IsMe())
             {
                 switch (args.SpellSlot)
                 {
@@ -155,9 +156,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -170,12 +171,12 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee)
             {
                 return;
             }
 
-            var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+            var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
             if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
             {
                 return;
@@ -189,13 +190,13 @@ namespace AIO.Champions
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe)
+                        if (args.Target.IsMe())
                         {
                             SpellClass.R.Cast(args.StartPosition);
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.R.Cast(args.StartPosition);
                         }
@@ -207,7 +208,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -222,7 +223,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -230,15 +231,15 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
 
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
 
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
                     break;
             }
         }

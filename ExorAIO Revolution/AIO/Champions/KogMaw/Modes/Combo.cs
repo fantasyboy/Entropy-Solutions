@@ -1,9 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The W Combo Logic.
@@ -40,11 +40,11 @@ namespace AIO.Champions
                     UtilityClass.Player.GetRealBuffCount("kogmawlivingartillerycost"))
             {
                 foreach (var target in Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R.Range).Where(t =>
-                    t.HealthPercent() <= 40 &&
+                    t.HPPercent() <= 40 &&
                     !Invulnerable.Check(t, DamageType.Magical) &&
-                    MenuClass.Spells["r"]["whitelist"][t.ChampionName.ToLower()].As<MenuBool>().Enabled))
+                    MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled))
                 {
-                    if (target.IsValidTarget(UtilityClass.Player.GetFullAttackRange(target)))
+                    if (target.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(target)))
                     {
                         if (MenuClass.Miscellaneous["onlyroutaarange"].As<MenuBool>().Enabled)
                         {

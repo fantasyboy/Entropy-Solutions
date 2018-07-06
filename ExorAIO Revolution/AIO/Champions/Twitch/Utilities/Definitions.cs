@@ -1,9 +1,7 @@
 ﻿
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 namespace AIO.Champions
 {
@@ -16,7 +14,7 @@ namespace AIO.Champions
         ///     Gets the total expunge damage on a determined unit.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public double GetTotalExpungeDamage(Obj_AI_Base unit)
+        public double GetTotalExpungeDamage(AIBaseClient unit)
         {
             var player = UtilityClass.Player;
             return player.GetSpellDamage(unit, SpellSlot.E) +
@@ -27,18 +25,18 @@ namespace AIO.Champions
         ///     Returns true if the target is a perfectly valid expunge target.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsPerfectExpungeTarget(Obj_AI_Base unit)
+        public bool IsPerfectExpungeTarget(AIBaseClient unit)
         {
             if (unit.HasBuff("twitchdeadlyvenom") &&
                 unit.IsValidSpellTarget(SpellClass.E.Range))
             {
                 switch (unit.Type)
                 {
-                    case GameObjectType.obj_AI_Minion:
+                    case GameObjectType.AIMinionClient:
                         return true;
 
-                    case GameObjectType.obj_AI_Hero:
-                        var heroUnit = (Obj_AI_Hero)unit;
+                    case GameObjectType.AIHeroClient:
+                        var heroUnit = (AIHeroClient)unit;
                         return !Invulnerable.Check(heroUnit);
                 }
             }

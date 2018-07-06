@@ -4,9 +4,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -82,8 +83,8 @@ namespace AIO.Champions
             var possibleTarget3 = ObjectManager.Get<GameObject>().FirstOrDefault(o =>
                     o.IsValid &&
                     IsDarkSphere(o) &&
-                    o.NetworkId != SelectedDarkSphereNetworkId &&
-                    o.Distance(UtilityClass.Player.ServerPosition) <= SpellClass.W.Range);
+                    o.NetworkID != SelectedDarkSphereNetworkId &&
+                    o.Distance(UtilityClass.Player.Position) <= SpellClass.W.Range);
             if (possibleTarget3 != null)
             {
                 return possibleTarget3;
@@ -96,20 +97,20 @@ namespace AIO.Champions
         ///     Returns true if the target unit can be hit by any sphere.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool CanSpheresHitUnit(Obj_AI_Base unit)
+        public bool CanSpheresHitUnit(AIBaseClient unit)
         {
             foreach (var sphere in DarkSpheres)
             {
-                var targetPos = (Vector2)unit.ServerPosition;
+                var targetPos = (Vector2)unit.Position;
                 if (DarkSphereScatterRectangle(sphere).IsInside(targetPos) &&
                     UtilityClass.Player.Distance(sphere.Value) < SpellClass.E.Range)
                 {
                     switch (unit.Type)
                     {
-                        case GameObjectType.obj_AI_Minion:
+                        case GameObjectType.AIMinionClient:
                             return true;
-                        case GameObjectType.obj_AI_Hero:
-                            return !Invulnerable.Check((Obj_AI_Hero)unit, DamageType.Magical, false);
+                        case GameObjectType.AIHeroClient:
+                            return !Invulnerable.Check((AIHeroClient)unit, DamageType.Magical, false);
                     }
                 }
             }
@@ -122,18 +123,18 @@ namespace AIO.Champions
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <param name="sphere">The sphere.</param>
-        public bool CanSphereHitUnit(Obj_AI_Base unit, KeyValuePair<int, Vector3> sphere)
+        public bool CanSphereHitUnit(AIBaseClient unit, KeyValuePair<int, Vector3> sphere)
         {
-            var targetPos = (Vector2)unit.ServerPosition;
+            var targetPos = (Vector2)unit.Position;
             if (DarkSphereScatterRectangle(sphere).IsInside(targetPos) &&
                 UtilityClass.Player.Distance(sphere.Value) < SpellClass.E.Range)
             {
                 switch (unit.Type)
                 {
-                    case GameObjectType.obj_AI_Minion:
+                    case GameObjectType.AIMinionClient:
                         return true;
-                    case GameObjectType.obj_AI_Hero:
-                        return !Invulnerable.Check((Obj_AI_Hero)unit, DamageType.Magical, false);
+                    case GameObjectType.AIHeroClient:
+                        return !Invulnerable.Check((AIHeroClient)unit, DamageType.Magical, false);
                 }
             }
 
@@ -144,29 +145,29 @@ namespace AIO.Champions
         ///     Gets the real Damage the R spell would deal to a determined enemy hero.
         /// </summary>
         /// <param name="target">The target.</param>
-        public double GetTotalUnleashedPowerDamage(Obj_AI_Hero target)
+        public double GetTotalUnleashedPowerDamage(AIHeroClient target)
         {
             var player = UtilityClass.Player;
             var singleSphereDamage = player.GetSpellDamage(target, SpellSlot.R) / 3;
-            return singleSphereDamage * player.SpellBook.GetSpell(SpellSlot.R).Ammo;
+            return singleSphereDamage * Player.Spellbook.GetSpell(SpellSlot.R).Ammo;
         }
 
         /// <summary>
         ///     Returns true if the target is a perfectly valid stunnable target.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsPerfectSphereTarget(Obj_AI_Base unit)
+        public bool IsPerfectSphereTarget(AIBaseClient unit)
         {
             if (unit.IsValidTarget() &&
                 CanSpheresHitUnit(unit))
             {
                 switch (unit.Type)
                 {
-                    case GameObjectType.obj_AI_Minion:
+                    case GameObjectType.AIMinionClient:
                         return true;
 
-                    case GameObjectType.obj_AI_Hero:
-                        return !Invulnerable.Check((Obj_AI_Hero)unit, DamageType.Magical, false);
+                    case GameObjectType.AIHeroClient:
+                        return !Invulnerable.Check((AIHeroClient)unit, DamageType.Magical, false);
                 }
             }
 
@@ -205,16 +206,16 @@ namespace AIO.Champions
         {
             foreach (var sphere in ObjectManager.Get<GameObject>().Where(o => o != null && o.IsValid))
             {
-                if (DarkSpheres.Any(o => o.Key == sphere.NetworkId))
+                if (DarkSpheres.Any(o => o.Key == sphere.NetworkID))
                 {
-                    DarkSpheres.Remove(sphere.NetworkId);
+                    DarkSpheres.Remove(sphere.NetworkID);
                 }
 
                 switch (sphere.Name)
                 {
                     case "Syndra_Base_Q_idle.troy":
                     case "Syndra_Base_Q_Lv5_idle.troy":
-                        DarkSpheres.Add(sphere.NetworkId, sphere.Position);
+                        DarkSpheres.Add(sphere.NetworkID, sphere.Position);
                         break;
                 }
             }

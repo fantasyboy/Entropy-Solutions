@@ -1,10 +1,10 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -20,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The Q Killsteal Logics.
@@ -35,7 +35,7 @@ namespace AIO.Champions
                     foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
                         UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q) >= t.GetRealHealth()))
                     {
-                        UtilityClass.CastOnUnit(SpellClass.Q, target);
+                        SpellClass.Q.CastOnUnit(target);
                         break;
                     }
                 }
@@ -51,10 +51,10 @@ namespace AIO.Champions
                     {
                         foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
                         {
-                            if (minion.NetworkId != target.NetworkId &&
-                                QRectangle(minion).IsInside((Vector2)target.ServerPosition))
+                            if (minion.NetworkID != target.NetworkID &&
+                                QRectangle(minion).IsInside((Vector2)target.Position))
                             {
-                                UtilityClass.CastOnUnit(SpellClass.Q, minion);
+                                SpellClass.Q.CastOnUnit(minion);
                                 break;
                             }
                         }

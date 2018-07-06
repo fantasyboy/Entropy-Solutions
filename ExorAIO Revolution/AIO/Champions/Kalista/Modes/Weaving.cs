@@ -1,5 +1,5 @@
 
-using Entropy.SDK.Orbwalking;
+using Entropy.SDK.Orbwalking.EventArgs;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -14,9 +14,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Weaving(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Weaving(OnPostAttackEventArgs args)
         {
         }
 

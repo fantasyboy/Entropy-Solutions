@@ -1,9 +1,10 @@
 
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -44,9 +45,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPostAttack(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPostAttack(OnPostAttackEventArgs args)
         {
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -56,7 +57,7 @@ namespace AIO.Champions
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
                     break;
-                case OrbwalkingMode.Laneclear:
+                case OrbwalkingMode.LaneClear:
                     Jungleclear(sender, args);
                     break;
             }
@@ -76,9 +77,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -91,12 +92,12 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy || Invulnerable.Check(sender, DamageType.Magical, false))
+            if (sender == null || !sender.IsEnemy()() || Invulnerable.Check(sender, DamageType.Magical, false))
             {
                 return;
             }
 
-            var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+            var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
             if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
             {
                 return;
@@ -111,13 +112,13 @@ namespace AIO.Champions
                 {
                     case Gapcloser.Type.Targeted:
                         if (sender.IsMelee &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
                             SpellClass.E.Cast(args.StartPosition);
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= SpellClass.E.Range)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.E.Range)
                         {
                             SpellClass.E.Cast(args.EndPosition);
                         }
@@ -129,7 +130,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -139,7 +140,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             if (ImplementationClass.IOrbwalker.IsWindingUp)
             {
@@ -149,7 +150,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -157,13 +158,13 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
                     break;
             }
         }

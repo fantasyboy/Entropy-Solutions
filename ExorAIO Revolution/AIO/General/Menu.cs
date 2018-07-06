@@ -1,8 +1,8 @@
 ﻿
 using System.Linq;
-using Entropy.SDK.Menu;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO
@@ -22,7 +22,7 @@ namespace AIO
             /// <summary>
             ///     Loads the root Menu.
             /// </summary>
-            MenuClass.Root = new Menu(UtilityClass.Player.ChampionName.ToLower(), "ExorAIO: " + UtilityClass.Player.ChampionName, true);
+            MenuClass.Root = new Menu(UtilityClass.Player.CharName.ToLower(), "ExorAIO: " + UtilityClass.Player.CharName, true);
             {
                 /// <summary>
                 ///     Loads the orbwalker menu.
@@ -38,7 +38,7 @@ namespace AIO
                     MenuClass.General.Add(new MenuSliderBool("disableaa", "Disable AutoAttacks in Combo / If Level >= x", false, 2, 2, 18));
                     MenuClass.General.Add(new MenuBool("junglesmall", "Cast to small minions too in JungleClear", false));
 
-                    if (UtilityClass.Player.MaxMana >= 200)
+                    if (UtilityClass.Player.MaxMP >= 200)
                     {
                         MenuClass.General.Add(new MenuBool("nomanagerifblue", "Ignore ManaManagers if you have Blue Buff", false));
                     }
@@ -47,7 +47,7 @@ namespace AIO
                     {
                         MenuClass.Hydra = new Menu("hydramenu", "Hydras Menu");
                         {
-                            MenuClass.Hydra.Add(new MenuSeparator("hydrasep", "Use Hydras in:"));
+                            MenuClass.Hydra.Add(new MenuSeperator("hydrasep", "Use Hydras in:"));
                             MenuClass.Hydra.Add(new MenuBool("combo", "Combo"));
                             MenuClass.Hydra.Add(new MenuBool("laneclear", "Laneclear"));
                             MenuClass.Hydra.Add(new MenuBool("mixed", "Harass"));
@@ -59,7 +59,7 @@ namespace AIO
 
                     MenuClass.Stormrazor = new Menu("stormrazormenu", "Stormrazor Menu");
                     {
-                        MenuClass.Stormrazor.Add(new MenuSeparator("stormsep", "Stop AA'ing until it procs in:"));
+                        MenuClass.Stormrazor.Add(new MenuSeperator("stormsep", "Stop AA'ing until it procs in:"));
                         MenuClass.Stormrazor.Add(new MenuBool("combo", "Combo"));
                         MenuClass.Stormrazor.Add(new MenuBool("laneclear", "Laneclear"));
                         MenuClass.Stormrazor.Add(new MenuBool("mixed", "Harass"));
@@ -71,7 +71,7 @@ namespace AIO
                     /// </summary>
                     MenuClass.PreserveMana = new Menu("preservemanamenu", "Preserve Mana Menu");
                     {
-                        var championSpellManaCosts = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.ChampionName).Value;
+                        var championSpellManaCosts = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName).Value;
                         if (championSpellManaCosts != null)
                         {
                             MenuClass.PreserveMana.Add(new MenuSeperator("separator", "Preserve Mana for:"));

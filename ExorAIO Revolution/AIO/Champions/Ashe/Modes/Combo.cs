@@ -1,8 +1,9 @@
 
 using System.Linq;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -18,14 +19,14 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q Combo Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.HasBuff("asheqcastready") &&
-                GameObjects.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t))) &&
+                GameObjects.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))) &&
                 MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
             {
                 SpellClass.Q.Cast();
@@ -41,7 +42,7 @@ namespace AIO.Champions
                 if (heroTarget != null)
                 {
                     if (!Invulnerable.Check(heroTarget) &&
-                        !heroTarget.IsValidTarget(UtilityClass.Player.GetFullAttackRange(heroTarget)))
+                        !heroTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(heroTarget)))
                     {
                         SpellClass.W.Cast(heroTarget);
                     }

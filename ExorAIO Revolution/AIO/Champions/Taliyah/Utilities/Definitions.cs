@@ -5,10 +5,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -79,13 +80,13 @@ namespace AIO.Champions
         ///     Gets the Best position inside the MineField for W Cast.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public Vector3 GetBestBouldersHitPosition(Obj_AI_Base unit)
+        public Vector3 GetBestBouldersHitPosition(AIBaseClient unit)
         {
             var mostBouldersHit = 0;
             var mostBouldersHitPos = Vector3.Zero;
             foreach (var mine in MineField)
             {
-                var unitToMineRectangle = new Vector2Geometry.Rectangle((Vector2)unit.ServerPosition, (Vector2)unit.ServerPosition.Extend((Vector2)mine.Value, WPushDistance), unit.BoundingRadius);
+                var unitToMineRectangle = new Vector2Geometry.Rectangle((Vector2)unit.Position, (Vector2)unit.Position.Extend((Vector2)mine.Value, WPushDistance), unit.BoundingRadius);
                 var bouldersHit = MineField.Count(o => unitToMineRectangle.IsInside((Vector2)o.Value));
                 if (bouldersHit > mostBouldersHit)
                 {
@@ -106,12 +107,12 @@ namespace AIO.Champions
         ///     Gets the approximative number of mines hit by the target inside the MineField after W Cast.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public int GetBestBouldersHitPositionHitBoulders(Obj_AI_Base unit)
+        public int GetBestBouldersHitPositionHitBoulders(AIBaseClient unit)
         {
             var mostBouldersHit = 0;
             foreach (var mine in MineField)
             {
-                var unitToMineRectangle = new Vector2Geometry.Rectangle((Vector2)unit.ServerPosition, (Vector2)unit.ServerPosition.Extend((Vector2)mine.Value, WPushDistance), unit.BoundingRadius);
+                var unitToMineRectangle = new Vector2Geometry.Rectangle((Vector2)unit.Position, (Vector2)unit.Position.Extend((Vector2)mine.Value, WPushDistance), unit.BoundingRadius);
                 var bouldersHit = MineField.Count(o => unitToMineRectangle.IsInside((Vector2)o.Value));
                 if (bouldersHit > mostBouldersHit)
                 {
@@ -126,7 +127,7 @@ namespace AIO.Champions
         ///     Returns the position the target would have after being pulled by W.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public Vector3 GetUnitPositionAfterPull(Obj_AI_Base unit)
+        public Vector3 GetUnitPositionAfterPull(AIBaseClient unit)
         {
             var targetPred = SpellClass.W.GetPrediction(unit).CastPosition;
             return targetPred.Extend(UtilityClass.Player.Position, WPushDistance);
@@ -136,7 +137,7 @@ namespace AIO.Champions
         ///     Returns the position the target would have after being pushed by W.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public Vector3 GetUnitPositionAfterPush(Obj_AI_Base unit)
+        public Vector3 GetUnitPositionAfterPush(AIBaseClient unit)
         {
             var targetPred = SpellClass.W.GetPrediction(unit).CastPosition;
             return targetPred.Extend(UtilityClass.Player.Position, -WPushDistance);
@@ -146,10 +147,10 @@ namespace AIO.Champions
         ///     Returns the position the target would have after being pushed by W, based on the user's option preference.
         /// </summary>
         /// <param name="target">The target.</param>
-        public Vector3 GetTargetPositionAfterW(Obj_AI_Hero target)
+        public Vector3 GetTargetPositionAfterW(AIHeroClient target)
         {
             var position = new Vector3();
-            switch (MenuClass.Spells["w"]["selection"][target.ChampionName.ToLower()].As<MenuList>().Value)
+            switch (MenuClass.Spells["w"]["selection"][target.CharName.ToLower()].As<MenuList>().Value)
             {
                 case 0:
                     position = GetUnitPositionAfterPull(target);
@@ -195,7 +196,7 @@ namespace AIO.Champions
                 case 4:
                     if (!GameObjects.EnemyHeroes.Any(t =>
                             t.IsValidTarget(SpellClass.W.Range) &&
-                            MenuClass.Spells["w"]["selection"][t.ChampionName.ToLower()].As<MenuList>().Value < 3))
+                            MenuClass.Spells["w"]["selection"][t.CharName.ToLower()].As<MenuList>().Value < 3))
                     {
                         if (UtilityClass.Player.Distance(GetUnitPositionAfterPull(target)) >= 200f)
                         {
@@ -230,7 +231,7 @@ namespace AIO.Champions
                 switch (mine.Name)
                 {
                     case "Taliyah_Base_E_Mines.troy":
-                        MineField.Add(mine.NetworkId, mine.Position);
+                        MineField.Add(mine.NetworkID, mine.Position);
                         break;
                 }
             }
@@ -247,7 +248,7 @@ namespace AIO.Champions
                 {
                     case "Taliyah_Base_Q_aoe.troy":
                     case "Taliyah_Base_Q_aoe_river.troy":
-                        WorkedGrounds.Add(ground.NetworkId, ground.Position);
+                        WorkedGrounds.Add(ground.NetworkID, ground.Position);
                         break;
                 }
             }

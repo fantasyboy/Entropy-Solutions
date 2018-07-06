@@ -1,8 +1,8 @@
 ﻿// ReSharper disable LoopCanBeConvertedToQuery
 
 using System.Collections.Generic;
-using System.Linq;
 using Entropy;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -31,7 +31,7 @@ namespace AIO.Champions
                 {
                     case "Olaf_Base_Q_Axe_Ally.troy":
                     case "Olaf_Skin04_Q_Axe_Ally.troy":
-                        Axes.Add(axe.NetworkId, axe.Position);
+                        Axes.Add(axe.NetworkID, axe.Position);
                         break;
                 }
             }

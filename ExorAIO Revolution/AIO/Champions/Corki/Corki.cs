@@ -1,9 +1,10 @@
-
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -44,11 +45,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on non killable minion.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="NonKillableMinionEventArgs" /> instance containing the event data.</param>
-        public void OnNonKillableMinion(object sender, NonKillableMinionEventArgs args)
+        public void OnNonKillableMinion(NonKillableMinionEventArgs args)
         {
-            var minion = (Obj_AI_Minion)args.Target;
+            var minion = (AIMinionClient)args.Target;
             if (minion == null)
             {
                 return;
@@ -59,12 +60,12 @@ namespace AIO.Champions
             /// </summary>
             switch (ImplementationClass.IOrbwalker.Mode)
             {
-                case OrbwalkingMode.Laneclear:
-                case OrbwalkingMode.Lasthit:
-                case OrbwalkingMode.Mixed:
+                case OrbwalkingMode.LaneClear:
+                case OrbwalkingMode.LastHit:
+                case OrbwalkingMode.Harass:
                     if (SpellClass.R.Ready &&
                         minion.IsValidTarget(SpellClass.R.Range) &&
-                        UtilityClass.Player.ManaPercent()
+                        UtilityClass.Player.MPPercent()
                             > ManaManager.GetNeededMana(SpellClass.R.Slot, MenuClass.Spells["r"]["lasthitunk"]) &&
                         MenuClass.Spells["r"]["lasthitunk"].As<MenuSliderBool>().Enabled)
                     {
@@ -80,9 +81,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPostAttack(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPostAttack(OnPostAttackEventArgs args)
         {
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -92,7 +93,7 @@ namespace AIO.Champions
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
                     break;
-                case OrbwalkingMode.Laneclear:
+                case OrbwalkingMode.LaneClear:
                     Jungleclear(sender, args);
                     break;
             }
@@ -101,9 +102,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on pre attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPreAttack(OnPreAttackEventArgs args)
         {
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -130,9 +131,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -145,12 +146,12 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy || !sender.IsMelee || HasPackage())
+            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee || HasPackage())
             {
                 return;
             }
 
-            var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+            var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
             if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
             {
                 return;
@@ -164,10 +165,10 @@ namespace AIO.Champions
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe)
+                        if (args.Target.IsMe())
                         {
-                            var targetPos = UtilityClass.Player.ServerPosition.Extend(args.StartPosition, -SpellClass.W.Range);
-                            if (targetPos.PointUnderEnemyTurret())
+                            var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.W.Range);
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -176,13 +177,13 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        var targetPos2 = UtilityClass.Player.ServerPosition.Extend(args.EndPosition, -SpellClass.W.Range);
-                        if (targetPos2.PointUnderEnemyTurret())
+                        var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.W.Range);
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
 
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.W.Cast(targetPos2);
                         }
@@ -194,7 +195,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -204,7 +205,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             if (ImplementationClass.IOrbwalker.IsWindingUp)
             {
@@ -217,16 +218,16 @@ namespace AIO.Champions
             switch (Orbwalker.Implementation.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
                     break;
-                case OrbwalkingMode.Lasthit:
-                    Lasthit();
+                case OrbwalkingMode.LastHit:
+                    LastHit(args);
                     break;
             }
         }

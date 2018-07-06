@@ -1,9 +1,10 @@
 
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Laneclear()
+        public void LaneClear(EntropyEventArgs args)
         {
             var minions = Extensions.GetEnemyLaneMinionsTargets();
 
@@ -27,7 +28,7 @@ namespace AIO.Champions
             ///     The Q Laneclear Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
@@ -44,11 +45,11 @@ namespace AIO.Champions
             ///     The E Laneclear Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
                 MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                var target = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as Obj_AI_Minion;
+                var target = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIMinionClient;
                 if (target != null &&
                     minions.Contains(target) &&
                     minions.Count(m => m.Distance(target) <= SpellClass.E.Width) >= MenuClass.Spells["e"]["customization"]["laneclear"].As<MenuSlider>().Value)
@@ -61,7 +62,7 @@ namespace AIO.Champions
             ///     The R Laneclear Logic.
             /// </summary>
             if (SpellClass.R.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.R.Slot, MenuClass.Spells["r"]["laneclear"]) &&
                 MenuClass.Spells["r"]["laneclear"].As<MenuSliderBool>().Enabled)
             {

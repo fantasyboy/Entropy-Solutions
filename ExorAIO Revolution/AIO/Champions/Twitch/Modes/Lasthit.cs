@@ -1,3 +1,5 @@
+using Entropy;
+
 namespace AIO.Champions
 {
     /// <summary>
@@ -10,7 +12,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Lasthit()
+        public void LastHit(EntropyEventArgs args)
         {
         }
 

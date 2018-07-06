@@ -2,8 +2,10 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,7 +21,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
             /// <summary>
             ///     The Semi-Automatic E Management.
@@ -34,7 +36,7 @@ namespace AIO.Champions
                     .MinBy(o => o.Distance(UtilityClass.Player));
                 if (bestTarget != null)
                 {
-                    UtilityClass.CastOnUnit(SpellClass.E, bestTarget);
+                    SpellClass.E.CastOnUnit(bestTarget);
                 }
             }
         }

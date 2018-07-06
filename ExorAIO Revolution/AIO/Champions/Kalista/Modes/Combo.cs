@@ -1,10 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -20,17 +19,17 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     Orbwalk on minions.
             /// </summary>
-            var minion = ObjectManager.Get<Obj_AI_Minion>()
-                .Where(m => m.IsValidSpellTarget(UtilityClass.Player.GetFullAttackRange(m)))
+            var minion = ObjectManager.Get<AIMinionClient>()
+                .Where(m => m.IsValidSpellTarget(UtilityClass.Player.GetAutoAttackRange(m)))
                 .OrderBy(s => s.GetRealBuffCount("kalistaexpungemarker"))
-                .MinBy(o => o.Health);
+                .MinBy(o => o.HP);
             if (minion != null &&
-                !GameObjects.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t)+100f)) &&
+                !GameObjects.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)+100f)) &&
                 MenuClass.Miscellaneous["minionsorbwalk"].As<MenuBool>().Enabled)
             {
                 UtilityClass.Player.IssueOrder(OrderType.AttackUnit, minion);
@@ -66,7 +65,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendCombo()
+        public void RendCombo(args)
         {
             /// <summary>
             ///     The E Combo Minion Harass Logic.

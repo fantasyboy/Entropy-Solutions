@@ -1,8 +1,7 @@
-﻿
-using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
+﻿using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -17,7 +16,7 @@ namespace AIO.Champions
         ///     Returns true if the target is Allured.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsAllured(Obj_AI_Base unit)
+        public bool IsAllured(AIBaseClient unit)
         {
             return unit.HasBuff("EvelynnW");
         }
@@ -26,12 +25,12 @@ namespace AIO.Champions
         ///     Returns true if the target is fully Allured.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsFullyAllured(Obj_AI_Base unit)
+        public bool IsFullyAllured(AIBaseClient unit)
         {
             if (unit.HasBuff("EvelynnW"))
             {
                 var normalObjects = ObjectManager.Get<GameObject>().Where(o => o.IsValid && o.Name == "Evelynn_Base_W_Fizz_Mark_Decay");
-                return normalObjects.Any(o => ObjectManager.Get<Obj_AI_Base>().Where(t => t.Team != o.Team).MinBy(t => t.Distance(o)) == unit);
+                return normalObjects.Any(o => ObjectManager.Get<AIBaseClient>().Where(t => t.Team != o.Team).MinBy(t => t.Distance(o)) == unit);
             }
 
             return false;
@@ -76,7 +75,7 @@ namespace AIO.Champions
         {
             var targetPos = UtilityClass.Player.Path[1];
             var range = SpellClass.R.Range;
-            var dir = (targetPos - UtilityClass.Player.ServerPosition).Normalized();
+            var dir = (targetPos - UtilityClass.Player.Position).Normalized();
             var spot = targetPos + dir * range;
 
             return new Vector2Geometry.Sector((Vector2)targetPos, (Vector2)spot, SpellClass.R.Width, range);

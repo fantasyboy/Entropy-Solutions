@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
+using Entropy.SDK.Spells;
 
 #pragma warning disable 1587
 
@@ -19,7 +19,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the spellslots.
         /// </summary>
-        public static SpellSlot[] SpellSlots =
+        public static readonly SpellSlot[] SpellSlots =
         {
             SpellSlot.Q,
             SpellSlot.W,
@@ -39,7 +39,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the spellstates.
         /// </summary>
-        public static SpellState[] SpellStates =
+        public static readonly SpellState[] SpellStates =
         {
             SpellState.Cooldown,
             SpellState.Disabled,
@@ -51,7 +51,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the tear-like items.
         /// </summary>
-        public static uint[] TearLikeItems =
+        public static readonly uint[] TearLikeItems =
         {
             ItemId.Manamune,
             ItemId.ArchangelsStaff,
@@ -69,7 +69,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the Player.
         /// </summary>
-        public static Obj_AI_Hero Player => ObjectManager.GetLocalPlayer();
+        public static AIHeroClient Player => LocalPlayer.Instance;
 
         /// <summary>
         ///     List of the Pet names.
@@ -383,9 +383,9 @@ namespace AIO.Utilities
         /// </returns>
         public static int GetManaCost(this SpellSlot slot)
         {
-            var championSlots = ManaCostArray.FirstOrDefault(e => e.Key == Player.ChampionName).Value;
+            var championSlots = ManaCostArray.FirstOrDefault(e => e.Key == Player.CharName).Value;
             var selectedSlot = championSlots.FirstOrDefault(e => e.Key == slot);
-            var selectedSlotLevel = selectedSlot.Value[Player.SpellBook.GetSpell(slot).Level-1];
+            var selectedSlotLevel = selectedSlot.Value[Player.Spellbook.GetSpell(slot).Level()-1];
 
             return selectedSlotLevel;
         }
@@ -413,9 +413,9 @@ namespace AIO.Utilities
         /// <returns>
         ///     The remaining buff time.
         /// </returns>
-        public static double GetRemainingBuffTime(this Buff buff)
+        public static double GetRemainingBuffTime(this BuffInstance buff)
         {
-            return buff.EndTime - Game.ClockTime;
+            return buff.ExpireTime - Game.ClockTime;
         }
 
         /// <summary>
@@ -429,7 +429,7 @@ namespace AIO.Utilities
         /// </returns>
         public static double GetRemainingCooldownTime(this Spell spell)
         {
-            return spell.CooldownEnd - Game.ClockTime;
+            return spell.CooldownExpires - Game.ClockTime;
         }
 
         /// <summary>
@@ -441,25 +441,9 @@ namespace AIO.Utilities
         /// <returns>
         ///     The target Health with Blitzcrank's Shield support.
         /// </returns>
-        public static float GetRealHealth(this Obj_AI_Base unit)
+        public static float GetRealHealth(this AIBaseClient unit)
         {
-            return unit.Health + unit.PhysicalShield;
-        }
-
-        /// <summary>
-        ///     Casts the spell on unit.
-        /// </summary>
-        /// <param name="spell">The spell.</param>
-        /// <param name="obj">The object.</param>
-        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
-        public static bool CastOnUnit(this Entropy.SDK.Spell spell, GameObject obj)
-        {
-            if (!spell.Ready || MenuGUI.IsChatOpen() || MenuGUI.IsShopOpen())
-            {
-                return false;
-            }
-
-            return Player.SpellBook.CastSpell(spell.Slot, obj);
+            return unit.HP + unit.PhysicalShield;
         }
 
         #endregion

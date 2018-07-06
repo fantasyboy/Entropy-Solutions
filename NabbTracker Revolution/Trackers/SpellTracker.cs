@@ -1,8 +1,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Menu.Components;
+using Aimtec;
+using Aimtec.SDK.Menu.Components;
 
 namespace NabbTracker
 {
@@ -18,7 +18,7 @@ namespace NabbTracker
         /// </summary>
         public static void Initialize()
         {
-            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(h =>
+            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h =>
                 !h.IsDead &&
                 h.IsVisible &&
                 Math.Abs(h.FloatingHealthBarPosition.X) > 0))
@@ -28,19 +28,19 @@ namespace NabbTracker
                     continue;
                 }
 
-                if (hero.IsMe &&
+                if (hero.IsMe() &&
                     !MenuClass.SpellTracker["me"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
-                if (hero.IsEnemy &&
+                if (hero.IsEnemy()() &&
                     !MenuClass.SpellTracker["enemies"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
-                if (!hero.IsMe &&
+                if (!hero.IsMe() &&
                     hero.IsAlly &&
                     !MenuClass.SpellTracker["allies"].As<MenuBool>().Enabled)
                 {
@@ -54,14 +54,14 @@ namespace NabbTracker
                     var spellColor = UtilityClass.GetUnitSpellStateColor(hero, spell);
                     var spellCooldown = UtilityClass.GetUnitSpellCooldown(hero, spell);
 
-                    Render.Text(spellCooldown, new Vector2(xSpellOffset, ySpellOffset), RenderTextFlags.None, Colors.GetRealColor(spellColor));
+                    TextRendering.Render(spellCooldown, new Vector2(xSpellOffset, ySpellOffset), RenderTextFlags.None, Colors.GetRealColor(spellColor));
 
-                    for (var level = 0; level <= hero.SpellBook.GetSpell(UtilityClass.SpellSlots[spell]).Level - 1; level++)
+                    for (var level = 0; level <= hero.SpellBook.GetSpell(UtilityClass.SpellSlots[spell]).Level() - 1; level++)
                     {
                         var xLevelOffset = xSpellOffset + level * 3 - 4;
                         var yLevelOffset = ySpellOffset + 4;
 
-                        Render.Text(".", new Vector2(xLevelOffset, yLevelOffset), RenderTextFlags.None, Color.White);
+                        TextRendering.Render(".", new Vector2(xLevelOffset, yLevelOffset), RenderTextFlags.None, Color.White);
                     }
                 }
 
@@ -72,7 +72,7 @@ namespace NabbTracker
                     var summonerSpellColor = UtilityClass.GetUnitSummonerSpellStateColor(hero, summonerSpell);
                     var summonerSpellCooldown = UtilityClass.GetUnitSummonerSpellFixedName(hero, summonerSpell) + ": " + UtilityClass.GetUnitSummonerSpellCooldown(hero, summonerSpell);
 
-                    Render.Text(summonerSpellCooldown, new Vector2(xSummonerSpellOffset, ySummonerSpellOffset), RenderTextFlags.None, Colors.GetRealColor(summonerSpellColor));
+                    TextRendering.Render(summonerSpellCooldown, new Vector2(xSummonerSpellOffset, ySummonerSpellOffset), RenderTextFlags.None, Colors.GetRealColor(summonerSpellColor));
                 }
             }
         }

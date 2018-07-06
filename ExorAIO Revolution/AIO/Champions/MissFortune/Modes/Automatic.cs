@@ -2,8 +2,9 @@
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
             var passiveObject = ObjectManager.Get<GameObject>().FirstOrDefault(o => o.IsValid && o.Name == "MissFortune_Base_P_Mark.troy");
             if (passiveObject != null)
@@ -27,7 +28,7 @@ namespace AIO.Champions
                 var passiveUnit = ObjectManager.Get<AttackableUnit>()
                     .MinBy(o => o.Distance(passiveObject));
 
-                LoveTapTargetNetworkId = passiveUnit?.NetworkId ?? 0;
+                LoveTapTargetNetworkId = passiveUnit?.NetworkID ?? 0;
             }
             else
             {
@@ -49,7 +50,7 @@ namespace AIO.Champions
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Spells["r"]["whitelist"][t.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
                     .MinBy(o => o.CountEnemyHeroesInRange(300f));
 
                 if (bestTarget != null &&
@@ -59,15 +60,15 @@ namespace AIO.Champions
                     if (SpellClass.E.Ready &&
                         bestTarget.IsValidTarget(SpellClass.E.Range))
                     {
-                        SpellClass.E.Cast(bestTarget.ServerPosition);
+                        SpellClass.E.Cast(bestTarget.Position);
                     }
 
-                    SpellClass.R.Cast(bestTarget.ServerPosition);
+                    SpellClass.R.Cast(bestTarget.Position);
                 }
                 else if (IsUltimateShooting() &&
                      !MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
                 {
-                    UtilityClass.Player.IssueOrder(OrderType.MoveTo, Game.CursorPos);
+                    UtilityClass.Player.IssueOrder(OrderType.MoveTo, Hud.CursorPositionUnclipped);
                 }
             }
         }

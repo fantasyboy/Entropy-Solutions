@@ -1,11 +1,9 @@
-﻿
-using System.Linq;
-using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
+﻿using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -21,9 +19,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Jungleclear()
+        public void JungleClear(EntropyEventArgs args)
         {
-            var jungleTarget = ObjectManager.Get<Obj_AI_Minion>()
+            var jungleTarget = ObjectManager.Get<AIMinionClient>()
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
                 .MinBy(m => m.Distance(UtilityClass.Player));
             if (jungleTarget == null)
@@ -41,11 +39,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Jungleclear(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Jungleclear(OnPostAttackEventArgs args)
         {
-            var jungleTarget = args.Target as Obj_AI_Minion;
+            var jungleTarget = args.Target as AIMinionClient;
             if (jungleTarget == null ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget) ||
                 jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
@@ -58,11 +56,11 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 GetBlightStacks(jungleTarget) >= 2 &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
                 MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
-                SpellClass.Q.StartCharging(jungleTarget.ServerPosition);
+                SpellClass.Q.StartCharging(jungleTarget.Position);
             }
 
             /// <summary>
@@ -70,7 +68,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 GetBlightStacks(jungleTarget) >= 2 &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
                 MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {

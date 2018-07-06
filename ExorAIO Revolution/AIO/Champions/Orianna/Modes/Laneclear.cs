@@ -1,10 +1,11 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -20,7 +21,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Laneclear()
+        public void LaneClear(EntropyEventArgs args)
         {
             if (BallPosition == null)
             {
@@ -31,7 +32,7 @@ namespace AIO.Champions
             ///     The Laneclear W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["laneclear"]) &&
                 MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
@@ -46,19 +47,19 @@ namespace AIO.Champions
             ///     The Laneclear E Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
                 MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
                 var polygon = new Vector2Geometry.Rectangle(
-                    (Vector2)UtilityClass.Player.ServerPosition,
-                    (Vector2)UtilityClass.Player.ServerPosition.Extend((Vector3)BallPosition, UtilityClass.Player.Distance((Vector3)BallPosition)),
+                    (Vector2)UtilityClass.Player.Position,
+                    (Vector2)UtilityClass.Player.Position.Extend((Vector3)BallPosition, UtilityClass.Player.Distance((Vector3)BallPosition)),
                     SpellClass.E.Width);
 
-                if (Extensions.GetEnemyLaneMinionsTargets().Count(t => t.IsValidTarget() && !polygon.IsOutside((Vector2)t.ServerPosition))
+                if (Extensions.GetEnemyLaneMinionsTargets().Count(t => t.IsValidTarget() && !polygon.IsOutside((Vector2)t.Position))
                     >= MenuClass.Spells["e"]["customization"]["laneclear"].As<MenuSlider>().Value)
                 {
-                    UtilityClass.CastOnUnit(SpellClass.E, UtilityClass.Player);
+                    SpellClass.E.CastOnUnit(UtilityClass.Player);
                 }
             }
 
@@ -66,11 +67,11 @@ namespace AIO.Champions
             ///     The Q Farmhelper Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                 > ManaManager.GetNeededMana(SpellSlot.Q, MenuClass.Spells["q"]["farmhelper"]) &&
                 MenuClass.Spells["q"]["farmhelper"].As<MenuSliderBool>().Enabled)
             {
-                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Where(m => !m.IsValidTarget(UtilityClass.Player.GetFullAttackRange(m))))
+                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Where(m => !m.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(m))))
                 {
                     if (minion.GetRealHealth() < UtilityClass.Player.GetSpellDamage(minion, SpellSlot.Q))
                     {
@@ -84,7 +85,7 @@ namespace AIO.Champions
             ///     The Laneclear Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
             {

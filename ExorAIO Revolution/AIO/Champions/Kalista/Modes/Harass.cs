@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -21,23 +20,23 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Harass()
+        public void Harass(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q Harass Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["harass"]) &&
                 MenuClass.Spells["q"]["harass"].As<MenuSliderBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null &&
-                    MenuClass.Spells["q"]["whitelist"][bestTarget.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                    MenuClass.Spells["q"]["whitelist"][bestTarget.CharName.ToLower()].As<MenuBool>().Enabled)
                 {
                     var collisions = SpellClass.Q.GetPrediction(bestTarget).CollisionObjects
                         .Where(c => Extensions.GetAllGenericUnitTargets().Contains(c));
-                    var objAiBases = collisions as IList<Obj_AI_Base> ?? collisions.ToList();
+                    var objAiBases = collisions as IList<AIBaseClient> ?? collisions.ToList();
                     if (objAiBases.Any())
                     {
                         if (objAiBases.All(c => c.GetRealHealth() <= UtilityClass.Player.GetSpellDamage(c, SpellSlot.Q)))
@@ -56,7 +55,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendHarass()
+        public void RendHarass(args)
         {
             /// <summary>
             ///     The E Minion Harass Logic.

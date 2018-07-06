@@ -1,7 +1,8 @@
-
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -17,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Harass()
+        public void Harass(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q Harass Logic.
@@ -27,7 +28,7 @@ namespace AIO.Champions
                 bestTargetQ != null &&
                 MenuClass.Spells["q"]["harass"].As<MenuSliderBool>().Enabled)
             {
-                var manaPercent = UtilityClass.Player.ManaPercent();
+                var manaPercent = UtilityClass.Player.MPPercent();
                 var minEnemies = MenuClass.Spells["q"]["customization"]["minenemies"];
                 var bestTargetDistanceToPlayer = UtilityClass.Player.Distance(bestTargetQ);
                 var harassManaManager = MenuClass.Spells["q"]["harass"].As<MenuSliderBool>().Value;
@@ -72,14 +73,14 @@ namespace AIO.Champions
             ///     The W Harass Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["harass"]) &&
                 MenuClass.Spells["w"]["harass"].As<MenuSliderBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget) &&
-                    MenuClass.Spells["w"]["whitelist"][bestTarget.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                    MenuClass.Spells["w"]["whitelist"][bestTarget.CharName.ToLower()].As<MenuBool>().Enabled)
                 {
                     SpellClass.W.Cast(bestTarget);
                 }

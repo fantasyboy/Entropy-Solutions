@@ -1,9 +1,9 @@
 ﻿
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,9 +19,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Buildingclear(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Buildingclear(OnPostAttackEventArgs args)
         {
             var target = args.Target;
             if (!target.IsBuilding())
@@ -33,11 +33,11 @@ namespace AIO.Champions
             ///     The E BuildingClear Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["buildings"]) &&
                 MenuClass.Spells["e"]["buildings"].As<MenuSliderBool>().Enabled)
             {
-                SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Game.CursorPos, 25f));
+                SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 25f));
                 return;
             }
 
@@ -45,11 +45,11 @@ namespace AIO.Champions
             ///     The W BuildingClear Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["buildings"]) &&
                 MenuClass.Spells["w"]["buildings"].As<MenuSliderBool>().Enabled)
             {
-                SpellClass.W.Cast(Game.CursorPos);
+                SpellClass.W.Cast(Hud.CursorPositionUnclipped);
             }
         }
 

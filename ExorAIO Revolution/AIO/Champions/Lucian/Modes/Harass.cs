@@ -1,9 +1,10 @@
 
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -19,26 +20,26 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Harass()
+        public void Harass(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Extended Q Mixed Harass Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q2"]["mixed"]) &&
                 MenuClass.Spells["q2"]["mixed"].As<MenuSliderBool>().Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
                     !t.IsValidTarget(SpellClass.Q.Range) &&
-                    MenuClass.Spells["q2"]["whitelist"][t.ChampionName.ToLower()].Enabled))
+                    MenuClass.Spells["q2"]["whitelist"][t.CharName.ToLower()].Enabled))
                 {
                     foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
                     {
-                        if (minion.NetworkId != target.NetworkId &&
-                            QRectangle(minion).IsInside((Vector2)target.ServerPosition))
+                        if (minion.NetworkID != target.NetworkID &&
+                            QRectangle(minion).IsInside((Vector2)target.Position))
                         {
-                            UtilityClass.CastOnUnit(SpellClass.Q, minion);
+                            SpellClass.Q.CastOnUnit(minion);
                             break;
                         }
                     }

@@ -1,10 +1,8 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -20,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The Q KillSteal Logic.
@@ -47,7 +45,7 @@ namespace AIO.Champions
                 {
                     if (IsHoldingForceOfWillObject())
                     {
-                        SpellClass.W.Cast(UtilityClass.Player.ServerPosition.Extend(SpellClass.W.GetPrediction(target).CastPosition, target.BoundingRadius));
+                        SpellClass.W.Cast(UtilityClass.Player.Position.Extend(SpellClass.W.GetPrediction(target).CastPosition, target.BoundingRadius));
                     }
                 }
             }
@@ -61,7 +59,7 @@ namespace AIO.Champions
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.R.Range).Where(t =>
                     GetTotalUnleashedPowerDamage(t) >= t.GetRealHealth()))
                 {
-                    UtilityClass.CastOnUnit(SpellClass.R, target);
+                    SpellClass.R.CastOnUnit(target);
                     break;
                 }
             }

@@ -1,11 +1,12 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
-using Entropy.SDK.Util;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using Entropy.SDK.Utils;
 
 #pragma warning disable 1587
 
@@ -58,9 +59,9 @@ namespace AIO.Champions
         /// </summary>
         /// <param name="sender">The SpellBook.</param>
         /// <param name="args">The <see cref="SpellBookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnCastSpell(Obj_AI_Base sender, SpellBookCastSpellEventArgs args)
+        public void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
-            if (sender.IsMe)
+            if (sender.IsMe())
             {
                 switch (ImplementationClass.IOrbwalker.Mode)
                 {
@@ -104,11 +105,11 @@ namespace AIO.Champions
                 {
                     case "Taliyah_Base_Q_aoe.troy":
                     case "Taliyah_Base_Q_aoe_river.troy":
-                        WorkedGrounds.Add(obj.NetworkId, obj.Position);
+                        WorkedGrounds.Add(obj.NetworkID, screenPos);
                         break;
 
                     case "Taliyah_Base_E_Mines.troy":
-                        MineField.Add(obj.NetworkId, obj.Position);
+                        MineField.Add(obj.NetworkID, screenPos);
                         break;
                 }
             }
@@ -121,14 +122,14 @@ namespace AIO.Champions
         {
             if (obj.IsValid)
             {
-                if (WorkedGrounds.Any(o => o.Key == obj.NetworkId))
+                if (WorkedGrounds.Any(o => o.Key == obj.NetworkID))
                 {
-                    WorkedGrounds.Remove(obj.NetworkId);
+                    WorkedGrounds.Remove(obj.NetworkID);
                 }
 
-                if (MineField.Any(o => o.Key == obj.NetworkId))
+                if (MineField.Any(o => o.Key == obj.NetworkID))
                 {
-                    MineField.Remove(obj.NetworkId);
+                    MineField.Remove(obj.NetworkID);
                 }
             }
         }
@@ -147,16 +148,16 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
                 return;
             }
             
-            if (sender == null || !sender.IsEnemy)
+            if (sender == null || !sender.IsEnemy()())
             {
                 return;
             }
@@ -173,7 +174,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
                 {
                     return;
@@ -183,13 +184,13 @@ namespace AIO.Champions
                 {
                     case Gapcloser.Type.Targeted:
                         if (sender.IsMelee &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
                             SpellClass.W.Cast(args.EndPosition, args.EndPosition.Extend(args.StartPosition, 200f));
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.W.Cast(args.EndPosition, args.EndPosition.Extend(args.StartPosition, sender.IsMelee ? 200f : -200f));
                         }
@@ -208,7 +209,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption2 == null || !spellOption2.As<MenuBool>().Enabled)
                 {
                     return;
@@ -218,13 +219,13 @@ namespace AIO.Champions
                 {
                     case Gapcloser.Type.Targeted:
                         if (sender.IsMelee &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
                             SpellClass.E.Cast(args.StartPosition);
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.E.Cast(args.StartPosition);
                         }
@@ -239,7 +240,7 @@ namespace AIO.Champions
         /// </summary>
         /// <param name="sender">The object.</param>
         /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
+        public void OnInterruptableTarget(Events.InterruptableTargetEventArgs args)
         {
             if (UtilityClass.Player.IsDead || Invulnerable.Check(args.Sender, DamageType.Magical, false))
             {
@@ -249,7 +250,7 @@ namespace AIO.Champions
             if (SpellClass.W.State == SpellState.Ready && args.Sender.IsValidTarget(SpellClass.W.SpellData.Range)
                 && MenuClass.Spells["w"]["interrupter"].As<MenuBool>().Enabled)
             {
-                SpellClass.W.Cast(args.Sender.ServerPosition, UtilityClass.Player.ServerPosition);
+                SpellClass.W.Cast(args.Sender.Position, UtilityClass.Player.Position);
             }
         }
         */
@@ -257,11 +258,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called while processing spellcast operations.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="Obj_AI_BaseMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnPerformCast(Obj_AI_Base sender, Obj_AI_BaseMissileClientDataEventArgs args)
+        
+        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
+        public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            if (sender.IsMe)
+            if (sender.IsMe())
             {
                 switch (args.SpellSlot)
                 {
@@ -303,7 +304,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -313,7 +314,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             if (ImplementationClass.IOrbwalker.IsWindingUp)
             {
@@ -323,7 +324,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -331,14 +332,14 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
-                    Jungleclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
+                    JungleClear(args);
                     break;
             }
         }

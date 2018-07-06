@@ -5,9 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
+
 // ReSharper disable LoopCanBeConvertedToQuery
 
 #pragma warning disable 1587
@@ -44,7 +45,7 @@ namespace AIO.Champions
         ///     Returns true if the target unit can be hit by any feather.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool CanFeathersHitUnit(Obj_AI_Base unit)
+        public bool CanFeathersHitUnit(AIBaseClient unit)
         {
             return CountFeathersHitOnUnit(unit) > 0;
         }
@@ -53,13 +54,13 @@ namespace AIO.Champions
         ///     Returns the number of feathers which can hit the target unit.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public int CountFeathersHitOnUnit(Obj_AI_Base unit)
+        public int CountFeathersHitOnUnit(AIBaseClient unit)
         {
             var hit = 0;
             foreach (var feather in Feathers)
             {
-                var playerToFeatherRectangle = new Vector2Geometry.Rectangle((Vector2)UtilityClass.Player.ServerPosition, (Vector2)feather.Value, SpellClass.E.Width);
-                if (playerToFeatherRectangle.IsInside((Vector2)unit.ServerPosition))
+                var playerToFeatherRectangle = new Vector2Geometry.Rectangle((Vector2)UtilityClass.Player.Position, (Vector2)feather.Value, SpellClass.E.Width);
+                if (playerToFeatherRectangle.IsInside((Vector2)unit.Position))
                 {
                     hit++;
                 }
@@ -81,7 +82,7 @@ namespace AIO.Champions
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <param name="feathers">The number of feathers.</param>
-        public double GetPerfectFeatherDamage(Obj_AI_Base unit, int feathers)
+        public double GetPerfectFeatherDamage(AIBaseClient unit, int feathers)
         {
             double damage = 0;
             double multiplier = 1;
@@ -98,18 +99,18 @@ namespace AIO.Champions
         ///     Returns true if the target is a perfectly valid rend target.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsPerfectFeatherTarget(Obj_AI_Base unit)
+        public bool IsPerfectFeatherTarget(AIBaseClient unit)
         {
             if (unit.IsValidTarget() &&
                 CanFeathersHitUnit(unit))
             {
                 switch (unit.Type)
                 {
-                    case GameObjectType.obj_AI_Minion:
+                    case GameObjectType.AIMinionClient:
                         return true;
 
-                    case GameObjectType.obj_AI_Hero:
-                        return !Invulnerable.Check((Obj_AI_Hero)unit, DamageType.Physical, false);
+                    case GameObjectType.AIHeroClient:
+                        return !Invulnerable.Check((AIHeroClient)unit, DamageType.Physical, false);
                 }
             }
 
@@ -126,7 +127,7 @@ namespace AIO.Champions
                 switch (feather.Name)
                 {
                     case "Xayah_Base_Passive_Dagger_Mark8s":
-                        Feathers.Add(feather.NetworkId, feather.Position);
+                        Feathers.Add(feather.NetworkID, feather.Position);
                         break;
                 }
             }

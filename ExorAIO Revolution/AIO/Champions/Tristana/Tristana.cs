@@ -1,10 +1,11 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -45,9 +46,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on pre attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPreAttack(OnPreAttackEventArgs args)
         {
             /// <summary>
             ///     The Target Forcing Logic.
@@ -56,9 +57,9 @@ namespace AIO.Champions
             {
                 var forceTarget = Extensions.GetAllGenericUnitTargets().FirstOrDefault(t =>
                         IsCharged(t) &&
-                        t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t)));
+                        t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
 
-                if (forceTarget is Obj_AI_Minion &&
+                if (forceTarget is AIMinionClient &&
                     ImplementationClass.IOrbwalker.Mode == OrbwalkingMode.Combo)
                 {
                     return;
@@ -75,10 +76,10 @@ namespace AIO.Champions
                 case OrbwalkingMode.Combo:
                     Combo(sender, args);
                     break;
-                case OrbwalkingMode.Mixed:
+                case OrbwalkingMode.Harass:
                     Harass(sender, args);
                     break;
-                case OrbwalkingMode.Laneclear:
+                case OrbwalkingMode.LaneClear:
                     Laneclear(sender, args);
                     Jungleclear(sender, args);
                     Buildingclear(sender, args);
@@ -100,16 +101,16 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
                 return;
             }
             
-            if (sender == null || !sender.IsEnemy || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee)
             {
                 return;
             }
@@ -125,7 +126,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
                 {
                     return;
@@ -134,10 +135,10 @@ namespace AIO.Champions
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe)
+                        if (args.Target.IsMe())
                         {
-                            var targetPos = UtilityClass.Player.ServerPosition.Extend(args.StartPosition, -SpellClass.W.Range);
-                            if (targetPos.PointUnderEnemyTurret())
+                            var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.W.Range);
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -146,13 +147,13 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        var targetPos2 = UtilityClass.Player.ServerPosition.Extend(args.EndPosition, -SpellClass.W.Range);
-                        if (targetPos2.PointUnderEnemyTurret())
+                        var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.W.Range);
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
 
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.W.Cast(targetPos2);
                         }
@@ -172,7 +173,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption2 == null || !spellOption2.As<MenuBool>().Enabled)
                 {
                     return;
@@ -181,15 +182,15 @@ namespace AIO.Champions
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe)
+                        if (args.Target.IsMe())
                         {
-                            UtilityClass.CastOnUnit(SpellClass.R, sender);
+                            SpellClass.R.CastOnUnit(sender);
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
-                            UtilityClass.CastOnUnit(SpellClass.R, sender);
+                            SpellClass.R.CastOnUnit(sender);
                         }
                         break;
                 }
@@ -200,9 +201,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on interruptable spell.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public void OnInterruptableTarget(object sender, Events.InterruptableTargetEventArgs args)
+        public void OnInterruptableTarget(Events.InterruptableTargetEventArgs args)
         {
             if (UtilityClass.Player.IsDead || Invulnerable.Check(args.Sender, DamageType.Magical, false))
             {
@@ -212,7 +213,7 @@ namespace AIO.Champions
             if (SpellClass.R.State == SpellState.Ready && args.Sender.IsValidTarget(SpellClass.R.SpellData.Range)
                 && MenuClass.Spells["r"]["interrupter"].As<MenuBool>().Enabled)
             {
-                UtilityClass.Player.SpellBook.CastSpell(SpellSlot.R, args.Sender);
+                UtilityClass.Player.Spellbook.CastSpell(SpellSlot.R, args.Sender);
             }
         }
         */
@@ -220,7 +221,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -230,12 +231,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
         }
 
         #endregion

@@ -1,10 +1,11 @@
-
-using System.Drawing;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 #pragma warning disable 1587
 
@@ -34,13 +35,13 @@ namespace AIO.Champions
             /// <summary>
             ///     Loads the Feather linking drawing.
             /// </summary>
-            if (!UtilityClass.Player.SpellBook.GetSpell(SpellSlot.E).State.HasFlag(SpellState.Cooldown) &&
+            if (!UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).State.HasFlag(SpellState.Cooldown) &&
                 MenuClass.Drawings["feathers"].As<MenuBool>().Enabled)
             {
                 foreach (var feather in Feathers)
                 {
                     var drawFeatherPos = feather.Value.FixHeight();
-                    var realFeatherHitbox = new Vector2Geometry.Rectangle((Vector2)UtilityClass.Player.ServerPosition, (Vector2)drawFeatherPos, SpellClass.E.Width);
+                    var realFeatherHitbox = new Vector2Geometry.Rectangle((Vector2)UtilityClass.Player.Position, (Vector2)drawFeatherPos, SpellClass.E.Width);
                     var drawFeatherHitbox = new Vector3Geometry.Rectangle(UtilityClass.Player.Position, drawFeatherPos, SpellClass.E.Width);
 
                     drawFeatherHitbox.Draw(

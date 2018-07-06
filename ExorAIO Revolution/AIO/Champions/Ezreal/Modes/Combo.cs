@@ -1,16 +1,15 @@
 
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+
 #pragma warning disable 1587
 
 namespace AIO.Champions
 {
     using Entropy;
-
-    using Entropy.SDK.Extensions;
     using Utilities;
 
-    using Entropy.SDK.Menu.Components;
-
-    /// <summary>
+	/// <summary>
     ///     The champion class.
     /// </summary>
     internal partial class Ezreal
@@ -18,7 +17,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The W Combo Logic.
@@ -44,7 +43,7 @@ namespace AIO.Champions
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range-100f);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget) &&
-                    !bestTarget.IsValidTarget(UtilityClass.Player.GetFullAttackRange(bestTarget)))
+                    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
                 {
                     SpellClass.Q.Cast(bestTarget);
                 }

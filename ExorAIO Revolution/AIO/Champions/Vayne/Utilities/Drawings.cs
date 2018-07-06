@@ -1,8 +1,7 @@
 
 using System.Drawing;
-using Entropy;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 

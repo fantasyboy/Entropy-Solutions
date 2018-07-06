@@ -1,6 +1,7 @@
 using Entropy;
-using Entropy.SDK.Prediction.Skillshots;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
 using Spell = Entropy.SDK.Spell;
 
 namespace AIO.Champions
@@ -18,7 +19,7 @@ namespace AIO.Champions
         public void Spells()
         {
             SpellClass.Q = new Spell(SpellSlot.Q, 1200f);
-            SpellClass.W = new Spell(SpellSlot.W, UtilityClass.Player.AttackRange+UtilityClass.Player.BoundingRadius);
+            SpellClass.W = new Spell(SpellSlot.W, UtilityClass.Player.GetAutoAttackRange()+UtilityClass.Player.BoundingRadius);
             SpellClass.E = new Spell(SpellSlot.E);
 
             SpellClass.Q.SetSkillshot(0.25f, 90f, 1350f, false, SkillshotType.Line);

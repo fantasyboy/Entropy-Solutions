@@ -1,6 +1,6 @@
-
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -15,7 +15,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Lasthit()
+        public void LastHit(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Force Lasthit Logic. 

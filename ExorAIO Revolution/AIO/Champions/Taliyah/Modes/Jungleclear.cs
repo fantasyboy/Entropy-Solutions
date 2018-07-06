@@ -1,12 +1,13 @@
 ﻿
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
-using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -22,9 +23,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Jungleclear()
+        public void JungleClear(EntropyEventArgs args)
         {
-            var jungleTarget = ObjectManager.Get<Obj_AI_Minion>()
+            var jungleTarget = ObjectManager.Get<AIMinionClient>()
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
                 .MinBy(m => m.Distance(UtilityClass.Player));
             if (jungleTarget == null ||
@@ -40,7 +41,7 @@ namespace AIO.Champions
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
                 UtilityClass.Player.HasItem(ItemId.RylaisCrystalScepter) &&
                 (IsNearWorkedGround() ||
-                 UtilityClass.Player.ManaPercent()
+                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"])) &&
                 MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
@@ -65,7 +66,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.W.Range) &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["jungleclear"]) &&
                 MenuClass.Spells["w"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
@@ -99,7 +100,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.E.Range) &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
                 MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
@@ -113,7 +114,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
                 MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {

@@ -2,10 +2,9 @@
 using System.Drawing;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -91,10 +90,10 @@ namespace AIO.Champions
                     var barLength = 0;
                     if (unitHealth > totalDamage)
                     {
-                        barLength = (int)(width * ((unitHealth - totalDamage) / hero.MaxHealth * 100 / 100));
+                        barLength = (int)(width * ((unitHealth - totalDamage) / hero.MaxHP * 100 / 100));
                     }
 
-                    var drawEndXPos = barPos.X + width * (hero.HealthPercent() / 100);
+                    var drawEndXPos = barPos.X + width * (hero.HPPercent() / 100);
                     var drawStartXPos = barPos.X + barLength;
 
                     Render.Line(drawStartXPos, barPos.Y, drawEndXPos, barPos.Y, height, true, unitHealth < totalDamage ? Color.Blue : Color.Orange);

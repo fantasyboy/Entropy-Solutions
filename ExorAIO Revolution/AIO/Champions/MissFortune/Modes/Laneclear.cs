@@ -1,11 +1,10 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -21,26 +20,26 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Laneclear()
+        public void LaneClear(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q Laneclear Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
                 var bestMinion = Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
-                    .Where(m => m.Health < UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q))
+                    .Where(m => m.HP < UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q))
                     .FirstOrDefault(m => Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q2.Range)
                      .Any(m2 =>
-                        m2.NetworkId != m.NetworkId &&
-                        QCone(m).IsInside((Vector2)m2.ServerPosition) &&
-                        m2.Health < UtilityClass.Player.GetSpellDamage(m2, SpellSlot.Q, DamageStage.Empowered) + GetMinionLoveTapDamageMultiplier()));
+                        m2.NetworkID != m.NetworkID &&
+                        QCone(m).IsInside((Vector2)m2.Position) &&
+                        m2.HP < UtilityClass.Player.GetSpellDamage(m2, SpellSlot.Q, DamageStage.Empowered) + GetMinionLoveTapDamageMultiplier()));
                 if (bestMinion != null)
                 {
-                    UtilityClass.CastOnUnit(SpellClass.Q, bestMinion);
+                    SpellClass.Q.CastOnUnit(bestMinion);
                 }
             }
 
@@ -48,11 +47,11 @@ namespace AIO.Champions
             ///     The Laneclear W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["laneclear"]) &&
                 MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                if (Extensions.GetEnemyLaneMinionsTargetsInRange(UtilityClass.Player.AttackRange).Any())
+                if (Extensions.GetEnemyLaneMinionsTargetsInRange(UtilityClass.Player.GetAutoAttackRange()).Any())
                 {
                     SpellClass.W.Cast();
                 }
@@ -62,7 +61,7 @@ namespace AIO.Champions
             ///     The Laneclear E Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
                 MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
             {

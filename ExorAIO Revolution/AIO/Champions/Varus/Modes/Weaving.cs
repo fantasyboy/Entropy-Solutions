@@ -1,8 +1,8 @@
 
 using Entropy;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -18,11 +18,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Weaving(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Weaving(OnPostAttackEventArgs args)
         {
-            var heroTarget = args.Target as Obj_AI_Hero;
+            var heroTarget = args.Target as AIHeroClient;
             if (heroTarget == null)
             {
                 return;
@@ -35,7 +35,7 @@ namespace AIO.Champions
                 !Invulnerable.Check(heroTarget) &&
                 MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
             {
-                if (UtilityClass.Player.SpellBook.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned) ||
+                if (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned) ||
                     GetBlightStacks(heroTarget) >= MenuClass.Spells["e"]["customization"]["combostacks"].As<MenuSlider>().Value - 1)
                 {
                     SpellClass.E.Cast(heroTarget);
@@ -49,10 +49,10 @@ namespace AIO.Champions
                 !Invulnerable.Check(heroTarget) &&
                 MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
             {
-                if (UtilityClass.Player.SpellBook.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned) ||
+                if (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned) ||
                     GetBlightStacks(heroTarget) >= MenuClass.Spells["q"]["customization"]["combostacks"].As<MenuSlider>().Value - 1)
                 {
-                    SpellClass.Q.StartCharging(heroTarget.ServerPosition);
+                    SpellClass.Q.StartCharging(heroTarget.Position);
                 }
             }
         }

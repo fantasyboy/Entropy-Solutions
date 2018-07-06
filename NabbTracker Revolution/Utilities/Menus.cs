@@ -1,6 +1,5 @@
-﻿
-using Entropy.SDK.Menu;
-using Entropy.SDK.Menu.Components;
+﻿using Aimtec.SDK.Menu;
+using Aimtec.SDK.Menu.Components;
 
 #pragma warning disable 1587
 

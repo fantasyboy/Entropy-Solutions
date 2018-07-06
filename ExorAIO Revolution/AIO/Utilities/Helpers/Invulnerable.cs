@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
+using Entropy.SDK.Extensions.Objects;
 
 namespace AIO.Utilities
 {
@@ -100,19 +100,19 @@ namespace AIO.Utilities
         /// <param name="damage">The damage.</param>
         /// <returns></returns>
         public static bool Check(
-            Obj_AI_Hero hero,
+            AIHeroClient hero,
             DamageType damageType = DamageType.True,
             bool ignoreShields = true,
             float damage = -1f)
         {
-            if (hero.ValidActiveBuffs().Any(b => b.Type == BuffType.Invulnerability))
+            if (hero.GetActiveBuffs().Any(b => b.Type == BuffType.Invulnerability))
             {
                 return true;
             }
 
             foreach (var entry in Entries)
             {
-                if (entry.ChampionName == null || entry.ChampionName == hero.ChampionName)
+                if (entry.ChampionName == null || entry.ChampionName == hero.CharName)
                 {
                     if (entry.DamageType == null || entry.DamageType == damageType)
                     {
@@ -122,7 +122,7 @@ namespace AIO.Utilities
                             {
                                 if (entry.CheckFunction == null || ExecuteCheckFunction(entry, hero, damageType))
                                 {
-                                    if (entry.MinHealthPercent <= 0 || hero.HealthPercent() < entry.MinHealthPercent)
+                                    if (entry.MinHealthPercent <= 0 || hero.HPPercent() < entry.MinHealthPercent)
                                     {
                                         return true;
                                     }
@@ -184,7 +184,7 @@ namespace AIO.Utilities
         /// <param name="hero">The target.</param>
         /// <param name="damageType">Type of the damage.</param>
         /// <returns></returns>
-        private static bool ExecuteCheckFunction(InvulnerableEntry entry, Obj_AI_Hero hero, DamageType damageType)
+        private static bool ExecuteCheckFunction(InvulnerableEntry entry, AIHeroClient hero, DamageType damageType)
         {
             return entry != null && entry.CheckFunction(hero, damageType);
         }
@@ -234,7 +234,7 @@ namespace AIO.Utilities
         /// <value>
         ///     The check function.
         /// </value>
-        public Func<Obj_AI_Base, DamageType, bool> CheckFunction { get; set; }
+        public Func<AIBaseClient, DamageType, bool> CheckFunction { get; set; }
 
         /// <summary>
         ///     Gets or sets the type of the damage.
@@ -252,14 +252,14 @@ namespace AIO.Utilities
         /// </value>
         public bool IsShield { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the minimum health percent.
-        /// </summary>
-        /// <value>
-        ///     The minimum health percent.
-        /// </value>
-        public int MinHealthPercent { get; set; }
+	    /// <summary>
+	    ///     Gets or sets the minimum health percent.
+	    /// </summary>
+	    /// <value>
+	    ///     The minimum health percent.
+	    /// </value>
+	    public int MinHealthPercent { get; set; }
 
-        #endregion
+	    #endregion
     }
 }

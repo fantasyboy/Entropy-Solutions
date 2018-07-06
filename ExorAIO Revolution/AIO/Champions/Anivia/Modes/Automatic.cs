@@ -1,9 +1,10 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
             if (UtilityClass.Player.IsRecalling())
             {
@@ -34,7 +35,7 @@ namespace AIO.Champions
                 UtilityClass.Player.IsTearLikeItemReady() &&
                 MenuClass.Miscellaneous["tear"].As<MenuBool>().Value)
             {
-                SpellClass.R.Cast(UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, SpellClass.R.Range));
+                SpellClass.R.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, SpellClass.R.Range));
             }
 
             /// <summary>
@@ -48,8 +49,8 @@ namespace AIO.Champions
                     t.Distance(UtilityClass.Player) < SpellClass.W.Range))
                 {
                     SpellClass.W.Cast(
-                        UtilityClass.Player.ServerPosition.Extend(
-                            target.ServerPosition,
+                        UtilityClass.Player.Position.Extend(
+                            target.Position,
                             UtilityClass.Player.Distance(target) + target.BoundingRadius/2));
                 }
             }

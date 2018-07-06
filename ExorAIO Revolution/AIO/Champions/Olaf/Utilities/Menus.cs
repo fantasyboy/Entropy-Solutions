@@ -1,8 +1,8 @@
 
 using System.Linq;
-using Entropy.SDK.Menu;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -55,7 +55,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList.Add(new MenuBool(target.ChampionName.ToLower(), "Harass: " + target.ChampionName));
+                                MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
                         }
                         MenuClass.Q.Add(MenuClass.WhiteList);
@@ -87,7 +87,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList2.Add(new MenuBool(target.ChampionName.ToLower(), "Harass: " + target.ChampionName));
+                                MenuClass.WhiteList2.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
                         }
                         MenuClass.W.Add(MenuClass.WhiteList2);
@@ -119,7 +119,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList2.Add(new MenuBool(target.ChampionName.ToLower(), "Harass: " + target.ChampionName));
+                                MenuClass.WhiteList2.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
                         }
                         MenuClass.E.Add(MenuClass.WhiteList2);

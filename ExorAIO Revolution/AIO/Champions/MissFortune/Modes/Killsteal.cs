@@ -1,10 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -20,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The Q Killsteal Logics.
@@ -32,7 +31,7 @@ namespace AIO.Champions
                     foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
                         .Where(t => GetRealMissFortuneDamage(UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q), t) >= t.GetRealHealth()))
                     {
-                        UtilityClass.CastOnUnit(SpellClass.Q, target);
+                        SpellClass.Q.CastOnUnit(target);
                         break;
                     }
                 }
@@ -42,8 +41,8 @@ namespace AIO.Champions
                     foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range))
                     {
                         var unitsToIterate = Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range)
-                            .Where(m => !m.IsMoving && QCone(m).IsInside((Vector2)target.ServerPosition))
-                            .OrderBy(m => m.Health)
+                            .Where(m => !m.IsMoving && QCone(m).IsInside((Vector2)target.Position))
+                            .OrderBy(m => m.HP)
                             .ToList();
 
                         var killableUnitsToIterate = unitsToIterate
@@ -56,7 +55,7 @@ namespace AIO.Champions
                             var damageToMinion = GetRealMissFortuneDamage(UtilityClass.Player.GetSpellDamage(minion, SpellSlot.Q), minion);
                             if (target.GetRealHealth() < GetRealMissFortuneDamage(UtilityClass.Player.GetSpellDamage(target, SpellSlot.Q, damageToMinion >= minion.GetRealHealth() ? DamageStage.Empowered : DamageStage.Default), target))
                             {
-                                UtilityClass.CastOnUnit(SpellClass.Q, minion);
+                                SpellClass.Q.CastOnUnit(minion);
                                 break;
                             }
                         }

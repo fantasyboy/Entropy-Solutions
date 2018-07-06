@@ -58,17 +58,17 @@ namespace AIO.Utilities
         /// <summary>
         ///     The default enemy HP bar x offset.
         /// </summary>
-        public static int SxOffset(Obj_AI_Hero target)
+        public static int SxOffset(AIHeroClient target)
         {
-            return SpecialChampions.Contains(target.ChampionName) ? 33 : 30;
+            return SpecialChampions.Contains(target.CharName) ? 33 : 30;
         }
 
         /// <summary>
         ///     The default enemy HP bar y offset.
         /// </summary>
-        public static int SyOffset(Obj_AI_Hero target)
+        public static int SyOffset(AIHeroClient target)
         {
-            return SpecialChampions.Contains(target.ChampionName) ? 7 : 2;
+            return SpecialChampions.Contains(target.CharName) ? 7 : 2;
         }
 
         #endregion

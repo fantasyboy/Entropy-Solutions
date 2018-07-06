@@ -1,11 +1,9 @@
-﻿
-using System.Linq;
-using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
+﻿using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -21,11 +19,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Jungleclear(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Jungleclear(OnPostAttackEventArgs args)
         {
-            var jungleTarget = args.Target as Obj_AI_Minion;
+            var jungleTarget = args.Target as AIMinionClient;
             if (!jungleTarget.IsValidTarget() ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget))
             {
@@ -36,11 +34,11 @@ namespace AIO.Champions
             ///     The Jungleclear Q Logics.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
                 MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
-                UtilityClass.CastOnUnit(SpellClass.Q, jungleTarget);
+                SpellClass.Q.CastOnUnit(jungleTarget);
             }
 
             if (jungleTarget?.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
@@ -52,7 +50,7 @@ namespace AIO.Champions
             ///     The Jungleclear E Logics.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
                 MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
@@ -63,11 +61,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void Jungleclear(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void Jungleclear(OnPreAttackEventArgs args)
         {
-            var jungleTarget = args.Target as Obj_AI_Minion;
+            var jungleTarget = args.Target as AIMinionClient;
             if (!HasFourthShot() ||
                 !jungleTarget.IsValidTarget() ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget))
@@ -79,11 +77,11 @@ namespace AIO.Champions
             ///     The Jungleclear Q Logics.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
                 MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
-                UtilityClass.CastOnUnit(SpellClass.Q, jungleTarget);
+                SpellClass.Q.CastOnUnit(jungleTarget);
             }
 
             if (jungleTarget?.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
@@ -95,7 +93,7 @@ namespace AIO.Champions
             ///     The Jungleclear E Logics.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
                 MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
@@ -106,9 +104,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Jungleclear()
+        public void JungleClear(EntropyEventArgs args)
         {
-            var jungleTarget = ObjectManager.Get<Obj_AI_Minion>().FirstOrDefault(m => Extensions.GetGenericJungleMinionsTargets().Contains(m));
+            var jungleTarget = ObjectManager.Get<AIMinionClient>().FirstOrDefault(m => Extensions.GetGenericJungleMinionsTargets().Contains(m));
             if (jungleTarget == null)
             {
                 return;
@@ -119,11 +117,11 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
                 MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {
-                UtilityClass.CastOnUnit(SpellClass.Q, jungleTarget);
+                SpellClass.Q.CastOnUnit(jungleTarget);
             }
 
             if (jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
@@ -136,7 +134,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.E.Range) &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
                 MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
             {

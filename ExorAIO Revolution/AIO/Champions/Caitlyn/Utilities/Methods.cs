@@ -19,7 +19,7 @@ namespace AIO.Champions
             SpellBook.OnCastSpell += OnCastSpell;
             Render.OnPresent += OnPresent;
             ImplementationClass.IOrbwalker.PostAttack += OnPostAttack;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+            AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Gapcloser.OnGapcloser += OnGapcloser;
 
             //Events.OnInterruptableTarget += OnInterruptableTarget;

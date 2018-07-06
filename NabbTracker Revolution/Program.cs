@@ -1,6 +1,6 @@
 ﻿using System;
-using Entropy;
-using Entropy.SDK.Events;
+using Aimtec;
+using Aimtec.SDK.Events;
 
 namespace NabbTracker
 {

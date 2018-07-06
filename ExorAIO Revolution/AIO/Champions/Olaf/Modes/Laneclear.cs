@@ -1,11 +1,10 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -21,15 +20,15 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void Laneclear(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void Laneclear(OnPreAttackEventArgs args)
         {
             /// <summary>
             ///     The Laneclear Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
@@ -49,10 +48,10 @@ namespace AIO.Champions
                 MenuClass.Spells["e"]["lasthit"].As<MenuBool>().Enabled)
             {
                 foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Where(m =>
-                    (m.UnitSkinName.Contains("Siege") || m.UnitSkinName.Contains("Super")) &&
+                    (m.CharName.Contains("Siege") || m.CharName.Contains("Super")) &&
                     m.GetRealHealth() < UtilityClass.Player.GetSpellDamage(m, SpellSlot.E)))
                 {
-                    UtilityClass.CastOnUnit(SpellClass.E, minion);
+                    SpellClass.E.CastOnUnit(minion);
                 }
             }
 
@@ -60,11 +59,11 @@ namespace AIO.Champions
             ///     The Laneclear W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                 > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["w"]["laneclear"]) &&
                 MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                var mainMinion = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as Obj_AI_Minion;
+                var mainMinion = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIMinionClient;
                 if (mainMinion != null)
                 {
                     SpellClass.W.Cast();

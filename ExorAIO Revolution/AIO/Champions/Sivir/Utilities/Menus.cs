@@ -1,8 +1,8 @@
 
 using System.Linq;
-using Entropy.SDK.Menu;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -55,7 +55,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList.Add(new MenuBool(target.ChampionName.ToLower(), "Harass: " + target.ChampionName));
+                                MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
                         }
                         MenuClass.Q.Add(MenuClass.WhiteList);
@@ -97,7 +97,7 @@ namespace AIO.Champions
                         {
                             foreach (var target in GameObjects.EnemyHeroes)
                             {
-                                MenuClass.WhiteList2.Add(new MenuBool(target.ChampionName.ToLower(), "Harass: " + target.ChampionName));
+                                MenuClass.WhiteList2.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
                         }
                         MenuClass.W.Add(MenuClass.WhiteList2);
@@ -124,52 +124,52 @@ namespace AIO.Champions
                             MenuClass.WhiteList.Add(new MenuBool("minions", "Shield: Dragon's Attacks"));
                             foreach (var enemy in GameObjects.EnemyHeroes)
                             {
-                                if (enemy.ChampionName.Equals("Alistar"))
+                                if (enemy.CharName.Equals("Alistar"))
                                 {
                                     MenuClass.WhiteList.Add(
                                         new MenuBool(
-                                            $"{enemy.ChampionName.ToLower()}.pulverize",
-                                            $"Shield: {enemy.ChampionName}'s Pulverize (Q)"));
+                                            $"{enemy.CharName.ToLower()}.pulverize",
+                                            $"Shield: {enemy.CharName}'s Pulverize (Q)"));
                                 }
-                                if (enemy.ChampionName.Equals("Braum"))
+                                if (enemy.CharName.Equals("Braum"))
                                 {
                                     MenuClass.WhiteList.Add(
                                         new MenuBool(
-                                            $"{enemy.ChampionName.ToLower()}.passive",
-                                            $"Shield: {enemy.ChampionName}'s Passive"));
+                                            $"{enemy.CharName.ToLower()}.passive",
+                                            $"Shield: {enemy.CharName}'s Passive"));
                                 }
-                                if (enemy.ChampionName.Equals("Jax"))
+                                if (enemy.CharName.Equals("Jax"))
                                 {
                                     MenuClass.WhiteList.Add(
                                         new MenuBool(
-                                            $"{enemy.ChampionName.ToLower()}.jaxcounterstrike",
-                                            $"Shield: {enemy.ChampionName}'s JaxCounterStrike (E)"));
+                                            $"{enemy.CharName.ToLower()}.jaxcounterstrike",
+                                            $"Shield: {enemy.CharName}'s JaxCounterStrike (E)"));
                                 }
-                                if (enemy.ChampionName.Equals("KogMaw"))
+                                if (enemy.CharName.Equals("KogMaw"))
                                 {
                                     MenuClass.WhiteList.Add(
                                         new MenuBool(
-                                            $"{enemy.ChampionName.ToLower()}.kogmawicathiansurprise",
-                                            $"Shield: {enemy.ChampionName}'s KogMawIcathianSurprise (Passive)"));
+                                            $"{enemy.CharName.ToLower()}.kogmawicathiansurprise",
+                                            $"Shield: {enemy.CharName}'s KogMawIcathianSurprise (Passive)"));
                                 }
-                                if (enemy.ChampionName.Equals("Nautilus"))
+                                if (enemy.CharName.Equals("Nautilus"))
                                 {
                                     MenuClass.WhiteList.Add(
                                         new MenuBool(
-                                            $"{enemy.ChampionName.ToLower()}.nautilusravagestrikeattack",
-                                            $"Shield: {enemy.ChampionName}'s NautilusRavageStrikeAttack (Passive)"));
+                                            $"{enemy.CharName.ToLower()}.nautilusravagestrikeattack",
+                                            $"Shield: {enemy.CharName}'s NautilusRavageStrikeAttack (Passive)"));
                                 }
-                                if (enemy.ChampionName.Equals("Udyr"))
+                                if (enemy.CharName.Equals("Udyr"))
                                 {
                                     MenuClass.WhiteList.Add(
                                         new MenuBool(
-                                            $"{enemy.ChampionName.ToLower()}.udyrbearattack",
-                                            $"Shield: {enemy.ChampionName}'s UdyrBearAttack (E)"));
+                                            $"{enemy.CharName.ToLower()}.udyrbearattack",
+                                            $"Shield: {enemy.CharName}'s UdyrBearAttack (E)"));
                                 }
                             }
                         }
 
-                        if (GameObjects.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.ChampionName == spell.ChampionName)))
+                        if (GameObjects.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                         {
                             /// <summary>
                             ///     Sets the menu for the Anti-Gapcloser E.
@@ -181,17 +181,17 @@ namespace AIO.Champions
                                 MenuClass.E.Add(MenuClass.Gapcloser);
 
                                 foreach (var enemy in GameObjects.EnemyHeroes.Where(x => Gapcloser.Spells.Any(spell =>
-                                    x.ChampionName == spell.ChampionName &&
+                                    x.CharName == spell.ChampionName &&
                                     spell.SpellType == Gapcloser.Type.Targeted)))
                                 {
-                                    MenuClass.SubGapcloser = new Menu(enemy.ChampionName.ToLower(), enemy.ChampionName);
+                                    MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
                                     {
                                         foreach (var spell in Gapcloser.Spells.Where(x =>
-                                            x.ChampionName == enemy.ChampionName &&
+                                            x.CharName == enemy.CharName &&
                                             x.SpellType == Gapcloser.Type.Targeted))
                                         {
                                             MenuClass.SubGapcloser.Add(new MenuBool(
-                                                $"{enemy.ChampionName.ToLower()}.{spell.SpellName.ToLower()}",
+                                                $"{enemy.CharName.ToLower()}.{spell.SpellName.ToLower()}",
                                                 $"Slot: {spell.Slot} ({spell.SpellName})"));
                                         }
                                     }

@@ -1,6 +1,4 @@
-﻿
-using Entropy;
-using AIO.Utilities;
+﻿using AIO.Utilities;
 
 #pragma warning disable 1587
 namespace AIO

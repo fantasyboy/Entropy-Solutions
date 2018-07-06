@@ -1,9 +1,8 @@
 ﻿
 using System;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -28,12 +27,12 @@ namespace AIO.Champions
         ///     Gets the real Damage the R spell would deal to a determined enemy hero.
         /// </summary>
         /// <param name="target">The target.</param>
-        public double GetTotalLivingArtilleryDamage(Obj_AI_Hero target)
+        public double GetTotalLivingArtilleryDamage(AIHeroClient target)
         {
-            var missingHealth = Math.Min(60, 100 / target.HealthPercent());
+            var missingHealth = Math.Min(60, 100 / target.HPPercent());
             var damage = UtilityClass.Player.GetSpellDamage(target, SpellSlot.R) * (1 + 0.833 * missingHealth / 100);
 
-            return damage * (target.HealthPercent() < 40 ? 2 : 1);
+            return damage * (target.HPPercent() < 40 ? 2 : 1);
         }
 
         #endregion

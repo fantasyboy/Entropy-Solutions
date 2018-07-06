@@ -1,4 +1,4 @@
-﻿using Entropy.SDK;
+﻿using Entropy.SDK.Spells;
 
 namespace AIO.Utilities
 {

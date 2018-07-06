@@ -1,4 +1,4 @@
-﻿using Entropy.SDK.Menu;
+﻿using Aimtec.SDK.Menu;
 
 namespace NabbTracker
 {

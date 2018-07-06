@@ -1,8 +1,9 @@
 
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -18,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Engager Logic.
@@ -29,12 +30,12 @@ namespace AIO.Champions
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.E.Range);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget) &&
-                    !bestTarget.IsValidTarget(UtilityClass.Player.GetFullAttackRange(bestTarget)))
+                    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
                 {
-                    var posAfterE = UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, 425f);
+                    var posAfterE = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 425f);
                     if (posAfterE.CountEnemyHeroesInRange(1000f) < 3 &&
-                        UtilityClass.Player.Distance(Game.CursorPos) > UtilityClass.Player.AttackRange &&
-                        bestTarget.Distance(posAfterE) < UtilityClass.Player.GetFullAttackRange(bestTarget))
+                        UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) > UtilityClass.Player.GetAutoAttackRange() &&
+                        bestTarget.Distance(posAfterE) < UtilityClass.Player.GetAutoAttackRange(bestTarget))
                     {
                         SpellClass.E.Cast(posAfterE);
                     }

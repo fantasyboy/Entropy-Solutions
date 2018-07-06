@@ -1,9 +1,10 @@
 
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -44,11 +45,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on non killable minion.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="NonKillableMinionEventArgs" /> instance containing the event data.</param>
-        public void OnNonKillableMinion(object sender, NonKillableMinionEventArgs args)
+        public void OnNonKillableMinion(NonKillableMinionEventArgs args)
         {
-            var minion = (Obj_AI_Minion)args.Target;
+            var minion = (AIMinionClient)args.Target;
             if (minion == null)
             {
                 return;
@@ -59,18 +60,18 @@ namespace AIO.Champions
             /// </summary>
             switch (ImplementationClass.IOrbwalker.Mode)
             {
-                case OrbwalkingMode.Laneclear:
-                case OrbwalkingMode.Lasthit:
-                case OrbwalkingMode.Mixed:
+                case OrbwalkingMode.LaneClear:
+                case OrbwalkingMode.LastHit:
+                case OrbwalkingMode.Harass:
                     if (SpellClass.E.Ready &&
                         minion.IsValidTarget(SpellClass.E.Range) &&
-                        UtilityClass.Player.ManaPercent()
+                        UtilityClass.Player.MPPercent()
                             > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["lasthitunk"]) &&
                         MenuClass.Spells["e"]["lasthitunk"].As<MenuSliderBool>().Enabled)
                     {
                         if (minion.GetRealHealth() <= GetFrostBiteDamage(minion))
                         {
-                            UtilityClass.CastOnUnit(SpellClass.E, minion);
+                            SpellClass.E.CastOnUnit(minion);
                         }
                     }
                     break;
@@ -129,9 +130,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -144,12 +145,12 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy)
+            if (sender == null || !sender.IsEnemy()())
             {
                 return;
             }
 
-            var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+            var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
             if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
             {
                 return;
@@ -164,15 +165,15 @@ namespace AIO.Champions
                 {
                     case Gapcloser.Type.Targeted:
                         if (sender.IsMelee &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
-                            SpellClass.W.Cast(UtilityClass.Player.ServerPosition.Extend(args.StartPosition, UtilityClass.Player.BoundingRadius));
+                            SpellClass.W.Cast(UtilityClass.Player.Position.Extend(args.StartPosition, UtilityClass.Player.BoundingRadius));
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= SpellClass.W.Range)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.W.Range)
                         {
-                            SpellClass.W.Cast(sender.ServerPosition.Extend(args.EndPosition, sender.BoundingRadius));
+                            SpellClass.W.Cast(sender.Position.Extend(args.EndPosition, sender.BoundingRadius));
                         }
                         break;
                 }
@@ -182,7 +183,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -192,12 +193,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -205,16 +206,16 @@ namespace AIO.Champions
             switch (Orbwalker.Implementation.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
                     break;
-                case OrbwalkingMode.Lasthit:
-                    Lasthit();
+                case OrbwalkingMode.LastHit:
+                    LastHit(args);
                     break;
             }
         }

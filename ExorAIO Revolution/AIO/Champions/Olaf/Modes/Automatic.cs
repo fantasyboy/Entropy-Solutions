@@ -1,8 +1,8 @@
 
 using System.Linq;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
             if (UtilityClass.Player.IsRecalling())
             {
@@ -31,7 +31,7 @@ namespace AIO.Champions
             if (SpellClass.R.Ready &&
                 MenuClass.Spells["r"]["logical"].As<MenuSliderBool>().Enabled)
             {
-                if (UtilityClass.Player.ValidActiveBuffs().Any(b =>
+                if (UtilityClass.Player.GetActiveBuffs().Any(b =>
                         b.IsHardCC() &&
                         b.GetRemainingBuffTime() >= MenuClass.Spells["r"]["logical"].As<MenuSliderBool>().Value/1000f))
                 {

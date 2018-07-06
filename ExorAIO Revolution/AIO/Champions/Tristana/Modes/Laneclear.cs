@@ -1,10 +1,11 @@
 ﻿
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -20,15 +21,15 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void Laneclear(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void Laneclear(OnPreAttackEventArgs args)
         {
             /// <summary>
             ///     The Laneclear E Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
                 MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
@@ -40,11 +41,11 @@ namespace AIO.Champions
 
                 if (idealMinion != null)
                 {
-                    UtilityClass.CastOnUnit(SpellClass.E, idealMinion);
+                    SpellClass.E.CastOnUnit(idealMinion);
                 }
             }
 
-            var minionTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as Obj_AI_Minion;
+            var minionTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIMinionClient;
             if (minionTarget == null ||
                 !Extensions.GetEnemyLaneMinionsTargets().Contains(minionTarget))
             {

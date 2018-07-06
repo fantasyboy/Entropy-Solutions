@@ -1,15 +1,16 @@
 ﻿// ReSharper disable ArrangeMethodOrOperatorBody
 // ReSharper disable InconsistentNaming
 
+using Entropy.SDK;
+using Entropy.SDK.Predictions;
+
 #pragma warning disable 1587
 
 namespace AIO.Utilities
 {
     using Entropy.SDK.Orbwalking;
-    using Entropy.SDK.Prediction.Health;
-    using Entropy.SDK.TargetSelector;
 
-    /// <summary>
+	/// <summary>
     ///     The Implementation class.
     /// </summary>
     internal static class ImplementationClass

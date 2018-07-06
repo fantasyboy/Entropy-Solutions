@@ -1,8 +1,7 @@
-
-using Entropy;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -17,11 +16,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on post attack.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void Combo(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void Combo(OnPreAttackEventArgs args)
         {
-            var heroTarget = args.Target as Obj_AI_Hero;
+            var heroTarget = args.Target as AIHeroClient;
             if (heroTarget == null)
             {
                 return;
@@ -41,9 +40,9 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled &&
-                MenuClass.Spells["e"]["whitelist"][heroTarget.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                MenuClass.Spells["e"]["whitelist"][heroTarget.CharName.ToLower()].As<MenuBool>().Enabled)
             {
-                UtilityClass.CastOnUnit(SpellClass.E, heroTarget);
+                SpellClass.E.CastOnUnit(heroTarget);
             }
         }
 

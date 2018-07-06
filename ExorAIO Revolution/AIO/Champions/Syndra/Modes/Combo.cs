@@ -1,9 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q Combo Logic.
@@ -52,13 +52,13 @@ namespace AIO.Champions
                             obj.IsValid &&
                             obj.Distance(UtilityClass.Player) < SpellClass.W.Range)
                         {
-                            UtilityClass.CastOnUnit(SpellClass.W, obj);
+                            SpellClass.W.CastOnUnit(obj);
                             return;
                         }
                     }
                     else
                     {
-                        SpellClass.W.Cast(bestTarget.ServerPosition);
+                        SpellClass.W.Cast(bestTarget.Position);
                     }
                 }
             }
@@ -70,14 +70,14 @@ namespace AIO.Champions
                 MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
             {
                 foreach (var target in Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.E.Range).Where(t =>
-                    MenuClass.Spells["e"]["whitelist"][t.ChampionName.ToLower()].As<MenuBool>().Enabled))
+                    MenuClass.Spells["e"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled))
                 {
                     foreach (var sphere in DarkSpheres.Where(s =>
                         CanSphereHitUnit(target, s) &&
-                        s.Key != HoldedSphere?.NetworkId))
+                        s.Key != HoldedSphere?.NetworkID))
                     {
                         SelectedDarkSphereNetworkId = sphere.Key;
-                        SpellClass.E.Cast(target.ServerPosition);
+                        SpellClass.E.Cast(target.Position);
                     }
                 }
             }

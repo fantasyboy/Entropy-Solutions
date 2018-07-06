@@ -1,8 +1,7 @@
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -17,13 +16,13 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Lasthit()
+        public void LastHit(EntropyEventArgs args)
         {
             /// <summary>
             ///     The LastHit Q Logics.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["lasthit"]) &&
                 MenuClass.Spells["q"]["lasthit"].As<MenuSliderBool>().Enabled)
             {
@@ -37,7 +36,7 @@ namespace AIO.Champions
                 {
                     if (minion.GetRealHealth() <= UtilityClass.Player.GetSpellDamage(minion, SpellSlot.Q))
                     {
-                        UtilityClass.CastOnUnit(SpellClass.Q, minion);
+                        SpellClass.Q.CastOnUnit(minion);
                     }
                 }
             }

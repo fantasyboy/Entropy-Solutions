@@ -1,9 +1,10 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -19,10 +20,10 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
-            SpellClass.W.Range = 610 + 20 * SpellClass.W.Level;
-            SpellClass.R.Range = 900f + 300f * SpellClass.R.Level;
+            SpellClass.W.Range = 610 + 20 * SpellClass.W.Level();
+            SpellClass.R.Range = 900f + 300f * SpellClass.R.Level();
 
             if (UtilityClass.Player.IsRecalling())
             {
@@ -40,7 +41,7 @@ namespace AIO.Champions
                     t.IsImmobile(SpellClass.Q.Delay) &&
                     t.Distance(UtilityClass.Player) < SpellClass.Q.Range))
                 {
-                    SpellClass.Q.Cast(target.ServerPosition);
+                    SpellClass.Q.Cast(target.Position);
                 }
             }
 
@@ -55,7 +56,7 @@ namespace AIO.Champions
                     !Invulnerable.Check(t, DamageType.Magical, false) &&
                     t.Distance(UtilityClass.Player) < SpellClass.E.Range))
                 {
-                    SpellClass.E.Cast(target.ServerPosition);
+                    SpellClass.E.Cast(target.Position);
                 }
             }
         }

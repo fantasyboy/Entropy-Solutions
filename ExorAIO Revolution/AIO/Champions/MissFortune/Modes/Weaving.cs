@@ -1,8 +1,7 @@
-
-using Entropy;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -18,11 +17,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Weaving(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Weaving(OnPostAttackEventArgs args)
         {
-            var heroTarget = args.Target as Obj_AI_Hero;
+            var heroTarget = args.Target as AIHeroClient;
             if (heroTarget == null)
             {
                 return;
@@ -34,7 +33,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
             {
-                UtilityClass.CastOnUnit(SpellClass.Q, heroTarget);
+                SpellClass.Q.CastOnUnit(heroTarget);
             }
 
             /// <summary>

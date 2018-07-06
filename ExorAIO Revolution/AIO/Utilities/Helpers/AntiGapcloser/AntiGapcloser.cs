@@ -1,4 +1,5 @@
-﻿using Entropy.SDK.Menu;
+﻿using Entropy.SDK.UI;
+using SharpDX;
 
 namespace AIO.Utilities
 {
@@ -7,9 +8,8 @@ namespace AIO.Utilities
     using System.Linq;
 
     using Entropy;
-    using Entropy.SDK.Extensions;
 
-    public static class Gapcloser
+	public static class Gapcloser
     {
         #region Static Fields
 
@@ -26,7 +26,7 @@ namespace AIO.Utilities
 
         #region Delegates
 
-        public delegate void OnGapcloserEvent(Obj_AI_Hero target, GapcloserArgs args);
+        public delegate void OnGapcloserEvent(AIHeroClient target, GapcloserArgs args);
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace AIO.Utilities
             InitSpells();
 
             Game.OnUpdate += OnUpdate;
-            Obj_AI_Base.OnProcessSpellCast += OnProcessSpellCast;
+            AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
         }
 
         private static void InitSpells()
@@ -935,7 +935,7 @@ namespace AIO.Utilities
             */
         }
 
-        private static void OnUpdate()
+        private static void OnUpdate(EntropyEventArgs args)
         {
             if (OnGapcloser == null)
             {
@@ -953,9 +953,9 @@ namespace AIO.Utilities
             }
         }
 
-        private static void OnProcessSpellCast(Obj_AI_Base sender, Obj_AI_BaseMissileClientDataEventArgs args)
+        private static void OnProcessSpellCast(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
         {
-            if (!sender.IsValidTarget(allyIsValidTarget: true) || sender.Type != GameObjectType.obj_AI_Hero)
+            if (!sender.IsValidTarget(allyIsValidTarget: true) || sender.Type != GameObjectType.AIHeroClient)
             {
                 return;
             }
@@ -966,14 +966,14 @@ namespace AIO.Utilities
                 return;
             }
 
-            if (!Gapclosers.ContainsKey(sender.NetworkId))
+            if (!Gapclosers.ContainsKey(sender.NetworkID))
             {
-                Gapclosers.Add(sender.NetworkId, new GapcloserArgs());
+                Gapclosers.Add(sender.NetworkID, new GapcloserArgs());
             }
 
-            var unit = Gapclosers[sender.NetworkId];
+            var unit = Gapclosers[sender.NetworkID];
 
-            unit.Unit = (Obj_AI_Hero)sender;
+            unit.Unit = (AIHeroClient)sender;
             unit.Slot = args.SpellSlot;
             unit.Target = args.Target as AttackableUnit;
             unit.Type = args.Target != null ? Type.Targeted : Type.SkillShot;
@@ -989,7 +989,7 @@ namespace AIO.Utilities
                 }
                 else if (Math.Abs(spell.Range) > 0)
                 {
-                    unit.EndPosition = unit.Unit.ServerPosition.Extend(args.End, spell.Range);
+                    unit.EndPosition = unit.Unit.Position.Extend(args.End, spell.Range);
                 }
                 else
                 {
@@ -1038,7 +1038,7 @@ namespace AIO.Utilities
         {
             #region Properties
 
-            internal Obj_AI_Hero Unit { get; set; }
+            internal AIHeroClient Unit { get; set; }
 
             #endregion
 

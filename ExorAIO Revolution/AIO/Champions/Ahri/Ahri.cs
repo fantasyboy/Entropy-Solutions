@@ -1,10 +1,12 @@
 
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
-using Entropy.SDK.Util;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using Entropy.SDK.Utils;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -53,16 +55,15 @@ namespace AIO.Champions
             Drawings();
         }
 
-        /// <summary>
-        ///     Called while processing spellcast operations.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="Obj_AI_BaseMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnPerformCast(Obj_AI_Base sender, Obj_AI_BaseMissileClientDataEventArgs args)
+		/// <summary>
+		///     Called while processing spellcast operations.
+		/// </summary>
+		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            if (sender.IsMe)
+            if (args.Caster.IsMe())
             {
-                switch (args.SpellSlot)
+                switch (args.Slot)
                 {
                     case SpellSlot.Q:
                     case SpellSlot.W:
@@ -86,15 +87,15 @@ namespace AIO.Champions
                             var heroTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.R.Range + rRadius);
                             if (heroTarget == null ||
                                     Invulnerable.Check(heroTarget, DamageType.Magical) ||
-                                !MenuClass.Spells["r"]["whitelist"][heroTarget.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                                !MenuClass.Spells["r"]["whitelist"][heroTarget.CharName.ToLower()].As<MenuBool>().Enabled)
                             {
                                 break;
                             }
 
-                            var position = UtilityClass.Player.ServerPosition.Extend(Game.CursorPos, SpellClass.R.Range);
+                            var position = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, SpellClass.R.Range);
                             if (heroTarget.IsValidTarget(rRadius, false, false, position))
                             {
-                                DelayAction.Queue(200+Game.Ping, ()=> SpellClass.R.Cast(position));
+                                DelayAction.Queue(() => SpellClass.R.Cast(position), 200 + EnetClient.Ping);
                             }
                         }
                         break;
@@ -113,16 +114,16 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on an incoming gapcloser.
         /// </summary>
-        /// <param name="sender">The sender.</param>
+        
         /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(Obj_AI_Hero sender, Gapcloser.GapcloserArgs args)
+        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy)
+            if (sender == null || !sender.IsEnemy())
             {
                 return;
             }
@@ -139,7 +140,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption = MenuClass.SubGapcloser[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
                 {
                     return;
@@ -148,14 +149,14 @@ namespace AIO.Champions
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe)
+                        if (args.Target.IsMe())
                         {
                             SpellClass.E.Cast(args.StartPosition);
                             return;
                         }
                         break;
                     default:
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= SpellClass.E.Range)
+                        if (args.EndPosition.Distance((Vector2)UtilityClass.Player.Position) <= SpellClass.E.Range)
                         {
                             SpellClass.E.Cast(args.EndPosition);
                             return;
@@ -175,7 +176,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.ChampionName.ToLower()}.{args.SpellName.ToLower()}"];
+                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
                 if (spellOption2 == null || !spellOption2.As<MenuBool>().Enabled)
                 {
                     return;
@@ -185,10 +186,10 @@ namespace AIO.Champions
                 {
                     case Gapcloser.Type.Targeted:
                         if (sender.IsMelee &&
-                            args.Target.IsMe)
+                            args.Target.IsMe())
                         {
-                            var targetPos = UtilityClass.Player.ServerPosition.Extend(args.StartPosition, -SpellClass.R.Range);
-                            if (targetPos.PointUnderEnemyTurret())
+                            var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.R.Range);
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -197,13 +198,13 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        var targetPos2 = UtilityClass.Player.ServerPosition.Extend(args.EndPosition, -SpellClass.R.Range);
-                        if (targetPos2.PointUnderEnemyTurret())
+                        var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.R.Range);
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
 
-                        if (args.EndPosition.Distance(UtilityClass.Player.ServerPosition) <= UtilityClass.Player.AttackRange)
+                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.R.Cast(targetPos2);
                         }
@@ -215,7 +216,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -225,12 +226,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -238,14 +239,14 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
-                    Jungleclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
+                    JungleClear(args);
                     break;
             }
         }

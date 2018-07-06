@@ -1,7 +1,7 @@
 
 using Entropy;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -17,14 +17,14 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
         }
 
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void ExpungeAutomatic()
+        public void ExpungeAutomatic(args)
         {
             /// <summary>
             ///     The Automatic E Logics.

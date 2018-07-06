@@ -2,10 +2,8 @@
 
 
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -22,7 +20,7 @@ namespace AIO.Champions
         ///     Gets the total missile damage on a determined unit.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public double GetMissileDamage(Obj_AI_Base unit)
+        public double GetMissileDamage(AIBaseClient unit)
         {
             var player = UtilityClass.Player;
             return HasBigOne()

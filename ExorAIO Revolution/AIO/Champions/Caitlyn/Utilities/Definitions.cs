@@ -27,7 +27,7 @@ namespace AIO.Champions
         {
             foreach (var hero in GameObjects.EnemyHeroes)
             {
-                EnemyTrapData.Add(hero.NetworkId, 0d);
+                EnemyTrapData.Add(hero.NetworkID, 0d);
             }
         }
 
@@ -44,9 +44,9 @@ namespace AIO.Champions
         ///     Returns true if an enemy can be trapped, else, false.
         /// </summary>
         /// <param name="hero">The hero.</param>
-        public bool CanTrap(Obj_AI_Hero hero)
+        public bool CanTrap(AIHeroClient hero)
         {
-            return Game.TickCount - GetLastEnemyTrapTime(hero.NetworkId) >= 4000 - SpellClass.W.Delay * 1000;
+            return Game.TickCount - GetLastEnemyTrapTime(hero.NetworkID) >= 4000 - SpellClass.W.Delay * 1000;
         }
 
         /// <summary>

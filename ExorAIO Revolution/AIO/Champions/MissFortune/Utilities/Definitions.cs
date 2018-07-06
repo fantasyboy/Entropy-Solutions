@@ -1,9 +1,10 @@
 ﻿// ReSharper disable ArrangeMethodOrOperatorBody
 
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -35,15 +36,15 @@ namespace AIO.Champions
         public double GetMinionLoveTapDamageMultiplier()
         {
             return
-                UtilityClass.Player.TotalAttackDamage * (UtilityClass.Player.Level < 4
+                UtilityClass.Player.TotalAttackDamage * (UtilityClass.Player.Level() < 4
                                                                 ? 0.25 :
-                                                            UtilityClass.Player.Level < 7
+                                                            UtilityClass.Player.Level() < 7
                                                                 ? 0.3 :
-                                                            UtilityClass.Player.Level < 9
+                                                            UtilityClass.Player.Level() < 9
                                                                 ? 0.35 :
-                                                            UtilityClass.Player.Level < 11
+                                                            UtilityClass.Player.Level() < 11
                                                                 ? 0.4 :
-                                                            UtilityClass.Player.Level < 13
+                                                            UtilityClass.Player.Level() < 13
                                                                 ? 0.45
                                                                 : 0.5);
         }
@@ -59,10 +60,10 @@ namespace AIO.Champions
         /// <returns>
         ///     Returns the passive damage multiplier against a target.
         /// </returns>
-        public double GetLoveTapDamage(Obj_AI_Base target)
+        public double GetLoveTapDamage(AIBaseClient target)
         {
-            return LoveTapTargetNetworkId != target.NetworkId
-                ? target is Obj_AI_Minion
+            return LoveTapTargetNetworkId != target.NetworkID
+                ? target is AIMinionClient
                     ? GetMinionLoveTapDamageMultiplier()
                     : GetGenericLoveTapDamageMultiplier()
                 : 0;
@@ -71,7 +72,7 @@ namespace AIO.Champions
         /// <returns>
         ///     Returns the real damage.
         /// </returns>
-        public double GetRealMissFortuneDamage(double amount, Obj_AI_Base target)
+        public double GetRealMissFortuneDamage(double amount, AIBaseClient target)
         {
             return amount + UtilityClass.Player.CalculateDamage(target, DamageType.Physical, GetLoveTapDamage(target));
         }
@@ -80,11 +81,11 @@ namespace AIO.Champions
         ///     Gets the Q Cone on a determined target unit.
         /// </returns>
         /// <param name="target">The target.</param>
-        public Vector2Geometry.Sector QCone(Obj_AI_Base target)
+        public Vector2Geometry.Sector QCone(AIBaseClient target)
         {
-            var targetPos = target.ServerPosition;
+            var targetPos = target.Position;
             var range = SpellClass.Q2.Range - SpellClass.Q.Range - UtilityClass.Player.BoundingRadius;
-            var dir = (targetPos - UtilityClass.Player.ServerPosition).Normalized();
+            var dir = (targetPos - UtilityClass.Player.Position).Normalized();
             var spot = targetPos + dir * range;
 
             return new Vector2Geometry.Sector((Vector2)targetPos, (Vector2)spot, SpellClass.Q2.Width, range);
@@ -94,7 +95,7 @@ namespace AIO.Champions
         ///     Gets the Q Cone on a determined target unit.
         /// </returns>
         /// <param name="target">The target.</param>
-        public Vector3Geometry.Sector DrawQCone(Obj_AI_Base target)
+        public Vector3Geometry.Sector DrawQCone(AIBaseClient target)
         {
             var targetPos = target.Position;
             var range = SpellClass.Q2.Range - SpellClass.Q.Range - UtilityClass.Player.BoundingRadius;

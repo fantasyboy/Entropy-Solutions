@@ -1,11 +1,10 @@
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
-using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -21,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Rylai Q Combo Logic.
@@ -55,9 +54,9 @@ namespace AIO.Champions
                 MenuClass.Spells["w"]["boulders"].As<MenuBool>().Enabled)
             {
                 var bestTargets = ImplementationClass.ITargetSelector.GetOrderedTargets(SpellClass.W.Range - 100f)
-                    .Where(t => MenuClass.Spells["w"]["selection"][t.ChampionName.ToLower()].As<MenuList>().Value < 4);
+                    .Where(t => MenuClass.Spells["w"]["selection"][t.CharName.ToLower()].As<MenuList>().Value < 4);
 
-                var objAiHeroes = bestTargets as Obj_AI_Hero[] ?? bestTargets.ToArray();
+                var objAiHeroes = bestTargets as AIHeroClient[] ?? bestTargets.ToArray();
                 foreach (var target in objAiHeroes)
                 {
                     var bestBoulderHitPos = GetBestBouldersHitPosition(target);
@@ -102,7 +101,7 @@ namespace AIO.Champions
                 if (bestETarget != null &&
                     !Invulnerable.Check(bestETarget, DamageType.Magical))
                 {
-                    SpellClass.E.Cast(bestETarget.ServerPosition);
+                    SpellClass.E.Cast(bestETarget.Position);
                 }
             }
 

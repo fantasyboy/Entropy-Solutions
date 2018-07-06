@@ -1,9 +1,11 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -19,7 +21,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Combo()
+        public void Combo(EntropyEventArgs args)
         {
             if (BallPosition == null)
             {
@@ -54,19 +56,19 @@ namespace AIO.Champions
                 {
                     var bestAllies = GameObjects.AllyHeroes
                         .Where(a =>
-                            !a.IsMe &&
+                            !a.IsMe() &&
                             a.IsValidTarget(SpellClass.E.Range, true) &&
-                            MenuClass.Spells["e"]["engagerswhitelist"][a.ChampionName.ToLower()].As<MenuBool>().Enabled);
+                            MenuClass.Spells["e"]["engagerswhitelist"][a.CharName.ToLower()].As<MenuBool>().Enabled);
 
                     var bestAlly = bestAllies
                         .FirstOrDefault(a =>
                             GameObjects.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
-                                t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, a.ServerPosition)) >= MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Value);
+                                t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, a.Position)) >= MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Value);
 
                     if (bestAlly != null)
                     {
-                        UtilityClass.CastOnUnit(SpellClass.E, bestAlly);
+                        SpellClass.E.CastOnUnit(bestAlly);
                     }
                 }
 
@@ -78,22 +80,22 @@ namespace AIO.Champions
                     var bestAllies = GameObjects.AllyHeroes
                         .Where(a =>
                             a.IsValidTarget(SpellClass.E.Range, true) &&
-                            MenuClass.Spells["e"]["combowhitelist"][a.ChampionName.ToLower()].As<MenuBool>().Enabled)
+                            MenuClass.Spells["e"]["combowhitelist"][a.CharName.ToLower()].As<MenuBool>().Enabled)
                         .OrderBy(o => o.GetRealHealth());
 
                     foreach (var ally in bestAllies)
                     {
                         var allyToBallRectangle = new Vector2Geometry.Rectangle(
-                            (Vector2)ally.ServerPosition,
-                            (Vector2)ally.ServerPosition.Extend((Vector3)BallPosition, ally.Distance((Vector3)BallPosition) + 30f),
+                            (Vector2)ally.Position,
+                            (Vector2)ally.Position.Extend((Vector3)BallPosition, ally.Distance((Vector3)BallPosition) + 30f),
                             SpellClass.E.Width);
 
                         if (GameObjects.EnemyHeroes.Any(t =>
                                 t.IsValidTarget() &&
                                 !Invulnerable.Check(t, DamageType.Magical) &&
-                                allyToBallRectangle.IsInside((Vector2)t.ServerPosition)))
+                                allyToBallRectangle.IsInside((Vector2)t.Position)))
                         {
-                            UtilityClass.CastOnUnit(SpellClass.E, ally);
+                            SpellClass.E.CastOnUnit(ally);
                             return;
                         }
                     }
@@ -114,7 +116,7 @@ namespace AIO.Champions
                         bestTarget.Distance((Vector3)BallPosition) >= bestTarget.Distance(UtilityClass.Player) &&
                         MenuClass.E2["gaine"].As<MenuBool>().Enabled)
                     {
-                        UtilityClass.CastOnUnit(SpellClass.E, UtilityClass.Player);
+                        SpellClass.E.CastOnUnit(UtilityClass.Player);
                         return;
                     }
 

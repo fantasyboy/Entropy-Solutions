@@ -1,10 +1,11 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -20,26 +21,26 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Laneclear()
+        public void LaneClear(EntropyEventArgs args)
         {
             /// <summary>
             ///     Extended.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q2"]["laneclear"]) &&
                 MenuClass.Spells["q2"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
                     !t.IsValidTarget(SpellClass.Q.Range) &&
-                    MenuClass.Spells["q2"]["whitelist"][t.ChampionName.ToLower()].Enabled))
+                    MenuClass.Spells["q2"]["whitelist"][t.CharName.ToLower()].Enabled))
                 {
                     foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
                     {
-                        if (minion.NetworkId != target.NetworkId &&
-                            QRectangle(minion).IsInside((Vector2)target.ServerPosition))
+                        if (minion.NetworkID != target.NetworkID &&
+                            QRectangle(minion).IsInside((Vector2)target.Position))
                         {
-                            UtilityClass.CastOnUnit(SpellClass.Q, minion);
+                            SpellClass.Q.CastOnUnit(minion);
                             break;
                         }
                     }
@@ -50,26 +51,26 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PostAttackEventArgs" /> instance containing the event data.</param>
-        public void Laneclear(object sender, PostAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+        public void Laneclear(OnPostAttackEventArgs args)
         {
             /// <summary>
             ///     The E Laneclear Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
                 MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Game.CursorPos, UtilityClass.Player.BoundingRadius));
+                SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, UtilityClass.Player.BoundingRadius));
             }
 
             /// <summary>
             ///     The Laneclear Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
@@ -77,7 +78,7 @@ namespace AIO.Champions
                 var farmLocation = SpellClass.Q2.GetLineFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.Q2.Width);
                 if (farmLocation.MinionsHit >= MenuClass.Spells["q"]["customization"]["laneclear"].As<MenuSlider>().Value)
                 {
-                    UtilityClass.CastOnUnit(SpellClass.Q, farmLocation.FirstMinion);
+                    SpellClass.Q.CastOnUnit(farmLocation.FirstMinion);
                     return;
                 }
                 */
@@ -87,7 +88,7 @@ namespace AIO.Champions
             ///     The Laneclear W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                UtilityClass.Player.ManaPercent()
+                UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["laneclear"]) &&
                 MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
             {

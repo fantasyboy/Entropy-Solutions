@@ -1,8 +1,7 @@
 ﻿using System.Drawing;
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
+using Aimtec;
+using Aimtec.SDK.Menu.Components;
 
 namespace NabbTracker
 {
@@ -18,12 +17,12 @@ namespace NabbTracker
         /// </summary>
         public static void Initialize()
         {
-            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(h =>
-                !h.IsMe &&
+            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h =>
+                !h.IsMe() &&
                 !h.IsDead &&
                 h.IsVisible))
             {
-                if (hero.IsEnemy &&
+                if (hero.IsEnemy()() &&
                     !MenuClass.AttackRangeTracker["enemies"].As<MenuBool>().Enabled)
                 {
                     continue;

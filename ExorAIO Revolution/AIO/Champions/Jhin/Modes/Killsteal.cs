@@ -1,10 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -20,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The KillSteal R Logic.
@@ -30,7 +29,7 @@ namespace AIO.Champions
                 MenuClass.Spells["r"]["killsteal"].As<MenuBool>().Value)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.R.Range).Where(t =>
-                    UltimateCone().IsInside((Vector2)t.ServerPosition) &&
+                    UltimateCone().IsInside((Vector2)t.Position) &&
                     UtilityClass.Player.GetSpellDamage(t, SpellSlot.R, HasUltimateFourthShot() ? DamageStage.Empowered : DamageStage.Default) >= t.GetRealHealth()))
                 {
                     SpellClass.R.Cast(target);
@@ -47,7 +46,7 @@ namespace AIO.Champions
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
                     UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q) >= t.GetRealHealth()))
                 {
-                    UtilityClass.CastOnUnit(SpellClass.Q, target);
+                    SpellClass.Q.CastOnUnit(target);
                     break;
                 }
             }

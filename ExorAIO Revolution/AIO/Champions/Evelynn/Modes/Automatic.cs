@@ -1,6 +1,5 @@
 
 using Entropy;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
 
 #pragma warning disable 1587
@@ -17,11 +16,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic()
+        public void Automatic(args)
         {
             if (!UtilityClass.Player.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned))
             {
-                SpellClass.W.Range = 1100 + 100 * UtilityClass.Player.GetSpell(SpellSlot.W).Level;
+                SpellClass.W.Range = 1100 + 100 * UtilityClass.Player.GetSpell(SpellSlot.W).Level();
             }
         }
 

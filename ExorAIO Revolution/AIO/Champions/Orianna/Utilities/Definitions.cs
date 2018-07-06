@@ -1,9 +1,9 @@
 ﻿
 using System;
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -37,25 +37,25 @@ namespace AIO.Champions
         {
             var possiblePosition1 = GameObjects.AllyMinions.FirstOrDefault(m =>
                     Math.Abs(m.GetRealHealth()) > 0 &&
-                    m.UnitSkinName.Equals("OriannaBall"));
+                    m.CharName.Equals("OriannaBall"));
             if (possiblePosition1 != null)
             {
-                return possiblePosition1.ServerPosition;
+                return possiblePosition1.Position;
             }
 
             var possiblePosition2 = GameObjects.AllyHeroes.FirstOrDefault(a =>
-                    !a.IsMe &&
-                    a.ValidActiveBuffs().Any(b =>
-                        b.Caster.IsMe &&
+                    !a.IsMe() &&
+                    a.GetActiveBuffs().Any(b =>
+                        b.Caster.IsMe() &&
                         b.Name.Equals("orianaghost")));
             if (possiblePosition2 != null)
             {
-                return possiblePosition2.ServerPosition;
+                return possiblePosition2.Position;
             }
 
             if (UtilityClass.Player.HasBuff("orianaghostself"))
             {
-                return UtilityClass.Player.ServerPosition;
+                return UtilityClass.Player.Position;
             }
 
             return null;
@@ -68,16 +68,16 @@ namespace AIO.Champions
         {
             var possiblePosition1 = GameObjects.AllyMinions.FirstOrDefault(m =>
                 Math.Abs(m.GetRealHealth()) > 0 &&
-                m.UnitSkinName.Equals("OriannaBall"));
+                m.CharName.Equals("OriannaBall"));
             if (possiblePosition1 != null)
             {
                 return possiblePosition1.Position;
             }
 
             var possiblePosition2 = GameObjects.AllyHeroes.FirstOrDefault(a =>
-                    !a.IsMe &&
-                    a.ValidActiveBuffs().Any(b =>
-                        b.Caster.IsMe &&
+                    !a.IsMe() &&
+                    a.GetActiveBuffs().Any(b =>
+                        b.Caster.IsMe() &&
                         b.Name.Equals("orianaghost")));
             if (possiblePosition2 != null)
             {

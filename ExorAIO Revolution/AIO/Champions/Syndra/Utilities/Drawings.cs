@@ -1,10 +1,11 @@
-﻿
-using System.Drawing;
-using System.Linq;
+﻿using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 #pragma warning disable 1587
 
@@ -83,10 +84,10 @@ namespace AIO.Champions
                         var barLength = 0;
                         if (unitHealth > totalDamage)
                         {
-                            barLength = (int)(width * ((unitHealth - totalDamage) / hero.MaxHealth * 100 / 100));
+                            barLength = (int)(width * ((unitHealth - totalDamage) / hero.MaxHP * 100 / 100));
                         }
 
-                        var drawEndXPos = barPos.X + width * (hero.HealthPercent() / 100);
+                        var drawEndXPos = barPos.X + width * (hero.HPPercent() / 100);
                         var drawStartXPos = barPos.X + barLength;
 
                         Render.Line(drawStartXPos, barPos.Y, drawEndXPos, barPos.Y, height, true, unitHealth < totalDamage ? Color.Blue : Color.Orange);
@@ -112,11 +113,11 @@ namespace AIO.Champions
                     /// </summary>
                     if (UtilityClass.Player.Distance(sphere.Value) < SpellClass.E.Range &&
                         MenuClass.Drawings["scatter"].As<MenuBool>().Enabled &&
-                        !UtilityClass.Player.SpellBook.GetSpell(SpellSlot.E).State.HasFlag(SpellState.Cooldown))
+                        !UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).State.HasFlag(SpellState.Cooldown))
                     {
                         var hitbox = DarkSphereScatterRectangle(sphere);
                         hitbox.Draw(
-                            GameObjects.EnemyHeroes.Any(h => h.IsValidTarget() && hitbox.IsInside((Vector2)h.ServerPosition))
+                            GameObjects.EnemyHeroes.Any(h => h.IsValidTarget() && hitbox.IsInside((Vector2)h.Position))
                                 ? Color.Blue
                                 : Color.OrangeRed);
                     }

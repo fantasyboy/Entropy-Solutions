@@ -1,10 +1,9 @@
-
-using System.Drawing;
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
+using Color = System.Drawing.Color;
 
 #pragma warning disable 1587
 
@@ -62,7 +61,7 @@ namespace AIO.Champions
                 {
                     if (End != Vector3.Zero)
                     {
-                        DrawUltimateCone().Draw(GameObjects.EnemyHeroes.Any(t => t.IsValidTarget() && UltimateCone().IsInside((Vector2)t.ServerPosition))
+                        DrawUltimateCone().Draw(GameObjects.EnemyHeroes.Any(t => t.IsValidTarget() && UltimateCone().IsInside((Vector2)t.Position))
                             ? Color.Green
                             : Color.Red);
                     }

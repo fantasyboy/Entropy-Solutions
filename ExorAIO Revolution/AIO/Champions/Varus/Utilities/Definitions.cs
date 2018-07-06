@@ -1,10 +1,8 @@
 ﻿// ReSharper disable ArrangeMethodOrOperatorBody
 
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -26,7 +24,7 @@ namespace AIO.Champions
         ///     Returns Q Charging Logic;
         /// </summary>
         /// <param name="target">The target.</param>
-        public static void PiercingArrowLogicalCast(Obj_AI_Base target)
+        public static void PiercingArrowLogicalCast(AIBaseClient target)
         {
             if (!IsChargingPiercingArrow() &&
                 target.IsValidTarget(SpellClass.Q.ChargedMaxRange))
@@ -52,7 +50,7 @@ namespace AIO.Champions
         ///     Returns the real Q Damage;
         /// </summary>
         /// <param name="target">The target.</param>
-        public static double GetRealPiercingArrowDamage(Obj_AI_Base target)
+        public static double GetRealPiercingArrowDamage(AIBaseClient target)
         {
             return
                 UtilityClass.Player.GetSpellDamage(target, SpellSlot.Q) +
@@ -63,7 +61,7 @@ namespace AIO.Champions
         ///     Returns the real E Damage;
         /// </summary>
         /// <param name="target">The target.</param>
-        public static double GetRealHailOfArrowsDamage(Obj_AI_Base target)
+        public static double GetRealHailOfArrowsDamage(AIBaseClient target)
         {
             return
                 UtilityClass.Player.GetSpellDamage(target, SpellSlot.E) +
@@ -74,7 +72,7 @@ namespace AIO.Champions
         ///     Returns the real R Damage;
         /// </summary>
         /// <param name="target">The target.</param>
-        public static double GetRealChainOfCorruptionDamage(Obj_AI_Base target)
+        public static double GetRealChainOfCorruptionDamage(AIBaseClient target)
         {
             return
                 UtilityClass.Player.GetSpellDamage(target, SpellSlot.R) +
@@ -85,7 +83,7 @@ namespace AIO.Champions
         ///     Returns the number of Blight Stacks a determined target has;
         /// </summary>
         /// <param name="target">The target.</param>
-        public int GetBlightStacks(Obj_AI_Base target)
+        public int GetBlightStacks(AIBaseClient target)
         {
             return target.GetRealBuffCount("VarusWDebuff");
         }

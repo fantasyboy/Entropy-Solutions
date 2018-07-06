@@ -1,9 +1,7 @@
 ﻿
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Damage.JSON;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -20,7 +18,7 @@ namespace AIO.Champions
         ///     Returns true if the target is affected by the E charge, else, false.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsCharged(Obj_AI_Base unit)
+        public bool IsCharged(AIBaseClient unit)
         {
             return unit.HasBuff("TristanaECharge");
         }
@@ -29,7 +27,7 @@ namespace AIO.Champions
         ///     Gets the total explosion damage on a determined unit.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public double GetTotalExplosionDamage(Obj_AI_Base unit)
+        public double GetTotalExplosionDamage(AIBaseClient unit)
         {
             var player = UtilityClass.Player;
             return player.GetSpellDamage(unit, SpellSlot.E) +
@@ -40,18 +38,18 @@ namespace AIO.Champions
         ///     Returns true if the target is a perfectly valid charge target.
         /// </summary>
         /// <param name="unit">The unit.</param>
-        public bool IsPerfectChargeTarget(Obj_AI_Base unit)
+        public bool IsPerfectChargeTarget(AIBaseClient unit)
         {
             if (IsCharged(unit) &&
                 unit.IsValidSpellTarget())
             {
                 switch (unit.Type)
                 {
-                    case GameObjectType.obj_AI_Minion:
+                    case GameObjectType.AIMinionClient:
                         return true;
 
-                    case GameObjectType.obj_AI_Hero:
-                        var heroUnit = (Obj_AI_Hero)unit;
+                    case GameObjectType.AIHeroClient:
+                        var heroUnit = (AIHeroClient)unit;
                         return !Invulnerable.Check(heroUnit);
                 }
             }

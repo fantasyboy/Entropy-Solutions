@@ -1,8 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Orbwalking.EventArgs;
 
 #pragma warning disable 1587
 
@@ -56,7 +57,7 @@ namespace AIO.Champions
                 {
                     case "Olaf_Base_Q_Axe_Ally.troy":
                     case "Olaf_Skin04_Q_Axe_Ally.troy":
-                        Axes.Add(obj.NetworkId, obj.Position);
+                        Axes.Add(obj.NetworkID, screenPos);
                         break;
                 }
             }
@@ -69,9 +70,9 @@ namespace AIO.Champions
         {
             if (obj.IsValid)
             {
-                if (Axes.Any(o => o.Key == obj.NetworkId))
+                if (Axes.Any(o => o.Key == obj.NetworkID))
                 {
-                    Axes.Remove(obj.NetworkId);
+                    Axes.Remove(obj.NetworkID);
                 }
             }
         }
@@ -79,9 +80,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(object sender, PreAttackEventArgs args)
+        
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPreAttack(OnPreAttackEventArgs args)
         {
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -91,10 +92,10 @@ namespace AIO.Champions
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
                     break;
-                case OrbwalkingMode.Mixed:
+                case OrbwalkingMode.Harass:
                     Harass(sender, args);
                     break;
-                case OrbwalkingMode.Laneclear:
+                case OrbwalkingMode.LaneClear:
                     Laneclear(sender, args);
                     Jungleclear(sender, args);
                     Buildingclear(sender, args);
@@ -116,7 +117,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate()
+        public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -126,7 +127,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             if (ImplementationClass.IOrbwalker.IsWindingUp)
             {
@@ -136,7 +137,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -144,10 +145,10 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
             }
         }

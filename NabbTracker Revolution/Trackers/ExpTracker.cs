@@ -1,9 +1,8 @@
 using System;
 using System.Drawing;
 using System.Linq;
-using Entropy;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
+using Aimtec;
+using Aimtec.SDK.Menu.Components;
 
 namespace NabbTracker
 {
@@ -19,7 +18,7 @@ namespace NabbTracker
         /// </summary>
         public static void Initialize()
         {
-            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(h =>
+            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h =>
                 !h.IsDead &&
                 h.IsVisible &&
                 Math.Abs(h.FloatingHealthBarPosition.X) > 0))
@@ -29,19 +28,19 @@ namespace NabbTracker
                     continue;
                 }
 
-                if (hero.IsMe &&
+                if (hero.IsMe() &&
                     !MenuClass.ExpTracker["me"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
-                if (hero.IsEnemy &&
+                if (hero.IsEnemy()() &&
                     !MenuClass.ExpTracker["enemies"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
-                if (!hero.IsMe &&
+                if (!hero.IsMe() &&
                     hero.IsAlly &&
                     !MenuClass.ExpTracker["allies"].As<MenuBool>().Enabled)
                 {
@@ -52,24 +51,24 @@ namespace NabbTracker
                 var yOffset = (int)hero.FloatingHealthBarPosition.Y + UtilityClass.ExpYAdjustment(hero);
 
                 var actualExp = hero.Exp;
-                if (hero.Level > 1)
+                if (hero.Level() > 1)
                 {
-                    actualExp -= (280 + 80 + 100 * hero.Level) / 2 * (hero.Level - 1);
+                    actualExp -= (280 + 80 + 100 * hero.Level()) / 2 * (hero.Level() - 1);
                 }
 
                 var levelLimit = hero.HasBuff("AwesomeBuff") ? 30 : 18;
-                if (hero.Level < levelLimit)
+                if (hero.Level() < levelLimit)
                 {
                     Render.Line(xOffset - 76, yOffset + 20, xOffset + 56, yOffset + 20, 7, true, Colors.GetRealColor(Color.Purple));
 
-                    var neededExp = 180 + 100 * hero.Level;
+                    var neededExp = 180 + 100 * hero.Level();
                     var expPercent = (int)(actualExp / neededExp * 100);
                     if (expPercent > 0)
                     {
                         Render.Line(xOffset - 76, yOffset + 20, xOffset - 76 + (float)(1.32 * expPercent), yOffset + 20, 7, true, Colors.GetRealColor(Color.Red));
                     }
 
-                    Render.Text(expPercent > 0 ? expPercent + "%" : "0%", new Vector2(xOffset - 13, yOffset + 17), RenderTextFlags.None, Colors.GetRealColor(Color.Yellow));
+                    TextRendering.Render(expPercent > 0 ? expPercent + "%" : "0%", new Vector2(xOffset - 13, yOffset + 17), RenderTextFlags.None, Colors.GetRealColor(Color.Yellow));
                 }
             }
         }

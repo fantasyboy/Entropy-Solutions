@@ -2,10 +2,11 @@
 using System;
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -21,7 +22,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             if (BallPosition == null)
             {
@@ -74,7 +75,7 @@ namespace AIO.Champions
                 MenuClass.Spells["r"]["killsteal"].As<MenuBool>().Enabled)
             {
                 foreach (var enemy in GameObjects.EnemyHeroes.Where(t =>
-                    MenuClass.Spells["r"]["killstealwhitelist"][t.ChampionName.ToLower()].As<MenuBool>().Enabled &&
+                    MenuClass.Spells["r"]["killstealwhitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled &&
                     t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: (Vector3)BallPosition)))
                 {
                     var dmg = UtilityClass.Player.GetSpellDamage(enemy, SpellSlot.R);
@@ -91,7 +92,7 @@ namespace AIO.Champions
                         dmg += UtilityClass.Player.GetSpellDamage(enemy, SpellSlot.W);
                     }
 
-                    if (UtilityClass.Player.ServerPosition.Distance((Vector3)BallPosition) < UtilityClass.Player.AttackRange)
+                    if (UtilityClass.Player.Position.Distance((Vector3)BallPosition) < UtilityClass.Player.GetAutoAttackRange())
                     {
                         dmg += UtilityClass.Player.GetAutoAttackDamage(enemy);
                     }

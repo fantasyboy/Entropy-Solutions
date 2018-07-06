@@ -1,8 +1,7 @@
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -17,7 +16,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Lasthit()
+        public void LastHit(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Big Minions Lasthit Logic.
@@ -26,10 +25,10 @@ namespace AIO.Champions
                 MenuClass.Spells["e"]["lasthit"].As<MenuBool>().Enabled)
             {
                 foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Where(m =>
-                    (m.UnitSkinName.Contains("Siege") || m.UnitSkinName.Contains("Super")) &&
+                    (m.CharName.Contains("Siege") || m.CharName.Contains("Super")) &&
                     m.GetRealHealth() < UtilityClass.Player.GetSpellDamage(m, SpellSlot.E)))
                 {
-                    UtilityClass.CastOnUnit(SpellClass.E, minion);
+                    SpellClass.E.CastOnUnit(minion);
                 }
             }
         }

@@ -1,9 +1,11 @@
 
 using System.Linq;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
-using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -45,8 +47,8 @@ namespace AIO.Champions
         ///     Called on pre attack.
         /// </summary>
         /// <param name="sender">The object.</param>
-        /// <param name="args">The <see cref="PreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(object sender, PreAttackEventArgs args)
+        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+        public void OnPreAttack(OnPreAttackEventArgs args)
         {
             /// <summary>
             ///     The Target Forcing Logic.
@@ -55,7 +57,7 @@ namespace AIO.Champions
             {
                 var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
                         t.HasBuff("kalistacoopstrikemarkally") &&
-                        t.IsValidTarget(UtilityClass.Player.GetFullAttackRange(t)));
+                        t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
                 if (forceTarget != null)
                 {
                     args.Target = forceTarget;
@@ -76,12 +78,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            RendKillsteal();
+            RendKillsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic events.
             /// </summary>
-            RendAutomatic();
+            RendAutomatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -89,17 +91,17 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    RendCombo();
+                    RendCombo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    RendHarass();
+                case OrbwalkingMode.Harass:
+                    RendHarass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    RendLaneclear();
-                    RendJungleclear();
+                case OrbwalkingMode.LaneClear:
+                    RendLaneClear(args);
+                    RendJungleClear(args);
                     break;
-                case OrbwalkingMode.Lasthit:
-                    RendLasthit();
+                case OrbwalkingMode.LastHit:
+                    RendLastHit(args);
                     break;
             }
         }
@@ -111,7 +113,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        private void OnUpdate()
+        private void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -121,12 +123,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic();
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal();
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -134,17 +136,17 @@ namespace AIO.Champions
             switch (ImplementationClass.IOrbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo();
+                    Combo(args);
                     break;
-                case OrbwalkingMode.Mixed:
-                    Harass();
+                case OrbwalkingMode.Harass:
+                    Harass(args);
                     break;
-                case OrbwalkingMode.Laneclear:
-                    Laneclear();
-                    Jungleclear();
+                case OrbwalkingMode.LaneClear:
+                    LaneClear(args);
+                    JungleClear(args);
                     break;
-                case OrbwalkingMode.Lasthit:
-                    Lasthit();
+                case OrbwalkingMode.LastHit:
+                    LastHit(args);
                     break;
             }
         }

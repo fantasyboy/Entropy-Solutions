@@ -1,9 +1,9 @@
 ﻿// ReSharper disable ArrangeMethodOrOperatorBody
 
-
-using Entropy;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -69,10 +69,10 @@ namespace AIO.Champions
         {
             var targetPos = End;
             var range = SpellClass.R.Range-UtilityClass.Player.BoundingRadius;
-            var dir = (targetPos - UtilityClass.Player.ServerPosition).Normalized();
+            var dir = (targetPos - UtilityClass.Player.Position).Normalized();
             var spot = targetPos + dir * range;
 
-            return new Vector2Geometry.Sector((Vector2)End.Extend(UtilityClass.Player.ServerPosition, End.Distance(UtilityClass.Player)+UtilityClass.Player.BoundingRadius*3), (Vector2)spot, SpellClass.R2.Width, range);
+            return new Vector2Geometry.Sector((Vector2)End.Extend(UtilityClass.Player.Position, End.Distance(UtilityClass.Player)+UtilityClass.Player.BoundingRadius*3), (Vector2)spot, SpellClass.R2.Width, range);
         }
 
         /// <summary>

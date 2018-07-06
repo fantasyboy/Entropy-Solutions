@@ -1,7 +1,7 @@
 ﻿
 using Entropy;
-using Entropy.SDK.Extensions;
-using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using SharpDX;
 
 namespace AIO.Champions
 {
@@ -15,10 +15,10 @@ namespace AIO.Champions
         /// </summary>
         /// <param name="unit">The unit.</param>
         /// <param name="delay">The delay.</param>
-        public Vector3 EstimatedPosition(Obj_AI_Base unit, float delay)
+        public Vector3 EstimatedPosition(AIBaseClient unit, float delay)
         {
             var paths = unit.Path;
-            var unitPosition = unit.ServerPosition;
+            var unitPosition = unit.Position;
             if (paths.Length == 0)
             {
                 return unitPosition;
@@ -32,7 +32,7 @@ namespace AIO.Champions
                 var velocity = direction * unit.MoveSpeed;
 
                 delay = delay + Game.Ping / 1000f;
-                unitPosition = unit.ServerPosition + velocity * delay;
+                unitPosition = unit.Position + velocity * delay;
             }
 
             return unitPosition;
@@ -45,7 +45,7 @@ namespace AIO.Champions
         /// <param name="target">The target.</param>
         /// <param name="startPos">The starting position of the check.</param>
         /// <param name="amount">The amount.</param>
-        public bool IsPerfectWallPosition(Vector3 point, Obj_AI_Hero target, Vector3 startPos, float amount)
+        public bool IsPerfectWallPosition(Vector3 point, AIHeroClient target, Vector3 startPos, float amount)
         {
             return point.Extend(startPos, -amount).IsWall(true) &&
                    point.Extend(startPos, -(amount + target.BoundingRadius)).IsWall(true);

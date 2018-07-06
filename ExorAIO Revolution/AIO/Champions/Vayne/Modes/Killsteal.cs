@@ -1,10 +1,9 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Damage;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Menu.Components;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -20,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal()
+        public void Killsteal(args)
         {
             /// <summary>
             ///     The E KillSteal Logic.
@@ -32,7 +31,7 @@ namespace AIO.Champions
                     UtilityClass.Player.GetSpellDamage(t, SpellSlot.E) +
                     (t.GetBuffCount("vaynesilvereddebuff") == 2 ? UtilityClass.Player.GetSpellDamage(t, SpellSlot.W) : 0) >= t.GetRealHealth()))
                 {
-                    UtilityClass.CastOnUnit(SpellClass.E, target);
+                    SpellClass.E.CastOnUnit(target);
                     break;
                 }
             }
