@@ -1,6 +1,7 @@
 
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 
@@ -64,7 +65,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["laneclear"]) &&
                 MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                if (UtilityClass.Player.HasItem(ItemId.RunaansHurricane))
+                if (UtilityClass.Player.HasItem(ItemID.RunaansHurricane))
                 {
                     UtilityClass.Player.Spellbook.CastSpell(SpellSlot.W);
                 }

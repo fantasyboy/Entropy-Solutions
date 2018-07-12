@@ -56,7 +56,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void BladeCallerLaneClear(args)
+        public void BladeCallerLaneClear(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Laneclear E Logic.

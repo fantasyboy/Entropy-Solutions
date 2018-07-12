@@ -21,7 +21,7 @@ namespace AIO.Champions
             GameObject.OnCreate += OnCreate;
             GameObject.OnDestroy += OnDestroy;
             Render.OnPresent += OnPresent;
-            SpellBook.OnCastSpell += OnCastSpell;
+            Spellbook.OnLocalCastSpell += OnLocalCastSpell;
             Gapcloser.OnGapcloser += OnGapcloser;
             Dash.HeroDashed += OnDash;
 

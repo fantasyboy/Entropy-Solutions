@@ -4,6 +4,7 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 using SharpDX;
@@ -22,7 +23,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Killsteal(args)
+        public void Killsteal(EntropyEventArgs args)
         {
             if (BallPosition == null)
             {

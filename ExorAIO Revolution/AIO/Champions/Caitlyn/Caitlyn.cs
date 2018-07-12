@@ -6,6 +6,7 @@ using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -54,8 +55,8 @@ namespace AIO.Champions
         ///     Fired on spell cast.
         /// </summary>
         
-        /// <param name="args">The <see cref="SpellBookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
+        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
+        public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
             if (sender.IsMe())
             {
@@ -86,7 +87,7 @@ namespace AIO.Champions
                         }
 
                         if (Game.TickCount - UtilityClass.LastTick >= 1000 &&
-                            ImplementationClass.IOrbwalker.Mode == OrbwalkingMode.None &&
+                            Orbwalker.Mode == OrbwalkingMode.None &&
                             MenuClass.Miscellaneous["reversede"].As<MenuBool>().Enabled)
                         {
                             UtilityClass.LastTick = Game.TickCount;
@@ -107,7 +108,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
@@ -141,7 +142,7 @@ namespace AIO.Champions
                 /// <summary>
                 ///     Initializes the orbwalkingmodes.
                 /// </summary>
-                switch (ImplementationClass.IOrbwalker.Mode)
+                switch (Orbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
                         switch (args.SpellData.Name)
@@ -180,7 +181,7 @@ namespace AIO.Champions
                 return;
             }
             
-            if (sender == null || !sender.IsEnemy()() || Invulnerable.Check(sender))
+            if (sender == null || !sender.IsEnemy() || Invulnerable.Check(sender))
             {
                 return;
             }
@@ -303,14 +304,14 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(args);
+            Killsteal(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(args);
+            Automatic(EntropyEventArgs args);
 
-            if (ImplementationClass.IOrbwalker.IsWindingUp)
+            if (Orbwalker.IsWindingUp)
             {
                 return;
             }
@@ -318,14 +319,14 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Harass:
-                    Harass(args);
+                    Harass(EntropyEventArgs args);
                     break;
 
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(args);
+                    LaneClear(EntropyEventArgs args);
                     break;
             }
         }

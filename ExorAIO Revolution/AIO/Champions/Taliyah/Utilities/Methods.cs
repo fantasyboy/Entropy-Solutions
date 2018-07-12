@@ -18,7 +18,7 @@ namespace AIO.Champions
             Game.OnUpdate += OnUpdate;
             GameObject.OnCreate += OnCreate;
             GameObject.OnDestroy += OnDestroy;
-            SpellBook.OnCastSpell += OnCastSpell;
+            Spellbook.OnLocalCastSpell += OnLocalCastSpell;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Render.OnPresent += OnPresent;
             Gapcloser.OnGapcloser += OnGapcloser;

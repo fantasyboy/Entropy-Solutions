@@ -1,6 +1,7 @@
 ﻿
 using System.Linq;
 using AIO.Utilities;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
 
@@ -25,9 +26,9 @@ namespace AIO
             MenuClass.Root = new Menu(UtilityClass.Player.CharName.ToLower(), "ExorAIO: " + UtilityClass.Player.CharName, true);
             {
                 /// <summary>
-                ///     Loads the orbwalker menu.
+                ///     Loads the Orbwalker menu.
                 /// </summary>
-                ImplementationClass.IOrbwalker.Attach(MenuClass.Root);
+                Orbwalker.Attach(MenuClass.Root);
 
                 /// <summary>
                 ///     Loads the general menu.

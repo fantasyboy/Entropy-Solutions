@@ -27,7 +27,7 @@ namespace AIO.Utilities
             }
 
             var spellData = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName);
-            var cost = spellData.Value[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level() - 1];
+            var cost = spellData.Value[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level - 1];
             return (int)(value.As<MenuSliderBool>().Value + cost / UtilityClass.Player.MaxMP * 100);
         }
 
@@ -37,7 +37,7 @@ namespace AIO.Utilities
         public int GetNeededHealth(SpellSlot slot, MenuComponent value)
         {
 	        var spellData = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName);
-	        var cost = spellData.Value[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level() - 1];
+	        var cost = spellData.Value[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level - 1];
 			return (int)(value.As<MenuSliderBool>().Value + cost / UtilityClass.Player.MaxHP * 100);
         }
 

@@ -24,7 +24,7 @@ namespace AIO.Champions
         public void Buildingclear(OnPostAttackEventArgs args)
         {
             var target = args.Target;
-            if (!target.IsBuilding())
+            if (!target.IsStructure())
             {
                 return;
             }

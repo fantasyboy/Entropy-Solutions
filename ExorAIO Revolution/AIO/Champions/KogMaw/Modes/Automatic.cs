@@ -20,10 +20,10 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            SpellClass.W.Range = 610 + 20 * SpellClass.W.Level();
-            SpellClass.R.Range = 900f + 300f * SpellClass.R.Level();
+            SpellClass.W.Range = 610 + 20 * SpellClass.W.Level;
+            SpellClass.R.Range = 900f + 300f * SpellClass.R.Level;
 
             if (UtilityClass.Player.IsRecalling())
             {

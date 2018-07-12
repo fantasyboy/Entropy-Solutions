@@ -18,7 +18,7 @@ namespace AIO.Champions
         #region Public Methods and Operators
 
         /// <summary>
-        ///     Called on orbwalker action.
+        ///     Called on Orbwalker action.
         /// </summary>
         /// <param name="sender">The object.</param>
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>

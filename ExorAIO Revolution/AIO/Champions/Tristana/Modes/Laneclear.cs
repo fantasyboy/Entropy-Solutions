@@ -4,6 +4,7 @@ using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -45,7 +46,7 @@ namespace AIO.Champions
                 }
             }
 
-            var minionTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIMinionClient;
+            var minionTarget = Orbwalker.GetOrbwalkingTarget() as AIMinionClient;
             if (minionTarget == null ||
                 !Extensions.GetEnemyLaneMinionsTargets().Contains(minionTarget))
             {

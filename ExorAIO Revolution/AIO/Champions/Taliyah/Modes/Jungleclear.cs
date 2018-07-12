@@ -4,6 +4,7 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Damage;
+using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
@@ -39,7 +40,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
-                UtilityClass.Player.HasItem(ItemId.RylaisCrystalScepter) &&
+                UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter) &&
                 (IsNearWorkedGround() ||
                  UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"])) &&

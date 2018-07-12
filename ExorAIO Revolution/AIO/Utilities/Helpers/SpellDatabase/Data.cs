@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Security.Permissions;
+using Entropy.ToolKit;
 
 namespace AIO.Utilities
 {
@@ -41,7 +42,7 @@ namespace AIO.Utilities
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                e.ToolKitLog();
                 return default(T);
             }
         }

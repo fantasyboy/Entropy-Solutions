@@ -1,5 +1,6 @@
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Orbwalking;
 
 namespace AIO.Champions
 {
@@ -16,11 +17,11 @@ namespace AIO.Champions
         public void Methods()
         {
             Game.OnUpdate += OnUpdate;
-            SpellBook.OnCastSpell += OnCastSpell;
+            Spellbook.OnLocalCastSpell += OnLocalCastSpell;
             Render.OnPresent += OnPresent;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
-            ImplementationClass.IOrbwalker.PreAttack += OnPreAttack;
-            ImplementationClass.IOrbwalker.PostAttack += OnPostAttack;
+            Orbwalker.OnPreAttack += OnPreAttack;
+            Orbwalker.OnPostAttack += OnPostAttack;
             Gapcloser.OnGapcloser += OnGapcloser;
             //AIBaseClient.OnIssueOrder += this.OnIssueOrder;
         }

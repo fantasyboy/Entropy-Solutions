@@ -4,7 +4,9 @@ using Entropy;
 using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -21,7 +23,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsRecalling())
             {
@@ -35,8 +37,8 @@ namespace AIO.Champions
                 UtilityClass.Player.IsBeingGrabbed() &&
                 MenuClass.Spells["e"]["antigrab"].As<MenuBool>().Enabled)
             {
-                var firstTower = ObjectManager.Get<Obj_AI_Turret>()
-                    .Where(t => t.IsAlly && t.IsValidTarget(allyIsValidTarget: true))
+                var firstTower = ObjectManager.Get<AITurretClient>()
+                    .Where(t => t.IsAlly() && t.IsValidTarget(allyIsValidTarget: true))
                     .MinBy(t => t.Distance(UtilityClass.Player));
                 if (firstTower != null)
                 {
@@ -50,7 +52,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.IsTearLikeItemReady() &&
                 UtilityClass.Player.CountEnemyHeroesInRange(1500f) == 0 &&
-                ImplementationClass.IOrbwalker.Mode == OrbwalkingMode.None &&
+                Orbwalker.Mode == OrbwalkingMode.None &&
                 !Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Any() &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Miscellaneous["tear"]) &&

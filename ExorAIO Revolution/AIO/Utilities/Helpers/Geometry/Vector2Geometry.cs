@@ -156,7 +156,6 @@ namespace AIO.Utilities
 
             public static void DrawLineInWorld(Vector3 start, Vector3 end, int width, Color color)
             {
-
                 Render.WorldToScreen(start, out var from);
                 Render.WorldToScreen(end, out var to);
                 Render.Line(from, to, color);

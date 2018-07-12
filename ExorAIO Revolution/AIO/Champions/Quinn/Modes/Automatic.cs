@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsRecalling())
             {

@@ -3,7 +3,9 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -88,7 +90,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
@@ -113,24 +115,24 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            BladeCallerKillsteal(args);
+            BladeCallerKillsteal(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the Automatic events.
             /// </summary>
-            BladeCallerAutomatic(args);
+            BladeCallerAutomatic(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    BladeCallerCombo(args);
+                    BladeCallerCombo(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    BladeCallerLaneClear(args);
-                    BladeCallerJungleClear(args);
+                    BladeCallerLaneClear(EntropyEventArgs args);
+                    BladeCallerJungleClear(EntropyEventArgs args);
                     break;
             }
         }
@@ -144,7 +146,7 @@ namespace AIO.Champions
         {
             if (sender.IsMe())
             {
-                switch (args.SpellSlot)
+                switch (args.Slot)
                 {
                     case SpellSlot.E:
                         LastCastedETime = Game.ClockTime;
@@ -171,7 +173,7 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
             {
                 return;
             }
@@ -215,7 +217,7 @@ namespace AIO.Champions
                 return;
             }
 
-            if (ImplementationClass.IOrbwalker.IsWindingUp)
+            if (Orbwalker.IsWindingUp)
             {
                 return;
             }
@@ -223,23 +225,23 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(args);
+            Automatic(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(args);
+                    Combo(EntropyEventArgs args);
                     break;
 
                 case OrbwalkingMode.Harass:
-                    Harass(args);
+                    Harass(EntropyEventArgs args);
                     break;
 
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(args);
+                    LaneClear(EntropyEventArgs args);
                     break;
             }
         }

@@ -3,7 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Entropy;
+using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Spells;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -51,14 +55,14 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the tear-like items.
         /// </summary>
-        public static readonly uint[] TearLikeItems =
+        public static readonly ItemID[] TearLikeItems =
         {
-            ItemId.Manamune,
-            ItemId.ArchangelsStaff,
-            ItemId.TearoftheGoddess,
-            ItemId.ManamuneQuickCharge,
-            ItemId.ArchangelsStaffQuickCharge,
-            ItemId.TearoftheGoddessQuickCharge
+            ItemID.Manamune,
+            ItemID.ArchangelsStaff,
+            ItemID.TearoftheGoddess,
+            ItemID.ManamuneQuickCharge,
+            ItemID.ArchangelsStaffQuickCharge,
+            ItemID.TearoftheGoddessQuickCharge
         };
 
         /// <summary>
@@ -385,7 +389,7 @@ namespace AIO.Utilities
         {
             var championSlots = ManaCostArray.FirstOrDefault(e => e.Key == Player.CharName).Value;
             var selectedSlot = championSlots.FirstOrDefault(e => e.Key == slot);
-            var selectedSlotLevel = selectedSlot.Value[Player.Spellbook.GetSpell(slot).Level()-1];
+            var selectedSlotLevel = selectedSlot.Value[Player.Spellbook.GetSpell(slot).Level-1];
 
             return selectedSlotLevel;
         }
@@ -432,20 +436,88 @@ namespace AIO.Utilities
             return spell.CooldownExpires - Game.ClockTime;
         }
 
-        /// <summary>
-        ///     Gets the health with Blitzcrank's Shield support.
-        /// </summary>
-        /// <param name="unit">
-        ///     The unit.
-        /// </param>
-        /// <returns>
-        ///     The target Health with Blitzcrank's Shield support.
-        /// </returns>
-        public static float GetRealHealth(this AIBaseClient unit)
-        {
-            return unit.HP + unit.PhysicalShield;
-        }
+	    /// <summary>
+	    ///     Gets the health with Blitzcrank's Shield support.
+	    /// </summary>
+	    /// <param name="unit">
+	    ///     The unit.
+	    /// </param>
+	    /// <param name="type">
+	    ///     The damageType.
+	    /// </param>
+	    /// <returns>
+	    ///     The target Health with Shield support.
+	    /// </returns>
+	    public static float GetRealHealth(this AIBaseClient unit, DamageType type = DamageType.True)
+	    {
+		    var hero = unit as AIHeroClient;
+		    if (hero == null)
+		    {
+			    return unit.TotalShieldHealth() + unit.AllShield;
+		    }
 
-        #endregion
-    }
+		    var shield = 0f;
+		    switch (type)
+		    {
+			    case DamageType.Magical:
+				    shield += hero.MagicalShield;
+				    break;
+			    case DamageType.Physical:
+				    shield += hero.PhysicalShield;
+				    break;
+		    }
+
+		    var total = unit.TotalShieldHealth() + unit.AllShield + shield;
+
+		    switch (hero.CharName)
+		    {
+			    case "Blitzcrank":
+				    var debuffer = 0f;
+				    if (hero.CharName.Equals("Blitzcrank") &&
+				        !hero.HasBuff("BlitzcrankManaBarrierCD"))
+				    {
+					    debuffer += hero.MP / 2;
+				    }
+				    return total + debuffer;
+		    }
+
+		    return total;
+	    }
+
+
+		/// <summary>
+		///     Determines whether the specified target is a valid target.
+		/// </summary>
+		/// <param name="target">The target.</param>
+		/// <param name="range">The range.</param>
+		/// <param name="allyIsValidTarget">if set to <c>true</c> allies will be set as valid targets.</param>
+		/// <param name="includeBoundingRadius"></param>
+		/// <param name="checkRangeFrom">The check range from position.</param>
+		/// <returns>
+		///     <c>true</c> if the specified target is a valid target; otherwise, <c>false</c>.
+		/// </returns>
+		public static bool IsValidTarget(
+		    this AttackableUnit target,
+		    float               range                 = float.MaxValue,
+		    bool                allyIsValidTarget     = false,
+		    bool                includeBoundingRadius = false,
+		    Vector3             checkRangeFrom        = default(Vector3))
+	    {
+		    if (target == null || !target.IsValid || target.IsDead || !target.IsVisible || !target.IsTargetable)
+		    {
+			    return false;
+		    }
+
+		    if (!allyIsValidTarget && target.Team == Player.Team)
+		    {
+			    return false;
+		    }
+
+		    var fromPoint      = checkRangeFrom != Vector3.Zero ? checkRangeFrom : Player.Position;
+		    var boundingRadius = includeBoundingRadius ? Player.BoundingRadius + target.BoundingRadius : 0;
+		    return target.Distance(fromPoint) < range + boundingRadius;
+	    }
+
+		#endregion
+	}
 }

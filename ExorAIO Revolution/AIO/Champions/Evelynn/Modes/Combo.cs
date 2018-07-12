@@ -1,6 +1,8 @@
 
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587

@@ -16,14 +16,14 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            if (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).Level() == 5)
+            if (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).Level == 5)
             {
                 SpellClass.E.Width = UtilityClass.GetAngleByDegrees(60);
             }
 
-            if (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.R).Level() == 3)
+            if (UtilityClass.Player.Spellbook.GetSpell(SpellSlot.R).Level == 3)
             {
                 SpellClass.R.Range = 750f;
             }

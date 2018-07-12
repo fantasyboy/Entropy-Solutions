@@ -6,6 +6,7 @@ using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -22,9 +23,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            SpellClass.R.Range = 1500f + 500f * SpellClass.R.Level();
+            SpellClass.R.Range = 1500f + 500f * SpellClass.R.Level;
 
             if (UtilityClass.Player.IsRecalling())
             {
@@ -54,7 +55,7 @@ namespace AIO.Champions
                 MenuClass.Spells["w"]["teleport"].As<MenuBool>().Enabled)
             {
                 foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
-                    m.IsEnemy()() &&
+                    m.IsEnemy() &&
                     m.Distance(UtilityClass.Player) <= SpellClass.W.Range &&
                     m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
                 {
@@ -68,7 +69,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Spells["q"]["logical"].As<MenuBool>().Enabled)
             {
-                switch (ImplementationClass.IOrbwalker.Mode)
+                switch (Orbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
                     case OrbwalkingMode.Harass:

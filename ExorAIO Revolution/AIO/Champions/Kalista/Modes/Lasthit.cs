@@ -23,7 +23,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendLastHit(args)
+        public void RendLastHit(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Lasthit Logics.

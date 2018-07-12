@@ -142,23 +142,6 @@ namespace AIO.Utilities
             return new Vector2(v.X, v.Y);
         }
 
-        public static Polygon ToPolygon(this Path v)
-        {
-            var polygon = new Polygon();
-            foreach (var point in v)
-            {
-                polygon.Add(new Vector3(point.X, point.Y, point.Z));
-            }
-
-            return polygon;
-        }
-
-        //Clipper
-        public static List<Polygon> ToPolygons(this Paths v)
-        {
-            return v.Select(ToPolygon).ToList();
-        }
-
         #endregion
 
         public static class Util
@@ -315,7 +298,7 @@ namespace AIO.Utilities
             /// </value>
             public Vector3 Perpendicular()
             {
-                return Direction().Perpendicular();
+                return Direction().PerpendicularClockwise();
             }
 
             /// <summary>

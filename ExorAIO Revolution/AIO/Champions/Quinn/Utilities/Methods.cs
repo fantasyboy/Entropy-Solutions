@@ -1,5 +1,6 @@
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Orbwalking;
 
 namespace AIO.Champions
 {
@@ -16,8 +17,8 @@ namespace AIO.Champions
         public void Methods()
         {
             Game.OnUpdate += OnUpdate;
-            ImplementationClass.IOrbwalker.PreAttack += OnPreAttack;
-            ImplementationClass.IOrbwalker.PostAttack += OnPostAttack;
+            Orbwalker.OnPreAttack += OnPreAttack;
+            Orbwalker.OnPostAttack += OnPostAttack;
             Render.OnPresent += OnPresent;
             Gapcloser.OnGapcloser += OnGapcloser;
             //AttackableUnit.OnLeaveVisible += OnLeaveVisibility;

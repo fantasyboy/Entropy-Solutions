@@ -6,6 +6,7 @@ using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -22,7 +23,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
             var passiveObject = ObjectManager.Get<GameObject>().FirstOrDefault(o => o.IsValid && o.Name == "Kalista_Base_P_LinkIcon.troy");
             if (passiveObject != null)
@@ -79,7 +80,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 !UtilityClass.Player.IsUnderEnemyTurret() &&
-                ImplementationClass.IOrbwalker.Mode == OrbwalkingMode.None &&
+                Orbwalker.Mode == OrbwalkingMode.None &&
                 UtilityClass.Player.CountEnemyHeroesInRange(1500f) == 0 &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["logical"]) &&
@@ -97,7 +98,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendAutomatic(args)
+        public void RendAutomatic(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Automatic E Logics.

@@ -1,5 +1,6 @@
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 
@@ -24,7 +25,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.HasBuff("AsheQCastReady") &&
-                UtilityClass.Player.HasItem(ItemId.RunaansHurricane) &&
+                UtilityClass.Player.HasItem(ItemID.RunaansHurricane) &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)

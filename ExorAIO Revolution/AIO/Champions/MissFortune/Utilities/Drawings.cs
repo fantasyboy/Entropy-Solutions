@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 using SharpDX;
 using Color = System.Drawing.Color;
@@ -31,7 +32,7 @@ namespace AIO.Champions
                 /// </summary>
                 if (MenuClass.Drawings["q"].As<MenuBool>().Enabled)
                 {
-                    Render.Circle(UtilityClass.Player.Position, SpellClass.Q.Range, 30, Color.LightGreen);
+                    CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
                 }
 
                 /// <summary>
@@ -61,7 +62,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.Drawings["e"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.E.Range, 30, Color.Cyan);
+                CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -70,7 +71,7 @@ namespace AIO.Champions
             if (SpellClass.R.Ready &&
                 MenuClass.Drawings["r"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.R.Range, 30, Color.Red);
+                CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
             }
 
             /// <summary>

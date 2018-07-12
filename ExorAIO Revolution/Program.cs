@@ -1,9 +1,11 @@
-﻿using Entropy.SDK.Utils;
+﻿using Entropy.SDK.Events;
+using Entropy.ToolKit;
 
-#pragma warning disable 1587
 namespace AIO
 {
-    internal class Program
+	using System;
+
+	internal class Program
     {
         #region Methods
 
@@ -12,23 +14,31 @@ namespace AIO
         /// </summary>
         private static void Main()
         {
-            GameEvents.GameStart += OnStart;
-        }
+	        AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+	        Loading.OnLoadingComplete                  += Loading_OnLoadingComplete;
 
-        /// <summary>
-        ///     Event which triggers on game start.
-        /// </summary>
-        private static void OnStart()
+		}
+
+		/// <summary>
+		///     Event which triggers on game start.
+		/// </summary>
+		private static void Loading_OnLoadingComplete()
         {
-            DelayAction.Queue(3000, () =>
-            {
-                General.Menu();
-                General.Methods();
+            General.Menu();
+            General.Methods();
 
-                Bootstrap.LoadChampion();
-            });
+            Bootstrap.LoadChampion();
         }
 
-        #endregion
-    }
+	    private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+	    {
+		    if (e.ExceptionObject is Exception exception)
+		    {
+			    exception.ToolKitLog("Unexpected error occurred in AIO");
+		    }
+	    }
+
+
+		#endregion
+	}
 }

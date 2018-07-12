@@ -17,14 +17,14 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
         }
 
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void ExpungeAutomatic(args)
+        public void ExpungeAutomatic(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Automatic E Logics.

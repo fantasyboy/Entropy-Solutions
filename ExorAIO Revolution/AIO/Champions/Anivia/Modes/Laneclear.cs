@@ -3,6 +3,7 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -62,7 +63,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
                 MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                var target = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIMinionClient;
+                var target = Orbwalker.GetOrbwalkingTarget() as AIMinionClient;
                 if (target != null &&
                     minions.Contains(target) &&
                     UtilityClass.Player.GetSpellDamage(target, SpellSlot.E, DamageStage.Empowered) >= target.HP)

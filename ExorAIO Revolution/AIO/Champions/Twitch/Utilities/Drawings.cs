@@ -4,6 +4,7 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -35,7 +36,7 @@ namespace AIO.Champions
                 }
                 else
                 {
-                    var qDuration = new[] { 10, 11, 12, 13, 14 }[UtilityClass.Player.Spellbook.GetSpell(SpellSlot.Q).Level() - 1];
+                    var qDuration = new[] { 10, 11, 12, 13, 14 }[UtilityClass.Player.Spellbook.GetSpell(SpellSlot.Q).Level - 1];
                     Render.Circle(UtilityClass.Player.Position, qDuration * UtilityClass.Player.MoveSpeed, 30, Color.Green);
                     Vector2Geometry.DrawCircleOnMinimap(UtilityClass.Player.Position, qDuration * UtilityClass.Player.MoveSpeed, Color.White);
                 }
@@ -47,7 +48,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.W.Range, 30, Color.Yellow);
+                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -57,7 +58,7 @@ namespace AIO.Champions
             {
                 if (MenuClass.Drawings["e"].As<MenuBool>().Enabled)
                 {
-                    Render.Circle(UtilityClass.Player.Position, SpellClass.E.Range, 30, Color.Cyan);
+                    CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
                 }
 
                 /// <summary>
@@ -68,7 +69,7 @@ namespace AIO.Champions
                     foreach (var unit in ObjectManager.Get<AIBaseClient>().Where(h =>
                         IsPerfectExpungeTarget(h) &&
                         (h is AIHeroClient || UtilityClass.JungleList.Contains(h.CharName)) &&
-                        h.FloatingHealthBarPosition.OnScreen()))
+                        h.InfoBarPosition.OnScreen()))
                     {
                         var heroUnit = unit as AIHeroClient;
                         var jungleList = UtilityClass.JungleList;
@@ -114,7 +115,7 @@ namespace AIO.Champions
                             yOffset = DrawingClass.SyOffset(heroUnit);
                         }
 
-                        var barPos = unit.FloatingHealthBarPosition;
+                        var barPos = unit.InfoBarPosition;
                         barPos.X += xOffset;
                         barPos.Y += yOffset;
 
@@ -142,7 +143,7 @@ namespace AIO.Champions
             if (SpellClass.R.Ready &&
                 MenuClass.Drawings["r"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.R.Range, 30, Color.Red);
+                CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
             }
         }
 

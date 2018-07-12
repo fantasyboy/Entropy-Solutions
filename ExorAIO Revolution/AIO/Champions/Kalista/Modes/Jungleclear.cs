@@ -47,7 +47,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendJungleClear(args)
+        public void RendJungleClear(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Jungleclear Logic.

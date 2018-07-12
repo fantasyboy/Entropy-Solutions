@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -27,7 +28,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.W.Range, 30, Color.Yellow);
+                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -38,7 +39,7 @@ namespace AIO.Champions
                 foreach (var unit in ObjectManager.Get<AIBaseClient>().Where(h =>
                     IsPerfectChargeTarget(h) &&
                     (h is AIHeroClient || UtilityClass.JungleList.Contains(h.CharName)) &&
-                    h.FloatingHealthBarPosition.OnScreen()))
+                    h.InfoBarPosition.OnScreen()))
                 {
                     var heroUnit = unit as AIHeroClient;
                     var jungleList = UtilityClass.JungleList;
@@ -84,7 +85,7 @@ namespace AIO.Champions
                         yOffset = DrawingClass.SyOffset(heroUnit);
                     }
 
-                    var barPos = unit.FloatingHealthBarPosition;
+                    var barPos = unit.InfoBarPosition;
                     barPos.X += xOffset;
                     barPos.Y += yOffset;
 
@@ -111,7 +112,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.W.Range, 30, Color.Yellow);
+                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
         }
 

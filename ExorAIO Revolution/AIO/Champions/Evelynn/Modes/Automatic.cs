@@ -16,11 +16,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
             if (!UtilityClass.Player.GetSpell(SpellSlot.W).State.HasFlag(SpellState.NotLearned))
             {
-                SpellClass.W.Range = 1100 + 100 * UtilityClass.Player.GetSpell(SpellSlot.W).Level();
+                SpellClass.W.Range = 1100 + 100 * UtilityClass.Player.GetSpell(SpellSlot.W).Level;
             }
         }
 

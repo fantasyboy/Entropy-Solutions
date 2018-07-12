@@ -55,7 +55,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendHarass(args)
+        public void RendHarass(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Minion Harass Logic.

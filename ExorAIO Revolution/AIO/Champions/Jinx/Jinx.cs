@@ -2,7 +2,9 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -43,13 +45,13 @@ namespace AIO.Champions
         #region Public Methods and Operators
 
         /// <summary>
-        ///     Called on orbwalker action.
+        ///     Called on Orbwalker action.
         /// </summary>
         /// <param name="sender">The object.</param>
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
         public void OnPreAttack(OnPreAttackEventArgs args)
         {
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.LaneClear:
                     Laneclear(sender, args);
@@ -87,7 +89,7 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy()() || Invulnerable.Check(sender, DamageType.Magical, false))
+            if (sender == null || !sender.IsEnemy() || Invulnerable.Check(sender, DamageType.Magical, false))
             {
                 return;
             }
@@ -121,9 +123,9 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(args);
+            Killsteal(EntropyEventArgs args);
 
-            if (ImplementationClass.IOrbwalker.IsWindingUp)
+            if (Orbwalker.IsWindingUp)
             {
                 return;
             }
@@ -131,21 +133,21 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(args);
+            Automatic(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(args);
+                    Combo(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(args);
+                    Harass(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LastHit:
-                    LastHit(args);
+                    LastHit(EntropyEventArgs args);
                     break;
             }
         }

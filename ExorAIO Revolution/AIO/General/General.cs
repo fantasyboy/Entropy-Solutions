@@ -1,5 +1,4 @@
 ﻿
-using System;
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
@@ -8,7 +7,9 @@ using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
+using Entropy.ToolKit;
 
 #pragma warning disable 1587
 namespace AIO
@@ -27,18 +28,18 @@ namespace AIO
         /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
         private static void OnPostAttack(OnPostAttackEventArgs args)
         {
-            if (!UtilityClass.Player.IsMelee || args.Target.IsBuilding())
+            if (!UtilityClass.Player.IsMelee || args.Target.IsStructure())
             {
                 return;
             }
 
-            var hydraItems = new[] { ItemId.TitanicHydra, ItemId.RavenousHydra, ItemId.Tiamat };
+            var hydraItems = new[] { ItemID.TitanicHydra, ItemID.RavenousHydra, ItemID.Tiamat };
             if (MenuClass.Hydra != null)
             {
-                var hydraSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.SlotTaken && hydraItems.Contains(s.ItemId));
+                var hydraSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => hydraItems.ToList().Contains((ItemID)s.ItemID));
                 if (hydraSlot != null)
                 {
-                    switch (ImplementationClass.IOrbwalker.Mode)
+                    switch (Orbwalker.Mode)
                     {
                         case OrbwalkingMode.Combo:
                             if (!MenuClass.Hydra["combo"].As<MenuBool>().Enabled)
@@ -69,14 +70,15 @@ namespace AIO
                             {
                                 return;
                             }
-                            break;
+                            break; 
                     }
 
-                    var hydraSpellSlot = hydraSlot.SpellSlot;
+                    var hydraSpellSlot = hydraSlot.Slot;
                     if (hydraSpellSlot != SpellSlot.Unknown &&
-                        UtilityClass.Player.Spellbook.GetSpell(hydraSpellSlot).State.HasFlag(SpellState.Ready))
+                        UtilityClass.Player.Spellbook.GetSpellState(hydraSpellSlot).HasFlag(SpellState.Ready))
                     {
-                        UtilityClass.Player.Spellbook.CastSpell(hydraSpellSlot);
+						//Todo: WTF
+	                    //UtilityClass.Player.Spellbook.CastSpell(hydraSpellSlot);
                     }
                 }
             }
@@ -89,7 +91,7 @@ namespace AIO
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
         public static void OnPreAttack(OnPreAttackEventArgs args)
         {
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 /// <summary>
                 ///     The 'No AA in Combo' Logic.
@@ -118,15 +120,15 @@ namespace AIO
                     break;
             }
 
-            if (args.Target.IsBuilding())
+            if (args.Target.IsStructure())
             {
                 return;
             }
 
-            var stormrazorSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.IsValid /*&& s.ItemID == ItemId.Stormrazor*/); //Todo: find stormrazor itemid
+            var stormrazorSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.IsValid /*&& s.ItemID == ItemID.Stormrazor*/); //Todo: find stormrazor ItemID
             if (stormrazorSlot != null)
             {
-                switch (ImplementationClass.IOrbwalker.Mode)
+                switch (Orbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
                         if (!MenuClass.Stormrazor["combo"].As<MenuBool>().Enabled)
@@ -166,7 +168,7 @@ namespace AIO
 		/// </summary>
 
 		/// <param name="args">The <see cref="SpellbookLocalCastSpellEventArgs" /> instance containing the event data.</param>
-		public static void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
+		public static void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
             var slot = args.Slot;
             if (UtilityClass.SpellSlots.Contains(slot))
@@ -177,27 +179,27 @@ namespace AIO
                 var championSpellManaCosts = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName).Value;
                 if (championSpellManaCosts != null)
                 {
-                    var spellBook = UtilityClass.Player.Spellbook;
+                    var Spellbook = UtilityClass.Player.Spellbook;
                     var data = UtilityClass.PreserveManaData;
 
-                    var spell = spellBook.GetSpell(slot);
+                    var spell = Spellbook.GetSpell(slot);
                     var menuOption = MenuClass.PreserveMana[slot.ToString().ToLower()];
                     if (menuOption != null && menuOption.As<MenuBool>().Enabled)
                     {
                         var registeredSpellData = data.FirstOrDefault(d => d.Key == slot).Value;
-                        var actualSpellData = championSpellManaCosts[slot][spell.Level() - 1];
+                        var actualSpellData = championSpellManaCosts[slot][spell.Level - 1];
 
                         if (data.ContainsKey(slot) &&
                             registeredSpellData != actualSpellData)
                         {
                             data.Remove(slot);
-                            Console.WriteLine($"Preserve Mana List: Removed {slot} (Updated ManaCost).");
+                            Logging.Log($"Preserve Mana List: Removed {slot} (Updated ManaCost).");
                         }
 
-                        if (!data.ContainsKey(slot) && spell.Level() > 0)
+                        if (!data.ContainsKey(slot) && spell.Level > 0)
                         {
                             data.Add(slot, actualSpellData);
-                            Console.WriteLine($"Preserve Mana List: Added {slot}, Cost: {actualSpellData}.");
+                            Logging.Log($"Preserve Mana List: Added {slot}, Cost: {actualSpellData}.");
                         }
                     }
                     else
@@ -205,7 +207,7 @@ namespace AIO
                         if (data.ContainsKey(slot))
                         {
                             data.Remove(slot);
-                            Console.WriteLine($"Preserve Mana List: Removed {slot} (Disabled).");
+                            Logging.Log($"Preserve Mana List: Removed {slot} (Disabled).");
                         }
                     }
 
@@ -218,11 +220,11 @@ namespace AIO
                     }
 
                     var spellCost =
-                        championSpellManaCosts[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level() - 1];
+                        championSpellManaCosts[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level - 1];
                     var mana = UtilityClass.Player.MP;
                     if (!data.Keys.Contains(slot) && mana - spellCost < sum)
                     {
-                        Console.WriteLine($"Preserve Mana List: Denied Spell {slot} Usage (Mana: {mana}, Cost: {spellCost}), Preserve Mana Quantity: {sum}");
+                        Logging.Log($"Preserve Mana List: Denied Spell {slot} Usage (Mana: {mana}, Cost: {spellCost}), Preserve Mana Quantity: {sum}");
                         args.Execute = false;
                     }
                 }
@@ -230,11 +232,11 @@ namespace AIO
                 /// <summary>
                 ///     The 'Preserve Spells' Logic.
                 /// </summary>
-                switch (ImplementationClass.IOrbwalker.Mode)
+                switch (Orbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
                     case OrbwalkingMode.Harass:
-                        var target = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIHeroClient;
+                        var target = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
                         if (target != null)
                         {
                             if (target.GetRealHealth() <=

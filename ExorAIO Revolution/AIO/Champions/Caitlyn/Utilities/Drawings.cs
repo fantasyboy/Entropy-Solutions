@@ -1,10 +1,12 @@
 
-using System.Drawing;
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
+using Color = SharpDX.Color;
 
 #pragma warning disable 1587
 
@@ -28,7 +30,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Drawings["q"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.Q.Range, 30, Color.LightGreen);
+	            CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -37,7 +39,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.W.Range, 30, Color.Yellow);
+                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -46,7 +48,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.Drawings["e"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.E.Range, 30, Color.Cyan);
+                CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -56,7 +58,7 @@ namespace AIO.Champions
             {
                 if (MenuClass.Drawings["r"].As<MenuBool>().Enabled)
                 {
-                    Render.Circle(UtilityClass.Player.Position, SpellClass.R.Range, 30, Color.Red);
+                    CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
                 }
 
                 if (MenuClass.Drawings["rmm"].As<MenuBool>().Enabled)
@@ -70,35 +72,15 @@ namespace AIO.Champions
             /// </summary>
             if (MenuClass.Drawings["rdmg"].As<MenuBool>().Enabled)
             {
-                foreach (var hero in Extensions.GetEnemyHeroesTargetsInRange(SpellClass.R.Range).Where(h =>
+	            var caitlynRDamage = new[] { 250, 475, 700 }[UtilityClass.Player.Spellbook.GetSpell(SpellSlot.R).Level - 1]
+	                                 + 2 * UtilityClass.Player.CharIntermediate.FlatPhysicalDamageMod;
+				foreach (var hero in Extensions.GetEnemyHeroesTargetsInRange(SpellClass.R.Range).Where(h =>
                     !Invulnerable.Check(h) &&
-                    h.FloatingHealthBarPosition.OnScreen()))
+                    h.InfoBarPosition.OnScreen()))
                 {
-                    var width = DrawingClass.SWidth;
-                    var height = DrawingClass.SHeight;
-
-                    var xOffset = DrawingClass.SxOffset(hero);
-                    var yOffset = DrawingClass.SyOffset(hero);
-
-                    var barPos = hero.FloatingHealthBarPosition;
-                    barPos.X += xOffset;
-                    barPos.Y += yOffset;
-
-                    var unitHealth = hero.GetRealHealth();
-                    var totalDamage = UtilityClass.Player.GetSpellDamage(hero, SpellSlot.R);
-
-                    var barLength = 0;
-                    if (unitHealth > totalDamage)
-                    {
-                        barLength = (int)(width * ((unitHealth - totalDamage) / hero.MaxHP * 100 / 100));
-                    }
-
-                    var drawEndXPos = barPos.X + width * (hero.HPPercent() / 100);
-                    var drawStartXPos = barPos.X + barLength;
-
-                    Render.Line(drawStartXPos, barPos.Y, drawEndXPos, barPos.Y, height, true, unitHealth < totalDamage ? Color.Blue : Color.Orange);
-                    Render.Line(drawStartXPos, barPos.Y, drawStartXPos, barPos.Y + height + 1, 1, true, Color.Lime);
-                }
+                    var totalCaitlynRDamage = LocalPlayer.Instance.CalculateDamage(hero, DamageType.Physical, caitlynRDamage);
+	                DamageIndicatorRendering.Render(hero, totalCaitlynRDamage, hero.TotalShieldHealth() < totalCaitlynRDamage ? Color.Blue : Color.Orange);
+				}
             }
         }
 

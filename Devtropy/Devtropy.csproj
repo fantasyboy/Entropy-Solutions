@@ -39,23 +39,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Entropy">
-      <HintPath>..\..\Entropy.AIO\System\Entropy.dll</HintPath>
-    </Reference>
-    <Reference Include="Entropy.SDK">
-      <HintPath>..\..\Entropy.AIO\System\Entropy.SDK.dll</HintPath>
-    </Reference>
-    <Reference Include="Entropy.ToolKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=167639b368a1a0ae, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Entropy.AIO\System\Entropy.ToolKit.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>..\..\Entropy.AIO\System\SharpDX.Direct3D9.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Mathematics">
-      <HintPath>..\..\Entropy.AIO\System\SharpDX.Mathematics.dll</HintPath>
-    </Reference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

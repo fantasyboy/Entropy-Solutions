@@ -22,7 +22,7 @@ namespace AIO.Champions
         public void Buildingclear(OnPreAttackEventArgs args)
         {
             var target = args.Target;
-            if (!target.IsBuilding())
+            if (!target.IsStructure())
             {
                 return;
             }

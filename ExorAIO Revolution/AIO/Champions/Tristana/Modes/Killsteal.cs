@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Killsteal(args)
+        public void Killsteal(EntropyEventArgs args)
         {
             /// <summary>
             ///     The R KillSteal Logic.

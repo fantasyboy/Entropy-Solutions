@@ -21,7 +21,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
             SpellClass.E.Range = UtilityClass.Player.GetAutoAttackRange();
             SpellClass.R.Range = UtilityClass.Player.GetAutoAttackRange();
@@ -33,8 +33,8 @@ namespace AIO.Champions
                 UtilityClass.Player.IsBeingGrabbed() &&
                 MenuClass.Spells["w"]["antigrab"].As<MenuBool>().Enabled)
             {
-                var firstTower = ObjectManager.Get<Obj_AI_Turret>()
-                    .Where(t => t.IsAlly && t.IsValidTarget(allyIsValidTarget: true))
+                var firstTower = ObjectManager.Get<AITurretClient>()
+                    .Where(t => t.IsAlly() && t.IsValidTarget(allyIsValidTarget: true))
                     .MinBy(t => t.Distance(UtilityClass.Player));
                 if (firstTower != null)
                 {

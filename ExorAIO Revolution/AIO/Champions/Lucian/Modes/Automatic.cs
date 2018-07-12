@@ -4,6 +4,7 @@ using Entropy;
 using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
 
@@ -21,9 +22,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            ImplementationClass.IOrbwalker.AttackingEnabled = !IsCulling();
+            Orbwalker.AttackingEnabled = !IsCulling();
 
             /// <summary>
             ///     The Automatic R Orbwalking.

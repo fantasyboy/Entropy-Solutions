@@ -1,19 +1,10 @@
-﻿
+﻿using System;
+using System.Linq;
 using Entropy.SDK.Caching;
-using Entropy.SDK.Extensions.Geometry;
-using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Events;
 using Entropy.SDK.Rendering;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
-using SharpDX;
-
-using System;
-using System.Linq;
-
-using Entropy;
-using Entropy.SDK.Events;
-using Entropy.ToolKit;
-using Color = SharpDX.Color;
 
 namespace Devtropy
 {
@@ -94,7 +85,7 @@ namespace Devtropy
         {
             if (args.Caster is AIHeroClient)
             {
-                Console.WriteLine("Autoattack Name: " + args.SpellData.Name);
+                Logging.Log("Autoattack Name: " + args.SpellData.Name);
             }
         }
 
@@ -117,11 +108,11 @@ namespace Devtropy
 		/// <param name="args">The <see cref="AIBaseClientAnimationPlayEventArgs" /> instance containing the event data.</param>
 		private static void OnAnimationPlay(AIBaseClientAnimationPlayEventArgs args)
         {
-            if (args.Sender.IsMe()())
+            if (args.Sender.IsMe())
             {
-                Console.WriteLine("----------------------------------------------");
-                Console.WriteLine($"Animation Name: {args.AnimationName}");
-                Console.WriteLine("----------------------------------------------");
+                Logging.Log("----------------------------------------------");
+                Logging.Log($"Animation Name: {args.AnimationName}");
+                Logging.Log("----------------------------------------------");
             }
         }
 
@@ -131,19 +122,19 @@ namespace Devtropy
 		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
 		private static void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            if (args.Caster.IsMe()())
+            if (args.Caster.IsMe())
             {
                 var spellData = args.SpellData;
 
-                Console.WriteLine("----------------------------------------------");
-                Console.WriteLine("Name: "                      + spellData.Name);
-                Console.WriteLine("Width: "                     + spellData.LineWidth);
-                Console.WriteLine("CastRange: "                 + spellData.CastRange);
-                Console.WriteLine("CastRadius: "                + spellData.CastRadius);
-                Console.WriteLine("CastRangeDisplayOverride: "  + spellData.CastRangeDisplayOverride);
-                Console.WriteLine("CastRadiusSecondary: "       + spellData.CastRadiusSecondary);
-                Console.WriteLine("MissileSpeed: "              + spellData.MissileSpeed);
-                Console.WriteLine("----------------------------------------------");
+                Logging.Log("----------------------------------------------");
+                Logging.Log("Name: "                      + spellData.Name);
+                Logging.Log("Width: "                     + spellData.LineWidth);
+                Logging.Log("CastRange: "                 + spellData.CastRange);
+                Logging.Log("CastRadius: "                + spellData.CastRadius);
+                Logging.Log("CastRangeDisplayOverride: "  + spellData.CastRangeDisplayOverride);
+                Logging.Log("CastRadiusSecondary: "       + spellData.CastRadiusSecondary);
+                Logging.Log("MissileSpeed: "              + spellData.MissileSpeed);
+                Logging.Log("----------------------------------------------");
             }
         }
 
@@ -278,7 +269,7 @@ namespace Devtropy
 
                         if (obj.Type.TypeID == GameObjectTypeID.obj_GeneralParticleEmitter)
                         {
-                            Console.WriteLine("Name: " + obj.Name);
+                            Logging.Log("Name: " + obj.Name);
                         }
                         break;
                 }

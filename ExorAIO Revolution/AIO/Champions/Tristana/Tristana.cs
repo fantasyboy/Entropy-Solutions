@@ -3,7 +3,9 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -60,7 +62,7 @@ namespace AIO.Champions
                         t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
 
                 if (forceTarget is AIMinionClient &&
-                    ImplementationClass.IOrbwalker.Mode == OrbwalkingMode.Combo)
+                    Orbwalker.Mode == OrbwalkingMode.Combo)
                 {
                     return;
                 }
@@ -71,7 +73,7 @@ namespace AIO.Champions
                 }
             }
 
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Combo(sender, args);
@@ -110,7 +112,7 @@ namespace AIO.Champions
                 return;
             }
             
-            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
             {
                 return;
             }
@@ -231,12 +233,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(args);
+            Killsteal(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(args);
+            Automatic(EntropyEventArgs args);
         }
 
         #endregion

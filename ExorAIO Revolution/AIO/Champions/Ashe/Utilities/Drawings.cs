@@ -1,6 +1,7 @@
 ﻿
 using System.Drawing;
 using AIO.Utilities;
+using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -25,7 +26,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.W.Range, 30, Color.Yellow);
+                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
         }
 

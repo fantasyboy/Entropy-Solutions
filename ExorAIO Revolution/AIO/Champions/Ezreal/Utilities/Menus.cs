@@ -38,7 +38,7 @@ namespace AIO.Champions
                     MenuClass.Q.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
                     //MenuClass.Q.Add(new MenuSeperator("separator"));
                     //MenuClass.Q.Add(new MenuSeperator("separator1", "It will cast Q on the minions the"));
-                    //MenuClass.Q.Add(new MenuSeperator("separator2", "orbwalker cannot reach in time to kill."));
+                    //MenuClass.Q.Add(new MenuSeperator("separator2", "Orbwalker cannot reach in time to kill."));
                     MenuClass.Q.Add(new MenuSliderBool("farmhelper", "FarmHelper / if Mana >= x%", true, 50, 0, 99));
 
                     if (GameObjects.EnemyHeroes.Any())

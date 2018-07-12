@@ -7,7 +7,9 @@ using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
+using Entropy.ToolKit;
 
 #pragma warning disable 1587
 
@@ -23,23 +25,23 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            SpellClass.Q2.Range = SpellClass.Q.Range + 50f + 25f * SpellClass.Q.Level();
+            SpellClass.Q2.Range = SpellClass.Q.Range + 50f + 25f * SpellClass.Q.Level;
 
             if (UtilityClass.Player.IsRecalling())
             {
                 return;
             }
 
-            Console.WriteLine($"Q Range: {SpellClass.Q.Range}, Distance: {ImplementationClass.IOrbwalker.GetOrbwalkingTarget()?.Distance(UtilityClass.Player)}");
+            Logging.Log($"Q Range: {SpellClass.Q.Range}, Distance: {Orbwalker.GetOrbwalkingTarget()?.Distance(UtilityClass.Player)}");
 
             /// <summary>
             ///     The Force Pow Pow Logic. 
             /// </summary>
             if (SpellClass.Q.Ready &&
                 IsUsingFishBones() &&
-                ImplementationClass.IOrbwalker.Mode == OrbwalkingMode.None &&
+                Orbwalker.Mode == OrbwalkingMode.None &&
                 MenuClass.Miscellaneous["forcepowpow"].As<MenuBool>().Enabled)
             {
                 SpellClass.Q.Cast();
@@ -66,7 +68,7 @@ namespace AIO.Champions
                 MenuClass.Spells["e"]["teleport"].As<MenuBool>().Enabled)
             {
                 foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
-                        m.IsEnemy()() &&
+                        m.IsEnemy() &&
                         m.Distance(UtilityClass.Player) <= SpellClass.E.Range &&
                         m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
                 {

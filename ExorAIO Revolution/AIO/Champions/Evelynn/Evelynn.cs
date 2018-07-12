@@ -2,6 +2,7 @@ using Entropy.SDK.Orbwalking;
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
@@ -49,7 +50,7 @@ namespace AIO.Champions
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
         public void OnPreAttack(OnPreAttackEventArgs args)
         {
-            var orbTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget();
+            var orbTarget = Orbwalker.GetOrbwalkingTarget();
             if (orbTarget != null)
             {
                 var baseTarget = orbTarget as AIBaseClient;
@@ -82,7 +83,7 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
             {
                 return;
             }
@@ -140,12 +141,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(args);
+            Killsteal(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the Automatic events.
             /// </summary>
-            Automatic(args);
+            Automatic(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -153,14 +154,14 @@ namespace AIO.Champions
             switch (Orbwalker.Implementation.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(args);
+                    Combo(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(args);
+                    Harass(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(args);
-                    JungleClear(args);
+                    LaneClear(EntropyEventArgs args);
+                    JungleClear(EntropyEventArgs args);
                     break;
             }
         }

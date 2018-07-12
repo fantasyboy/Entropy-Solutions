@@ -59,7 +59,7 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
             {
                 return;
             }

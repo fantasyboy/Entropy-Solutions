@@ -4,6 +4,7 @@ using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -50,7 +51,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["w"]["laneclear"]) &&
                 MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                var mainMinion = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIMinionClient;
+                var mainMinion = Orbwalker.GetOrbwalkingTarget() as AIMinionClient;
                 if (mainMinion != null &&
                     Extensions.GetEnemyLaneMinionsTargets().Count(m => m.Distance(mainMinion) <= 250f) >=
                         MenuClass.Spells["w"]["customization"]["laneclear"].As<MenuSlider>().Value)

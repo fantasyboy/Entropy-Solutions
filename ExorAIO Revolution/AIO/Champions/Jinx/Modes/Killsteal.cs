@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal(args)
+        public void Killsteal(EntropyEventArgs args)
         {
             /// <summary>
             ///     The KillSteal W Logic.

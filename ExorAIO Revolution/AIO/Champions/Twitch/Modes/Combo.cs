@@ -40,7 +40,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void ExpungeCombo(args)
+        public void ExpungeCombo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Automatic Enemy E Logic.

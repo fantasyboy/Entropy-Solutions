@@ -1,6 +1,7 @@
 using System;
 using System.Reflection;
 using AIO.Utilities;
+using Entropy.ToolKit;
 
 #pragma warning disable 1587
 namespace AIO
@@ -21,24 +22,22 @@ namespace AIO
             {
                 var pluginName = "AIO.Champions." + UtilityClass.Player.CharName;
                 var type = Type.GetType(pluginName, true);
-                if (type != null)
-                {
-                    Activator.CreateInstance(type);
-                    Console.WriteLine($"ExorAIO: Revolution - {UtilityClass.Player.CharName} Loaded.");
-                }
+
+                Activator.CreateInstance(type);
+                Logging.Log($"ExorAIO: Revolution - {UtilityClass.Player.CharName} Loaded.");
             }
             catch (Exception e)
             {
                 switch (e)
                 {
                     case TargetInvocationException _:
-                        Console.WriteLine($"ExorAIO: Revolution - Error occurred while trying to load {UtilityClass.Player.CharName}.");
-                        Console.WriteLine(e);
+                        Logging.Log($"ExorAIO: Revolution - Error occurred while trying to load {UtilityClass.Player.CharName}.");
+	                    e.ToolKitLog();
                         break;
                     case TypeLoadException _:
                         for (var i = 1; i < 30; i++)
                         {
-                            Console.WriteLine($"ExorAIO: Revolution - {UtilityClass.Player.CharName} is NOT supported yet.");
+                            Logging.Log($"ExorAIO: Revolution - {UtilityClass.Player.CharName} is NOT supported yet.");
                         }
                         break;
                 }

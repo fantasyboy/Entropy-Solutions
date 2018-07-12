@@ -1,5 +1,6 @@
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Orbwalking;
 
 namespace AIO.Champions
 {
@@ -19,7 +20,7 @@ namespace AIO.Champions
             Render.OnPresent += OnPresent;
             GameObject.OnCreate += OnCreate;
             GameObject.OnDestroy += OnDestroy;
-            ImplementationClass.IOrbwalker.OnNonKillableMinion += OnNonKillableMinion;
+            Orbwalker.OnNonKillableMinion += OnNonKillableMinion;
             Gapcloser.OnGapcloser += OnGapcloser;
         }
 

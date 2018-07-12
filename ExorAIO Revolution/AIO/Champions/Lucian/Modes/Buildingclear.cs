@@ -1,6 +1,7 @@
 ﻿
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
@@ -24,7 +25,7 @@ namespace AIO.Champions
         public void Buildingclear(OnPostAttackEventArgs args)
         {
             var target = args.Target;
-            if (!target.IsBuilding())
+            if (!target.IsStructure())
             {
                 return;
             }

@@ -1,6 +1,7 @@
 
 using System.Linq;
 using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 
@@ -18,7 +19,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal(args)
+        public void Killsteal(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Q KillSteal Logic.

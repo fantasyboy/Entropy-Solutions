@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Caching;
+using Entropy.SDK.Enumerations;
 using Entropy.SDK.Events;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
@@ -53,10 +54,8 @@ namespace AIO.Utilities
         /// </returns>
         public static bool IsWall(this Vector3 pos, bool includeBuildings = false)
         {
-            var point = NavMesh.WorldToCell(pos).Flags;
-            return
-                point.HasFlag(NavCellFlags.Wall) ||
-                includeBuildings && point.HasFlag(NavCellFlags.Building);
+            var point = NavGrid.WorldToCell(pos);
+            return point.IsWall() || includeBuildings && point.IsBuilding();
         }
 
         /// <returns>
@@ -86,12 +85,12 @@ namespace AIO.Utilities
                 return false;
             }
 
-            var tearLikeItemSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.SlotTaken && UtilityClass.TearLikeItems.Contains(s.ItemId));
+            var tearLikeItemSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => UtilityClass.TearLikeItems.Contains((ItemID)s.ItemID));
             if (tearLikeItemSlot != null)
             {
-                var tearLikeItemSpellSlot = tearLikeItemSlot.SpellSlot;
+                var tearLikeItemSpellSlot = tearLikeItemSlot.Slot;
                 if (tearLikeItemSpellSlot != SpellSlot.Unknown &&
-                    !UtilityClass.Player.Spellbook.GetSpell(tearLikeItemSpellSlot).State.HasFlag(SpellState.Cooldown))
+                    !UtilityClass.Player.Spellbook.GetSpellState(tearLikeItemSpellSlot).HasFlag(SpellState.Cooldown))
                 {
                     return true;
                 }
@@ -107,9 +106,8 @@ namespace AIO.Utilities
         {
             for (var i = 0; i < startPos.Distance(endPos); i+=5)
             {
-                var point = NavMesh.WorldToCell(startPos.Extend(endPos, i));
-                if (point.Flags.HasFlag(NavCellFlags.Wall) ||
-                    point.Flags.HasFlag(NavCellFlags.Building))
+                var point = NavGrid.WorldToCell(startPos.Extend(endPos, i));
+                if (point.IsWall() || point.IsBuilding())
                 {
                     return true;
                 }
@@ -156,7 +154,6 @@ namespace AIO.Utilities
 
             // Minions: Zac Passive
             if (hero.CharName == "Zac" &&
-                !hero.ActionState.HasFlag(ActionState.CanMove) &&
                 ObjectCache.EnemyMinions.Any(m => m.Team == hero.Team && m.CharName == "ZacRebirthBloblet" && m.Distance(hero) < 500))
             {
                 return true;
@@ -240,7 +237,7 @@ namespace AIO.Utilities
         public static bool InFountain(this AIHeroClient hero)
         {
             var heroTeam = hero.Team == GameObjectTeam.Order ? "Order" : "Chaos";
-            var fountainTurret = ObjectManager.Get<GameObject>().FirstOrDefault(o => o.IsValid && o.Name == "Turret_" + heroTeam + "TurretShrine");
+            var fountainTurret = ObjectCache.AllGameObjects.FirstOrDefault(o => o.IsValid && o.Name == "Turret_" + heroTeam + "TurretShrine");
             if (fountainTurret == null)
             {
                 return false;

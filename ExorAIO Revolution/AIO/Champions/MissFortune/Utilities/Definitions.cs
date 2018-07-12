@@ -3,6 +3,7 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Damage;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using SharpDX;
 

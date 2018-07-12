@@ -4,6 +4,7 @@ using Entropy;
 using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
 
@@ -21,10 +22,10 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            ImplementationClass.IOrbwalker.AttackingEnabled = !IsFlying();
-            ImplementationClass.IOrbwalker.MovingEnabled = Game.ClockTime - LastCastedETime >= 0.55;
+            Orbwalker.AttackingEnabled = !IsFlying();
+            Orbwalker.MovingEnabled = Game.ClockTime - LastCastedETime >= 0.55;
 
             if (UtilityClass.Player.IsRecalling())
             {
@@ -70,7 +71,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void BladeCallerAutomatic(args)
+        public void BladeCallerAutomatic(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Before death Logic.

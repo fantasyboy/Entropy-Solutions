@@ -1,7 +1,9 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -55,7 +57,7 @@ namespace AIO.Champions
 
             var senderAlly = sender as AIHeroClient;
             var unitTarget = args.Target as AIBaseClient;
-            if (unitTarget == null || senderAlly == null || !senderAlly.IsAlly || senderAlly.IsMe())
+            if (unitTarget == null || senderAlly == null || !senderAlly.IsAlly() || senderAlly.IsMe())
             {
                 return;
             }
@@ -77,7 +79,7 @@ namespace AIO.Champions
                 buffMenu["logical"].As<MenuSliderBool>().Enabled)
             {
                 var orbWhiteList = buffMenu["orbwhitelist"];
-                switch (ImplementationClass.IOrbwalker.Mode)
+                switch (Orbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
                         if (!(unitTarget is AIHeroClient) ||
@@ -96,7 +98,7 @@ namespace AIO.Champions
                         break;
 
                     case OrbwalkingMode.LaneClear:
-                        if (!unitTarget.IsBuilding() &&
+                        if (!unitTarget.IsStructure() &&
                             !Extensions.GetLegendaryJungleMinionsTargets().Contains(unitTarget) ||
                             !orbWhiteList["laneclear"].As<MenuBool>().Enabled)
                         {
@@ -127,7 +129,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.LaneClear:
                 case OrbwalkingMode.LastHit:
@@ -154,7 +156,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
@@ -194,7 +196,7 @@ namespace AIO.Champions
                 return;
             }
 
-            if (sender == null || !sender.IsEnemy()() || !sender.IsMelee)
+            if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
             {
                 return;
             }
@@ -253,9 +255,9 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(args);
+            Killsteal(EntropyEventArgs args);
 
-            if (ImplementationClass.IOrbwalker.IsWindingUp)
+            if (Orbwalker.IsWindingUp)
             {
                 return;
             }
@@ -263,24 +265,24 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(args);
+            Automatic(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(args);
+                    Combo(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(args);
+                    Harass(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LastHit:
-                    LastHit(args);
+                    LastHit(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(args);
+                    LaneClear(EntropyEventArgs args);
                     break;
             }
         }

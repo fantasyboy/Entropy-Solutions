@@ -1,6 +1,8 @@
 ﻿
 using System.Drawing;
 using AIO.Utilities;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -28,7 +30,7 @@ namespace AIO.Champions
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if (IsHateSpikeSkillshot())
                 {
-                    Render.Circle(UtilityClass.Player.Position, SpellClass.Q.Range, 30, Color.LightGreen);
+                    CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
                 }
                 else
                 {
@@ -42,7 +44,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.W.Range, 30, Color.Yellow);
+                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -51,7 +53,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.Drawings["e"].As<MenuBool>().Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.E.Range, 30, Color.Cyan);
+                CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -64,7 +66,7 @@ namespace AIO.Champions
                 /// </summary>
                 if (MenuClass.Drawings["r"].As<MenuBool>().Enabled)
                 {
-                    Render.Circle(UtilityClass.Player.Position, SpellClass.R.Range, 30, Color.Red);
+                    CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
                 }
 
                 /// <summary>

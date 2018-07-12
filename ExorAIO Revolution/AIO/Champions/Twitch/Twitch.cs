@@ -2,7 +2,9 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -45,9 +47,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on spell cast.
         /// </summary>
-        /// <param name="sender">The SpellBook.</param>
-        /// <param name="args">The <see cref="SpellBookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
+        /// <param name="sender">The Spellbook.</param>
+        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
+        public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
             if (sender.IsMe())
             {
@@ -81,7 +83,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
@@ -106,23 +108,23 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            ExpungeKillsteal(args);
+            ExpungeKillsteal(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the Automatic events.
             /// </summary>
-            ExpungeAutomatic(args);
+            ExpungeAutomatic(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    ExpungeCombo(args);
+                    ExpungeCombo(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    ExpungeJungleClear(args);
+                    ExpungeJungleClear(EntropyEventArgs args);
                     break;
             }
         }
@@ -146,7 +148,7 @@ namespace AIO.Champions
             }
 
             if (sender == null ||
-                !sender.IsEnemy()() ||
+                !sender.IsEnemy() ||
                 UtilityClass.Player.HasBuff("TwitchHideInShadows") ||
                 Invulnerable.Check(sender, DamageType.Magical, false))
             {
@@ -196,9 +198,9 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(args);
+            Killsteal(EntropyEventArgs args);
 
-            if (ImplementationClass.IOrbwalker.IsWindingUp)
+            if (Orbwalker.IsWindingUp)
             {
                 return;
             }
@@ -206,16 +208,16 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(args);
+                    Combo(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(args);
+                    Harass(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(args);
+                    LaneClear(EntropyEventArgs args);
                     break;
             }
         }

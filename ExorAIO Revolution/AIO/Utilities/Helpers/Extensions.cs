@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Entropy;
+using Entropy.SDK;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
+using Entropy.SDK.Orbwalking;
 
 namespace AIO.Utilities
 {
@@ -58,7 +62,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIMinionClient> GetEnemyPetsInRange(float range)
         {
-            return ObjectManager.Get<AIMinionClient>().Where(h => h.IsValidTarget(range) && UtilityClass.PetList.Contains(h.Name)).ToList();
+            return ObjectCache.EnemyMinions.Where(h => h.DistanceToPlayer() < range && UtilityClass.PetList.Contains(h.Name)).ToList();
         }
 
         /// <summary>
@@ -74,7 +78,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIMinionClient> GetAllyPetsInRange(float range)
         {
-            return ObjectManager.Get<AIMinionClient>().Where(h => h.IsValidTarget(range, true) && UtilityClass.PetList.Contains(h.Name)).ToList();
+            return ObjectCache.AllyMinions.Where(h => h.DistanceToPlayer() < range && UtilityClass.PetList.Contains(h.Name)).ToList();
         }
 
         /// <summary>
@@ -90,7 +94,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIHeroClient> GetAllyHeroesTargetsInRange(float range)
         {
-            return GameObjects.AllyHeroes.Where(h => h.IsValidTarget(range, true)).ToList();
+            return GameObjects.AllyHeroes.Where(h => h.DistanceToPlayer() < range).ToList();
         }
 
         /// <summary>
@@ -106,7 +110,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIMinionClient> GetAllyLaneMinionsTargetsInRange(float range)
         {
-            return GameObjects.AllyMinions.Where(m => m.IsValidTarget(range, true)).ToList();
+            return GameObjects.AllyMinions.Where(m => m.DistanceToPlayer() < range).ToList();
         }
 
         /// <summary>
@@ -122,7 +126,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIHeroClient> GetBestEnemyHeroesTargetsInRange(float range)
         {
-            return ImplementationClass.ITargetSelector.GetOrderedTargets(range);
+            return TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes).Where(t => t.DistanceToPlayer() < range).ToList();
         }
 
         /// <summary>
@@ -146,21 +150,21 @@ namespace AIO.Utilities
                 return selectedTarget;
             }*/
 
-            var orbTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget();
-            if (orbTarget is AIHeroClient &&
+            var orbTarget = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
+            if (orbTarget != null &&
                 orbTarget.IsValidTarget(range))
             {
                 return orbTarget;
             }
 
-            var tsTarget = ImplementationClass.ITargetSelector.GetTarget(range);
-            if (tsTarget != null)
+            var tsTarget = TargetSelector.LastTarget;
+            if (tsTarget != null &&
+                tsTarget.IsValidTarget(range))
             {
                 return tsTarget;
             }
 
             var lastTarget = GameObjects.EnemyHeroes.FirstOrDefault(t => t.IsValidTarget(range) && !t.IsZombie() && !Invulnerable.Check(t));
-            // ReSharper disable once ConvertIfStatementToReturnStatement
             if (lastTarget != null)
             {
                 return lastTarget;
@@ -209,7 +213,7 @@ namespace AIO.Utilities
             bool ignoreShields = false,
             bool includeBoundingRadius = false)
         {
-            var target = ImplementationClass.ITargetSelector.GetOrderedTargets(float.MaxValue)
+            var target = TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes)
                 .FirstOrDefault(t =>
                     !t.IsZombie() &&
                     !Invulnerable.Check(t, damageType, ignoreShields));
@@ -226,10 +230,11 @@ namespace AIO.Utilities
             bool includeBoundingRadius = false)
         {
             range = range + (includeBoundingRadius ? UtilityClass.Player.BoundingRadius : 0);
-            var targets = ImplementationClass.ITargetSelector.GetOrderedTargets(range)
-                .Where(t =>
+            var targets = TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes)
+				.Where(t =>
                     !t.IsZombie() &&
-                    !Invulnerable.Check(t, damageType, ignoreShields));
+                    !Invulnerable.Check(t, damageType, ignoreShields) &&
+                    t.DistanceToPlayer() < range);
             return targets;
         }
 

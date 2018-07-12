@@ -2,6 +2,7 @@
 
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 using SharpDX;
@@ -26,7 +27,7 @@ namespace AIO.Champions
             ///     The Rylai Q Combo Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.HasItem(ItemId.RylaisCrystalScepter))
+                UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter))
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range-50f);
                 if (bestTarget != null &&

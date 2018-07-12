@@ -16,7 +16,7 @@ namespace AIO.Champions
         public void Methods()
         {
             Game.OnUpdate += OnUpdate;
-            SpellBook.OnCastSpell += OnCastSpell;
+            Spellbook.OnLocalCastSpell += OnLocalCastSpell;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Render.OnPresent += OnPresent;
             Gapcloser.OnGapcloser += OnGapcloser;

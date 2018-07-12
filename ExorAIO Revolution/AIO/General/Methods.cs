@@ -1,4 +1,5 @@
-﻿using AIO.Utilities;
+﻿using Entropy;
+using Entropy.SDK.Orbwalking;
 
 #pragma warning disable 1587
 namespace AIO
@@ -15,9 +16,9 @@ namespace AIO
         /// </summary>
         public static void Methods()
         {
-            ImplementationClass.IOrbwalker.PreAttack += OnPreAttack;
-            ImplementationClass.IOrbwalker.PostAttack += OnPostAttack;
-            SpellBook.OnCastSpell += OnCastSpell;
+            Orbwalker.OnPreAttack += OnPreAttack;
+            Orbwalker.OnPostAttack += OnPostAttack;
+            Spellbook.OnLocalCastSpell += OnLocalCastSpell;
         }
 
         #endregion

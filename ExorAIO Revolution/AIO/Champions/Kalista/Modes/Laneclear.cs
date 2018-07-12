@@ -42,7 +42,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void RendLaneClear(args)
+        public void RendLaneClear(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Laneclear Logics.

@@ -6,6 +6,7 @@ using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 using SharpDX;
 
@@ -49,8 +50,8 @@ namespace AIO.Champions
         ///     Fired on spell cast.
         /// </summary>
         
-        /// <param name="args">The <see cref="SpellBookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnCastSpell(SpellbookLocalCastSpellEventArgs args)
+        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
+        public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
             if (!MenuClass.Miscellaneous["blockr"].As<MenuBool>().Enabled)
             {
@@ -107,7 +108,7 @@ namespace AIO.Champions
                 /// <summary>
                 ///     The Anti-Gapcloser E.
                 /// </summary>
-                if (sender.IsEnemy()() && sender.IsMelee)
+                if (sender.IsEnemy() && sender.IsMelee)
                 {
                     var enabledOption = MenuClass.Gapcloser["enabled"];
                     if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
@@ -151,7 +152,7 @@ namespace AIO.Champions
                             break;
                     }
                 }
-                else if (sender.IsAlly)
+                else if (sender.IsAlly())
                 {
                     if (MenuClass.Spells["r"]["aoe"] == null ||
                         !MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Enabled)
@@ -245,30 +246,30 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(args);
+            Automatic(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(args);
+            Killsteal(EntropyEventArgs args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(args);
+                    Combo(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(args);
+                    Harass(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(args);
-                    JungleClear(args);
+                    LaneClear(EntropyEventArgs args);
+                    JungleClear(EntropyEventArgs args);
                     break;
                 case OrbwalkingMode.LastHit:
-                    LastHit(args);
+                    LastHit(EntropyEventArgs args);
                     break;
             }
         }

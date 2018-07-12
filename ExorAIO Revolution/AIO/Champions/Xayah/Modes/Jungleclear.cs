@@ -59,7 +59,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void BladeCallerJungleClear(args)
+        public void BladeCallerJungleClear(EntropyEventArgs args)
         {
             /// <summary>
             ///     The Jungleclear E Logics.

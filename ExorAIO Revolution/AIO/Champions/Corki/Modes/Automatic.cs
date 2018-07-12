@@ -1,4 +1,6 @@
 
+using Entropy;
+
 #pragma warning disable 1587
 
 namespace AIO.Champions
@@ -13,7 +15,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
         }
 

@@ -43,7 +43,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired as fast as possible.
         /// </summary>
-        public void BladeCallerCombo(args)
+        public void BladeCallerCombo(EntropyEventArgs args)
         {
             /// <summary>
             ///     The E Combo Logic.

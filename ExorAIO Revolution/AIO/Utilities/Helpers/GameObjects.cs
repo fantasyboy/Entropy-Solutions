@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Objects;
 
 namespace AIO.Utilities
@@ -31,7 +32,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     The ally turrets list.
         /// </summary>
-        private static readonly List<Obj_AI_Turret> AllyTurretsList = new List<Obj_AI_Turret>();
+        private static readonly List<AITurretClient> AllyTurretsList = new List<AITurretClient>();
 
         /// <summary>
         ///     The ally wards list.
@@ -61,7 +62,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     The enemy turrets list.
         /// </summary>
-        private static readonly List<Obj_AI_Turret> EnemyTurretsList = new List<Obj_AI_Turret>();
+        private static readonly List<AITurretClient> EnemyTurretsList = new List<AITurretClient>();
 
         /// <summary>
         ///     The enemy wards list.
@@ -141,7 +142,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     The turrets list.
         /// </summary>
-        private static readonly List<Obj_AI_Turret> TurretsList = new List<Obj_AI_Turret>();
+        private static readonly List<AITurretClient> TurretsList = new List<AITurretClient>();
 
         /// <summary>
         ///     The wards list.
@@ -222,7 +223,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the ally turrets.
         /// </summary>
-        public static IEnumerable<Obj_AI_Turret> AllyTurrets => AllyTurretsList;
+        public static IEnumerable<AITurretClient> AllyTurrets => AllyTurretsList;
 
         /// <summary>
         ///     Gets the ally wards.
@@ -252,7 +253,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the enemy turrets.
         /// </summary>
-        public static IEnumerable<Obj_AI_Turret> EnemyTurrets => EnemyTurretsList;
+        public static IEnumerable<AITurretClient> EnemyTurrets => EnemyTurretsList;
 
         /// <summary>
         ///     Gets the enemy wards.
@@ -297,7 +298,7 @@ namespace AIO.Utilities
         /// <summary>
         ///     Gets the turrets.
         /// </summary>
-        public static IEnumerable<Obj_AI_Turret> Turrets => TurretsList;
+        public static IEnumerable<AITurretClient> Turrets => TurretsList;
 
         /// <summary>
         ///     Gets the wards.
@@ -379,21 +380,6 @@ namespace AIO.Utilities
             return JungleType.Unknown;
         }
 
-        /// <summary>
-        ///     Get get operation from the native GameObjects stack.
-        /// </summary>
-        /// <typeparam name="T">
-        ///     The requested <see cref="GameObject" /> type.
-        /// </typeparam>
-        /// <returns>
-        ///     The List containing the requested type.
-        /// </returns>
-        public static IEnumerable<T> GetNative<T>()
-            where T : GameObject, new()
-        {
-            return ObjectManager.Get<T>();
-        }
-
         #endregion
 
         #region Methods
@@ -412,24 +398,24 @@ namespace AIO.Utilities
 
             Player = UtilityClass.Player;
 
-            HeroesList.AddRange(ObjectManager.Get<AIHeroClient>());
-            MinionsList.AddRange(ObjectManager.Get<AIMinionClient>().Where(o => o.Team != GameObjectTeam.Neutral && !o.Name.Contains("ward")));
-            TurretsList.AddRange(ObjectManager.Get<Obj_AI_Turret>());
-            JungleList.AddRange(ObjectManager.Get<AIMinionClient>().Where(o => o.Team == GameObjectTeam.Neutral && o.Name != "WardCorpse" && o.Name != "Barrel" && !o.Name.Contains("SRU_Plant_")));
-            WardsList.AddRange(ObjectManager.Get<AIMinionClient>().Where(o => o.Name.Contains("ward")));
-            SpawnPointsList.AddRange(ObjectManager.Get<GameObject>().Where(o => o.Type == GameObjectType.obj_SpawnPoint));
+            HeroesList.AddRange(ObjectCache.AllHeroes);
+            MinionsList.AddRange(ObjectCache.AllMinions.Where(o => o.Team != GameObjectTeam.Neutral && !o.Name.Contains("ward")));
+            TurretsList.AddRange(ObjectCache.AllTurrets);
+            JungleList.AddRange(ObjectCache.JungleMinions.Where(o => o.Team == GameObjectTeam.Neutral && o.Name != "WardCorpse" && o.Name != "Barrel" && !o.Name.Contains("SRU_Plant_")));
+            WardsList.AddRange(ObjectCache.AllMinions.Where(o => o.Name.Contains("ward")));
+            SpawnPointsList.AddRange(ObjectCache.AllGameObjects.Where(o => o.Type.TypeID == GameObjectTypeID.obj_SpawnPoint));
 
-            GameObjectsList.AddRange(ObjectManager.Get<GameObject>());
-            AttackableUnitsList.AddRange(ObjectManager.Get<AttackableUnit>());
+            GameObjectsList.AddRange(ObjectCache.AllGameObjects);
+            AttackableUnitsList.AddRange(ObjectCache.AllAttackableObjects);
 
-            EnemyHeroesList.AddRange(HeroesList.Where(o => o.IsEnemy()()));
-            EnemyMinionsList.AddRange(MinionsList.Where(o => o.IsEnemy()()));
-            EnemyTurretsList.AddRange(TurretsList.Where(o => o.IsEnemy()()));
+            EnemyHeroesList.AddRange(HeroesList.Where(o => o.IsEnemy()));
+            EnemyMinionsList.AddRange(MinionsList.Where(o => o.IsEnemy()));
+            EnemyTurretsList.AddRange(TurretsList.Where(o => o.IsEnemy()));
             EnemyList.AddRange(EnemyHeroesList.Cast<AIBaseClient>().Concat(EnemyMinionsList).Concat(EnemyTurretsList));
 
-            AllyHeroesList.AddRange(HeroesList.Where(o => o.IsAlly));
-            AllyMinionsList.AddRange(MinionsList.Where(o => o.IsAlly));
-            AllyTurretsList.AddRange(TurretsList.Where(o => o.IsAlly));
+            AllyHeroesList.AddRange(HeroesList.Where(o => o.IsAlly()));
+            AllyMinionsList.AddRange(MinionsList.Where(o => o.IsAlly()));
+            AllyTurretsList.AddRange(TurretsList.Where(o => o.IsAlly()));
             AllyList.AddRange(
                 AllyHeroesList.Cast<AIBaseClient>().Concat(AllyMinionsList).Concat(AllyTurretsList));
 
@@ -437,25 +423,27 @@ namespace AIO.Utilities
             JungleLargeList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Large));
             JungleLegendaryList.AddRange(JungleList.Where(o => o.GetJungleType() == JungleType.Legendary));
 
-            AllyWardsList.AddRange(WardsList.Where(o => o.IsAlly));
-            EnemyWardsList.AddRange(WardsList.Where(o => o.IsEnemy()()));
+            AllyWardsList.AddRange(WardsList.Where(o => o.IsAlly()));
+            EnemyWardsList.AddRange(WardsList.Where(o => o.IsEnemy()));
 
-            AllySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsAlly));
-            EnemySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsEnemy()()));
+            AllySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsAlly()));
+            EnemySpawnPointsList.AddRange(SpawnPointsList.Where(o => o.IsEnemy()));
 
             GameObject.OnCreate += OnCreate;
-            GameObject.OnDestroy += OnDelete;
+            GameObject.OnDelete += OnDelete;
         }
 
-        /// <summary>
-        ///     OnCreate event.
-        /// </summary>
-        /// <param name="sender">
-        ///     The sender
-        /// </param>
-        private static void OnCreate(GameObject sender)
-        {
-            GameObjectsList.Add(sender);
+		/// <summary>
+		///     OnCreate event.
+		/// </summary>
+		/// <param name="args">
+		///     The args
+		/// </param>
+		private static void OnCreate(GameObjectCreateEventArgs args)
+		{
+			var sender = args.Sender;
+
+			GameObjectsList.Add(sender);
 
             var attackableUnit = sender as AttackableUnit;
             if (attackableUnit != null)
@@ -467,7 +455,7 @@ namespace AIO.Utilities
             if (hero != null)
             {
                 HeroesList.Add(hero);
-                if (hero.IsEnemy()())
+                if (hero.IsEnemy())
                 {
                     EnemyHeroesList.Add(hero);
                     EnemyList.Add(hero);
@@ -489,7 +477,7 @@ namespace AIO.Utilities
                     if (minion.Name.Contains("ward"))
                     {
                         WardsList.Add(minion);
-                        if (minion.IsEnemy()())
+                        if (minion.IsEnemy())
                         {
                             EnemyWardsList.Add(minion);
                         }
@@ -501,7 +489,7 @@ namespace AIO.Utilities
                     else
                     {
                         MinionsList.Add(minion);
-                        if (minion.IsEnemy()())
+                        if (minion.IsEnemy())
                         {
                             EnemyMinionsList.Add(minion);
                             EnemyList.Add(minion);
@@ -533,11 +521,11 @@ namespace AIO.Utilities
                 return;
             }
 
-            var turret = sender as Obj_AI_Turret;
+            var turret = sender as AITurretClient;
             if (turret != null)
             {
                 TurretsList.Add(turret);
-                if (turret.IsEnemy()())
+                if (turret.IsEnemy())
                 {
                     EnemyTurretsList.Add(turret);
                     EnemyList.Add(turret);
@@ -550,10 +538,10 @@ namespace AIO.Utilities
             }
 
             var spawnPoint = sender;
-            if (spawnPoint.Type == GameObjectType.obj_SpawnPoint)
+            if (spawnPoint.Type.TypeID == GameObjectTypeID.obj_SpawnPoint)
             {
                 SpawnPointsList.Add(spawnPoint);
-                if (spawnPoint.IsAlly)
+                if (spawnPoint.IsAlly())
                 {
                     AllySpawnPointsList.Add(spawnPoint);
                 }
@@ -567,11 +555,12 @@ namespace AIO.Utilities
         /// <summary>
         ///     OnDelete event.
         /// </summary>
-        /// <param name="sender">
-        ///     The sender
+        /// <param name="args">
+        ///     The args
         /// </param>
-        private static void OnDelete(GameObject sender)
+        private static void OnDelete(GameObjectDeleteEventArgs args)
         {
+	        var sender = args.Sender;
             foreach (var gameObject in GameObjectsList.Where(o => o.Compare(sender)).ToList())
             {
                 GameObjectsList.Remove(gameObject);
@@ -592,7 +581,7 @@ namespace AIO.Utilities
                 foreach (var heroObject in HeroesList.Where(h => h.Compare(hero)).ToList())
                 {
                     HeroesList.Remove(heroObject);
-                    if (hero.IsEnemy()())
+                    if (hero.IsEnemy())
                     {
                         EnemyHeroesList.Remove(heroObject);
                         EnemyList.Remove(heroObject);
@@ -617,7 +606,7 @@ namespace AIO.Utilities
                         foreach (var wardObject in WardsList.Where(w => w.Compare(minion)).ToList())
                         {
                             WardsList.Remove(wardObject);
-                            if (minion.IsEnemy()())
+                            if (minion.IsEnemy())
                             {
                                 EnemyWardsList.Remove(wardObject);
                             }
@@ -632,7 +621,7 @@ namespace AIO.Utilities
                         foreach (var minionObject in MinionsList.Where(m => m.Compare(minion)).ToList())
                         {
                             MinionsList.Remove(minionObject);
-                            if (minion.IsEnemy()())
+                            if (minion.IsEnemy())
                             {
                                 EnemyMinionsList.Remove(minionObject);
                                 EnemyList.Remove(minionObject);
@@ -668,13 +657,13 @@ namespace AIO.Utilities
                 return;
             }
 
-            var turret = sender as Obj_AI_Turret;
+            var turret = sender as AITurretClient;
             if (turret != null)
             {
                 foreach (var turretObject in TurretsList.Where(t => t.Compare(turret)).ToList())
                 {
                     TurretsList.Remove(turretObject);
-                    if (turret.IsEnemy()())
+                    if (turret.IsEnemy())
                     {
                         EnemyTurretsList.Remove(turretObject);
                         EnemyList.Remove(turretObject);
@@ -688,12 +677,12 @@ namespace AIO.Utilities
             }
 
             var spawnPoint = sender;
-            if (spawnPoint.Type == GameObjectType.obj_SpawnPoint)
-            {
+	        if (spawnPoint.Type.TypeID == GameObjectTypeID.obj_SpawnPoint)
+			{
                 foreach (var spawnPointObject in SpawnPointsList.Where(s => s.Compare(spawnPoint)).ToList())
                 {
                     SpawnPointsList.Remove(spawnPointObject);
-                    if (spawnPoint.IsEnemy()())
+                    if (spawnPoint.IsEnemy())
                     {
                         EnemySpawnPointsList.Remove(spawnPointObject);
                     }

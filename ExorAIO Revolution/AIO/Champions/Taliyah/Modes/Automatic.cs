@@ -21,9 +21,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on tick update.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            SpellClass.R.Range = 1500 + 1500 * SpellClass.R.Level();
+            SpellClass.R.Range = 1500 + 1500 * SpellClass.R.Level;
 
             if (UtilityClass.Player.IsRecalling())
             {

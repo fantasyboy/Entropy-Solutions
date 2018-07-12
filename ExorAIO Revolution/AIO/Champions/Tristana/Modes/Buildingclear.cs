@@ -1,4 +1,5 @@
 ﻿using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
@@ -22,7 +23,7 @@ namespace AIO.Champions
         public void Buildingclear(OnPreAttackEventArgs args)
         {
             var target = args.Target;
-            if (!target.IsBuilding())
+            if (!target.IsStructure())
             {
                 return;
             }
@@ -44,7 +45,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["buildings"]) &&
                 MenuClass.Spells["e"]["buildings"].As<MenuSliderBool>().Enabled)
             {
-                var turretTarget = target as Obj_AI_Turret;
+                var turretTarget = target as AITurretClient;
                 if (turretTarget != null)
                 {
                     SpellClass.E.CastOnUnit(turretTarget);

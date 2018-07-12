@@ -1,4 +1,5 @@
-﻿using Entropy.SDK.UI;
+﻿using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.UI;
 using SharpDX;
 
 namespace AIO.Utilities
@@ -20,7 +21,7 @@ namespace AIO.Utilities
         public static readonly List<SpellData> Spells = new List<SpellData>();
 
         // ReSharper disable once InconsistentNaming
-        private static readonly Dictionary<int, GapcloserArgs> Gapclosers = new Dictionary<int, GapcloserArgs>();
+        private static readonly Dictionary<uint, GapcloserArgs> Gapclosers = new Dictionary<uint, GapcloserArgs>();
 
         #endregion
 
@@ -942,20 +943,21 @@ namespace AIO.Utilities
                 return;
             }
 
-            foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1500 + Game.Ping).ToList())
+            foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1500).ToList())
             {
                 Gapclosers.Remove(needToDeleteValue.Key);
             }
 
-            foreach (var args in Gapclosers.Where(x => x.Value.Unit.IsValidTarget(allyIsValidTarget: true)))
+            foreach (var gapArgs in Gapclosers.Where(x => x.Value.Unit.IsValidTarget(allyIsValidTarget: true)))
             {
-                OnGapcloser(args.Value.Unit, args.Value);
+                OnGapcloser(gapArgs.Value.Unit, gapArgs.Value);
             }
         }
 
-        private static void OnProcessSpellCast(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
+        private static void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            if (!sender.IsValidTarget(allyIsValidTarget: true) || sender.Type != GameObjectType.AIHeroClient)
+	        var sender = args.Caster as AIHeroClient;
+            if (sender == null || !sender.IsValidTarget(allyIsValidTarget: true) || sender.Type.TypeID != GameObjectTypeID.AIHeroClient)
             {
                 return;
             }
@@ -973,32 +975,32 @@ namespace AIO.Utilities
 
             var unit = Gapclosers[sender.NetworkID];
 
-            unit.Unit = (AIHeroClient)sender;
-            unit.Slot = args.SpellSlot;
-            unit.Target = args.Target as AttackableUnit;
+            unit.Unit = sender;
+            unit.Slot = args.Slot;
+            unit.Target = args.Target;
             unit.Type = args.Target != null ? Type.Targeted : Type.SkillShot;
             unit.SpellName = args.SpellData.Name;
-            unit.StartPosition = args.Start;
+            unit.StartPosition = args.StartPosition;
 
             if (Spells.Any(e => e.SpellName == argsName))
             {
                 var spell = Spells.FirstOrDefault(e => e.SpellName == argsName);
                 if (spell.IsReversedDash)
                 {
-                    unit.EndPosition = args.Start.Extend(args.End, -spell.PushBackDistance);
+                    unit.EndPosition = args.StartPosition.Extend(args.EndPosition, -spell.PushBackDistance);
                 }
                 else if (Math.Abs(spell.Range) > 0)
                 {
-                    unit.EndPosition = unit.Unit.Position.Extend(args.End, spell.Range);
+                    unit.EndPosition = unit.Unit.Position.Extend(args.EndPosition, spell.Range);
                 }
                 else
                 {
-                    unit.EndPosition = args.End;
+                    unit.EndPosition = args.EndPosition;
                 }
             }
             else
             {
-                unit.EndPosition = args.End;
+                unit.EndPosition = args.EndPosition;
             }
 
             unit.StartTick = Game.TickCount;

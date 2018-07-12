@@ -4,6 +4,7 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -20,10 +21,10 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
-            ImplementationClass.IOrbwalker.MovingEnabled = !IsUltimateShooting();
-            ImplementationClass.IOrbwalker.AttackingEnabled = !IsUltimateShooting();
+            Orbwalker.MovingEnabled = !IsUltimateShooting();
+            Orbwalker.AttackingEnabled = !IsUltimateShooting();
 
             if (UtilityClass.Player.IsRecalling())
             {
@@ -67,7 +68,7 @@ namespace AIO.Champions
                 MenuClass.Spells["e"]["teleport"].As<MenuBool>().Enabled)
             {
                 foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
-                    m.IsEnemy()() &&
+                    m.IsEnemy() &&
                     m.Distance(UtilityClass.Player) <= SpellClass.E.Range &&
                     m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
                 {

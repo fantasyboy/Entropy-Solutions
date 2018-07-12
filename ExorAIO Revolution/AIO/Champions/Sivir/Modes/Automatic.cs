@@ -3,6 +3,7 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
 
@@ -20,7 +21,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Automatic(args)
+        public void Automatic(EntropyEventArgs args)
         {
             /// <summary>
             ///     Block Special AoE.
@@ -55,7 +56,7 @@ namespace AIO.Champions
         /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
         public void Shield(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
         {
-            if (sender == null || !sender.IsEnemy()())
+            if (sender == null || !sender.IsEnemy())
             {
                 return;
             }
@@ -122,7 +123,7 @@ namespace AIO.Champions
                                 /// <summary>
                                 ///     Check for Melee AutoAttack Resets.
                                 /// </summary>
-                                var getReset = hero.GetActiveBuffs().FirstOrDefault(b => ImplementationClass.IOrbwalker.IsReset(b.Name));
+                                var getReset = hero.GetActiveBuffs().FirstOrDefault(b => Orbwalker.IsReset(b.Name));
                                 var resetMenu = getReset != null
                                                     ? MenuClass.Spells["e"]["whitelist"][$"{hero.CharName.ToLower()}.{getReset.Name.ToLower()}"]
                                                     : null;
