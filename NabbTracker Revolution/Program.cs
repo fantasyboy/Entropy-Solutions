@@ -36,7 +36,7 @@ namespace NabbTracker
         private static void OnStart()
         {
             Menus.Initialize();
-            Console.WriteLine("NabbTracker: Revolution - Loaded!");
+            Logging.Log("NabbTracker: Revolution - Loaded!");
 
             Render.OnPresent += OnPresent;
         }

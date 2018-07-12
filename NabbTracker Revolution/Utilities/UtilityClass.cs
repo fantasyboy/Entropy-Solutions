@@ -50,7 +50,7 @@ namespace NabbTracker
         /// </summary>
         public static string GetUnitSpellCooldown(AIHeroClient unit, int spell)
         {
-            var unitSpell = unit.SpellBook.GetSpell(SpellSlots[spell]);
+            var unitSpell = unit.Spellbook.GetSpell(SpellSlots[spell]);
             var cooldownRemaining = unitSpell.CooldownEnd - Game.ClockTime;
             if (cooldownRemaining > 0)
             {
@@ -75,7 +75,7 @@ namespace NabbTracker
         /// </summary>
         public static Color GetUnitSpellStateColor(AIHeroClient unit, int spell)
         {
-            var unitSpell = unit.SpellBook.GetSpell(SpellSlots[spell]);
+            var unitSpell = unit.Spellbook.GetSpell(SpellSlots[spell]);
             var unitSpellState = unitSpell.State;
             if (unitSpellState.HasFlag(SpellState.NotLearned))
             {
@@ -112,7 +112,7 @@ namespace NabbTracker
         /// </summary>
         public static string GetUnitSummonerSpellCooldown(AIHeroClient unit, int summonerSpell)
         {
-            var cooldownRemaining = unit.SpellBook.GetSpell(SummonerSpellSlots[summonerSpell]).CooldownEnd - Game.ClockTime;
+            var cooldownRemaining = unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]).CooldownEnd - Game.ClockTime;
             return cooldownRemaining > 0 ? ((int)cooldownRemaining).ToString() : "READY";
         }
 
@@ -121,7 +121,7 @@ namespace NabbTracker
         /// </summary>
         public static string GetUnitSummonerSpellFixedName(AIHeroClient unit, int summonerSpell)
         {
-            switch (unit.SpellBook.GetSpell(SummonerSpellSlots[summonerSpell]).Name.ToLower())
+            switch (unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]).Name.ToLower())
             {
                 case "summonerflash":        return "Flash";
                 case "summonerdot":          return "Ignite";
@@ -143,7 +143,7 @@ namespace NabbTracker
         /// </summary>
         public static Color GetUnitSummonerSpellStateColor(AIHeroClient unit, int summonerSpell)
         {
-            var unitSummonerSpell = unit.SpellBook.GetSpell(SummonerSpellSlots[summonerSpell]);
+            var unitSummonerSpell = unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]);
             var unitSummonerSpellState = unitSummonerSpell.State;
             if (unitSummonerSpellState.HasFlag(SpellState.Disabled) ||
                 unit.IsMe() && unitSummonerSpellState.HasFlag(SpellState.Surpressed))

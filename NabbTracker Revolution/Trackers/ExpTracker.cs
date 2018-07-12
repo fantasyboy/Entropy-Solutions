@@ -21,7 +21,7 @@ namespace NabbTracker
             foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h =>
                 !h.IsDead &&
                 h.IsVisible &&
-                Math.Abs(h.FloatingHealthBarPosition.X) > 0))
+                Math.Abs(h.InfoBarPosition.X) > 0))
             {
                 if (hero.Name.Equals("Target Dummy"))
                 {
@@ -34,34 +34,34 @@ namespace NabbTracker
                     continue;
                 }
 
-                if (hero.IsEnemy()() &&
+                if (hero.IsEnemy() &&
                     !MenuClass.ExpTracker["enemies"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
                 if (!hero.IsMe() &&
-                    hero.IsAlly &&
+                    hero.IsAlly() &&
                     !MenuClass.ExpTracker["allies"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
-                var xOffset = (int)hero.FloatingHealthBarPosition.X + UtilityClass.ExpXAdjustment(hero);
-                var yOffset = (int)hero.FloatingHealthBarPosition.Y + UtilityClass.ExpYAdjustment(hero);
+                var xOffset = (int)hero.InfoBarPosition.X + UtilityClass.ExpXAdjustment(hero);
+                var yOffset = (int)hero.InfoBarPosition.Y + UtilityClass.ExpYAdjustment(hero);
 
                 var actualExp = hero.Exp;
-                if (hero.Level() > 1)
+                if (hero.Level > 1)
                 {
-                    actualExp -= (280 + 80 + 100 * hero.Level()) / 2 * (hero.Level() - 1);
+                    actualExp -= (280 + 80 + 100 * hero.Level) / 2 * (hero.Level - 1);
                 }
 
                 var levelLimit = hero.HasBuff("AwesomeBuff") ? 30 : 18;
-                if (hero.Level() < levelLimit)
+                if (hero.Level < levelLimit)
                 {
                     Render.Line(xOffset - 76, yOffset + 20, xOffset + 56, yOffset + 20, 7, true, Colors.GetRealColor(Color.Purple));
 
-                    var neededExp = 180 + 100 * hero.Level();
+                    var neededExp = 180 + 100 * hero.Level;
                     var expPercent = (int)(actualExp / neededExp * 100);
                     if (expPercent > 0)
                     {

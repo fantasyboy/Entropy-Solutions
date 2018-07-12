@@ -22,13 +22,13 @@ namespace NabbTracker
                 !h.IsDead &&
                 h.IsVisible))
             {
-                if (hero.IsEnemy()() &&
+                if (hero.IsEnemy() &&
                     !MenuClass.AttackRangeTracker["enemies"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
-                if (hero.IsAlly &&
+                if (hero.IsAlly() &&
                     !MenuClass.AttackRangeTracker["allies"].As<MenuBool>().Enabled)
                 {
                     continue;

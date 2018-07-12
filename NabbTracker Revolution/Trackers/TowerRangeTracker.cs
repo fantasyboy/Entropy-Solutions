@@ -17,24 +17,24 @@ namespace NabbTracker
         /// </summary>
         public static void Initialize()
         {
-            foreach (var tower in ObjectManager.Get<Obj_AI_Turret>().Where(t =>
+            foreach (var tower in ObjectManager.Get<AITurretClient>().Where(t =>
                 !t.IsDead &&
                 t.IsVisible))
             {
-                if (tower.IsEnemy()() &&
+                if (tower.IsEnemy() &&
                     !MenuClass.TowerRangeTracker["enemies"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
-                if (tower.IsAlly &&
+                if (tower.IsAlly() &&
                     !MenuClass.TowerRangeTracker["allies"].As<MenuBool>().Enabled)
                 {
                     continue;
                 }
 
                 var towerAutoAttackRange = 775f + tower.BoundingRadius + UtilityClass.Player.BoundingRadius - 10f;
-                Render.Circle(tower.Position, towerAutoAttackRange, 30, tower.IsEnemy()() && UtilityClass.Player.Distance(tower) <= towerAutoAttackRange
+                Render.Circle(tower.Position, towerAutoAttackRange, 30, tower.IsEnemy() && UtilityClass.Player.Distance(tower) <= towerAutoAttackRange
                     ? Colors.GetRealColor(Color.Red)
                     : Colors.GetRealColor(Color.LightGreen));
             }
