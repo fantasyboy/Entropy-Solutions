@@ -81,7 +81,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                if (heroTarget.IsUnderEnemyTurret() &&
+                if (heroTarget..Position.IsUnderEnemyTurret() &&
                     MenuClass.Spells["r"]["customization"]["safe"].As<MenuBool>().Enabled)
                 {
                     return;

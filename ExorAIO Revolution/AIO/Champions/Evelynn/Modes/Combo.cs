@@ -34,12 +34,12 @@ namespace AIO.Champions
                 {
                     var positionAfterR = UtilityClass.Player.Position.Extend(SpellClass.R.GetPrediction(bestTarget).CastPosition, -LastCaressPushBackDistance());
                     if (MenuClass.Spells["r"]["customization"]["aoecheck"] != null &&
-                        positionAfterR.CountEnemyHeroesInRange(MenuClass.Spells["r"]["customization"]["safetyrange"].As<MenuSlider>().Value) >= MenuClass.Spells["r"]["customization"]["aoecheck"].As<MenuSlider>().Value)
+                        positionAfterR.EnemyHeroesCount(MenuClass.Spells["r"]["customization"]["safetyrange"].As<MenuSlider>().Value) >= MenuClass.Spells["r"]["customization"]["aoecheck"].As<MenuSlider>().Value)
                     {
                         return;
                     }
 
-                    if (positionAfterR.IsUnderEnemyTurret() &&
+                    if (positionAfterr.Position.IsUnderEnemyTurret() &&
                         MenuClass.Spells["r"]["customization"]["turretcheck"].As<MenuBool>().Enabled)
                     {
                         return;

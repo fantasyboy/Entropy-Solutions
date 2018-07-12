@@ -32,7 +32,7 @@ namespace AIO.Champions
                 CanCastBehindEnemyLines() &&
                 !IsUsingBehindEnemyLines() &&
                 UtilityClass.Player.InFountain() &&
-                UtilityClass.Player.CountEnemyHeroesInRange(1500f) == 0 &&
+                UtilityClass.Player.EnemyHeroesCount(1500f) == 0 &&
                 MenuClass.Spells["r"]["logical"].As<MenuBool>().Value)
             {
                 SpellClass.R.Cast();

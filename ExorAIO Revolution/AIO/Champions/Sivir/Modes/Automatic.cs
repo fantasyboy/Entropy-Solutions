@@ -37,7 +37,7 @@ namespace AIO.Champions
                         if (getBuff != null)
                         {
                             if (getBuff.GetRemainingBuffTime() <= 350 &&
-                                target.Distance(UtilityClass.Player) < 300 + UtilityClass.Player.BoundingRadius &&
+                                target.DistanceToPlayer() < 300 + UtilityClass.Player.BoundingRadius &&
                                 MenuClass.Spells["e"]["whitelist"][$"{target.CharName.ToLower()}.{buff.ToLower()}"].As<MenuBool>().Enabled)
                             {
                                 SpellClass.E.Cast();
@@ -86,7 +86,7 @@ namespace AIO.Champions
                             {
                                 var target = (AIMinionClient)args.Target;
                                 if ((int)target.GetRealHealth() <= 2 &&
-                                    target.Distance(UtilityClass.Player) <= 450 &&
+                                    target.DistanceToPlayer() <= 450 &&
                                     target.CharName.Equals("gangplankbarrel"))
                                 {
                                     SpellClass.E.Cast();
@@ -196,7 +196,7 @@ namespace AIO.Champions
                                     switch (hero.CharName)
                                     {
                                         case "Alistar":
-                                            if (hero.Distance(UtilityClass.Player) <= 300 + UtilityClass.Player.BoundingRadius)
+                                            if (hero.DistanceToPlayer() <= 300 + UtilityClass.Player.BoundingRadius)
                                             {
                                                 SpellClass.E.Cast();
                                             }

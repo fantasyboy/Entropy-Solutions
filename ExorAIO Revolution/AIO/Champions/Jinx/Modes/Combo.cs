@@ -32,7 +32,7 @@ namespace AIO.Champions
             {
                 var minEnemies = MenuClass.Spells["q"]["customization"]["minenemies"];
                 var bestTargetDistanceToPlayer = UtilityClass.Player.Distance(bestTarget);
-                var enemiesInSplashRange = bestTarget.CountEnemyHeroesInRange(SplashRange);
+                var enemiesInSplashRange = bestTarget.EnemyHeroesCount(SplashRange);
 
                 if (!IsUsingFishBones())
                 {
@@ -81,9 +81,9 @@ namespace AIO.Champions
             ///     The W Combo Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                !UtilityClass.Player.IsUnderEnemyTurret())
+                !UtilityClass.Player.Position.IsUnderEnemyTurret())
             {
-                if (UtilityClass.Player.CountEnemyHeroesInRange(SpellClass.Q2.Range) >
+                if (UtilityClass.Player.EnemyHeroesCount(SpellClass.Q2.Range) >
                         MenuClass.Spells["w"]["customization"]["wsafetycheck"].As<MenuSliderBool>().Value &&
                     MenuClass.Spells["w"]["customization"]["wsafetycheck"].As<MenuSliderBool>().Enabled)
                 {
@@ -94,7 +94,7 @@ namespace AIO.Champions
                 if (target != null &&
                     !Invulnerable.Check(target))
                 {
-                    var targetDistanceToPlayer = target.Distance(UtilityClass.Player);
+                    var targetDistanceToPlayer = target.DistanceToPlayer();
                     switch (MenuClass.Spells["w"]["mode"].As<MenuList>().Value)
                     {
                         case 0:

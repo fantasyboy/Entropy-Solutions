@@ -4,6 +4,7 @@ using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
 using SharpDX;
@@ -189,7 +190,7 @@ namespace AIO.Champions
                             args.Target.IsMe())
                         {
                             var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.R.Range);
-                            if (targetPos.IsUnderEnemyTurret())
+                            if (targetPos..Position.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -199,7 +200,7 @@ namespace AIO.Champions
                         break;
                     default:
                         var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.R.Range);
-                        if (targetPos2.IsUnderEnemyTurret())
+                        if (targetPos2..Position.IsUnderEnemyTurret())
                         {
                             return;
                         }

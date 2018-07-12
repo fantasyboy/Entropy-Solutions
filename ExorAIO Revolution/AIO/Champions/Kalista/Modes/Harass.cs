@@ -20,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Harass(EntropyEventArgs args)
+        public void Harass()
         {
             /// <summary>
             ///     The Q Harass Logic.
@@ -39,39 +39,34 @@ namespace AIO.Champions
                     var objAiBases = collisions as IList<AIBaseClient> ?? collisions.ToList();
                     if (objAiBases.Any())
                     {
-                        if (objAiBases.All(c => c.GetRealHealth() <= UtilityClass.Player.GetSpellDamage(c, SpellSlot.Q)))
+                        if (objAiBases.All(c => c.GetRealHealth() <= GetQDamage(c)))
                         {
-                            SpellClass.Q.Cast(SpellClass.Q.GetPrediction(bestTarget).CastPosition);
+                            SpellClass.Q.Cast(bestTarget);
                         }
                     }
                     else
                     {
-                        SpellClass.Q.Cast(SpellClass.Q.GetPrediction(bestTarget).CastPosition);
+                        SpellClass.Q.Cast(bestTarget);
                     }
                 }
             }
-        }
 
-        /// <summary>
-        ///     Fired as fast as possible.
-        /// </summary>
-        public void RendHarass(EntropyEventArgs args)
-        {
-            /// <summary>
-            ///     The E Minion Harass Logic.
-            /// </summary>
-            if (SpellClass.E.Ready &&
-                Extensions.GetEnemyLaneMinionsTargets().Any(m =>
-                    IsPerfectRendTarget(m) &&
-                    m.GetRealHealth() <= GetTotalRendDamage(m)) &&
-                MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
-            {
-                if (GameObjects.EnemyHeroes.Where(IsPerfectRendTarget).Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
-                {
-                    SpellClass.E.Cast();
-                }
-            }
-        }
+	        /// <summary>
+	        ///     The E Minion Harass Logic.
+	        /// </summary>
+	        if (SpellClass.E.Ready &&
+	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
+		                                                        IsPerfectRendTarget(m) &&
+		                                                        m.GetRealHealth() <= GetEDamage(m)) &&
+	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
+	        {
+		        if (GameObjects.EnemyHeroes.Where(IsPerfectRendTarget)
+		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
+		        {
+			        SpellClass.E.Cast();
+		        }
+	        }
+		}
 
         #endregion
     }

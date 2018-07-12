@@ -54,7 +54,7 @@ namespace AIO.Champions
                 if (qRangeCheck != null)
                 {
                     if (qRangeCheck.As<MenuSliderBool>().Enabled &&
-                        posAfterQ.CountEnemyHeroesInRange(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= qRangeCheck.As<MenuSliderBool>().Value)
+                        posAfterQ.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= qRangeCheck.As<MenuSliderBool>().Value)
                     {
                         return;
                     }
@@ -67,7 +67,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                if (posAfterQ.IsUnderEnemyTurret() &&
+                if (posAfterQ..Position.IsUnderEnemyTurret() &&
                     MenuClass.Spells["q"]["customization"]["noqturret"].As<MenuBool>().Enabled)
                 {
                     return;

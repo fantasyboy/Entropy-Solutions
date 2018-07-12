@@ -51,7 +51,7 @@ namespace AIO.Champions
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
                         MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
-                    .MinBy(o => o.CountEnemyHeroesInRange(300f));
+                    .MinBy(o => o.EnemyHeroesCount(300f));
 
                 if (bestTarget != null &&
                     !IsUltimateShooting() &&

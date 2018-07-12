@@ -1,7 +1,9 @@
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -81,7 +83,7 @@ namespace AIO.Champions
                         if (args.Target.IsMe())
                         {
                             var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.E.Range);
-                            if (targetPos.IsUnderEnemyTurret())
+                            if (targetPos..Position.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -91,7 +93,7 @@ namespace AIO.Champions
                         break;
                     default:
                         var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.E.Range);
-                        if (targetPos2.IsUnderEnemyTurret())
+                        if (targetPos2..Position.IsUnderEnemyTurret())
                         {
                             return;
                         }
@@ -115,7 +117,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Weaving(sender, args);
@@ -155,7 +157,7 @@ namespace AIO.Champions
             /// </summary>
             Killsteal(args);
 
-            if (ImplementationClass.IOrbwalker.IsWindingUp)
+            if (Orbwalker.IsWindingUp)
             {
                 return;
             }
@@ -173,7 +175,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Combo(args);

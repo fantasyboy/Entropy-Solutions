@@ -24,8 +24,8 @@ namespace AIO.Champions
             ///     The KillSteal W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                !UtilityClass.Player.IsUnderEnemyTurret() &&
-                UtilityClass.Player.CountEnemyHeroesInRange(SpellClass.Q.Range) < 3 &&
+                !UtilityClass.Player.Position.IsUnderEnemyTurret() &&
+                UtilityClass.Player.EnemyHeroesCount(SpellClass.Q.Range) < 3 &&
                 MenuClass.Spells["w"]["killsteal"].As<MenuBool>().Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range).Where(t =>

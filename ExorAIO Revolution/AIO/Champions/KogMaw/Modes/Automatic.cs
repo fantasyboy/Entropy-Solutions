@@ -39,7 +39,7 @@ namespace AIO.Champions
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     !Invulnerable.Check(t) &&
                     t.IsImmobile(SpellClass.Q.Delay) &&
-                    t.Distance(UtilityClass.Player) < SpellClass.Q.Range))
+                    t.DistanceToPlayer() < SpellClass.Q.Range))
                 {
                     SpellClass.Q.Cast(target.Position);
                 }
@@ -54,7 +54,7 @@ namespace AIO.Champions
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     t.IsImmobile(SpellClass.E.Delay) &&
                     !Invulnerable.Check(t, DamageType.Magical, false) &&
-                    t.Distance(UtilityClass.Player) < SpellClass.E.Range))
+                    t.DistanceToPlayer() < SpellClass.E.Range))
                 {
                     SpellClass.E.Cast(target.Position);
                 }

@@ -42,36 +42,6 @@ namespace AIO.Utilities
             return solution;
         }
 
-        public static void DrawCircleOnMinimap(
-            Vector3 center,
-            float radius,
-            Color color,
-            int thickness = 1,
-            int quality = 100)
-        {
-            var pointList = new List<Vector3>();
-            for (var i = 0; i < quality; i++)
-            {
-                var angle = i * Math.PI * 2 / quality;
-                pointList.Add(
-                    new Vector3(
-                        center.X + radius * (float)Math.Cos(angle),
-                        center.Y,
-                        center.Z + radius * (float)Math.Sin(angle))
-                );
-            }
-            for (var i = 0; i < pointList.Count; i++)
-            {
-                var a = pointList[i];
-                var b = pointList[i == pointList.Count - 1 ? 0 : i + 1];
-
-                Render.WorldToMinimap(a, out Vector2 aonScreen);
-                Render.WorldToMinimap(b, out Vector2 bonScreen);
-
-                Render.Line(aonScreen, bonScreen, color);
-            }
-        }
-
         public static bool Intersects(this Rectangle rectangle, Circle circle)
         {
             var rectangleHalfWidth = rectangle.Width / 2;
@@ -144,20 +114,6 @@ namespace AIO.Utilities
 
         #endregion
 
-        public static class Util
-        {
-            #region Public Methods and Operators
-
-            public static void DrawLineInWorld(Vector3 start, Vector3 end, int width, Color color)
-            {
-                Render.WorldToScreen(start, out Vector2 from);
-                Render.WorldToScreen(end, out Vector2 to);
-                Render.Line(from, to, color);
-            }
-
-            #endregion
-        }
-
         public class Circle
         {
             #region Fields
@@ -213,15 +169,6 @@ namespace AIO.Utilities
             public void Add(Vector3 point)
             {
                 Points.Add(point);
-            }
-
-            public void Draw(Color color, int width = 1)
-            {
-                for (var i = 0; i <= Points.Count - 1; i++)
-                {
-                    var nextIndex = Points.Count - 1 == i ? 0 : i + 1;
-                    Util.DrawLineInWorld(Points[i], Points[nextIndex], width, color);
-                }
             }
 
             public List<IntPoint> ToClipperPath()

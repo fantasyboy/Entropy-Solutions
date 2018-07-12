@@ -32,7 +32,7 @@ namespace AIO.Champions
                 var minEnemies = MenuClass.Spells["q"]["customization"]["minenemies"];
                 var bestTargetDistanceToPlayer = UtilityClass.Player.Distance(bestTargetQ);
                 var harassManaManager = MenuClass.Spells["q"]["harass"].As<MenuSliderBool>().Value;
-                var enemiesInSplashRange = bestTargetQ.CountEnemyHeroesInRange(SplashRange);
+                var enemiesInSplashRange = bestTargetQ.EnemyHeroesCount(SplashRange);
 
                 if (!IsUsingFishBones())
                 {

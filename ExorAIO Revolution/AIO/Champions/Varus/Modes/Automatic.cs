@@ -43,10 +43,10 @@ namespace AIO.Champions
                     .Where(t =>
                         t.IsValidTarget(SpellClass.R.Range-150f) &&
                         !Invulnerable.Check(t, DamageType.Magical, false))
-                    .MinBy(t2 => t2.CountEnemyHeroesInRange(550f));
+                    .MinBy(t2 => t2.EnemyHeroesCount(550f));
 
                 if (bestTarget != null &&
-                    bestTarget.CountEnemyHeroesInRange(550f) >= MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Value)
+                    bestTarget.EnemyHeroesCount(550f) >= MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Value)
                 {
                     SpellClass.R.Cast(bestTarget);
                 }

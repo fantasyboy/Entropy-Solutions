@@ -34,7 +34,7 @@ namespace AIO.Champions
             if (eRangeCheck != null)
             {
                 if (eRangeCheck.As<MenuSliderBool>().Enabled &&
-                    posAfterE.CountEnemyHeroesInRange(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= eRangeCheck.As<MenuSliderBool>().Value)
+                    posAfterE.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= eRangeCheck.As<MenuSliderBool>().Value)
                 {
                     return;
                 }
@@ -47,7 +47,7 @@ namespace AIO.Champions
                 return;
             }
 
-            if (posAfterE.IsUnderEnemyTurret() &&
+            if (posAfterE..Position.IsUnderEnemyTurret() &&
                 MenuClass.Spells["e"]["customization"]["noeturret"].As<MenuBool>().Enabled)
             {
                 return;
@@ -57,7 +57,7 @@ namespace AIO.Champions
             {
                 case 0:
                     Vector3 point;
-                    if (UtilityClass.Player.IsUnderEnemyTurret() ||
+                    if (UtilityClass.Player.Position.IsUnderEnemyTurret() ||
                         UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) < UtilityClass.Player.GetAutoAttackRange())
                     {
                         point = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, UtilityClass.Player.BoundingRadius);

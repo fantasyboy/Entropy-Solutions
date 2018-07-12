@@ -33,7 +33,7 @@ namespace AIO.Champions
                     !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
                 {
                     var posAfterE = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 425f);
-                    if (posAfterE.CountEnemyHeroesInRange(1000f) < 3 &&
+                    if (posAfterE.EnemyHeroesCount(1000f) < 3 &&
                         UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) > UtilityClass.Player.GetAutoAttackRange() &&
                         bestTarget.Distance(posAfterE) < UtilityClass.Player.GetAutoAttackRange(bestTarget))
                     {

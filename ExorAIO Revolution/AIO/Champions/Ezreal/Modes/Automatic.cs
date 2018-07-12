@@ -39,7 +39,7 @@ namespace AIO.Champions
             {
                 var firstTower = ObjectManager.Get<AITurretClient>()
                     .Where(t => t.IsAlly() && t.IsValidTarget(allyIsValidTarget: true))
-                    .MinBy(t => t.Distance(UtilityClass.Player));
+                    .MinBy(t => t.DistanceToPlayer());
                 if (firstTower != null)
                 {
                     SpellClass.E.Cast(UtilityClass.Player.Position.Extend(firstTower.Position, SpellClass.E.Range));
@@ -51,7 +51,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.IsTearLikeItemReady() &&
-                UtilityClass.Player.CountEnemyHeroesInRange(1500f) == 0 &&
+                UtilityClass.Player.EnemyHeroesCount(1500f) == 0 &&
                 Orbwalker.Mode == OrbwalkingMode.None &&
                 !Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Any() &&
                 UtilityClass.Player.MPPercent()

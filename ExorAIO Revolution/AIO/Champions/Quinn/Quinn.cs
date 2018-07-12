@@ -166,7 +166,7 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        if (args.EndPosition.IsUnderEnemyTurret())
+                        if (args.EndPosition..Position.IsUnderEnemyTurret())
                         {
                             return;
                         }

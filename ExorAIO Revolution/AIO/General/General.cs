@@ -115,7 +115,7 @@ namespace AIO
                     if (Extensions.GetEnemyLaneMinionsTargets().Contains(args.Target) &&
                         MenuClass.General["supportmode"].As<MenuBool>().Enabled)
                     {
-                        args.Cancel = GameObjects.AllyHeroes.Any(a => !a.IsMe() && a.Distance(UtilityClass.Player) < 2500);
+                        args.Cancel = GameObjects.AllyHeroes.Any(a => !a.IsMe() && a.DistanceToPlayer() < 2500);
                     }
                     break;
             }

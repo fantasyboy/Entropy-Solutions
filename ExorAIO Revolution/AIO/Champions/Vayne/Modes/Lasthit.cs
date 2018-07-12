@@ -37,7 +37,7 @@ namespace AIO.Champions
                 if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Any(m =>
                         m.Distance(posAfterQ) < UtilityClass.Player.GetAutoAttackRange() &&
                         m != Orbwalker.GetOrbwalkingTarget() &&
-                        posAfterQ.CountEnemyHeroesInRange(UtilityClass.Player.GetAutoAttackRange(m)) <= 2 &&
+                        posAfterQ.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange(m)) <= 2 &&
                         m.GetRealHealth() <
                             UtilityClass.Player.GetAutoAttackDamage(m) +
                             UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q)))

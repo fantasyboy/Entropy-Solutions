@@ -6,6 +6,7 @@ using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 using SharpDX;
@@ -55,7 +56,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Weaving(args);
@@ -75,7 +76,7 @@ namespace AIO.Champions
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
         public void OnPreAttack(OnPreAttackEventArgs args)
         {
-            if (!UtilityClass.Player.IsUnderEnemyTurret() &&
+            if (!UtilityClass.Player.Position.IsUnderEnemyTurret() &&
                 UtilityClass.Player.HasBuff("vaynetumblefade"))
             {
                 var invisibilityBuff = UtilityClass.Player.GetBuff("vaynetumblefade");
@@ -128,7 +129,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     CondemnCombo(args);
@@ -220,7 +221,7 @@ namespace AIO.Champions
                         if (args.Target.IsMe())
                         {
                             Vector3 targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
-                            if (targetPos.IsUnderEnemyTurret())
+                            if (targetPos..Position.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -230,7 +231,7 @@ namespace AIO.Champions
                         break;
                     default:
                         Vector3 targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
-                        if (targetPos2.IsUnderEnemyTurret())
+                        if (targetPos2..Position.IsUnderEnemyTurret())
                         {
                             return;
                         }
@@ -323,7 +324,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the orbwalkingmodes.
             /// </summary>
-            switch (ImplementationClass.IOrbwalker.Mode)
+            switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
                     Combo(args);

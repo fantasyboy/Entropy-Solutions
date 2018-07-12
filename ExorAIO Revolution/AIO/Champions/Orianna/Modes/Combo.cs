@@ -113,7 +113,7 @@ namespace AIO.Champions
                 {
                     if (SpellClass.E.Ready &&
                         !UtilityClass.Player.HasBuff("orianaghostself") &&
-                        bestTarget.Distance((Vector3)BallPosition) >= bestTarget.Distance(UtilityClass.Player) &&
+                        bestTarget.Distance((Vector3)BallPosition) >= bestTarget.DistanceToPlayer() &&
                         MenuClass.E2["gaine"].As<MenuBool>().Enabled)
                     {
                         SpellClass.E.CastOnUnit(UtilityClass.Player);

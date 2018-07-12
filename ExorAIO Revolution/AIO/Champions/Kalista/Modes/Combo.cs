@@ -2,7 +2,10 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -19,20 +22,20 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Combo(EntropyEventArgs args)
+        public void Combo()
         {
             /// <summary>
             ///     Orbwalk on minions.
             /// </summary>
-            var minion = ObjectManager.Get<AIMinionClient>()
+            var minion = ObjectCache.EnemyLaneMinions
                 .Where(m => m.IsValidSpellTarget(UtilityClass.Player.GetAutoAttackRange(m)))
-                .OrderBy(s => s.GetRealBuffCount("kalistaexpungemarker"))
+                .OrderBy(s => s.GetBuffCount("kalistaexpungemarker"))
                 .MinBy(o => o.HP);
             if (minion != null &&
                 !GameObjects.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)+100f)) &&
                 MenuClass.Miscellaneous["minionsorbwalk"].As<MenuBool>().Enabled)
             {
-                UtilityClass.Player.IssueOrder(OrderType.AttackUnit, minion);
+                Orbwalker.Attack(minion);
             }
 
             /// <summary>
@@ -49,39 +52,34 @@ namespace AIO.Champions
                         .ToList();
                     if (collisions.Any())
                     {
-                        if (collisions.All(c => c.GetRealHealth() <= UtilityClass.Player.GetSpellDamage(c, SpellSlot.Q)))
+                        if (collisions.All(c => c.GetRealHealth() <= GetQDamage(c)))
                         {
-                            SpellClass.Q.Cast(SpellClass.Q.GetPrediction(bestTarget).CastPosition);
+                            SpellClass.Q.Cast(bestTarget);
                         }
                     }
                     else
                     {
-                        SpellClass.Q.Cast(SpellClass.Q.GetPrediction(bestTarget).CastPosition);
+                        SpellClass.Q.Cast(bestTarget);
                     }
                 }
             }
-        }
 
-        /// <summary>
-        ///     Fired as fast as possible.
-        /// </summary>
-        public void RendCombo(args)
-        {
-            /// <summary>
-            ///     The E Combo Minion Harass Logic.
-            /// </summary>
-            if (SpellClass.E.Ready &&
-                Extensions.GetEnemyLaneMinionsTargets().Any(m =>
-                    IsPerfectRendTarget(m) &&
-                    m.GetRealHealth() <= GetTotalRendDamage(m)) &&
-                MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
-            {
-                if (GameObjects.EnemyHeroes.Where(IsPerfectRendTarget).Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
-                {
-                    SpellClass.E.Cast();
-                }
-            }
-        }
+	        /// <summary>
+	        ///     The E Combo Minion Harass Logic.
+	        /// </summary>
+	        if (SpellClass.E.Ready &&
+	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
+		                                                        IsPerfectRendTarget(m) &&
+		                                                        m.GetRealHealth() <= GetEDamage(m)) &&
+	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
+	        {
+		        if (GameObjects.EnemyHeroes.Where(IsPerfectRendTarget)
+		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
+		        {
+			        SpellClass.E.Cast();
+		        }
+	        }
+		}
 
         #endregion
     }

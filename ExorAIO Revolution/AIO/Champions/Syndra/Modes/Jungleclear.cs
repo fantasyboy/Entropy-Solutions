@@ -23,7 +23,7 @@ namespace AIO.Champions
         {
             var jungleTarget = ObjectManager.Get<AIMinionClient>()
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
-                .MinBy(m => m.Distance(UtilityClass.Player));
+                .MinBy(m => m.DistanceToPlayer());
             if (jungleTarget == null ||
                 jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
             {
@@ -44,7 +44,7 @@ namespace AIO.Champions
                     var obj = GetForceOfWillObject();
                     if (obj != null &&
                         obj.IsValid &&
-                        obj.Distance(UtilityClass.Player) < SpellClass.W.Range)
+                        obj.DistanceToPlayer() < SpellClass.W.Range)
                     {
                         SpellClass.W.CastOnUnit(obj);
                         return;

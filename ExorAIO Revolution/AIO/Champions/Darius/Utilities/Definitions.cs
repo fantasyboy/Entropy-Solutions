@@ -21,7 +21,7 @@ namespace AIO.Champions
         /// <param name="unit">The unit.</param>
         public bool IsValidBladeTarget(AIBaseClient unit)
         {
-            var unitDistanceToPlayer = unit.Distance(UtilityClass.Player);
+            var unitDistanceToPlayer = unit.DistanceToPlayer();
             return
                 unit.IsValidSpellTarget() &&
                 unitDistanceToPlayer >= UtilityClass.Player.GetAutoAttackRange() &&

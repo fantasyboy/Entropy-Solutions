@@ -140,7 +140,7 @@ namespace AIO.Champions
                         if (args.Target.IsMe())
                         {
                             var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.W.Range);
-                            if (targetPos.IsUnderEnemyTurret())
+                            if (targetPos..Position.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -150,7 +150,7 @@ namespace AIO.Champions
                         break;
                     default:
                         var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.W.Range);
-                        if (targetPos2.IsUnderEnemyTurret())
+                        if (targetPos2..Position.IsUnderEnemyTurret())
                         {
                             return;
                         }

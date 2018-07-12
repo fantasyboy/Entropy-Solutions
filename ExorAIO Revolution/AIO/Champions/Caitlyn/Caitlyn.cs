@@ -65,7 +65,7 @@ namespace AIO.Champions
                     case SpellSlot.Q:
                         var safeQ = MenuClass.Spells["q"]["customization"]["safeq"];
                         if (safeQ != null &&
-                            UtilityClass.Player.CountEnemyHeroesInRange(UtilityClass.Player.GetAutoAttackRange()) > safeQ.As<MenuSlider>().Value)
+                            UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeQ.As<MenuSlider>().Value)
                         {
                             args.Process = false;
                         }
@@ -81,7 +81,7 @@ namespace AIO.Champions
                     case SpellSlot.E:
                         var safeE = MenuClass.Spells["e"]["customization"]["safee"];
                         if (safeE != null &&
-                            UtilityClass.Player.Position.Extend(args.End, -400f).CountEnemyHeroesInRange(UtilityClass.Player.GetAutoAttackRange()) > safeE.As<MenuSlider>().Value)
+                            UtilityClass.Player.Position.Extend(args.End, -400f).EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeE.As<MenuSlider>().Value)
                         {
                             args.Process = false;
                         }
@@ -210,7 +210,7 @@ namespace AIO.Champions
                             args.Target.IsMe())
                         {
                             var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -450);
-                            if (targetPos.IsUnderEnemyTurret())
+                            if (targetPos..Position.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -220,7 +220,7 @@ namespace AIO.Champions
                         break;
                     default:
                         var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -450);
-                        if (targetPos2.IsUnderEnemyTurret())
+                        if (targetPos2..Position.IsUnderEnemyTurret())
                         {
                             return;
                         }

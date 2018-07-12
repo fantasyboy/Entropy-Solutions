@@ -30,7 +30,7 @@ namespace AIO.Champions
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range);
                 if (bestTarget.IsValidTarget() &&
-                    bestTarget.CountEnemyHeroesInRange(SpellClass.W.Width) >= MenuClass.Spells["w"]["aoe"].As<MenuSliderBool>().Value)
+                    bestTarget.EnemyHeroesCount(SpellClass.W.Width) >= MenuClass.Spells["w"]["aoe"].As<MenuSliderBool>().Value)
                 {
                     SpellClass.W.Cast(bestTarget);
                 }

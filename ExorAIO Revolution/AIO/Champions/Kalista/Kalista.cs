@@ -66,48 +66,7 @@ namespace AIO.Champions
             }
         }
 
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
-
-            /// <summary>
-            ///     Initializes the Killsteal events.
-            /// </summary>
-            RendKillsteal(EntropyEventArgs args);
-
-            /// <summary>
-            ///     Initializes the Automatic events.
-            /// </summary>
-            RendAutomatic(EntropyEventArgs args);
-
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            switch (Orbwalker.Mode)
-            {
-                case OrbwalkingMode.Combo:
-                    RendCombo(EntropyEventArgs args);
-                    break;
-                case OrbwalkingMode.Harass:
-                    RendHarass(EntropyEventArgs args);
-                    break;
-                case OrbwalkingMode.LaneClear:
-                    RendLaneClear(EntropyEventArgs args);
-                    RendJungleClear(EntropyEventArgs args);
-                    break;
-                case OrbwalkingMode.LastHit:
-                    RendLastHit(EntropyEventArgs args);
-                    break;
-            }
-        }
-
-        #endregion
+	    #endregion
 
         #region Methods
 
@@ -124,12 +83,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(EntropyEventArgs args);
+            Automatic();
 
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(EntropyEventArgs args);
+            Killsteal();
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -137,17 +96,17 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(EntropyEventArgs args);
+                    Combo();
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(EntropyEventArgs args);
+                    Harass();
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(EntropyEventArgs args);
-                    JungleClear(EntropyEventArgs args);
+                    LaneClear();
+                    JungleClear();
                     break;
                 case OrbwalkingMode.LastHit:
-                    LastHit(EntropyEventArgs args);
+                    LastHit();
                     break;
             }
         }

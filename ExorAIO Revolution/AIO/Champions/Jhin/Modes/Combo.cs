@@ -64,11 +64,11 @@ namespace AIO.Champions
             ///     The W Combo Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                !UtilityClass.Player.IsUnderEnemyTurret() &&
+                !UtilityClass.Player.Position.IsUnderEnemyTurret() &&
                 MenuClass.Spells["w"]["combo"].As<MenuBool>().Value)
             {
                 if (!IsReloading() &&
-                    GameObjects.EnemyHeroes.Any(t => t.Distance(UtilityClass.Player) < UtilityClass.Player.GetAutoAttackRange(t)) &&
+                    GameObjects.EnemyHeroes.Any(t => t.DistanceToPlayer() < UtilityClass.Player.GetAutoAttackRange(t)) &&
                     MenuClass.Spells["w"]["customization"]["noenemiesaa"].As<MenuBool>().Value)
                 {
                     return;

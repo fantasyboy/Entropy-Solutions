@@ -46,7 +46,7 @@ namespace AIO.Champions
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     t.IsImmobile(SpellClass.W.Delay) &&
-                    t.Distance(UtilityClass.Player) < SpellClass.W.Range))
+                    t.DistanceToPlayer() < SpellClass.W.Range))
                 {
                     SpellClass.W.Cast(
                         UtilityClass.Player.Position.Extend(

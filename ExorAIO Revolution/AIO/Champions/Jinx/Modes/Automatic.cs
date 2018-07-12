@@ -34,7 +34,7 @@ namespace AIO.Champions
                 return;
             }
 
-            Logging.Log($"Q Range: {SpellClass.Q.Range}, Distance: {Orbwalker.GetOrbwalkingTarget()?.Distance(UtilityClass.Player)}");
+            Logging.Log($"Q Range: {SpellClass.Q.Range}, Distance: {Orbwalker.GetOrbwalkingTarget()?.DistanceToPlayer()}");
 
             /// <summary>
             ///     The Force Pow Pow Logic. 
@@ -55,7 +55,7 @@ namespace AIO.Champions
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     t.IsImmobile(SpellClass.E.Delay) &&
-                    t.Distance(UtilityClass.Player) <= SpellClass.E.Range))
+                    t.DistanceToPlayer() <= SpellClass.E.Range))
                 {
                     SpellClass.E.Cast(target.Position);
                 }
@@ -69,7 +69,7 @@ namespace AIO.Champions
             {
                 foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
                         m.IsEnemy() &&
-                        m.Distance(UtilityClass.Player) <= SpellClass.E.Range &&
+                        m.DistanceToPlayer() <= SpellClass.E.Range &&
                         m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
                 {
                     SpellClass.E.Cast(minion.Position);

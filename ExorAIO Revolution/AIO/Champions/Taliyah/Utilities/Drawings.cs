@@ -1,8 +1,9 @@
 ﻿
-using System.Drawing;
 using AIO.Utilities;
 using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
+using SharpDX;
+using Color = SharpDX.Color;
 
 #pragma warning disable 1587
 
@@ -65,7 +66,7 @@ namespace AIO.Champions
                 /// </summary>
                 if (MenuClass.Drawings["rmm"].As<MenuBool>().Enabled)
                 {
-                    Vector2Geometry.DrawCircleOnMinimap(UtilityClass.Player.Position, SpellClass.R.Range, Color.White);
+	                TacticalMapRendering.Render(Color.White, UtilityClass.Player.Position, SpellClass.R.Range);
                 }
             }
 
@@ -76,7 +77,7 @@ namespace AIO.Champions
             {
                 foreach (var ground in WorkedGrounds)
                 {
-                    Render.Circle(ground.Value, WorkedGroundWidth, 30, Color.Brown);
+	                CircleRendering.Render(Color.Brown, WorkedGroundWidth, 30, new Vector2(ground.Value.X, ground.Value.Y));
                 }
             }
 
@@ -87,7 +88,7 @@ namespace AIO.Champions
             {
                 foreach (var boulder in MineField)
                 {
-                    Render.Circle(boulder.Value, BouldersWidth, 30, Color.Brown);
+	                CircleRendering.Render(Color.Brown, BouldersWidth, 30, new Vector2(boulder.Value.X, boulder.Value.Y));
                 }
             }
         }

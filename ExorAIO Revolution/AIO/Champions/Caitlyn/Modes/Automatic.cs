@@ -41,7 +41,7 @@ namespace AIO.Champions
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     CanTrap(t) &&
                     t.IsImmobile(SpellClass.W.Delay) &&
-                    t.Distance(UtilityClass.Player) < SpellClass.W.Range))
+                    t.DistanceToPlayer() < SpellClass.W.Range))
                 {
                     SpellClass.W.Cast(UtilityClass.Player.Position.Extend(target.Position, UtilityClass.Player.Distance(target)+target.BoundingRadius/2));
                     UpdateEnemyTrapTime(target.NetworkID);
@@ -56,7 +56,7 @@ namespace AIO.Champions
             {
                 foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
                     m.IsEnemy() &&
-                    m.Distance(UtilityClass.Player) <= SpellClass.W.Range &&
+                    m.DistanceToPlayer() <= SpellClass.W.Range &&
                     m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
                 {
                     SpellClass.W.Cast(minion.Position);

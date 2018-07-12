@@ -27,7 +27,7 @@ namespace AIO.Champions
         {
             var jungleTarget = ObjectManager.Get<AIMinionClient>()
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
-                .MinBy(m => m.Distance(UtilityClass.Player));
+                .MinBy(m => m.DistanceToPlayer());
             if (jungleTarget == null ||
                 jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
             {

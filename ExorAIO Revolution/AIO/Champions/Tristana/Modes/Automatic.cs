@@ -35,7 +35,7 @@ namespace AIO.Champions
             {
                 var firstTower = ObjectManager.Get<AITurretClient>()
                     .Where(t => t.IsAlly() && t.IsValidTarget(allyIsValidTarget: true))
-                    .MinBy(t => t.Distance(UtilityClass.Player));
+                    .MinBy(t => t.DistanceToPlayer());
                 if (firstTower != null)
                 {
                     SpellClass.W.Cast(UtilityClass.Player.Position.Extend(firstTower.Position, SpellClass.W.Range));
@@ -52,7 +52,7 @@ namespace AIO.Champions
                 var bestTarget = GameObjects.EnemyHeroes.Where(t =>
                         t.IsValidTarget(SpellClass.R.Range) &&
                         !Invulnerable.Check(t, DamageType.Magical, false))
-                    .MinBy(o => o.Distance(UtilityClass.Player));
+                    .MinBy(o => o.DistanceToPlayer());
                 if (bestTarget != null)
                 {
                     SpellClass.R.CastOnUnit(bestTarget);

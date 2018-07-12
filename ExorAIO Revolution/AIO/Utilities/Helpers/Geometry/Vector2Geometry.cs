@@ -42,36 +42,6 @@ namespace AIO.Utilities
             return solution;
         }
 
-        public static void DrawCircleOnMinimap(
-            Vector3 center,
-            float radius,
-            Color color,
-            int thickness = 1,
-            int quality = 100)
-        {
-            var pointList = new List<Vector3>();
-            for (var i = 0; i < quality; i++)
-            {
-                var angle = i * Math.PI * 2 / quality;
-                pointList.Add(
-                    new Vector3(
-                        center.X + radius * (float)Math.Cos(angle),
-                        center.Y,
-                        center.Z + radius * (float)Math.Sin(angle))
-                );
-            }
-            for (var i = 0; i < pointList.Count; i++)
-            {
-                var a = pointList[i];
-                var b = pointList[i == pointList.Count - 1 ? 0 : i + 1];
-
-                Render.WorldToMinimap(a, out var aonScreen);
-                Render.WorldToMinimap(b, out var bonScreen);
-
-                Render.Line(aonScreen, bonScreen, color);
-            }
-        }
-
         public static bool IsInside(this Vector3 point, Polygon poly)
         {
             return !point.IsOutside(poly);
@@ -150,20 +120,6 @@ namespace AIO.Utilities
 
         #endregion
 
-        public static class Util
-        {
-            #region Public Methods and Operators
-
-            public static void DrawLineInWorld(Vector3 start, Vector3 end, int width, Color color)
-            {
-                Render.WorldToScreen(start, out var from);
-                Render.WorldToScreen(end, out var to);
-                Render.Line(from, to, color);
-            }
-
-            #endregion
-        }
-
         public class Circle
         {
             #region Fields
@@ -220,15 +176,6 @@ namespace AIO.Utilities
             public void Add(Vector2 point)
             {
                 Points.Add(point);
-            }
-
-            public void Draw(Color color, int width = 1)
-            {
-                for (var i = 0; i <= Points.Count - 1; i++)
-                {
-                    var nextIndex = Points.Count - 1 == i ? 0 : i + 1;
-                    Util.DrawLineInWorld((Vector3)Points[i], (Vector3)Points[nextIndex], width, color);
-                }
             }
 
             public bool IsInside(Vector2 point)

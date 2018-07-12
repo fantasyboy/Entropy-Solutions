@@ -19,14 +19,14 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void LaneClear(EntropyEventArgs args)
+        public void LaneClear()
         {
             /// <summary>
             ///     The Q Laneclear Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
+					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
                 /*
@@ -37,34 +37,28 @@ namespace AIO.Champions
                 }
                 */
             }
-        }
 
-        /// <summary>
-        ///     Fired as fast as possible.
-        /// </summary>
-        public void RendLaneClear(EntropyEventArgs args)
-        {
-            /// <summary>
-            ///     The E Laneclear Logics.
-            /// </summary>
-            if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
-            {
-                if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Count(m =>
-                        IsPerfectRendTarget(m) &&
-                        m.GetRealHealth() <= GetTotalRendDamage(m)) >= MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Value)
-                {
-                    SpellClass.E.Cast();
-                }
+	        /// <summary>
+	        ///     The E Laneclear Logics.
+	        /// </summary>
+	        if (SpellClass.E.Ready &&
+	            MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
+	        {
+		        if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Count(m =>
+			                                                                                   IsPerfectRendTarget(m) &&
+			                                                                                   m.GetRealHealth() <= GetEDamage(m)) >= MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Value)
+		        {
+			        SpellClass.E.Cast();
+		        }
 
-                else if (Extensions.GetEnemyPetsInRange(SpellClass.E.Range).Any(m =>
-                        IsPerfectRendTarget(m) &&
-                        m.GetRealHealth() <= GetTotalRendDamage(m)))
-                {
-                    SpellClass.E.Cast();
-                }
-            }
-        }
+		        else if (Extensions.GetEnemyPetsInRange(SpellClass.E.Range).Any(m =>
+			                                                                        IsPerfectRendTarget(m) &&
+			                                                                        m.GetRealHealth() <= GetEDamage(m)))
+		        {
+			        SpellClass.E.Cast();
+		        }
+	        }
+		}
 
         #endregion
     }

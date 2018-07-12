@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -52,24 +53,13 @@ namespace AIO.Champions
         #region Public Methods and Operators
 
         /// <summary>
-        ///     Gets the total rend damage on a determined unit.
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        public double GetTotalRendDamage(AIBaseClient unit)
-        {
-            var player = UtilityClass.Player;
-            return player.GetSpellDamage(unit, SpellSlot.E) +
-                   player.GetSpellDamage(unit, SpellSlot.E, DamageStage.Buff);
-        }
-
-        /// <summary>
         ///     Returns true if the target is a perfectly valid rend target.
         /// </summary>
         /// <param name="unit">The unit.</param>
         public bool IsPerfectRendTarget(AIBaseClient unit)
         {
             var spellRange = SpellClass.E.Range;
-            var orbTarget = ImplementationClass.IOrbwalker.GetOrbwalkingTarget() as AIHeroClient;
+            var orbTarget = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
 
             if (orbTarget != null &&
                 orbTarget.NetworkID != unit.NetworkID &&

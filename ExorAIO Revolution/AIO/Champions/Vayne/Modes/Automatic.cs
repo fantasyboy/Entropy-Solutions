@@ -33,7 +33,7 @@ namespace AIO.Champions
                 var bestTarget = GameObjects.EnemyHeroes.Where(t =>
                         t.IsValidTarget(SpellClass.E.Range) &&
                         !Invulnerable.Check(t, DamageType.Magical, false))
-                    .MinBy(o => o.Distance(UtilityClass.Player));
+                    .MinBy(o => o.DistanceToPlayer());
                 if (bestTarget != null)
                 {
                     SpellClass.E.CastOnUnit(bestTarget);

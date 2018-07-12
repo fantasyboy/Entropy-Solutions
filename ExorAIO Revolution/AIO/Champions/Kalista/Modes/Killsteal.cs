@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void Killsteal(args)
+        public void Killsteal()
         {
             /// <summary>
             ///     The KillSteal Q Logic.
@@ -26,49 +26,42 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q) >= t.GetRealHealth()))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
+                                                 .Where(t => GetQDamage(t) >= t.GetRealHealth()))
                 {
                     var collisions = SpellClass.Q.GetPrediction(target).CollisionObjects
                         .Where(c => Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.Q.Range).Contains(c))
                         .ToList();
                     if (collisions.Any())
                     {
-                        if (collisions.All(c =>
-                            c.GetRealHealth() <= UtilityClass.Player.GetSpellDamage(c, SpellSlot.Q)))
+                        if (collisions.All(c => c.GetRealHealth() <= GetQDamage(c)))
                         {
-                            SpellClass.Q.Cast(SpellClass.Q.GetPrediction(target).CastPosition);
+                            SpellClass.Q.Cast(target);
                             break;
                         }
                     }
                     else
                     {
-                        SpellClass.Q.Cast(SpellClass.Q.GetPrediction(target).CastPosition);
+                        SpellClass.Q.Cast(target);
                         break;
                     }
                 }
             }
-        }
 
-        /// <summary>
-        ///     Fired as fast as possible.
-        /// </summary>
-        public void RendKillsteal(args)
-        {
-            /// <summary>
-            ///     The KillSteal E Logic.
-            /// </summary>
-            if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
-            {
-                if (GameObjects.EnemyHeroes.Any(t =>
-                        IsPerfectRendTarget(t) &&
-                        t.GetRealHealth() < GetTotalRendDamage(t)))
-                {
-                    SpellClass.E.Cast();
-                }
-            }
-        }
+	        /// <summary>
+	        ///     The KillSteal E Logic.
+	        /// </summary>
+	        if (SpellClass.E.Ready &&
+	            MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
+	        {
+		        if (GameObjects.EnemyHeroes.Any(t =>
+			                                        IsPerfectRendTarget(t) &&
+			                                        t.GetRealHealth() < GetEDamage(t)))
+		        {
+			        SpellClass.E.Cast();
+		        }
+	        }
+		}
 
         #endregion
     }

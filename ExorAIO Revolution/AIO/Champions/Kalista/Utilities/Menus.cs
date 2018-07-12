@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.Linq;
 using AIO.Utilities;
 using Entropy.SDK.UI;
@@ -154,8 +155,8 @@ namespace AIO.Champions
                 MenuClass.Drawings.Add(new MenuSliderBool("soulbound", "Soulbound / Draw X circles", true, 2, 1, 5));
             }
             MenuClass.Root.Add(MenuClass.Drawings);
-        }
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

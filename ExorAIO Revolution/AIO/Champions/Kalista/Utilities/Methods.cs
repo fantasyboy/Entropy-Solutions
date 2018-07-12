@@ -1,5 +1,4 @@
 using Entropy;
-using AIO.Utilities;
 using Entropy.SDK.Orbwalking;
 
 namespace AIO.Champions
@@ -18,9 +17,11 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             Orbwalker.OnPreAttack += OnPreAttack;
-            Render.OnPresent += OnPresent;
-        }
+	        Renderer.OnRender   += OnRender;
+	        Renderer.OnEndScene += OnEndScene;
 
-        #endregion
-    }
+		}
+
+		#endregion
+	}
 }
