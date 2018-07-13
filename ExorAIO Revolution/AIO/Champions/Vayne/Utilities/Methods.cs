@@ -1,7 +1,7 @@
 using Entropy;
 using Entropy.SDK.Events;
-using AIO.Utilities;
 using Entropy.SDK.Orbwalking;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
@@ -20,9 +20,11 @@ namespace AIO.Champions
             Game.OnUpdate += OnUpdate;
             Orbwalker.OnPreAttack += OnPreAttack;
             Orbwalker.OnPostAttack += OnPostAttack;
-            Render.OnPresent += OnPresent;
-            Gapcloser.OnGapcloser += OnGapcloser;
-            Dash.HeroDashed += OnDash;
+            Renderer.OnPresent += OnPresent;
+	        Renderer.OnEndScene += OnEndScene;
+			Gapcloser.OnGapcloser += OnGapcloser;
+            Dash.OnNewDash += OnDash;
+	        Interrupter.OnInterruptableSpell += OnInterruptableSpell;
         }
 
         #endregion

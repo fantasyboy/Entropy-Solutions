@@ -1,8 +1,12 @@
 using System;
 using System.Linq;
 using AIO.Utilities;
+using Entropy;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Events;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 #pragma warning disable 1587
 
@@ -62,7 +66,7 @@ namespace AIO.Champions
                     }
                     else
                     {
-                        MenuClass.Q.Add(new MenuSeperator(string.Empty, "Anti-Gapcloser not needed"));
+                        MenuClass.Q.Add(new MenuSeperator("antigapclosernotneeded", "Anti-Gapcloser not needed"));
                     }
 
                     MenuClass.Q.Add(new MenuSeperator("separator2"));
@@ -98,7 +102,7 @@ namespace AIO.Champions
                 /// </summary>
                 MenuClass.E = new Menu("e", "Use E to:");
                 {
-                    MenuClass.E.Add(new MenuList("emode", "Condemn Mode", new []{ "Exory Perfect", "Exory Fast", "Don't Condemn to stun"}, 0).SetToolTip("Fast: Fastest condemn possible, Perfect: Slower but almost 100% accurate."));
+                    MenuClass.E.Add(new MenuList("emode", "Condemn Mode", new []{ "Exory Perfect", "Exory Fast", "Don't Condemn to stun"}).SetToolTip("Fast: Fastest condemn possible, Perfect: Slower but almost 100% accurate."));
                     MenuClass.E.Add(new MenuBool("killsteal", "KillSteal"));
                     MenuClass.E.Add(new MenuSeperator("separator"));
 
@@ -111,9 +115,9 @@ namespace AIO.Champions
                         {
                             MenuClass.Gapcloser2.Add(new MenuBool("enabled", "Enable"));
                             MenuClass.Gapcloser2.Add(new MenuSeperator(string.Empty));
-                            MenuClass.E.Add(MenuClass.Gapcloser2);
+	                        MenuClass.E.Add(MenuClass.Gapcloser2);
 
-                            foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
+							foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                             {
                                 MenuClass.SubGapcloser2 = new Menu(enemy.CharName.ToLower(), enemy.CharName);
                                 {
@@ -127,18 +131,52 @@ namespace AIO.Champions
                                 MenuClass.Gapcloser2.Add(MenuClass.SubGapcloser2);
                             }
                         }
-                    }
+					}
                     else
                     {
-                        MenuClass.E.Add(new MenuSeperator(string.Empty, "Anti-Gapcloser not needed"));
+                        MenuClass.E.Add(new MenuSeperator("antigapclosernotneeded", "Anti-Gapcloser not needed"));
                     }
 
                     MenuClass.E.Add(new MenuSeperator("separator2"));
-                    MenuClass.E.Add(new MenuBool("interrupter", "Interrupt Enemy Channels"));
-                    MenuClass.E.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
-                    MenuClass.E.Add(new MenuSeperator("separator3"));
+	                if (ObjectCache.EnemyHeroes.Any(t => Interrupter.SpellDatabase.Keys.Contains(t.CharName)))
+	                {
+		                /// <summary>
+		                ///     Sets the menu for the Interrupter E.
+		                /// </summary>
+		                MenuClass.Interrupter = new Menu("interrupter", "Interrupter");
+		                {
+			                MenuClass.Interrupter.Add(new MenuBool("enabled", "Enable"));
+			                MenuClass.Interrupter.Add(new MenuSeperator(string.Empty));
+			                MenuClass.E.Add(MenuClass.Interrupter);
+
+							foreach (var enemy in ObjectCache.EnemyHeroes.Where(t => Interrupter.SpellDatabase.Keys.Contains(t.CharName)))
+			                {
+				                MenuClass.SubInterrupter = new Menu(enemy.CharName.ToLower(), enemy.CharName);
+				                {
+					                foreach (var list in Interrupter.SpellDatabase.Where(x => x.Key == enemy.CharName))
+					                {
+						                foreach (var spell in list.Value)
+						                {
+							                MenuClass.SubInterrupter.Add(new MenuBool(
+								                $"{enemy.CharName.ToLower()}.{spell.SpellSlot.ToString().ToLower()}",
+								                $"Interrupt: {spell.SpellSlot}"));
+										}
+					                }
+				                }
+				                MenuClass.Interrupter.Add(MenuClass.SubInterrupter);
+			                }
+						}
+					}
+	                else
+	                {
+		                MenuClass.E.Add(new MenuSeperator("interrupternotneeded", "Interrupter not needed"));
+	                }
+	                MenuClass.E.Add(new MenuSeperator("separator3"));
+
+					MenuClass.E.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
+                    MenuClass.E.Add(new MenuSeperator("separator4"));
                     MenuClass.E.Add(new MenuBool("bool", "Semi-Automatic E"));
-                    MenuClass.E.Add(new MenuKeyBind("key", "Key:", KeyCode.T, KeybindType.Press));
+                    MenuClass.E.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.T, KeybindType.Hold));
 
                     if (GameObjects.EnemyHeroes.Any())
                     {
@@ -191,7 +229,8 @@ namespace AIO.Champions
             MenuClass.Drawings = new Menu("drawings", "Drawings");
             {
                 MenuClass.Drawings.Add(new MenuBool("q", "Q Range"));
-                MenuClass.Drawings.Add(new MenuBool("e", "E Range", false));
+	            MenuClass.Drawings.Add(new MenuBool("wdmg", "W Damage"));
+				MenuClass.Drawings.Add(new MenuBool("e", "E Range", false));
             }
             MenuClass.Root.Add(MenuClass.Drawings);
         }

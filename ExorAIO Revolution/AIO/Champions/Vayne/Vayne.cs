@@ -10,6 +10,7 @@ using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 using SharpDX;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 #pragma warning disable 1587
 
@@ -82,7 +83,7 @@ namespace AIO.Champions
                 var invisibilityBuff = UtilityClass.Player.GetBuff("vaynetumblefade");
                 if (MenuClass.Miscellaneous["stealthtime"].As<MenuSliderBool>().Enabled &&
                     invisibilityBuff.GetRemainingBuffTime() >
-                    invisibilityBuff.EndTime - invisibilityBuff.StartTime - MenuClass.Miscellaneous["stealthtime"].As<MenuSliderBool>().Value / 1000f)
+                    invisibilityBuff.ExpireTime - invisibilityBuff.StartTime - MenuClass.Miscellaneous["stealthtime"].As<MenuSliderBool>().Value / 1000f)
                 {
                     args.Cancel = true;
                 }
@@ -119,28 +120,17 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired on present.
         /// </summary>
-        public void OnPresent()
+        public void OnPresent(EntropyEventArgs args)
         {
             /// <summary>
             ///     Initializes the drawings.
             /// </summary>
             Drawings();
-
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            switch (Orbwalker.Mode)
-            {
-                case OrbwalkingMode.Combo:
-                    CondemnCombo(args);
-                    break;
-            }
         }
 
         /// <summary>
         ///     Fired on an incoming dash.
         /// </summary>
-        
         /// <param name="args">The <see cref="Dash.DashArgs" /> instance containing the event data.</param>
         public void OnDash(Dash.DashArgs args)
         {
@@ -171,7 +161,7 @@ namespace AIO.Champions
                 const int condemnPushDistance = 410;
                 for (var i = UtilityClass.Player.BoundingRadius; i < condemnPushDistance; i += 10)
                 {
-                    if (!endPos.Extend((Vector2)playerPos, -i).IsWall(true))
+                    if (!endPos.Extend((Vector2)playerPos, -i).IsWall())
                     {
                         continue;
                     }
@@ -181,12 +171,55 @@ namespace AIO.Champions
             }
         }
 
-        /// <summary>
-        ///     Fired on an incoming gapcloser.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
+		/// <summary>
+		///     Fired on interruptable spells.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="args">The <see cref="Interrupter.InterruptableSpellEventArgs" /> instance containing the event data.</param>
+		public void OnInterruptableSpell(AIBaseClient sender, Interrupter.InterruptableSpellEventArgs args)
+	    {
+		    if (UtilityClass.Player.IsDead)
+		    {
+			    return;
+		    }
+
+		    var heroSender = sender as AIHeroClient;
+		    if (heroSender == null || !heroSender.IsEnemy())
+		    {
+			    return;
+		    }
+
+		    /// <summary>
+		    ///     The Interrupter E.
+		    /// </summary>
+		    if (SpellClass.E.Ready &&
+		        !Invulnerable.Check(heroSender, DamageType.Magical, false))
+		    {
+			    var enabledOption = MenuClass.Interrupter["enabled"];
+			    if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+			    {
+				    return;
+			    }
+
+			    var spellOption = MenuClass.SubInterrupter[$"{heroSender.CharName.ToLower()}.{args.Slot.ToString().ToLower()}"];
+			    if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+			    {
+				    return;
+			    }
+
+			    if (heroSender.IsValidTarget(SpellClass.E.Range))
+			    {
+					SpellClass.E.CastOnUnit(heroSender);
+			    }
+		    }
+		}
+
+		/// <summary>
+		///     Fired on an incoming gapcloser.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+		public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -221,7 +254,7 @@ namespace AIO.Champions
                         if (args.Target.IsMe())
                         {
                             Vector3 targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
-                            if (targetPos..Position.IsUnderEnemyTurret())
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -231,7 +264,7 @@ namespace AIO.Champions
                         break;
                     default:
                         Vector3 targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
-                        if (targetPos2..Position.IsUnderEnemyTurret())
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }

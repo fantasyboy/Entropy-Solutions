@@ -22,7 +22,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Gets or sets the SoulBound.
         /// </summary>
-        public AIHeroClient SoulBound;
+        public AIHeroClient SoulBound = null;
 
         /// <summary>
         ///     Gets all the Offensive R Logics.
