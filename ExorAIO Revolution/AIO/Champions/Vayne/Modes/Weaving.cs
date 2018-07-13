@@ -37,7 +37,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
             {
-                if (heroTarget.GetRealBuffCount("vaynesilvereddebuff") != 1 &&
+                if (heroTarget.GetBuffCount("vaynesilvereddebuff") != 1 &&
                     MenuClass.Spells["q"]["customization"]["wstacks"].As<MenuBool>().Enabled)
                 {
                     return;
@@ -67,7 +67,7 @@ namespace AIO.Champions
                     return;
                 }
 
-                if (posAfterQ..Position.IsUnderEnemyTurret() &&
+                if (posAfterQ.IsUnderEnemyTurret() &&
                     MenuClass.Spells["q"]["customization"]["noqturret"].As<MenuBool>().Enabled)
                 {
                     return;
@@ -90,9 +90,8 @@ namespace AIO.Champions
                 MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
             {
                 var shouldIncludeWDamage = heroTarget.GetBuffCount("vaynesilvereddebuff") == 1;
-                if (UtilityClass.Player.GetAutoAttackDamage(heroTarget) +
-                    UtilityClass.Player.GetSpellDamage(heroTarget, SpellSlot.E) +
-                    (shouldIncludeWDamage ? UtilityClass.Player.GetSpellDamage(heroTarget, SpellSlot.W) : 0) >= heroTarget.GetRealHealth())
+                if (UtilityClass.Player.GetAutoAttackDamage(heroTarget) + GetEDamage(heroTarget) +
+                    (shouldIncludeWDamage ? GetWDamage(heroTarget) : 0) >= heroTarget.GetRealHealth(DamageType.Physical))
                 {
                     SpellClass.E.CastOnUnit(heroTarget);
                 }

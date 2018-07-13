@@ -27,9 +27,8 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.E.Range).Where(t =>
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.E) +
-                    (t.GetBuffCount("vaynesilvereddebuff") == 2 ? UtilityClass.Player.GetSpellDamage(t, SpellSlot.W) : 0) >= t.GetRealHealth()))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.E.Range)
+	                .Where(t => GetEDamage(t) + (t.GetBuffCount("vaynesilvereddebuff") == 2 ? GetWDamage(t) : 0) >= t.GetRealHealth(DamageType.Physical)))
                 {
                     SpellClass.E.CastOnUnit(target);
                     break;

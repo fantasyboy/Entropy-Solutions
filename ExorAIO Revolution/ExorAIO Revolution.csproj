@@ -79,6 +79,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIO\Champions\Kalista\Utilities\Damages.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Automatic.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Buildingclear.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Combo.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Harass.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Jungleclear.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Killsteal.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Laneclear.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Lasthit.cs" />
+    <Compile Include="AIO\Champions\Vayne\Modes\Weaving.cs" />
+    <Compile Include="AIO\Champions\Vayne\Utilities\Damages.cs" />
+    <Compile Include="AIO\Champions\Vayne\Utilities\Definitions.cs" />
+    <Compile Include="AIO\Champions\Vayne\Utilities\Drawings.cs" />
+    <Compile Include="AIO\Champions\Vayne\Utilities\Menus.cs" />
+    <Compile Include="AIO\Champions\Vayne\Utilities\Methods.cs" />
+    <Compile Include="AIO\Champions\Vayne\Utilities\Spells.cs" />
+    <Compile Include="AIO\Champions\Vayne\Vayne.cs" />
     <Compile Include="AIO\Utilities\Helpers\GameObjects.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

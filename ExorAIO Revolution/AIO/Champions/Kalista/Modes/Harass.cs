@@ -40,7 +40,7 @@ namespace AIO.Champions
                     var objAiBases = collisions as IList<AIBaseClient> ?? collisions.ToList();
                     if (objAiBases.Any())
                     {
-                        if (objAiBases.All(c => c.GetRealHealth() <= GetQDamage(c)))
+                        if (objAiBases.All(c => c.GetRealHealth(DamageType.Physical) <= GetQDamage(c)))
                         {
                             SpellClass.Q.Cast(bestTarget);
                         }
@@ -58,7 +58,7 @@ namespace AIO.Champions
 	        if (SpellClass.E.Ready &&
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
-		                                                        m.GetRealHealth() <= GetEDamage(m)) &&
+		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
 	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)

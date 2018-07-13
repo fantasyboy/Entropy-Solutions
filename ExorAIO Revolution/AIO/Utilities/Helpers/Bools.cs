@@ -50,15 +50,6 @@ namespace AIO.Utilities
         }
 
         /// <returns>
-        ///     true if a determined cell has a Wall flag, else, false.
-        /// </returns>
-        public static bool IsWall(this Vector3 pos, bool includeBuildings = false)
-        {
-            var point = NavGrid.WorldToCell(pos);
-            return point.IsWall() || includeBuildings && point.IsBuilding();
-        }
-
-        /// <returns>
         ///     true if an unit has a Sheen-Like buff; otherwise, false.
         /// </returns>
         public static bool HasSheenLikeBuff(this AIHeroClient unit)

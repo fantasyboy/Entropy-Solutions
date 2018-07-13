@@ -450,24 +450,26 @@ namespace AIO.Utilities
 	    /// </returns>
 	    public static float GetRealHealth(this AIBaseClient unit, DamageType type = DamageType.True)
 	    {
+		    var realHp = unit.HP + unit.AllShield;
+
 		    var hero = unit as AIHeroClient;
-		    if (hero == null)
+			if (hero == null)
 		    {
-			    return unit.TotalShieldHealth() + unit.AllShield;
+			    return realHp;
 		    }
 
-		    var shield = 0f;
-		    switch (type)
+			switch (type)
 		    {
 			    case DamageType.Magical:
-				    shield += hero.MagicalShield;
+				    realHp += hero.MagicalShield;
 				    break;
 			    case DamageType.Physical:
-				    shield += hero.PhysicalShield;
+				    realHp += hero.PhysicalShield;
 				    break;
+				case DamageType.Mixed:
+					realHp += hero.PhysicalShield + hero.MagicalShield;
+					break;
 		    }
-
-		    var total = unit.TotalShieldHealth() + unit.AllShield + shield;
 
 		    switch (hero.CharName)
 		    {
@@ -478,10 +480,10 @@ namespace AIO.Utilities
 				    {
 					    debuffer += hero.MP / 2;
 				    }
-				    return total + debuffer;
+				    return realHp + debuffer;
 		    }
 
-		    return total;
+		    return realHp;
 	    }
 
 

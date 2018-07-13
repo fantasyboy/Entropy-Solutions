@@ -1,4 +1,5 @@
 ﻿
+using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Extensions.Geometry;
 using SharpDX;
@@ -29,9 +30,9 @@ namespace AIO.Champions
                 var previousPath = paths[i];
                 var currentPath = paths[i + 1];
                 var direction = (currentPath - previousPath).Normalized();
-                var velocity = direction * unit.MoveSpeed;
+                var velocity = direction * unit.CharIntermediate.MoveSpeed;
 
-                delay = delay + Game.Ping / 1000f;
+                delay = delay + EnetClient.Ping / 1000f;
                 unitPosition = unit.Position + velocity * delay;
             }
 
@@ -47,8 +48,8 @@ namespace AIO.Champions
         /// <param name="amount">The amount.</param>
         public bool IsPerfectWallPosition(Vector3 point, AIHeroClient target, Vector3 startPos, float amount)
         {
-            return point.Extend(startPos, -amount).IsWall(true) &&
-                   point.Extend(startPos, -(amount + target.BoundingRadius)).IsWall(true);
+            return point.Extend(startPos, -amount).IsWall() &&
+                   point.Extend(startPos, -(amount + target.BoundingRadius)).IsWall();
         }
     }
 }

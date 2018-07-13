@@ -28,14 +28,14 @@ namespace AIO.Champions
                 MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
-                                                 .Where(t => GetQDamage(t) >= t.GetRealHealth()))
+                                                 .Where(t => GetQDamage(t) >= t.GetRealHealth(DamageType.Physical)))
                 {
                     var collisions = SpellClass.Q.GetPrediction(target).CollisionObjects
                         .Where(c => Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.Q.Range).Contains(c))
                         .ToList();
                     if (collisions.Any())
                     {
-                        if (collisions.All(c => c.GetRealHealth() <= GetQDamage(c)))
+                        if (collisions.All(c => c.GetRealHealth(DamageType.Physical) <= GetQDamage(c)))
                         {
                             SpellClass.Q.Cast(target);
                             break;
@@ -57,7 +57,7 @@ namespace AIO.Champions
 	        {
 		        if (ObjectCache.EnemyHeroes.Any(t =>
 			                                        IsPerfectRendTarget(t) &&
-			                                        t.GetRealHealth() < GetEDamage(t)))
+			                                        t.GetRealHealth(DamageType.Physical) < GetEDamage(t)))
 		        {
 			        SpellClass.E.Cast();
 		        }

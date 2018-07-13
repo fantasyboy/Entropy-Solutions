@@ -129,20 +129,30 @@ namespace AIO.Utilities
         /// </summary>
         public static Menu Gapcloser2 { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the first Sub-Anti-Gapcloser menu.
-        /// </summary>
-        public static Menu SubGapcloser { get; set; }
+	    /// <summary>
+	    ///     Gets or sets the first Interrupter menu.
+	    /// </summary>
+	    public static Menu Interrupter { get; set; }
+
+		/// <summary>
+		///     Gets or sets the first Sub-Anti-Gapcloser menu.
+		/// </summary>
+		public static Menu SubGapcloser { get; set; }
 
         /// <summary>
         ///     Gets or sets the second Sub-Anti-Gapcloser menu.
         /// </summary>
         public static Menu SubGapcloser2 { get; set; }
 
-        /// <summary>
-        ///     Gets or sets the pattern menu.
-        /// </summary>
-        public static Menu Pattern { get; set; }
+	    /// <summary>
+	    ///     Gets or sets the first Sub-Interrupter menu.
+	    /// </summary>
+	    public static Menu SubInterrupter { get; set; }
+
+		/// <summary>
+		///     Gets or sets the pattern menu.
+		/// </summary>
+		public static Menu Pattern { get; set; }
 
         /// <summary>
         ///     Gets or sets the Hydra menu.

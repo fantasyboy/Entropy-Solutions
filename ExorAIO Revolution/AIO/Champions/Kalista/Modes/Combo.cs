@@ -52,7 +52,7 @@ namespace AIO.Champions
                         .ToList();
                     if (collisions.Any())
                     {
-                        if (collisions.All(c => c.GetRealHealth() <= GetQDamage(c)))
+                        if (collisions.All(c => c.GetRealHealth(DamageType.Physical) <= GetQDamage(c)))
                         {
                             SpellClass.Q.Cast(bestTarget);
                         }
@@ -70,7 +70,7 @@ namespace AIO.Champions
 	        if (SpellClass.E.Ready &&
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
-		                                                        m.GetRealHealth() <= GetEDamage(m)) &&
+		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
 	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)

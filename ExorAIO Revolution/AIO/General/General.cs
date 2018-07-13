@@ -240,7 +240,7 @@ namespace AIO
                         var target = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
                         if (target != null)
                         {
-                            if (target.GetRealHealth() <=
+                            if (target.GetRealHealth(DamageType.Physical) <=
                                     UtilityClass.Player.GetAutoAttackDamage(target) *
                                     MenuClass.PreserveSpells[args.Slot.ToString().ToLower()].As<MenuSlider>().Value)
                             {

@@ -27,7 +27,7 @@ namespace AIO.Champions
             var jungleTarget = args.Target as AIMinionClient;
             if (jungleTarget == null ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget) ||
-                jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
+                jungleTarget.GetRealHealth(DamageType.Physical) < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
             {
                 return;
             }
@@ -48,16 +48,16 @@ namespace AIO.Champions
 
                 for (var i = 60; i < condemnPushDistance; i += 10)
                 {
-                    if (!targetPos.Extend(playerPos, -i).IsWall(true) ||
-                        !targetPos.Extend(playerPos, -i-60).IsWall(true))
+                    if (!targetPos.Extend(playerPos, -i).IsWall() ||
+                        !targetPos.Extend(playerPos, -i-60).IsWall())
                     {
                         continue;
                     }
 
                     if (MenuClass.Spells["e"]["emode"].As<MenuList>().Value == 0)
                     {
-                        if (!predPosition.Extend(playerPos, -i).IsWall(true) ||
-                            !predPosition.Extend(playerPos, -i-60).IsWall(true))
+                        if (!predPosition.Extend(playerPos, -i).IsWall() ||
+                            !predPosition.Extend(playerPos, -i-60).IsWall())
                         {
                             continue;
                         }

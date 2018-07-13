@@ -29,31 +29,31 @@ namespace AIO.Champions
 					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
                 MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                /*
-                var farmLocation = Extensions.GetAllGenericMinionsTargets().Where(m => m.GetRealHealth() < (float)UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q)).ToList();
+				/*
+                var farmLocation = Extensions.GetAllGenericMinionsTargets().Where(m => m.GetRealHealth(DamageType.Physical) < (float)UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q)).ToList();
                 if (SpellClass.Q.GetLineFarmLocation(farmLocation, SpellClass.Q.Width).MinionsHit >= 3)
                 {
                     SpellClass.Q.Cast(SpellClass.Q.GetLineFarmLocation(farmLocation, SpellClass.Q.Width).Position);
                 }
                 */
-            }
+			}
 
-	        /// <summary>
-	        ///     The E Laneclear Logics.
-	        /// </summary>
-	        if (SpellClass.E.Ready &&
+			/// <summary>
+			///     The E Laneclear Logics.
+			/// </summary>
+			if (SpellClass.E.Ready &&
 	            MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
 	        {
 		        if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Count(m =>
 			                                                                                   IsPerfectRendTarget(m) &&
-			                                                                                   m.GetRealHealth() <= GetEDamage(m)) >= MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Value)
+			                                                                                   m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) >= MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Value)
 		        {
 			        SpellClass.E.Cast();
 		        }
 
 		        else if (Extensions.GetEnemyPetsInRange(SpellClass.E.Range).Any(m =>
 			                                                                        IsPerfectRendTarget(m) &&
-			                                                                        m.GetRealHealth() <= GetEDamage(m)))
+			                                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
 		        {
 			        SpellClass.E.Cast();
 		        }

@@ -1,6 +1,7 @@
 ﻿
 using System.Linq;
 using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions;
@@ -28,7 +29,7 @@ namespace AIO.Champions
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
                 .MinBy(m => m.DistanceToPlayer());
             if (jungleTarget == null ||
-                jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
+                jungleTarget.GetRealHealth(DamageType.Physical) < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
             {
                 return;
             }
@@ -55,7 +56,7 @@ namespace AIO.Champions
 	        {
 		        foreach (var minion in Extensions.GetGenericJungleMinionsTargets().Where(m =>
 			                                                                                 IsPerfectRendTarget(m) &&
-			                                                                                 m.GetRealHealth() <= GetEDamage(m)))
+			                                                                                 m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
 		        {
 			        if (UtilityClass.JungleList.Contains(minion.CharName) &&
 			            MenuClass.Spells["e"]["whitelist"][minion.CharName].As<MenuBool>().Enabled)

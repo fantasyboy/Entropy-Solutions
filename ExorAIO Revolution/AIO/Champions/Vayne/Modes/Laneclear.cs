@@ -36,14 +36,12 @@ namespace AIO.Champions
                 MenuClass.Spells["q"]["farmhelper"].As<MenuSliderBool>().Enabled)
             {
                 var posAfterQ = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
-                if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Any(
-                    m =>
+                if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
+	                .Any(m =>
                         m.Distance(posAfterQ) < UtilityClass.Player.GetAutoAttackRange() &&
                         m != Orbwalker.GetOrbwalkingTarget() &&
                         posAfterQ.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange(m)) <= 2 &&
-                        m.GetRealHealth() <
-                            UtilityClass.Player.GetAutoAttackDamage(m) +
-                            UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q)))
+                        m.GetRealHealth(DamageType.Physical) < UtilityClass.Player.GetAutoAttackDamage(m) + GetQBonusDamage(m)))
                 {
                     SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
                 }
