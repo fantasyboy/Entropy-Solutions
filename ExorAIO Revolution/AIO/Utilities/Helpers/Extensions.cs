@@ -46,7 +46,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIBaseClient> GetAllGenericUnitTargetsInRange(float range)
         {
-            return GameObjects.EnemyHeroes.Where(h => h.IsValidTarget(range)).Concat<AIBaseClient>(GetAllGenericMinionsTargetsInRange(range)).ToList();
+            return ObjectCache.EnemyHeroes.Where(h => h.IsValidTarget(range)).Concat<AIBaseClient>(GetAllGenericMinionsTargetsInRange(range)).ToList();
         }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIHeroClient> GetAllyHeroesTargetsInRange(float range)
         {
-            return GameObjects.AllyHeroes.Where(h => h.DistanceToPlayer() < range).ToList();
+            return ObjectCache.AllyHeroes.Where(h => h.DistanceToPlayer() < range).ToList();
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIMinionClient> GetAllyLaneMinionsTargetsInRange(float range)
         {
-            return GameObjects.AllyMinions.Where(m => m.DistanceToPlayer() < range).ToList();
+            return ObjectCache.AllyMinions.Where(m => m.DistanceToPlayer() < range).ToList();
         }
 
         /// <summary>
@@ -164,7 +164,7 @@ namespace AIO.Utilities
                 return tsTarget;
             }
 
-            var lastTarget = GameObjects.EnemyHeroes.FirstOrDefault(t => t.IsValidTarget(range) && !t.IsZombie() && !Invulnerable.Check(t));
+            var lastTarget = ObjectCache.EnemyHeroes.FirstOrDefault(t => t.IsValidTarget(range) && !t.IsZombie() && !Invulnerable.Check(t));
             if (lastTarget != null)
             {
                 return lastTarget;
@@ -210,8 +210,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static AIHeroClient GetBestSortedTarget(
             DamageType damageType = DamageType.True,
-            bool ignoreShields = false,
-            bool includeBoundingRadius = false)
+            bool ignoreShields = false)
         {
             var target = TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes)
                 .FirstOrDefault(t =>
@@ -251,7 +250,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIHeroClient> GetEnemyHeroesTargetsInRange(float range)
         {
-            return GameObjects.EnemyHeroes.Where(h => h.IsValidTarget(range)).ToList();
+            return ObjectCache.EnemyHeroes.Where(h => h.IsValidTarget(range)).ToList();
         }
 
         /// <summary>
@@ -267,7 +266,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIMinionClient> GetEnemyLaneMinionsTargetsInRange(float range)
         {
-            return GameObjects.EnemyMinions.Where(m => m.IsValidSpellTarget(range) && m.CharName.Contains("Minion") && !m.CharName.Contains("Odin")).ToList();
+            return ObjectCache.EnemyMinions.Where(m => m.IsValidSpellTarget(range) && m.CharName.Contains("Minion") && !m.CharName.Contains("Odin")).ToList();
         }
 
         /// <summary>

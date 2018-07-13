@@ -2,6 +2,7 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -54,7 +55,7 @@ namespace AIO.Champions
 	        if (SpellClass.E.Ready &&
 	            MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
 	        {
-		        if (GameObjects.EnemyHeroes.Any(t =>
+		        if (ObjectCache.EnemyHeroes.Any(t =>
 			                                        IsPerfectRendTarget(t) &&
 			                                        t.GetRealHealth() < GetEDamage(t)))
 		        {

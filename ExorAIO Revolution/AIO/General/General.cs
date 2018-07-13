@@ -2,6 +2,7 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
@@ -115,7 +116,7 @@ namespace AIO
                     if (Extensions.GetEnemyLaneMinionsTargets().Contains(args.Target) &&
                         MenuClass.General["supportmode"].As<MenuBool>().Enabled)
                     {
-                        args.Cancel = GameObjects.AllyHeroes.Any(a => !a.IsMe() && a.DistanceToPlayer() < 2500);
+                        args.Cancel = ObjectCache.AllyHeroes.Any(a => !a.IsMe() && a.DistanceToPlayer() < 2500);
                     }
                     break;
             }
@@ -125,7 +126,7 @@ namespace AIO
                 return;
             }
 
-            var stormrazorSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.IsValid /*&& s.ItemID == ItemID.Stormrazor*/); //Todo: find stormrazor ItemID
+            var stormrazorSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => s.IsValid && s.ItemID == (uint)ItemID.Stormrazor);
             if (stormrazorSlot != null)
             {
                 switch (Orbwalker.Mode)
@@ -156,12 +157,12 @@ namespace AIO
                         break;
                 }
 
-                if (!UtilityClass.Player.HasBuff("stormrazorbuff")) // TODO: find the real buffname.
+                if (!UtilityClass.Player.HasBuff("windbladebuff"))
                 {
                     args.Cancel = true;
                 }
             }
-        }
+		}
 
 		/// <summary>
 		///     Fired on spell cast.

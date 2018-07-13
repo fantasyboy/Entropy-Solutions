@@ -26,11 +26,6 @@ namespace AIO
             MenuClass.Root = new Menu(UtilityClass.Player.CharName.ToLower(), "ExorAIO: " + UtilityClass.Player.CharName, true);
             {
                 /// <summary>
-                ///     Loads the Orbwalker menu.
-                /// </summary>
-                Orbwalker.Attach(MenuClass.Root);
-
-                /// <summary>
                 ///     Loads the general menu.
                 /// </summary>
                 MenuClass.General = new Menu("generalmenu", "General Menu");
@@ -66,11 +61,12 @@ namespace AIO
                         MenuClass.Stormrazor.Add(new MenuBool("mixed", "Harass"));
                         MenuClass.Stormrazor.Add(new MenuBool("lasthit", "Lasthit"));
                     }
+	                MenuClass.General.Add(MenuClass.Stormrazor);
 
-                    /// <summary>
-                    ///     Loads the preserve mana menu.
-                    /// </summary>
-                    MenuClass.PreserveMana = new Menu("preservemanamenu", "Preserve Mana Menu");
+					/// <summary>
+					///     Loads the preserve mana menu.
+					/// </summary>
+					MenuClass.PreserveMana = new Menu("preservemanamenu", "Preserve Mana Menu");
                     {
                         var championSpellManaCosts = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName).Value;
                         if (championSpellManaCosts != null)
@@ -105,7 +101,12 @@ namespace AIO
                 MenuClass.Root.Add(MenuClass.General);
             }
             MenuClass.Root.Attach();
-        }
+
+	        /// <summary>
+	        ///     Loads the Orbwalker menu.
+	        /// </summary>
+	        Orbwalker.Attach(MenuClass.Root);
+		}
 
         #endregion
     }

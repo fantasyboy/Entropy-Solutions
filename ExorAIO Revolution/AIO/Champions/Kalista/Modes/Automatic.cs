@@ -26,14 +26,6 @@ namespace AIO.Champions
         /// </summary>
         public void Automatic()
         {
-            var passiveObject = ObjectCache.AllGameObjects.FirstOrDefault(o => o.IsValid && o.Name == "Kalista_Base_P_LinkIcon.troy");
-            if (passiveObject != null)
-            {
-                SoulBound = GameObjects.AllyHeroes
-                    .Where(a => !a.IsMe())
-                    .MinBy(o => o.Distance(passiveObject));
-            }
-
             if (UtilityClass.Player.IsRecalling())
             {
                 return;
@@ -42,7 +34,7 @@ namespace AIO.Champions
 	        /// <summary>
 	        ///     The Automatic E Logics.
 	        /// </summary>
-	        if (SpellClass.E.Ready                                                &&
+	        if (SpellClass.E.Ready &&
 	            MenuClass.Spells["e"]["beforedeath"].As<MenuSliderBool>().Enabled &&
 	            LocalPlayer.Instance.HPPercent() <= MenuClass.Spells["e"]["beforedeath"].As<MenuSliderBool>().Value)
 	        {
@@ -66,24 +58,27 @@ namespace AIO.Champions
                     SpellClass.R.Cast();
                 }
 
-                var option = RLogics.FirstOrDefault(k => k.Key == SoulBound.CharName).Value;
-                if (option != null)
-                {
-                    var buffName = option.Item1;
-                    var menuOption = option.Item2;
+	            /// <summary>
+	            ///     The Offensive R Logics.
+	            /// </summary>
+				if (RLogics.ContainsKey(SoulBound.CharName))
+	            {
+		            var option = RLogics.FirstOrDefault(k => k.Key == SoulBound.CharName).Value;
+		            var buffName   = option.Item1;
+		            var menuOption = option.Item2;
 
-                    /// <summary>
-                    ///     The Offensive R Logics.
-                    /// </summary>
-                    if (RLogics.ContainsKey(SoulBound.CharName) &&
-                        GameObjects.EnemyHeroes.Any(t =>
-                            t.HasBuff(buffName) &&
-                            MenuClass.Spells["r"][menuOption].As<MenuBool>().Enabled &&
-                            t.Distance(UtilityClass.Player.Position) > UtilityClass.Player.GetAutoAttackRange(t)))
-                    {
-                        SpellClass.R.Cast();
-                    }
-                }
+		            var target = ObjectCache.EnemyHeroes.FirstOrDefault(t => t.HasBuff(buffName));
+		            if (target != null &&
+		                MenuClass.Spells["r"][menuOption].As<MenuBool>().Enabled)
+		            {
+			            var buff = target.GetBuff(buffName);
+			            if (buff.Caster == SoulBound &&
+			                target.Distance(UtilityClass.Player.Position) > UtilityClass.Player.GetAutoAttackRange(target))
+			            {
+				            SpellClass.R.Cast();
+			            }
+		            }
+				}
             }
 
             /// <summary>
@@ -99,7 +94,7 @@ namespace AIO.Champions
             {
                 foreach (var loc in Locations.Where(l =>
                     UtilityClass.Player.Distance(l) <= SpellClass.W.Range &&
-                    !ObjectCache.AllMinions.Any(m => m.Distance(l) <= 1000f && m.CharName.Equals("KalistaSpawn"))))
+                    !ObjectCache.AllMinions.Any(m => m.Distance(l) <= 1000f && m.ModelName.Equals("KalistaSpawn"))))
                 {
                     SpellClass.W.Cast(loc);
                 }

@@ -2,11 +2,15 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
+using Entropy.ToolKit;
 
 #pragma warning disable 1587
 
@@ -40,14 +44,32 @@ namespace AIO.Champions
             Methods();
         }
 
-        #endregion
+		#endregion
 
-        #region Public Methods and Operators
+		#region Public Methods and Operators
+
+		/// <summary>
+		///     Called on processing spellcast operations.
+		/// </summary>
+		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
+		{
+			var soulbound = args.Target as AIHeroClient;
+			if (soulbound != null)
+			{
+				//Logging.Log($"SpellData.Name: {args.SpellData.Name}, ARGS.tARGET: {args.Target.CharName}");
+				if (args.Caster.IsMe()                         &&
+				    ObjectCache.AllyHeroes.Contains(soulbound) &&
+				    args.SpellData.Name == "KalistaPSpellCast")
+				{
+					SoulBound = soulbound;
+				}
+			}
+		}
 
         /// <summary>
         ///     Called on pre attack.
         /// </summary>
-        /// <param name="sender">The object.</param>
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
         public void OnPreAttack(OnPreAttackEventArgs args)
         {

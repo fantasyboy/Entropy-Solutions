@@ -32,7 +32,7 @@ namespace AIO.Champions
                 .OrderBy(s => s.GetBuffCount("kalistaexpungemarker"))
                 .MinBy(o => o.HP);
             if (minion != null &&
-                !GameObjects.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)+100f)) &&
+                !ObjectCache.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)+100f)) &&
                 MenuClass.Miscellaneous["minionsorbwalk"].As<MenuBool>().Enabled)
             {
                 Orbwalker.Attack(minion);
@@ -73,7 +73,7 @@ namespace AIO.Champions
 		                                                        m.GetRealHealth() <= GetEDamage(m)) &&
 	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
 	        {
-		        if (GameObjects.EnemyHeroes.Where(IsPerfectRendTarget)
+		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)
 		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
 		        {
 			        SpellClass.E.Cast();

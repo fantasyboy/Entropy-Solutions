@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 
@@ -60,7 +61,7 @@ namespace AIO.Champions
 		                                                        m.GetRealHealth() <= GetEDamage(m)) &&
 	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
 	        {
-		        if (GameObjects.EnemyHeroes.Where(IsPerfectRendTarget)
+		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)
 		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
 		        {
 			        SpellClass.E.Cast();

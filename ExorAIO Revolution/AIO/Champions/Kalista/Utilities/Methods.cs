@@ -19,7 +19,7 @@ namespace AIO.Champions
             Orbwalker.OnPreAttack += OnPreAttack;
 	        Renderer.OnRender   += OnRender;
 	        Renderer.OnEndScene += OnEndScene;
-
+			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
 		}
 
 		#endregion

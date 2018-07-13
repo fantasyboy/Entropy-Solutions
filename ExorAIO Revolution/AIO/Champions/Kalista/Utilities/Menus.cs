@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
 
@@ -47,14 +48,14 @@ namespace AIO.Champions
                     }
                     MenuClass.Q.Add(MenuClass.Q2);
 
-                    if (GameObjects.EnemyHeroes.Any())
+                    if (ObjectCache.EnemyHeroes.Any())
                     {
                         /// <summary>
                         ///     Sets the menu for the Q Harass Whitelist.
                         /// </summary>
                         MenuClass.WhiteList = new Menu("whitelist", "Harass: Whitelist");
                         {
-                            foreach (var target in GameObjects.EnemyHeroes)
+                            foreach (var target in ObjectCache.EnemyHeroes)
                             {
                                 MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                             }
@@ -95,7 +96,7 @@ namespace AIO.Champions
                     MenuClass.E.Add(MenuClass.WhiteList2);
 
                     MenuClass.E.Add(new MenuBool("killsteal", "KillSteal"));
-                    MenuClass.E.Add(new MenuBool("ondeath", "Before death"));
+                    MenuClass.E.Add(new MenuSliderBool("beforedeath", "Before death", true, 10, 1, 15));
                     MenuClass.E.Add(new MenuSeperator("separator"));
                     MenuClass.E.Add(new MenuBool("harass", "Harass with minions"));
                     MenuClass.E.Add(new MenuBool("dontharassslowed", "^ Don't Harass already slowed enemies"));
@@ -116,7 +117,7 @@ namespace AIO.Champions
                 {
                     foreach (var element in RLogics)
                     {
-                        if (GameObjects.AllyHeroes.Any(a => a.CharName == element.Key))
+                        if (ObjectCache.AllyHeroes.Any(a => a.CharName == element.Key))
                         {
                             MenuClass.R.Add(new MenuBool(element.Value.Item2, $"Use {element.Value.Item2}"));
                         }

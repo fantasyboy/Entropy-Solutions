@@ -224,8 +224,8 @@ namespace AIO.Utilities
         public static bool ShouldShieldAgainstSender(AIBaseClient sender)
         {
             return
-                GameObjects.EnemyHeroes.Contains(sender) ||
-                GameObjects.EnemyTurrets.Contains(sender) ||
+                ObjectCache.EnemyHeroes.Contains(sender) ||
+                ObjectCache.EnemyTurrets.Contains(sender) ||
                 Extensions.GetGenericJungleMinionsTargets().Contains(sender);
         }
 

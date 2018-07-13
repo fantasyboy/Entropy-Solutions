@@ -24,7 +24,7 @@ namespace AIO.Champions
         /// </summary>
         public void JungleClear()
         {
-            var jungleTarget = ObjectCache.JungleMinions
+            var jungleTarget = ObjectCache.EnemyMinions
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
                 .MinBy(m => m.DistanceToPlayer());
             if (jungleTarget == null ||
