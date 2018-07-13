@@ -5,7 +5,7 @@ using AIO.Utilities;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
-using SharpDX;
+using Entropy.SDK.Extensions.Objects;
 using Color = SharpDX.Color;
 
 #pragma warning disable 1587
@@ -81,17 +81,17 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 				MenuClass.Drawings["edmg"].As<MenuBool>().Enabled)
 			{
-				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(SpellClass.E.Range) && t.IsVisibleOnScreen))
+				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(SpellClass.E.Range)))
 				{
 					DamageIndicatorRendering.Render(hero, GetEDamage(hero));
 				}
 
-				foreach (var mob in ObjectCache.JungleMinions.Where(t => t.IsValidTarget(SpellClass.E.Range) && t.IsVisibleOnScreen))
+				foreach (var jungleMob in ObjectCache.JungleMinions.Where(t => t.IsValidTarget(SpellClass.E.Range) && t.IsJungleMinion()))
 				{
-					DamageIndicatorRendering.Render(mob, GetEDamage(mob));
+					DamageIndicatorRendering.Render(jungleMob, GetEDamage(jungleMob));
 				}
 
-				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTarget(SpellClass.E.Range) && t.IsVisibleOnScreen))
+				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTarget(SpellClass.E.Range)))
 				{
 					DamageIndicatorRendering.Render(mob, GetEDamage(mob));
 				}
