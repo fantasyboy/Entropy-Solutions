@@ -1,6 +1,6 @@
-﻿using Aimtec.SDK.Menu;
+﻿using Entropy.SDK.UI;
 
-namespace NabbTracker
+namespace NabbTracker.Utilities
 {
     /// <summary>
     ///     The Utility class.

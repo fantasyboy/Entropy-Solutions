@@ -1,10 +1,14 @@
 using System;
-using System.Drawing;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Menu.Components;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Rendering;
+using Entropy.SDK.UI.Components;
+using NabbTracker.Utilities;
+using SharpDX;
+using Color = SharpDX.Color;
 
-namespace NabbTracker
+namespace NabbTracker.Trackers
 {
     /// <summary>
     ///     The drawings class.
@@ -18,7 +22,7 @@ namespace NabbTracker
         /// </summary>
         public static void Initialize()
         {
-            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h =>
+            foreach (var hero in ObjectCache.AllHeroes.Where(h =>
                 !h.IsDead &&
                 h.IsVisible &&
                 Math.Abs(h.InfoBarPosition.X) > 0))
@@ -50,25 +54,25 @@ namespace NabbTracker
                 var xOffset = (int)hero.InfoBarPosition.X + UtilityClass.ExpXAdjustment(hero);
                 var yOffset = (int)hero.InfoBarPosition.Y + UtilityClass.ExpYAdjustment(hero);
 
-                var actualExp = hero.Exp;
-                if (hero.Level > 1)
+                var actualExp = hero.HeroExperience.Exp;
+                if (hero.Level() > 1)
                 {
-                    actualExp -= (280 + 80 + 100 * hero.Level) / 2 * (hero.Level - 1);
+                    actualExp -= (280 + 80 + 100 * hero.Level()) / 2 * (hero.Level() - 1);
                 }
 
                 var levelLimit = hero.HasBuff("AwesomeBuff") ? 30 : 18;
-                if (hero.Level < levelLimit)
+                if (hero.Level() < levelLimit)
                 {
-                    Render.Line(xOffset - 76, yOffset + 20, xOffset + 56, yOffset + 20, 7, true, Colors.GetRealColor(Color.Purple));
+                    LineRendering.Render(Colors.GetRealColor(Color.Purple), 7, new Vector2(xOffset - 76, yOffset + 20), new Vector2(xOffset + 56, yOffset + 20));
 
-                    var neededExp = 180 + 100 * hero.Level;
+                    var neededExp = 180 + 100 * hero.Level();
                     var expPercent = (int)(actualExp / neededExp * 100);
                     if (expPercent > 0)
                     {
-                        Render.Line(xOffset - 76, yOffset + 20, xOffset - 76 + (float)(1.32 * expPercent), yOffset + 20, 7, true, Colors.GetRealColor(Color.Red));
+	                    LineRendering.Render(Colors.GetRealColor(Color.Red), 7, new Vector2(xOffset - 76, yOffset + 20), new Vector2(xOffset - 76 + (float)(1.32 * expPercent), yOffset + 20));
                     }
 
-                    TextRendering.Render(expPercent > 0 ? expPercent + "%" : "0%", new Vector2(xOffset - 13, yOffset + 17), RenderTextFlags.None, Colors.GetRealColor(Color.Yellow));
+                    TextRendering.Render(expPercent > 0 ? expPercent + "%" : "0%", Colors.GetRealColor(Color.Yellow), new Vector2(xOffset - 13, yOffset + 17));
                 }
             }
         }

@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NabbTracker</RootNamespace>
     <AssemblyName>NabbTracker Revolution</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PreBuildEvent />
     <PostBuildEvent />
@@ -36,13 +36,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Aimtec, Version=1.0.6396.31692, Culture=neutral, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Enrico\AppData\Local\AimtecLoader\Data\System\Aimtec.dll</HintPath>
+    <Reference Include="Entropy">
+      <HintPath>D:\Entropy\System\Entropy.dll</HintPath>
     </Reference>
-    <Reference Include="Aimtec.SDK, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Users\Enrico\AppData\Local\AimtecLoader\Data\System\Aimtec.SDK.dll</HintPath>
+    <Reference Include="Entropy.SDK">
+      <HintPath>..\..\Entropy.SDK\Build\Debug\Entropy.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Entropy.ToolKit">
+      <HintPath>D:\Entropy\System\Entropy.ToolKit.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>D:\Entropy\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>D:\Entropy\System\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics">
+      <HintPath>D:\Entropy\System\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.XInput">
+      <HintPath>D:\Entropy\System\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

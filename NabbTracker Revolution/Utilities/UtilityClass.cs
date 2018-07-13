@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Drawing;
-using Aimtec;
+using Entropy;
+using Entropy.SDK.Extensions.Objects;
+using Color = SharpDX.Color;
 
-namespace NabbTracker
+namespace NabbTracker.Utilities
 {
     /// <summary>
     ///     The Utility class.
@@ -19,7 +20,7 @@ namespace NabbTracker
         /// <summary>
         ///     Gets the Player.
         /// </summary>
-        public static AIHeroClient Player = ObjectManager.GetLocalPlayer();
+        public static AIHeroClient Player = LocalPlayer.Instance;
 
         /// <summary>
         ///     Gets the spellslots.
@@ -51,20 +52,17 @@ namespace NabbTracker
         public static string GetUnitSpellCooldown(AIHeroClient unit, int spell)
         {
             var unitSpell = unit.Spellbook.GetSpell(SpellSlots[spell]);
-            var cooldownRemaining = unitSpell.CooldownEnd - Game.ClockTime;
+	        var unitSpellState = unit.Spellbook.GetSpellState(SpellSlots[spell]);
+			var cooldownRemaining = unitSpell.CooldownExpires - Game.ClockTime;
             if (cooldownRemaining > 0)
             {
                 return ((int)cooldownRemaining).ToString();
             }
 
-            if (unitSpell.State.HasFlag(SpellState.Disabled) ||
-                unit.IsMe() && unitSpell.State.HasFlag(SpellState.Surpressed))
+            if (unitSpellState.HasFlag(SpellState.Disabled) ||
+                unit.IsMe() && unitSpellState.HasFlag(SpellState.Surpressed))
             {
                 return "X";
-            }
-            if (unitSpell.State.HasFlag(SpellState.Unknown))
-            {
-                return "?";
             }
 
             return SpellSlots[spell].ToString();
@@ -76,7 +74,7 @@ namespace NabbTracker
         public static Color GetUnitSpellStateColor(AIHeroClient unit, int spell)
         {
             var unitSpell = unit.Spellbook.GetSpell(SpellSlots[spell]);
-            var unitSpellState = unitSpell.State;
+            var unitSpellState = unit.Spellbook.GetSpellState(SpellSlots[spell]);
             if (unitSpellState.HasFlag(SpellState.NotLearned))
             {
                 return Color.Gray;
@@ -95,7 +93,7 @@ namespace NabbTracker
 
             if (unitSpellState.HasFlag(SpellState.Cooldown))
             {
-                var unitSpellCooldown = unitSpell.CooldownEnd - Game.ClockTime;
+                var unitSpellCooldown = unitSpell.CooldownExpires - Game.ClockTime;
                 return unitSpellCooldown <= 5 ? Color.Red : Color.Yellow;
             }
 
@@ -112,7 +110,7 @@ namespace NabbTracker
         /// </summary>
         public static string GetUnitSummonerSpellCooldown(AIHeroClient unit, int summonerSpell)
         {
-            var cooldownRemaining = unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]).CooldownEnd - Game.ClockTime;
+            var cooldownRemaining = unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]).CooldownExpires - Game.ClockTime;
             return cooldownRemaining > 0 ? ((int)cooldownRemaining).ToString() : "READY";
         }
 
@@ -121,7 +119,7 @@ namespace NabbTracker
         /// </summary>
         public static string GetUnitSummonerSpellFixedName(AIHeroClient unit, int summonerSpell)
         {
-            switch (unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]).Name.ToLower())
+            switch (unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]).SpellData.Name.ToLower())
             {
                 case "summonerflash":        return "Flash";
                 case "summonerdot":          return "Ignite";
@@ -144,7 +142,7 @@ namespace NabbTracker
         public static Color GetUnitSummonerSpellStateColor(AIHeroClient unit, int summonerSpell)
         {
             var unitSummonerSpell = unit.Spellbook.GetSpell(SummonerSpellSlots[summonerSpell]);
-            var unitSummonerSpellState = unitSummonerSpell.State;
+            var unitSummonerSpellState = unit.Spellbook.GetSpellState(SummonerSpellSlots[summonerSpell]);
             if (unitSummonerSpellState.HasFlag(SpellState.Disabled) ||
                 unit.IsMe() && unitSummonerSpellState.HasFlag(SpellState.Surpressed))
             {
@@ -153,7 +151,7 @@ namespace NabbTracker
 
             if (unitSummonerSpellState.HasFlag(SpellState.Cooldown))
             {
-                var unitSpellCooldown = unitSummonerSpell.CooldownEnd - Game.ClockTime;
+                var unitSpellCooldown = unitSummonerSpell.CooldownExpires - Game.ClockTime;
                 return unitSpellCooldown <= 5 ? Color.Red : Color.Yellow;
             }
 

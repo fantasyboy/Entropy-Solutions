@@ -1,10 +1,14 @@
 using System;
-using System.Drawing;
 using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Menu.Components;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Rendering;
+using Entropy.SDK.UI.Components;
+using NabbTracker.Utilities;
+using SharpDX;
+using Color = SharpDX.Color;
 
-namespace NabbTracker
+namespace NabbTracker.Trackers
 {
     /// <summary>
     ///     The drawings class.
@@ -18,7 +22,7 @@ namespace NabbTracker
         /// </summary>
         public static void Initialize()
         {
-            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h =>
+            foreach (var hero in ObjectCache.AllHeroes.Where(h =>
                 !h.IsDead &&
                 h.IsVisible &&
                 Math.Abs(h.InfoBarPosition.X) > 0))
@@ -54,14 +58,14 @@ namespace NabbTracker
                     var spellColor = UtilityClass.GetUnitSpellStateColor(hero, spell);
                     var spellCooldown = UtilityClass.GetUnitSpellCooldown(hero, spell);
 
-                    TextRendering.Render(spellCooldown, new Vector2(xSpellOffset, ySpellOffset), RenderTextFlags.None, Colors.GetRealColor(spellColor));
+                    TextRendering.Render(spellCooldown, Colors.GetRealColor(spellColor), new Vector2(xSpellOffset, ySpellOffset));
 
                     for (var level = 0; level <= hero.Spellbook.GetSpell(UtilityClass.SpellSlots[spell]).Level - 1; level++)
                     {
                         var xLevelOffset = xSpellOffset + level * 3 - 4;
                         var yLevelOffset = ySpellOffset + 4;
 
-                        TextRendering.Render(".", new Vector2(xLevelOffset, yLevelOffset), RenderTextFlags.None, Color.White);
+                        TextRendering.Render(".", Color.White, new Vector2(xLevelOffset, yLevelOffset));
                     }
                 }
 
@@ -72,7 +76,7 @@ namespace NabbTracker
                     var summonerSpellColor = UtilityClass.GetUnitSummonerSpellStateColor(hero, summonerSpell);
                     var summonerSpellCooldown = UtilityClass.GetUnitSummonerSpellFixedName(hero, summonerSpell) + ": " + UtilityClass.GetUnitSummonerSpellCooldown(hero, summonerSpell);
 
-                    TextRendering.Render(summonerSpellCooldown, new Vector2(xSummonerSpellOffset, ySummonerSpellOffset), RenderTextFlags.None, Colors.GetRealColor(summonerSpellColor));
+                    TextRendering.Render(summonerSpellCooldown, Colors.GetRealColor(summonerSpellColor), new Vector2(xSummonerSpellOffset, ySummonerSpellOffset));
                 }
             }
         }

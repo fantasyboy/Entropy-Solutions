@@ -1,9 +1,13 @@
-﻿using System.Drawing;
-using System.Linq;
-using Aimtec;
-using Aimtec.SDK.Menu.Components;
+﻿using System.Linq;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Rendering;
+using Entropy.SDK.UI.Components;
+using NabbTracker.Utilities;
+using Color = SharpDX.Color;
 
-namespace NabbTracker
+namespace NabbTracker.Trackers
 {
     /// <summary>
     ///     The drawings class.
@@ -17,7 +21,7 @@ namespace NabbTracker
         /// </summary>
         public static void Initialize()
         {
-            foreach (var hero in ObjectManager.Get<AIHeroClient>().Where(h =>
+            foreach (var hero in ObjectCache.AllHeroes.Where(h =>
                 !h.IsMe() &&
                 !h.IsDead &&
                 h.IsVisible))
@@ -34,10 +38,10 @@ namespace NabbTracker
                     continue;
                 }
 
-                var attackRange = hero.AttackRange+hero.BoundingRadius;
-                Render.Circle(hero.Position, attackRange, 30, UtilityClass.Player.Distance(hero) < attackRange
-                    ? Colors.GetRealColor(Color.Red)
-                    : Colors.GetRealColor(Color.Yellow));
+                var attackRange = hero.GetAutoAttackRange()+hero.BoundingRadius;
+                CircleRendering.Render(UtilityClass.Player.Distance(hero) < attackRange
+		            ? Colors.GetRealColor(Color.Red)
+		            : Colors.GetRealColor(Color.Yellow), attackRange, hero);
             }
         }
 

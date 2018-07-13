@@ -1,9 +1,10 @@
-﻿using Aimtec.SDK.Menu;
-using Aimtec.SDK.Menu.Components;
+﻿
+using Entropy.SDK.UI;
+using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
-namespace NabbTracker
+namespace NabbTracker.Utilities
 {
     /// <summary>
     ///     The menu class.
@@ -77,7 +78,7 @@ namespace NabbTracker
                     MenuClass.ColorblindMenu = new Menu("colorblind", "Colorblind Menu");
                     {
                         MenuClass.ColorblindMenu.Add(new MenuSeperator("separator", "Select your colorblind mode:"));
-                        MenuClass.ColorblindMenu.Add(new MenuList("mode", "Mode:", new[] { "Normal", "Deuteranopia", "Protanopia", "Tritanopia", "Achromatopsia" }, 0));
+                        MenuClass.ColorblindMenu.Add(new MenuList("mode", "Mode:", new[] { "Normal", "Deuteranopia", "Protanopia", "Tritanopia", "Achromatopsia" }));
                     }
                     MenuClass.Miscellaneous.Add(MenuClass.ColorblindMenu);
                 }
