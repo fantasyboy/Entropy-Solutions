@@ -25,7 +25,33 @@ namespace AIO.Champions
         /// </summary>
         public void JungleClear()
         {
-            var jungleTarget = ObjectCache.EnemyMinions
+	        /// <summary>
+	        ///     The E Jungleclear Logic.
+	        /// </summary>
+	        if (SpellClass.E.Ready &&
+	            UtilityClass.Player.Level() >=
+					MenuClass.Spells["e"]["junglesteal"].As<MenuSliderBool>().Value &&
+	            MenuClass.Spells["e"]["junglesteal"].As<MenuSliderBool>().Enabled)
+	        {
+		        foreach (var minion in Extensions.GetGenericJungleMinionsTargets()
+			        .Where(m =>
+						IsPerfectRendTarget(m) &&
+						m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
+		        {
+			        if (UtilityClass.JungleList.Contains(minion.CharName) &&
+			            MenuClass.Spells["e"]["whitelist"][minion.CharName].As<MenuBool>().Enabled)
+			        {
+				        SpellClass.E.Cast();
+			        }
+			        else if (!UtilityClass.JungleList.Contains(minion.CharName) &&
+			                 MenuClass.General["junglesmall"].As<MenuBool>().Enabled)
+			        {
+				        SpellClass.E.Cast();
+			        }
+		        }
+	        }
+
+			var jungleTarget = ObjectCache.EnemyMinions
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
                 .MinBy(m => m.DistanceToPlayer());
             if (jungleTarget == null ||
@@ -45,31 +71,6 @@ namespace AIO.Champions
             {
                 SpellClass.Q.Cast(jungleTarget);
             }
-
-	        /// <summary>
-	        ///     The E Jungleclear Logic.
-	        /// </summary>
-	        if (SpellClass.E.Ready &&
-	            UtilityClass.Player.Level() >=
-	            MenuClass.Spells["e"]["junglesteal"].As<MenuSliderBool>().Value &&
-	            MenuClass.Spells["e"]["junglesteal"].As<MenuSliderBool>().Enabled)
-	        {
-		        foreach (var minion in Extensions.GetGenericJungleMinionsTargets().Where(m =>
-			                                                                                 IsPerfectRendTarget(m) &&
-			                                                                                 m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
-		        {
-			        if (UtilityClass.JungleList.Contains(minion.CharName) &&
-			            MenuClass.Spells["e"]["whitelist"][minion.CharName].As<MenuBool>().Enabled)
-			        {
-				        SpellClass.E.Cast();
-			        }
-			        else if (!UtilityClass.JungleList.Contains(minion.CharName) &&
-			                 MenuClass.General["junglesmall"].As<MenuBool>().Enabled)
-			        {
-				        SpellClass.E.Cast();
-			        }
-		        }
-	        }
 		}
 
         #endregion

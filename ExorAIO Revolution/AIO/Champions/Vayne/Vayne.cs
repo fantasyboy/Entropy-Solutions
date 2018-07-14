@@ -253,7 +253,7 @@ namespace AIO.Champions
                     case Gapcloser.Type.Targeted:
                         if (args.Target.IsMe())
                         {
-                            Vector3 targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
+                            Vector3 targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.Q.Range);
                             if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
@@ -263,13 +263,13 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        Vector3 targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.Q.Range+UtilityClass.Player.GetAutoAttackRange());
+                        Vector3 targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.Q.Range);
                         if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
 
-                        if (args.EndPosition.Distance((Vector2)UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
+                        if (args.EndPosition.DistanceToPlayer() <= UtilityClass.Player.GetAutoAttackRange())
                         {
                             SpellClass.Q.Cast(targetPos2);
                         }

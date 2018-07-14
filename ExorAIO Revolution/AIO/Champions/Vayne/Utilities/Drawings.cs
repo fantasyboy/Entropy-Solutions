@@ -3,6 +3,7 @@ using System.Linq;
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Caching;
+using Entropy.SDK.Damage;
 using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 using Entropy.SDK.Extensions.Objects;
@@ -50,19 +51,19 @@ namespace AIO.Champions
 		    /// </summary>
 		    if (MenuClass.Drawings["wdmg"].As<MenuBool>().Enabled)
 		    {
-			    foreach (var hero in ObjectCache.EnemyHeroes)
+			    foreach (var hero in ObjectCache.EnemyHeroes.Where(h => h.GetBuffCount("vaynesilvereddebuff") == 2))
 			    {
-				    DamageIndicatorRendering.Render(hero, GetWDamage(hero));
+				    DamageIndicatorRendering.Render(hero, UtilityClass.Player.GetAutoAttackDamage(hero));
 			    }
 
-			    foreach (var jungleMob in ObjectCache.JungleMinions.Where(t => t.IsJungleMinion()))
+			    foreach (var jungleMob in ObjectCache.JungleMinions.Where(t => t.IsJungleMinion() && t.GetBuffCount("vaynesilvereddebuff") == 2))
 			    {
-					DamageIndicatorRendering.Render(jungleMob, GetWDamage(jungleMob));
+					DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 				}
 
-			    foreach (var mob in ObjectCache.EnemyLaneMinions)
+			    foreach (var mob in ObjectCache.EnemyLaneMinions.Where(h => h.GetBuffCount("vaynesilvereddebuff") == 2))
 			    {
-					DamageIndicatorRendering.Render(mob, GetWDamage(mob));
+					DamageIndicatorRendering.Render(mob, UtilityClass.Player.GetAutoAttackDamage(mob));
 				}
 
 		    }
