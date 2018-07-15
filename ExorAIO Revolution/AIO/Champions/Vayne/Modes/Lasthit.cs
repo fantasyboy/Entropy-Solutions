@@ -6,7 +6,6 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -31,7 +30,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["farmhelper"]) &&
-                MenuClass.Spells["q"]["farmhelper"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["q"]["farmhelper"].Enabled)
             {
                 var posAfterQ = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
                 if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)

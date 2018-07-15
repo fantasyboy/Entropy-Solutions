@@ -9,7 +9,6 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.UI.Components;
 using Entropy.ToolKit;
 
 #pragma warning disable 1587
@@ -43,31 +42,31 @@ namespace AIO
                     switch (Orbwalker.Mode)
                     {
                         case OrbwalkingMode.Combo:
-                            if (!MenuClass.Hydra["combo"].As<MenuBool>().Enabled)
+                            if (!MenuClass.Hydra["combo"].Enabled)
                             {
                                 return;
                             }
                             break;
                         case OrbwalkingMode.Harass:
-                            if (!MenuClass.Hydra["mixed"].As<MenuBool>().Enabled)
+                            if (!MenuClass.Hydra["mixed"].Enabled)
                             {
                                 return;
                             }
                             break;
                         case OrbwalkingMode.LaneClear:
-                            if (!MenuClass.Hydra["laneclear"].As<MenuBool>().Enabled)
+                            if (!MenuClass.Hydra["laneclear"].Enabled)
                             {
                                 return;
                             }
                             break;
                         case OrbwalkingMode.LastHit:
-                            if (!MenuClass.Hydra["lasthit"].As<MenuBool>().Enabled)
+                            if (!MenuClass.Hydra["lasthit"].Enabled)
                             {
                                 return;
                             }
                             break;
                         default:
-                            if (!MenuClass.Hydra["manual"].As<MenuBool>().Enabled)
+                            if (!MenuClass.Hydra["manual"].Enabled)
                             {
                                 return;
                             }
@@ -100,8 +99,8 @@ namespace AIO
                 case OrbwalkingMode.Combo:
                     if (!UtilityClass.Player.HasSheenLikeBuff() &&
                         UtilityClass.Player.Level() >=
-                                MenuClass.General["disableaa"].As<MenuSliderBool>().Value &&
-                        MenuClass.General["disableaa"].As<MenuSliderBool>().Enabled)
+                                MenuClass.General["disableaa"].Value &&
+                        MenuClass.General["disableaa"].Enabled)
                     {
                         args.Cancel = true;
                     }
@@ -114,7 +113,7 @@ namespace AIO
                 case OrbwalkingMode.LastHit:
                 case OrbwalkingMode.LaneClear:
                     if (Extensions.GetEnemyLaneMinionsTargets().Contains(args.Target) &&
-                        MenuClass.General["supportmode"].As<MenuBool>().Enabled)
+                        MenuClass.General["supportmode"].Enabled)
                     {
                         args.Cancel = ObjectCache.AllyHeroes.Any(a => !a.IsMe() && a.DistanceToPlayer() < 2500);
                     }
@@ -132,25 +131,25 @@ namespace AIO
                 switch (Orbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
-                        if (!MenuClass.Stormrazor["combo"].As<MenuBool>().Enabled)
+                        if (!MenuClass.Stormrazor["combo"].Enabled)
                         {
                             return;
                         }
                         break;
                     case OrbwalkingMode.Harass:
-                        if (!MenuClass.Stormrazor["mixed"].As<MenuBool>().Enabled)
+                        if (!MenuClass.Stormrazor["mixed"].Enabled)
                         {
                             return;
                         }
                         break;
                     case OrbwalkingMode.LaneClear:
-                        if (!MenuClass.Stormrazor["laneclear"].As<MenuBool>().Enabled)
+                        if (!MenuClass.Stormrazor["laneclear"].Enabled)
                         {
                             return;
                         }
                         break;
                     case OrbwalkingMode.LastHit:
-                        if (!MenuClass.Stormrazor["lasthit"].As<MenuBool>().Enabled)
+                        if (!MenuClass.Stormrazor["lasthit"].Enabled)
                         {
                             return;
                         }
@@ -185,7 +184,7 @@ namespace AIO
 
                     var spell = Spellbook.GetSpell(slot);
                     var menuOption = MenuClass.PreserveMana[slot.ToString().ToLower()];
-                    if (menuOption != null && menuOption.As<MenuBool>().Enabled)
+                    if (menuOption != null && menuOption.Enabled)
                     {
                         var registeredSpellData = data.FirstOrDefault(d => d.Key == slot).Value;
                         var actualSpellData = championSpellManaCosts[slot][spell.Level - 1];
@@ -213,7 +212,7 @@ namespace AIO
                     }
 
                     var sum = data
-                        .Where(s => MenuClass.PreserveMana[s.Key.ToString().ToLower()].As<MenuBool>().Enabled)
+                        .Where(s => MenuClass.PreserveMana[s.Key.ToString().ToLower()].Enabled)
                         .Sum(s => s.Value);
                     if (sum <= 0)
                     {
@@ -242,7 +241,7 @@ namespace AIO
                         {
                             if (target.GetRealHealth(DamageType.Physical) <=
                                     UtilityClass.Player.GetAutoAttackDamage(target) *
-                                    MenuClass.PreserveSpells[args.Slot.ToString().ToLower()].As<MenuSlider>().Value)
+                                    MenuClass.PreserveSpells[args.Slot.ToString().ToLower()].Value)
                             {
                                 args.Execute = false;
                             }

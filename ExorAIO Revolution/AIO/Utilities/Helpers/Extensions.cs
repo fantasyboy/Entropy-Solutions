@@ -4,8 +4,6 @@ using Entropy;
 using Entropy.SDK;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Geometry;
-using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 using Entropy.SDK.Orbwalking;
 
 namespace AIO.Utilities
@@ -282,7 +280,7 @@ namespace AIO.Utilities
         /// </summary>
         public static List<AIMinionClient> GetGenericJungleMinionsTargetsInRange(float range)
         {
-            if (MenuClass.General["junglesmall"].As<MenuBool>().Enabled)
+            if (MenuClass.General["junglesmall"].Enabled)
             {
                 return GameObjects.Jungle.Where(m => m.IsValidSpellTarget(range)).ToList();
             }

@@ -7,7 +7,6 @@ using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -30,8 +29,8 @@ namespace AIO.Champions
 	        /// </summary>
 	        if (SpellClass.E.Ready &&
 	            UtilityClass.Player.Level() >=
-					MenuClass.Spells["e"]["junglesteal"].As<MenuSliderBool>().Value &&
-	            MenuClass.Spells["e"]["junglesteal"].As<MenuSliderBool>().Enabled)
+					MenuClass.Spells["e"]["junglesteal"].Value &&
+	            MenuClass.Spells["e"]["junglesteal"].Enabled)
 	        {
 		        foreach (var minion in Extensions.GetGenericJungleMinionsTargets()
 			        .Where(m =>
@@ -39,12 +38,12 @@ namespace AIO.Champions
 						m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
 		        {
 			        if (UtilityClass.JungleList.Contains(minion.CharName) &&
-			            MenuClass.Spells["e"]["whitelist"][minion.CharName].As<MenuBool>().Enabled)
+			            MenuClass.Spells["e"]["whitelist"][minion.CharName].Enabled)
 			        {
 				        SpellClass.E.Cast();
 			        }
 			        else if (!UtilityClass.JungleList.Contains(minion.CharName) &&
-			                 MenuClass.General["junglesmall"].As<MenuBool>().Enabled)
+			                 MenuClass.General["junglesmall"].Enabled)
 			        {
 				        SpellClass.E.Cast();
 			        }
@@ -67,7 +66,7 @@ namespace AIO.Champions
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["q"]["jungleclear"].Enabled)
             {
                 SpellClass.Q.Cast(jungleTarget);
             }

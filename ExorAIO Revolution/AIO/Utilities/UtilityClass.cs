@@ -239,7 +239,16 @@ namespace AIO.Utilities
                     {SpellSlot.R, new []{100, 100, 100}}
                 }
             },
-            {
+	        {
+		        "Kaisa", new Dictionary<SpellSlot, int[]>
+		        {
+			        {SpellSlot.Q, new []{55, 55, 55, 55, 55}},
+			        {SpellSlot.W, new []{55, 60, 65, 70, 75}},
+			        {SpellSlot.E, new []{30, 30, 30, 30, 30}},
+			        {SpellSlot.R, new []{100, 100, 100}}
+		        }
+	        },
+			{
                 "Kalista", new Dictionary<SpellSlot, int[]>
                 {
                     {SpellSlot.Q, new []{50, 55, 60, 65, 70}},

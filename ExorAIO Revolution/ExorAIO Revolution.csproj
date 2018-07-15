@@ -79,6 +79,20 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIO\Champions\Kalista\Utilities\Damages.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Automatic.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Combo.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Harass.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Jungleclear.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Killsteal.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Laneclear.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Lasthit.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Modes\Weaving.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Utilities\Damages.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Utilities\Drawings.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Utilities\Menus.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Utilities\Methods.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Utilities\Spells.cs" />
+    <Compile Include="AIO\Champions\Kaisa\Kaisa.cs" />
     <Compile Include="AIO\Champions\Vayne\Modes\Automatic.cs" />
     <Compile Include="AIO\Champions\Vayne\Modes\Buildingclear.cs" />
     <Compile Include="AIO\Champions\Vayne\Modes\Combo.cs" />

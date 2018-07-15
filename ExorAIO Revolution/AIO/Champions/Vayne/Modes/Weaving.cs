@@ -5,7 +5,6 @@ using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -35,16 +34,16 @@ namespace AIO.Champions
             ///     The Q Weaving Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Spells["q"]["combo"].Enabled)
             {
                 if (heroTarget.GetBuffCount("vaynesilvereddebuff") != 1 &&
-                    MenuClass.Spells["q"]["customization"]["wstacks"].As<MenuBool>().Enabled)
+                    MenuClass.Spells["q"]["customization"]["wstacks"].Enabled)
                 {
                     return;
                 }
 
                 if (UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) <= UtilityClass.Player.GetAutoAttackRange() &&
-                    MenuClass.Spells["q"]["customization"]["onlyqifmouseoutaarange"].As<MenuBool>().Enabled)
+                    MenuClass.Spells["q"]["customization"]["onlyqifmouseoutaarange"].Enabled)
                 {
                     return;
                 }
@@ -53,8 +52,8 @@ namespace AIO.Champions
                 var qRangeCheck = MenuClass.Spells["q"]["customization"]["qrangecheck"];
                 if (qRangeCheck != null)
                 {
-                    if (qRangeCheck.As<MenuSliderBool>().Enabled &&
-                        posAfterQ.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= qRangeCheck.As<MenuSliderBool>().Value)
+                    if (qRangeCheck.Enabled &&
+                        posAfterQ.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= qRangeCheck.Value)
                     {
                         return;
                     }
@@ -62,13 +61,13 @@ namespace AIO.Champions
 
                 if (posAfterQ.Distance(heroTarget) >
                         UtilityClass.Player.GetAutoAttackRange(heroTarget) &&
-                    MenuClass.Spells["q"]["customization"]["noqoutaarange"].As<MenuBool>().Enabled)
+                    MenuClass.Spells["q"]["customization"]["noqoutaarange"].Enabled)
                 {
                     return;
                 }
 
                 if (posAfterQ.IsUnderEnemyTurret() &&
-                    MenuClass.Spells["q"]["customization"]["noqturret"].As<MenuBool>().Enabled)
+                    MenuClass.Spells["q"]["customization"]["noqturret"].Enabled)
                 {
                     return;
                 }
@@ -87,7 +86,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 !Invulnerable.Check(heroTarget) &&
                 heroTarget.IsValidTarget(SpellClass.E.Range+heroTarget.BoundingRadius) &&
-                MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.Spells["e"]["killsteal"].Enabled)
             {
                 var shouldIncludeWDamage = heroTarget.GetBuffCount("vaynesilvereddebuff") == 1;
                 if (UtilityClass.Player.GetAutoAttackDamage(heroTarget) + GetEDamage(heroTarget) +

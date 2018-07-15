@@ -5,7 +5,6 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -29,11 +28,11 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["harass"]) &&
-                MenuClass.Spells["q"]["harass"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["q"]["harass"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null &&
-                    MenuClass.Spells["q"]["whitelist"][bestTarget.CharName.ToLower()].As<MenuBool>().Enabled)
+                    MenuClass.Spells["q"]["whitelist"][bestTarget.CharName.ToLower()].Enabled)
                 {
                     var collisions = SpellClass.Q.GetPrediction(bestTarget).CollisionObjects
                         .Where(c => Extensions.GetAllGenericUnitTargets().Contains(c));
@@ -59,10 +58,10 @@ namespace AIO.Champions
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
 		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
-	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
+	            MenuClass.Spells["e"]["harass"].Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)
-		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
+		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].Enabled))
 		        {
 			        SpellClass.E.Cast();
 		        }

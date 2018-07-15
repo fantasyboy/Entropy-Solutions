@@ -1,6 +1,4 @@
-﻿
-using AIO.Utilities;
-using Entropy;
+﻿using Entropy;
 using Entropy.SDK.Extensions.Geometry;
 using SharpDX;
 

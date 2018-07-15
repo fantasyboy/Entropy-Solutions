@@ -1,7 +1,6 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -25,7 +24,7 @@ namespace AIO.Champions
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
 		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
-	            MenuClass.Spells["e"]["lasthit"].As<MenuBool>().Enabled)
+	            MenuClass.Spells["e"]["lasthit"].Enabled)
 	        {
 		        SpellClass.E.Cast();
 	        }

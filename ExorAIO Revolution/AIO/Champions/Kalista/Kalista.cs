@@ -4,13 +4,9 @@ using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
-using Entropy.SDK.Extensions;
-using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
-using Entropy.ToolKit;
 
 #pragma warning disable 1587
 
@@ -73,12 +69,18 @@ namespace AIO.Champions
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
         public void OnPreAttack(OnPreAttackEventArgs args)
         {
-            /// <summary>
-            ///     The Target Forcing Logic.
-            /// </summary>
-            if (MenuClass.Miscellaneous["focusw"].As<MenuBool>().Enabled)
+			/// <summary>
+			///     The Target Forcing Logic.
+			/// </summary>
+			if (MenuClass.Miscellaneous["focusw"].Enabled)
             {
-                var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
+	            if (Orbwalker.Mode != OrbwalkingMode.Combo &&
+	                Orbwalker.Mode != OrbwalkingMode.Harass)
+	            {
+		            return;
+	            }
+
+				var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
                         t.HasBuff("kalistacoopstrikemarkally") &&
                         t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
                 if (forceTarget != null)

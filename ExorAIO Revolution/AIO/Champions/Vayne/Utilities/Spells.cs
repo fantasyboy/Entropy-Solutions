@@ -22,7 +22,7 @@ namespace AIO.Champions
             SpellClass.E = new Spell(SpellSlot.E, 550f + UtilityClass.Player.BoundingRadius);
             SpellClass.R = new Spell(SpellSlot.R);
 
-            SpellClass.E.SetSkillshot(0.5f, 50f, 1200f);
+            SpellClass.E.SetSkillshot(0.5f, 50f, 1200f, collision: false);
         }
 
         #endregion

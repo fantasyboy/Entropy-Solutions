@@ -81,9 +81,9 @@ namespace AIO.Champions
                 UtilityClass.Player.HasBuff("vaynetumblefade"))
             {
                 var invisibilityBuff = UtilityClass.Player.GetBuff("vaynetumblefade");
-                if (MenuClass.Miscellaneous["stealthtime"].As<MenuSliderBool>().Enabled &&
+                if (MenuClass.Miscellaneous["stealthtime"].Enabled &&
                     invisibilityBuff.GetRemainingBuffTime() >
-                    invisibilityBuff.ExpireTime - invisibilityBuff.StartTime - MenuClass.Miscellaneous["stealthtime"].As<MenuSliderBool>().Value / 1000f)
+                    invisibilityBuff.ExpireTime - invisibilityBuff.StartTime - MenuClass.Miscellaneous["stealthtime"].Value / 1000f)
                 {
                     args.Cancel = true;
                 }
@@ -93,21 +93,27 @@ namespace AIO.Champions
                     args.Cancel = true;
                 }
 
-                if (MenuClass.Miscellaneous["stealthcheck"].As<MenuSliderBool>().Enabled &&
+                if (MenuClass.Miscellaneous["stealthcheck"].Enabled &&
                     GameObjects.EnemyHeroes.Count(t =>
                         t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))) >=
-                    MenuClass.Miscellaneous["stealthcheck"].As<MenuSliderBool>().Value)
+                    MenuClass.Miscellaneous["stealthcheck"].Value)
                 {
                     args.Cancel = true;
                 }
             }
 
-            /// <summary>
-            ///     The Target Forcing Logic.
-            /// </summary>
-            if (MenuClass.Miscellaneous["focusw"].As<MenuBool>().Enabled)
+			/// <summary>
+			///     The Target Forcing Logic.
+			/// </summary>
+			if (MenuClass.Miscellaneous["focusw"].Enabled)
             {
-                var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
+	            if (Orbwalker.Mode != OrbwalkingMode.Combo &&
+	                Orbwalker.Mode != OrbwalkingMode.Harass)
+	            {
+		            return;
+	            }
+
+				var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
                         t.GetBuffCount("vaynesilvereddebuff") == 2 &&
                         t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
                 if (forceTarget != null)
@@ -196,13 +202,13 @@ namespace AIO.Champions
 		        !Invulnerable.Check(heroSender, DamageType.Magical, false))
 		    {
 			    var enabledOption = MenuClass.Interrupter["enabled"];
-			    if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+			    if (enabledOption == null || !enabledOption.Enabled)
 			    {
 				    return;
 			    }
 
 			    var spellOption = MenuClass.SubInterrupter[$"{heroSender.CharName.ToLower()}.{args.Slot.ToString().ToLower()}"];
-			    if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+			    if (spellOption == null || !spellOption.Enabled)
 			    {
 				    return;
 			    }
@@ -237,13 +243,13 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready)
             {
                 var enabledOption = MenuClass.Gapcloser["enabled"];
-                if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+                if (enabledOption == null || !enabledOption.Enabled)
                 {
                     return;
                 }
 
                 var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+                if (spellOption == null || !spellOption.Enabled)
                 {
                     return;
                 }
@@ -284,13 +290,13 @@ namespace AIO.Champions
                 !Invulnerable.Check(sender, DamageType.Magical, false))
             {
                 var enabledOption2 = MenuClass.Gapcloser2["enabled"];
-                if (enabledOption2 == null || !enabledOption2.As<MenuBool>().Enabled)
+                if (enabledOption2 == null || !enabledOption2.Enabled)
                 {
                     return;
                 }
 
                 var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption2 == null || !spellOption2.As<MenuBool>().Enabled)
+                if (spellOption2 == null || !spellOption2.Enabled)
                 {
                     return;
                 }
@@ -312,27 +318,6 @@ namespace AIO.Champions
                 }
             }
         }
-
-        /*
-        /// <summary>
-        ///     Called on interruptable spell.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public void OnInterruptableTarget(Events.InterruptableTargetEventArgs args)
-        {
-            if (UtilityClass.Player.IsDead || Invulnerable.Check(args.Sender, DamageType.Magical, false))
-            {
-                return;
-            }
-
-            if (SpellClass.E.State == SpellState.Ready && args.Sender.IsValidTarget(SpellClass.E.SpellData.Range)
-                && MenuClass.Spells["e"]["interrupter"].As<MenuBool>().Enabled)
-            {
-                UtilityClass.Player.Spellbook.CastSpell(SpellSlot.E, args.Sender);
-            }
-        }
-        */
 
         /// <summary>
         ///     Fired when the game is updated.

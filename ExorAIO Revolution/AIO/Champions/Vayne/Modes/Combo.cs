@@ -24,10 +24,10 @@ namespace AIO.Champions
         public void Combo(EntropyEventArgs args)
         {
             /// <summary>
-            ///     The Q Combo Logic.
+            ///     The Q Engager Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["engage"].As<MenuBool>().Enabled)
+                MenuClass.Spells["q"]["engage"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null &&

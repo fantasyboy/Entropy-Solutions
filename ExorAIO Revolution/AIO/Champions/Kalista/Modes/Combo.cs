@@ -6,7 +6,6 @@ using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -33,7 +32,7 @@ namespace AIO.Champions
                 .MinBy(o => o.HP);
             if (minion != null &&
                 !ObjectCache.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)+100f)) &&
-                MenuClass.Miscellaneous["minionsorbwalk"].As<MenuBool>().Enabled)
+                MenuClass.Miscellaneous["minionsorbwalk"].Enabled)
             {
                 Orbwalker.Attack(minion);
             }
@@ -42,7 +41,7 @@ namespace AIO.Champions
             ///     The Q Combo Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Spells["q"]["combo"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null)
@@ -71,10 +70,10 @@ namespace AIO.Champions
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
 		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
-	            MenuClass.Spells["e"]["harass"].As<MenuBool>().Enabled)
+	            MenuClass.Spells["e"]["harass"].Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)
-		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].As<MenuBool>().Enabled))
+		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Spells["e"]["dontharassslowed"].Enabled))
 		        {
 			        SpellClass.E.Cast();
 		        }

@@ -1,14 +1,12 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -35,8 +33,8 @@ namespace AIO.Champions
 	        ///     The Automatic E Logics.
 	        /// </summary>
 	        if (SpellClass.E.Ready &&
-	            MenuClass.Spells["e"]["beforedeath"].As<MenuSliderBool>().Enabled &&
-	            LocalPlayer.Instance.HPPercent() <= MenuClass.Spells["e"]["beforedeath"].As<MenuSliderBool>().Value)
+	            MenuClass.Spells["e"]["beforedeath"].Enabled &&
+	            LocalPlayer.Instance.HPPercent() <= MenuClass.Spells["e"]["beforedeath"].Value)
 	        {
 		        SpellClass.E.Cast();
 	        }
@@ -52,8 +50,8 @@ namespace AIO.Champions
                 /// </summary>
                 if (SoulBound.EnemyHeroesCount(800f) > 0 &&
                     SoulBound.HPPercent() <=
-                        MenuClass.Spells["r"]["lifesaver"].As<MenuSliderBool>().Value &&
-                    MenuClass.Spells["r"]["lifesaver"].As<MenuSliderBool>().Enabled)
+                        MenuClass.Spells["r"]["lifesaver"].Value &&
+                    MenuClass.Spells["r"]["lifesaver"].Enabled)
                 {
                     SpellClass.R.Cast();
                 }
@@ -69,7 +67,7 @@ namespace AIO.Champions
 
 		            var target = ObjectCache.EnemyHeroes.FirstOrDefault(t => t.HasBuff(buffName));
 		            if (target != null &&
-		                MenuClass.Spells["r"][menuOption].As<MenuBool>().Enabled)
+		                MenuClass.Spells["r"][menuOption].Enabled)
 		            {
 			            var buff = target.GetBuff(buffName);
 			            if (buff.Caster == SoulBound &&
@@ -90,7 +88,7 @@ namespace AIO.Champions
                 UtilityClass.Player.EnemyHeroesCount(1500f) == 0 &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["logical"]) &&
-                MenuClass.Spells["w"]["logical"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["w"]["logical"].Enabled)
             {
                 foreach (var loc in Locations.Where(l =>
                     UtilityClass.Player.Distance(l) <= SpellClass.W.Range &&

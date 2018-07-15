@@ -38,7 +38,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["e"]["jungleclear"].Enabled)
             {
                 const int condemnPushDistance = 410;
                 var playerPos = UtilityClass.Player.Position;
@@ -73,7 +73,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["q"]["jungleclear"].Enabled)
             {
                 SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
             }

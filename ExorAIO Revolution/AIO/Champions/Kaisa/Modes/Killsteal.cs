@@ -11,7 +11,7 @@ namespace AIO.Champions
     /// <summary>
     ///     The champion class.
     /// </summary>
-    internal partial class Vayne
+    internal partial class Kaisa
     {
         #region Public Methods and Operators
 
@@ -21,15 +21,15 @@ namespace AIO.Champions
         public void Killsteal(EntropyEventArgs args)
         {
             /// <summary>
-            ///     The E KillSteal Logic.
+            ///     The W KillSteal Logic.
             /// </summary>
-            if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["killsteal"].Enabled)
+            if (SpellClass.W.Ready &&
+                MenuClass.Spells["w"]["killsteal"].Enabled)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.E.Range)
-	                .Where(t => GetEDamage(t) + (t.GetBuffCount("vaynesilvereddebuff") == 2 ? GetWDamage(t) : 0) >= t.GetRealHealth(DamageType.Physical)))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range)
+	                .Where(t => GetWDamage(t) + (t.GetBuffCount("kaisapassivemarker") >= 3 ? GetPassiveExplodeDamage(t) : 0) >= t.GetRealHealth(DamageType.Magical)))
                 {
-                    SpellClass.E.CastOnUnit(target);
+                    SpellClass.W.Cast(target);
                     break;
                 }
             }

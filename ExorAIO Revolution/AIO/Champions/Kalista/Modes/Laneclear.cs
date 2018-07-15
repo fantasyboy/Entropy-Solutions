@@ -3,7 +3,6 @@ using System.Linq;
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -27,7 +26,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
 					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
-                MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["q"]["laneclear"].Enabled)
             {
 				/*
                 var farmLocation = Extensions.GetAllGenericMinionsTargets().Where(m => m.GetRealHealth(DamageType.Physical) < (float)UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q)).ToList();
@@ -42,11 +41,11 @@ namespace AIO.Champions
 			///     The E Laneclear Logics.
 			/// </summary>
 			if (SpellClass.E.Ready &&
-	            MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
+	            MenuClass.Spells["e"]["laneclear"].Enabled)
 	        {
 		        if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Count(m =>
 			                                                                                   IsPerfectRendTarget(m) &&
-			                                                                                   m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) >= MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Value)
+			                                                                                   m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) >= MenuClass.Spells["e"]["laneclear"].Value)
 		        {
 			        SpellClass.E.Cast();
 		        }

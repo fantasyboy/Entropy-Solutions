@@ -3,7 +3,6 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -35,7 +34,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["buildings"]) &&
-                MenuClass.Spells["q"]["buildings"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["q"]["buildings"].Enabled)
             {
                 SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
             }

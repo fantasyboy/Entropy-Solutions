@@ -35,8 +35,8 @@ namespace AIO.Champions
                 MenuClass.Q = new Menu("q", "Use Q to:");
                 {
                     MenuClass.Q.Add(new MenuBool("combo", "Combo"));
-                    MenuClass.Q.Add(new MenuBool("engage", "Engager", false));
-                    MenuClass.Q.Add(new MenuSeperator("separator"));
+                    MenuClass.Q.Add(new MenuBool("engage", "Engager", false)).SetToolTip("Casts if enemy gets out of AA range");
+					MenuClass.Q.Add(new MenuSeperator("separator"));
 
                     if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                     {
@@ -176,7 +176,7 @@ namespace AIO.Champions
 					MenuClass.E.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
                     MenuClass.E.Add(new MenuSeperator("separator4"));
                     MenuClass.E.Add(new MenuBool("bool", "Semi-Automatic E"));
-                    MenuClass.E.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.T, KeybindType.Hold));
+                    MenuClass.E.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.U, KeybindType.Hold));
 
                     if (GameObjects.EnemyHeroes.Any())
                     {

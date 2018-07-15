@@ -1,9 +1,7 @@
 
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Extensions;
 using AIO.Utilities;
-using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 
@@ -14,7 +12,7 @@ namespace AIO.Champions
     /// <summary>
     ///     The champion class.
     /// </summary>
-    internal partial class Vayne
+    internal partial class Kaisa
     {
         #region Public Methods and Operators
 
@@ -24,19 +22,19 @@ namespace AIO.Champions
         public void Automatic(EntropyEventArgs args)
         {
             /// <summary>
-            ///     The Semi-Automatic E Management.
+            ///     The Semi-Automatic R Management.
             /// </summary>
-            if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["bool"].Enabled &&
-                MenuClass.Spells["e"]["key"].As<MenuKeyBind>().Enabled)
+            if (SpellClass.R.Ready &&
+                MenuClass.Spells["r"]["bool"].Enabled &&
+                MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
             {
-                var bestTarget = GameObjects.EnemyHeroes.Where(t =>
-                        t.IsValidTarget(SpellClass.E.Range) &&
-                        !Invulnerable.Check(t, DamageType.Magical, false))
-                    .MinBy(o => o.DistanceToPlayer());
+                var bestTarget = GameObjects.EnemyHeroes.FirstOrDefault(t =>
+						!Invulnerable.Check(t) &&
+						t.IsValidTarget(SpellClass.R.Range) &&
+						t.HasBuff("kaisapassivemarkerr"));
                 if (bestTarget != null)
                 {
-                    SpellClass.E.CastOnUnit(bestTarget);
+                    SpellClass.R.CastOnUnit(bestTarget);
                 }
             }
         }

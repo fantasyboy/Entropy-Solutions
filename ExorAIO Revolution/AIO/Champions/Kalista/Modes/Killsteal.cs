@@ -3,7 +3,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -25,7 +24,7 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.Spells["q"]["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
                                                  .Where(t => GetQDamage(t) >= t.GetRealHealth(DamageType.Physical)))
@@ -53,7 +52,7 @@ namespace AIO.Champions
 	        ///     The KillSteal E Logic.
 	        /// </summary>
 	        if (SpellClass.E.Ready &&
-	            MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
+	            MenuClass.Spells["e"]["killsteal"].Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Any(t =>
 			                                        IsPerfectRendTarget(t) &&

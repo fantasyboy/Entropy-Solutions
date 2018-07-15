@@ -2,7 +2,6 @@ using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI;
-using Entropy.SDK.UI.Components;
 
 namespace AIO.Utilities
 {
@@ -21,14 +20,14 @@ namespace AIO.Utilities
             var ignoreManaManagerMenu = MenuClass.General["nomanagerifblue"];
             if (ignoreManaManagerMenu != null &&
                 UtilityClass.Player.HasBuff("crestoftheancientgolem") &&
-                ignoreManaManagerMenu.As<MenuBool>().Enabled)
+                ignoreManaManagerMenu.Enabled)
             {
                 return 0;
             }
 
             var spellData = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName);
             var cost = spellData.Value[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level - 1];
-            return (int)(value.As<MenuSliderBool>().Value + cost / UtilityClass.Player.MaxMP * 100);
+            return (int)(value.Value + cost / UtilityClass.Player.MaxMP * 100);
         }
 
         /// <summary>
@@ -38,7 +37,7 @@ namespace AIO.Utilities
         {
 	        var spellData = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName);
 	        var cost = spellData.Value[slot][UtilityClass.Player.Spellbook.GetSpell(slot).Level - 1];
-			return (int)(value.As<MenuSliderBool>().Value + cost / UtilityClass.Player.MaxHP * 100);
+			return (int)(value.Value + cost / UtilityClass.Player.MaxHP * 100);
         }
 
         #endregion

@@ -4,7 +4,6 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Rendering;
-using Entropy.SDK.UI.Components;
 using Entropy.SDK.Extensions.Objects;
 using Color = SharpDX.Color;
 
@@ -28,7 +27,7 @@ namespace AIO.Champions
 		    ///     Loads the Q drawing.
 		    /// </summary>
 		    if (SpellClass.Q.Ready &&
-		        MenuClass.Drawings["q"].As<MenuBool>().Enabled)
+		        MenuClass.Drawings["q"].Enabled)
 		    {
 			    CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
 		    }
@@ -37,7 +36,7 @@ namespace AIO.Champions
 		    ///     Loads the W drawing.
 		    /// </summary>
 		    if (SpellClass.W.Ready &&
-		        MenuClass.Drawings["w"].As<MenuBool>().Enabled)
+		        MenuClass.Drawings["w"].Enabled)
 		    {
 			    CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
 		    }
@@ -46,7 +45,7 @@ namespace AIO.Champions
 		    ///     Loads the E drawing.
 		    /// </summary>
 		    if (SpellClass.E.Ready &&
-		        MenuClass.Drawings["e"].As<MenuBool>().Enabled)
+		        MenuClass.Drawings["e"].Enabled)
 		    {
 			    CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
 		    }
@@ -55,7 +54,7 @@ namespace AIO.Champions
 		    ///     Loads the R drawing.
 		    /// </summary>
 		    if (SpellClass.R.Ready &&
-		        MenuClass.Drawings["r"].As<MenuBool>().Enabled)
+		        MenuClass.Drawings["r"].Enabled)
 		    {
 			    CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
 		    }
@@ -64,9 +63,9 @@ namespace AIO.Champions
 		    ///     Loads the Soulbound drawing.
 		    /// </summary>
 		    if (SoulBound != null &&
-		        MenuClass.Drawings["soulbound"].As<MenuSliderBool>().Enabled)
+		        MenuClass.Drawings["soulbound"].Enabled)
 		    {
-			    for (var i = 0; i < MenuClass.Drawings["soulbound"].As<MenuSliderBool>().Value; i++)
+			    for (var i = 0; i < MenuClass.Drawings["soulbound"].Value; i++)
 			    {
 				    CircleRendering.Render(Color.Cyan, SoulBound.BoundingRadius + 5 * i, SoulBound);
 			    }
@@ -79,7 +78,7 @@ namespace AIO.Champions
 			///     Loads the E damage to healthbar.
 			/// </summary>
 			if (SpellClass.E.Ready &&
-				MenuClass.Drawings["edmg"].As<MenuBool>().Enabled)
+				MenuClass.Drawings["edmg"].Enabled)
 			{
 				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(SpellClass.E.Range)))
 				{
