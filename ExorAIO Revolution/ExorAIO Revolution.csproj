@@ -78,6 +78,21 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AIO\Champions\Caitlyn\Caitlyn.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Automatic.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Combo.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Harass.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Jungleclear.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Killsteal.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Laneclear.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Lasthit.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Modes\Weaving.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Utilities\Damages.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Utilities\Definitions.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Utilities\Drawings.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Utilities\Menus.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Utilities\Methods.cs" />
+    <Compile Include="AIO\Champions\Caitlyn\Utilities\Spells.cs" />
     <Compile Include="AIO\Champions\Kalista\Utilities\Damages.cs" />
     <Compile Include="AIO\Champions\Kaisa\Modes\Automatic.cs" />
     <Compile Include="AIO\Champions\Kaisa\Modes\Combo.cs" />

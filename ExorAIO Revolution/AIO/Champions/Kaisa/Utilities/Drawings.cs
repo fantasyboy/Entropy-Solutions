@@ -22,7 +22,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the drawings.
         /// </summary>
-        public void Drawings()
+        public void OnPresent(EntropyEventArgs args)
         {
             /// <summary>
             ///     Loads the W drawing.
@@ -30,7 +30,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].Enabled)
             {
-                CircleRendering.Render(Color.Purple, SpellClass.W.Range, UtilityClass.Player);
+                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
 
             /// <summary>
@@ -45,10 +45,10 @@ namespace AIO.Champions
 
 	    public void OnEndScene(EntropyEventArgs args)
 	    {
-		    /// <summary>
-		    ///     Loads the Passive damage to healthbar.
-		    /// </summary>
-		    if (MenuClass.Drawings["passivedmg"].Enabled)
+			/// <summary>
+			///     Draws the Passive damage to healthbar.
+			/// </summary>
+			if (MenuClass.Drawings["passivedmg"].Enabled)
 		    {
 			    foreach (var hero in ObjectCache.EnemyHeroes.Where(h => h.GetBuffCount("kaisapassivemarker") == 4))
 			    {
@@ -64,7 +64,6 @@ namespace AIO.Champions
 			    {
 					DamageIndicatorRendering.Render(mob, UtilityClass.Player.GetAutoAttackDamage(mob));
 				}
-
 		    }
 	    }
 

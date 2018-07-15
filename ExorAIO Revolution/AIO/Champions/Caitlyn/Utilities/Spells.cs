@@ -1,7 +1,7 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
-using Spell = Entropy.SDK.Spell;
+using Entropy.SDK.Spells;
 
 namespace AIO.Champions
 {
@@ -21,12 +21,12 @@ namespace AIO.Champions
             SpellClass.Q2 = new Spell(SpellSlot.Q, 1250f);
             SpellClass.W = new Spell(SpellSlot.W, 800f);
             SpellClass.E = new Spell(SpellSlot.E, 950f);
-            SpellClass.R = new Spell(SpellSlot.R, 1500f + 500f * SpellClass.R.Level);
+            SpellClass.R = new Spell(SpellSlot.R, 1500f + 500f * UtilityClass.Player.Spellbook.GetSpell(SpellSlot.R).Level);
 
-            SpellClass.Q.SetSkillshot(0.65f, 60f, 2200f, false, SkillshotType.Line);
-            SpellClass.Q2.SetSkillshot(0.65f, 120f, 2200f, false, SkillshotType.Line);
-            SpellClass.W.SetSkillshot(1.5f, 67.5f, float.MaxValue, false, SkillshotType.Circle);
-            SpellClass.E.SetSkillshot(0.30f, 70f, 2000f, true, SkillshotType.Line);
+            SpellClass.Q.SetSkillshot(1f, 60f, 2200f, SkillshotType.Line, false);
+            SpellClass.Q2.SetSkillshot(SpellClass.Q.Delay, SpellClass.Q.Width*2, SpellClass.Q.Speed, SpellClass.Q.Type, SpellClass.Q.Collision);
+            SpellClass.W.SetSkillshot(1.5f, 67.5f, float.MaxValue, SkillshotType.Circle, false);
+            SpellClass.E.SetSkillshot(0.30f, 70f, 2000f);
         }
 
         #endregion

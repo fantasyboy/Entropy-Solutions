@@ -3,7 +3,6 @@ using Entropy;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -37,7 +36,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["e"]["jungleclear"].Enabled)
             {
                 SpellClass.E.Cast(jungleTarget);
                 return;
@@ -49,7 +48,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                MenuClass.Spells["q"]["jungleclear"].Enabled)
             {
                 SpellClass.Q.Cast(jungleTarget);
             }

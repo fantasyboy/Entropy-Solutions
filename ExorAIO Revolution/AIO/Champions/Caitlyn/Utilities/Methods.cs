@@ -1,6 +1,8 @@
 using Entropy;
-using AIO.Utilities;
+using Entropy.SDK.Events;
 using Entropy.SDK.Orbwalking;
+using Entropy.SDK.Predictions.RecallPrediction;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
@@ -18,13 +20,16 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             Spellbook.OnLocalCastSpell += OnLocalCastSpell;
-            Render.OnPresent += OnPresent;
+            Renderer.OnPresent += OnPresent;
+	        Renderer.OnEndScene += OnEndScene;
+	        Teleports.OnTeleport += OnTeleport;
+	        AIBaseClient.OnLevelUp += OnLevelUp;
             Orbwalker.OnPostAttack += OnPostAttack;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Gapcloser.OnGapcloser += OnGapcloser;
 
-            //Events.OnInterruptableTarget += OnInterruptableTarget;
-        }
+	        RecallPrediction.Initialize();
+		}
 
         #endregion
     }

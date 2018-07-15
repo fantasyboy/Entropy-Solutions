@@ -7,7 +7,6 @@ using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -25,9 +24,7 @@ namespace AIO.Champions
         /// </summary>
         public void Automatic(EntropyEventArgs args)
         {
-            SpellClass.R.Range = 1500f + 500f * SpellClass.R.Level;
-
-            if (UtilityClass.Player.IsRecalling())
+			if (UtilityClass.Player.IsRecalling())
             {
                 return;
             }
@@ -36,11 +33,11 @@ namespace AIO.Champions
             ///     The Automatic W Logic. 
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["logical"].As<MenuBool>().Enabled)
+                MenuClass.Spells["w"]["logical"].Enabled)
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
-                    CanTrap(t) &&
-                    t.IsImmobile(SpellClass.W.Delay) &&
+	                t.IsImmobile(SpellClass.W.Delay) &&
+					!t.HasBuff("caitlynyordletrapsight") &&
                     t.DistanceToPlayer() < SpellClass.W.Range))
                 {
                     SpellClass.W.Cast(UtilityClass.Player.Position.Extend(target.Position, UtilityClass.Player.Distance(target)+target.BoundingRadius/2));
@@ -49,25 +46,10 @@ namespace AIO.Champions
             }
 
             /// <summary>
-            ///     The Automatic W on Teleport Logic. 
-            /// </summary>
-            if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["teleport"].As<MenuBool>().Enabled)
-            {
-                foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
-                    m.IsEnemy() &&
-                    m.DistanceToPlayer() <= SpellClass.W.Range &&
-                    m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))
-                {
-                    SpellClass.W.Cast(minion.Position);
-                }
-            }
-
-            /// <summary>
             ///     The Automatic Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["logical"].As<MenuBool>().Enabled)
+                MenuClass.Spells["q"]["logical"].Enabled)
             {
                 switch (Orbwalker.Mode)
                 {
@@ -89,14 +71,14 @@ namespace AIO.Champions
             ///     The Semi-Automatic R Management.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Spells["r"]["bool"].As<MenuBool>().Enabled &&
-                MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
+                MenuClass.Spells["r"]["bool"].Enabled &&
+                MenuClass.Spells["r"]["key"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
+                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].Enabled)
                     .MinBy(o => o.GetRealHealth());
                 if (bestTarget != null)
                 {

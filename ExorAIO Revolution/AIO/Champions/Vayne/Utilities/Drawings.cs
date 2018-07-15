@@ -22,7 +22,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the drawings.
         /// </summary>
-        public void Drawings()
+        public void OnPresent(EntropyEventArgs args)
         {
             /// <summary>
             ///     Loads the Q drawing.
@@ -46,7 +46,7 @@ namespace AIO.Champions
 	    public void OnEndScene(EntropyEventArgs args)
 	    {
 		    /// <summary>
-		    ///     Loads the W damage to healthbar.
+		    ///     Draws the W damage to healthbar.
 		    /// </summary>
 		    if (MenuClass.Drawings["wdmg"].Enabled)
 		    {

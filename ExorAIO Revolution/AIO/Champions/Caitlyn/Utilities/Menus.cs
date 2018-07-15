@@ -1,6 +1,7 @@
 
 using System.Linq;
 using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
 
@@ -115,9 +116,6 @@ namespace AIO.Champions
                     {
                         MenuClass.W.Add(new MenuSeperator(string.Empty, "Anti-Gapcloser not needed"));
                     }
-
-                    MenuClass.W.Add(new MenuSeperator("separator2"));
-                    MenuClass.W.Add(new MenuBool("interrupter", "On Channelling Immobile Targets"));
                 }
                 MenuClass.Spells.Add(MenuClass.W);
 
@@ -190,7 +188,7 @@ namespace AIO.Champions
                     //MenuClass.R.Add(new MenuSeperator("separator1", "It will ult the lowest on health,"));
                     //MenuClass.R.Add(new MenuSeperator("separator2", "whitelisted and non-invulnerable enemy in range."));
                     MenuClass.R.Add(new MenuBool("bool", "Semi-Automatic R"));
-                    MenuClass.R.Add(new MenuKeyBind("key", "Key:", KeyCode.T, KeybindType.Press));
+                    MenuClass.R.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.U, KeybindType.Hold));
 
                     if (GameObjects.EnemyHeroes.Any())
                     {
@@ -234,7 +232,8 @@ namespace AIO.Champions
                 MenuClass.Drawings.Add(new MenuBool("e", "E Range", false));
                 MenuClass.Drawings.Add(new MenuBool("r", "R Range", false));
                 MenuClass.Drawings.Add(new MenuBool("rmm", "R Minimap Range", false));
-                MenuClass.Drawings.Add(new MenuBool("rdmg", "R Damage"));
+	            MenuClass.Drawings.Add(new MenuBool("passivedmg", "Headshot Damage"));
+				MenuClass.Drawings.Add(new MenuBool("rdmg", "R Damage"));
             }
             MenuClass.Root.Add(MenuClass.Drawings);
         }

@@ -3,7 +3,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -25,7 +24,7 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.Spells["q"]["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
                     !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))))
@@ -33,32 +32,11 @@ namespace AIO.Champions
                     var collisions = SpellClass.Q.GetPrediction(target).CollisionObjects
                         .Where(c => Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.Q.Range).Contains(c))
                         .ToList();
-                    if (collisions.Any())
+
+                    if (GetQDamage(target, collisions.Any() && !target.HasBuff("caitlynyordletrapsight")) >= target.GetRealHealth())
                     {
-                        if (target.HasBuff("caitlynyordletrapsight"))
-                        {
-                            if (UtilityClass.Player.GetSpellDamage(target, SpellSlot.Q, DamageStage.SecondForm) >= target.GetRealHealth())
-                            {
-                                SpellClass.Q.Cast(target);
-                                break;
-                            }
-                        }
-                        else
-                        {
-                            if (UtilityClass.Player.GetSpellDamage(target, SpellSlot.Q) >= target.GetRealHealth())
-                            {
-                                SpellClass.Q.Cast(target);
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (UtilityClass.Player.GetSpellDamage(target, SpellSlot.Q, DamageStage.SecondForm) >= target.GetRealHealth())
-                        {
-                            SpellClass.Q.Cast(target);
-                            break;
-                        }
+                        SpellClass.Q.Cast(target);
+                        break;
                     }
                 }
             }

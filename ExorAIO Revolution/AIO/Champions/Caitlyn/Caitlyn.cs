@@ -3,12 +3,17 @@ using System.Linq;
 using Entropy;
 using Entropy.SDK.Extensions;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Events;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
+using Entropy.SDK.Predictions.RecallPrediction;
 using Entropy.SDK.UI.Components;
+using Entropy.SDK.Utils;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 #pragma warning disable 1587
 
@@ -47,61 +52,102 @@ namespace AIO.Champions
             InitializeTrapTimeCheck();
         }
 
-        #endregion
+		#endregion
 
-        #region Public Methods and Operators
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired on spell cast.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
+	    private static void OnLevelUp(AIBaseClientLevelUpEventArgs args)
+	    {
+		    if (args.Owner.IsMe())
+		    {
+			    switch (args.ToLevel)
+			    {
+					case 6:
+						SpellClass.R.Range = 2000;
+						break;
+				    case 11:
+					    SpellClass.R.Range = 2500;
+					    break;
+				    case 16:
+					    SpellClass.R.Range = 3000;
+					    break;
+			    }
+		    }
+	    }
+
+	    private static void OnTeleport(Teleports.TeleportEventArgs args)
+	    {
+		    if (args.Type != TeleportType.Recall || args.Status != TeleportStatus.Start)
+		    {
+			    return;
+		    }
+
+		    /// <summary>
+		    ///     The Automatic W on Teleport Logic. 
+		    /// </summary>
+		    if (SpellClass.W.Ready &&
+		        MenuClass.Spells["w"]["teleport"].Enabled)
+		    {
+			    DelayAction.Queue(() =>
+				    {
+					    var predictedPos = RecallPrediction.GetPrediction();
+					    if (predictedPos.IsZero || predictedPos.DistanceToPlayer() > SpellClass.W.Range)
+					    {
+						    return;
+					    }
+
+					    SpellClass.W.Cast(predictedPos);
+				    },
+				    250); // <- Gotta let SDK run first
+		    }
+		}
+
+		/// <summary>
+		///     Fired on spell cast.
+		/// </summary>
+		/// <param name="args">The <see cref="SpellbookLocalCastSpellEventArgs" /> instance containing the event data.</param>
+		public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
-            if (sender.IsMe())
+            switch (args.Slot)
             {
-                switch (args.Slot)
-                {
-                    case SpellSlot.Q:
-                        var safeQ = MenuClass.Spells["q"]["customization"]["safeq"];
-                        if (safeQ != null &&
-                            UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeQ.As<MenuSlider>().Value)
-                        {
-                            args.Process = false;
-                        }
-                        break;
+                case SpellSlot.Q:
+                    var safeQ = MenuClass.Spells["q"]["customization"]["safeq"];
+                    if (safeQ != null &&
+                        UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeQ.Value)
+                    {
+                        args.Execute = false;
+                    }
+                    break;
 
-                    case SpellSlot.W:
-                        if (ObjectManager.Get<GameObject>().Any(m => m.Distance(args.End) <= SpellClass.W.Width && m.Name.Equals("caitlyn_Base_yordleTrap_idle_green.troy")))
-                        {
-                            args.Process = false;
-                        }
-                        break;
+                case SpellSlot.W:
+                    if (ObjectCache.AllGameObjects.Any(m => m.Distance(args.End) <= SpellClass.W.Width && m.Name.Equals("caitlyn_Base_yordleTrap_idle_green.troy")))
+                    {
+						args.Execute = false;
+					}
+                    break;
 
-                    case SpellSlot.E:
-                        var safeE = MenuClass.Spells["e"]["customization"]["safee"];
-                        if (safeE != null &&
-                            UtilityClass.Player.Position.Extend(args.End, -400f).EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeE.As<MenuSlider>().Value)
-                        {
-                            args.Process = false;
-                        }
+                case SpellSlot.E:
+                    var safeE = MenuClass.Spells["e"]["customization"]["safee"];
+                    if (safeE != null &&
+                        UtilityClass.Player.Position.Extend(args.End, -400f).EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeE.Value)
+                    {
+						args.Execute = false;
+					}
 
-                        if (Game.TickCount - UtilityClass.LastTick >= 1000 &&
-                            Orbwalker.Mode == OrbwalkingMode.None &&
-                            MenuClass.Miscellaneous["reversede"].As<MenuBool>().Enabled)
-                        {
-                            UtilityClass.LastTick = Game.TickCount;
-                            SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, -SpellClass.E.Range));
-                        }
-                        break;
-                }
+                    if (Game.TickCount - UtilityClass.LastTick >= 1000 &&
+                        Orbwalker.Mode == OrbwalkingMode.None &&
+                        MenuClass.Miscellaneous["reversede"].Enabled)
+                    {
+                        UtilityClass.LastTick = Game.TickCount;
+                        SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, -SpellClass.E.Range));
+                    }
+                    break;
             }
         }
 
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        
         /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
         public void OnPostAttack(OnPostAttackEventArgs args)
         {
@@ -111,33 +157,21 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Weaving(sender, args);
+                    Weaving(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    Jungleclear(sender, args);
+                    Jungleclear(args);
                     break;
             }
         }
 
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
+		/// <summary>
+		///     Called on do-cast.
+		/// </summary>
+		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
-        }
-
-        /// <summary>
-        ///     Called on do-cast.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnProcessSpellCast(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
-        {
-            if (sender.IsMe())
+            if (args.Caster.IsMe())
             {
                 /// <summary>
                 ///     Initializes the orbwalkingmodes.
@@ -150,11 +184,11 @@ namespace AIO.Champions
                             //case "CaitlynEntrapment":
                             case "CaitlynEntrapmentMissile":
                                 if (SpellClass.W.Ready &&
-                                    MenuClass.Spells["w"]["triplecombo"].As<MenuBool>().Enabled)
+                                    MenuClass.Spells["w"]["triplecombo"].Enabled)
                                 {
                                     var bestTarget = GameObjects.EnemyHeroes
                                         .Where(t => !Invulnerable.Check(t) && t.IsValidTarget(SpellClass.W.Range))
-                                        .MinBy(o => o.Distance(args.End));
+                                        .MinBy(o => o.Distance(args.EndPosition));
                                     if (bestTarget != null &&
                                         CanTrap(bestTarget))
                                     {
@@ -169,12 +203,12 @@ namespace AIO.Champions
             }
         }
 
-        /// <summary>
-        ///     Fired on an incoming gapcloser.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
+	    /// <summary>
+	    ///     Fired on an incoming gapcloser.
+	    /// </summary>
+	    /// <param name="sender">The sender.</param>
+	    /// <param name="args">The <see cref="Utilities.Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+	    public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -192,13 +226,13 @@ namespace AIO.Champions
             if (SpellClass.E.Ready)
             {
                 var enabledOption2 = MenuClass.Gapcloser2["enabled"];
-                if (enabledOption2 == null || !enabledOption2.As<MenuBool>().Enabled)
+                if (enabledOption2 == null || !enabledOption2.Enabled)
                 {
                     return;
                 }
 
                 var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption2 == null || !spellOption2.As<MenuBool>().Enabled)
+                if (spellOption2 == null || !spellOption2.Enabled)
                 {
                     return;
                 }
@@ -210,7 +244,7 @@ namespace AIO.Champions
                             args.Target.IsMe())
                         {
                             var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -450);
-                            if (targetPos..Position.IsUnderEnemyTurret())
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -220,7 +254,7 @@ namespace AIO.Champions
                         break;
                     default:
                         var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -450);
-                        if (targetPos2..Position.IsUnderEnemyTurret())
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
@@ -245,13 +279,13 @@ namespace AIO.Champions
                 args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.W.Range)
             {
                 var enabledOption = MenuClass.Gapcloser2["enabled"];
-                if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+                if (enabledOption == null || !enabledOption.Enabled)
                 {
                     return;
                 }
 
                 var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+                if (spellOption == null || !spellOption.Enabled)
                 {
                     return;
                 }
@@ -260,36 +294,6 @@ namespace AIO.Champions
                 UpdateEnemyTrapTime(sender.NetworkID);
             }
         }
-
-        /*
-        /// <summary>
-        ///     Called on interruptable spell.
-        /// </summary>
-        /// <param name="sender">The object.</param>
-        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public void OnInterruptableTarget(Events.InterruptableTargetEventArgs args)
-        {
-            if (UtilityClass.Player.IsDead || Invulnerable.Check(args.Sender, DamageType.Magical, false))
-            {
-                return;
-            }
-
-            if (SpellClass.E.State == SpellState.Ready && args.Sender.IsValidTarget(SpellClass.E.SpellData.Range)
-                && MenuClass.Spells["e"]["interrupter"].As<MenuBool>().Enabled)
-            {
-                if (!SpellClass.E.GetPrediction(args.Sender).CollisionObjects.Any())
-                {
-                    SpellClass.E.Cast(SpellClass.E.GetPrediction(args.Sender).UnitPosition);
-                }
-            }
-
-            if (SpellClass.W.State == SpellState.Ready && args.Sender.IsValidTarget(SpellClass.W.SpellData.Range)
-                && MenuClass.Spells["w"]["interrupter"].As<MenuBool>().Enabled)
-            {
-                SpellClass.W.Cast(SpellClass.W.GetPrediction(args.Sender).CastPosition);
-            }
-        }
-        */
 
         /// <summary>
         ///     Fired when the game is updated.
@@ -304,12 +308,12 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(EntropyEventArgs args);
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(EntropyEventArgs args);
+            Automatic(args);
 
             if (Orbwalker.IsWindingUp)
             {
@@ -322,11 +326,11 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Harass:
-                    Harass(EntropyEventArgs args);
+                    Harass(args);
                     break;
 
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(EntropyEventArgs args);
+                    LaneClear(args);
                     break;
             }
         }

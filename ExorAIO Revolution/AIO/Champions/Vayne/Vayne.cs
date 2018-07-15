@@ -124,17 +124,6 @@ namespace AIO.Champions
         }
 
         /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent(EntropyEventArgs args)
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
-        }
-
-        /// <summary>
         ///     Fired on an incoming dash.
         /// </summary>
         /// <param name="args">The <see cref="Dash.DashArgs" /> instance containing the event data.</param>

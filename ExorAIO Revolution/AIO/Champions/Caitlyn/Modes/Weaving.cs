@@ -3,7 +3,6 @@ using Entropy;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -34,7 +33,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 !Invulnerable.Check(heroTarget) &&
-                MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Spells["e"]["combo"].Enabled)
             {
                 if (heroTarget.IsValidTarget(SpellClass.E.Range - 250f) &&
                     heroTarget.Distance(SpellClass.E.GetPrediction(heroTarget).CastPosition) < SpellClass.E.Range - 300f)

@@ -18,7 +18,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the enemy's trap data.
         /// </summary>
-        public Dictionary<int, double> EnemyTrapData = new Dictionary<int, double>();
+        public Dictionary<uint, double> EnemyTrapData = new Dictionary<uint, double>();
 
         /// <summary>
         ///     Initializes the trap time check for each enemy.
@@ -35,7 +35,7 @@ namespace AIO.Champions
         ///     Gets an enemy's last Trap time.
         /// </summary>
         /// <param name="networkId">The networkId.</param>
-        public double GetLastEnemyTrapTime(int networkId)
+        public double GetLastEnemyTrapTime(uint networkId)
         {
             return EnemyTrapData.FirstOrDefault(k => k.Key == networkId).Value;
         }
@@ -53,7 +53,7 @@ namespace AIO.Champions
         ///     Updates an enemy's last Trap time.
         /// </summary>
         /// <param name="networkId">The networkId.</param>
-        public void UpdateEnemyTrapTime(int networkId)
+        public void UpdateEnemyTrapTime(uint networkId)
         {
             EnemyTrapData[networkId] = Game.TickCount;
         }

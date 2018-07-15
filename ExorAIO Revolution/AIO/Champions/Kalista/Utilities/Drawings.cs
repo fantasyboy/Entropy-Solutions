@@ -21,7 +21,7 @@ namespace AIO.Champions
 	    /// <summary>
 	    ///     Initializes the drawings.
 	    /// </summary>
-	    public void OnRender(EntropyEventArgs args)
+	    public void OnPresent(EntropyEventArgs args)
 	    {
 		    /// <summary>
 		    ///     Loads the Q drawing.
@@ -75,7 +75,7 @@ namespace AIO.Champions
 	    public void OnEndScene(EntropyEventArgs args)
 	    {
 			/// <summary>
-			///     Loads the E damage to healthbar.
+			///     Draws the E damage to healthbar.
 			/// </summary>
 			if (SpellClass.E.Ready &&
 				MenuClass.Drawings["edmg"].Enabled)
@@ -85,7 +85,7 @@ namespace AIO.Champions
 					DamageIndicatorRendering.Render(hero, GetEDamage(hero));
 				}
 
-				foreach (var jungleMob in ObjectCache.JungleMinions.Where(t => t.IsValidTarget(SpellClass.E.Range) && t.IsJungleMinion()))
+				foreach (var jungleMob in ObjectCache.JungleMinions.Where(t => t.IsJungleMinion() && t.IsValidTarget(SpellClass.E.Range)))
 				{
 					DamageIndicatorRendering.Render(jungleMob, GetEDamage(jungleMob));
 				}

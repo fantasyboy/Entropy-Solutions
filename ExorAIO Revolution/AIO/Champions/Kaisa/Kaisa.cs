@@ -112,17 +112,6 @@ namespace AIO.Champions
 	        }
 		}
 
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent(EntropyEventArgs args)
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
-        }
-
 	    private static void OnTeleport(Teleports.TeleportEventArgs args)
 	    {
 		    if (args.Type != TeleportType.Recall || args.Status != TeleportStatus.Start)
@@ -152,7 +141,10 @@ namespace AIO.Champions
 		    {
 			    switch (args.ToLevel)
 			    {
-				    case 11:
+				    case 6:
+					    SpellClass.R.Range = 1500;
+					    break;
+					case 11:
 					    SpellClass.R.Range = 2000;
 					    break;
 				    case 16:
