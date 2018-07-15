@@ -3,7 +3,6 @@ using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Rendering;
-using Entropy.SDK.UI.Components;
 using NabbTracker.Utilities;
 using Color = SharpDX.Color;
 
@@ -27,13 +26,13 @@ namespace NabbTracker.Trackers
                 h.IsVisible))
             {
                 if (hero.IsEnemy() &&
-                    !MenuClass.AttackRangeTracker["enemies"].As<MenuBool>().Enabled)
+                    !MenuClass.AttackRangeTracker["enemies"].Enabled)
                 {
                     continue;
                 }
 
                 if (hero.IsAlly() &&
-                    !MenuClass.AttackRangeTracker["allies"].As<MenuBool>().Enabled)
+                    !MenuClass.AttackRangeTracker["allies"].Enabled)
                 {
                     continue;
                 }
