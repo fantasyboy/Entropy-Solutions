@@ -69,6 +69,29 @@ namespace AIO.Champions
 		    }
 	    }
 
+	    private static void OnGainBuff(BuffManagerGainBuffEventArgs args)
+	    {
+		    if (!args.Sender.IsMe())
+		    {
+			    return;
+		    }
+
+			var heroTarget = args.BuffInstance.Owner;
+		    if (heroTarget != null)
+		    {
+				var buff = args.BuffInstance;
+			    if (buff.Name.ToLower() == "caitlynyordletrapinternal" &&
+					heroTarget.DistanceToPlayer() >= 650 + UtilityClass.Player.BoundingRadius &&
+			        heroTarget.IsValidTarget(1250))
+			    {
+					LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
+				    LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
+				    LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
+				    LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
+				}
+			}
+	    }
+
 	    private static void OnTeleport(Teleports.TeleportEventArgs args)
 	    {
 		    if (args.Type != TeleportType.Recall || args.Status != TeleportStatus.Start)

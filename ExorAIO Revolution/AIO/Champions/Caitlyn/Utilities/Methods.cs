@@ -23,6 +23,7 @@ namespace AIO.Champions
             Renderer.OnRender += OnRender;
 	        Renderer.OnEndScene += OnEndScene;
 	        Teleports.OnTeleport += OnTeleport;
+	        BuffManager.OnGainBuff += OnGainBuff;
 	        AIBaseClient.OnLevelUp += OnLevelUp;
             Orbwalker.OnPostAttack += OnPostAttack;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
