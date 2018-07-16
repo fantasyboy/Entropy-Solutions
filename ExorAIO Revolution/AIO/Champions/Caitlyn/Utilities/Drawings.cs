@@ -6,7 +6,6 @@ using Entropy.SDK.Caching;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Rendering;
-using Entropy.SDK.UI.Components;
 using Color = SharpDX.Color;
 
 #pragma warning disable 1587
@@ -55,40 +54,46 @@ namespace AIO.Champions
 		    /// <summary>
 		    ///     Loads the R drawing.
 		    /// </summary>
-		    if (SpellClass.R.Ready)
+			if (SpellClass.R.Ready &&
+				MenuClass.Drawings["r"].Enabled)
 		    {
-			    if (MenuClass.Drawings["r"].Enabled)
-			    {
-				    CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
-			    }
-
-			    if (MenuClass.Drawings["rmm"].Enabled)
-			    {
-				    TacticalMapRendering.Render(Color.White, UtilityClass.Player.Position, SpellClass.R.Range);
-			    }
+			    CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
 		    }
 	    }
 
 	    public void OnEndScene(EntropyEventArgs args)
 	    {
 		    /// <summary>
-		    ///     Draws the R damage to healthbar.
+		    ///     Loads the R drawings.
 		    /// </summary>
-		    if (SpellClass.R.Ready &&
-			    MenuClass.Drawings["rdmg"].Enabled)
+		    if (SpellClass.R.Ready)
 		    {
-			    foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(SpellClass.R.Range)))
+			    /// <summary>
+			    ///     Draws the R range into minimap.
+			    /// </summary>
+				if (MenuClass.Drawings["rmm"].Enabled)
 			    {
-				    DamageIndicatorRendering.Render(hero, GetRDamage(hero));
+				    TacticalMapRendering.Render(Color.White, UtilityClass.Player.Position, SpellClass.R.Range);
 			    }
-		    }
+
+			    /// <summary>
+			    ///     Draws the R damage into enemy healthbar.
+			    /// </summary>
+				if (MenuClass.Drawings["rdmg"].Enabled)
+			    {
+				    foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(SpellClass.R.Range)))
+				    {
+					    DamageIndicatorRendering.Render(hero, GetRDamage(hero));
+				    }
+			    }
+			}
 
 			/// <summary>
 			///     Draws the Passive damage to healthbar.
 			/// </summary>
 			if (MenuClass.Drawings["passivedmg"].Enabled)
 		    {
-			    foreach (var hero in ObjectCache.EnemyHeroes)
+			    foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(1250f)))
 			    {
 				    if (UtilityClass.Player.HasBuff("caitlynheadshot") ||
 				        UtilityClass.Player.HasBuff("caitlynheadshotrangecheck") &&
@@ -100,12 +105,12 @@ namespace AIO.Champions
 
 			    if (UtilityClass.Player.HasBuff("caitlynheadshot"))
 			    {
-				    foreach (var jungleMob in ObjectCache.JungleMinions.Where(t => t.IsJungleMinion()))
+				    foreach (var jungleMob in ObjectCache.JungleMinions.Where(t => t.IsJungleMinion() && t.IsValidTarget(1250f)))
 				    {
 					    DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 				    }
 
-				    foreach (var mob in ObjectCache.EnemyLaneMinions)
+				    foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTarget(1250f)))
 				    {
 					    DamageIndicatorRendering.Render(mob, UtilityClass.Player.GetAutoAttackDamage(mob));
 				    }
