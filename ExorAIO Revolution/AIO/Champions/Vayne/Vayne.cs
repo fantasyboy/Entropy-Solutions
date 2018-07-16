@@ -229,20 +229,10 @@ namespace AIO.Champions
             /// <summary>
             ///     The Anti-Gapcloser Q.
             /// </summary>
-            if (SpellClass.Q.Ready)
+            if (SpellClass.Q.Ready &&
+                MenuClass.Gapcloser["enabled"].Enabled &&
+		        MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"].Enabled)
             {
-                var enabledOption = MenuClass.Gapcloser["enabled"];
-                if (enabledOption == null || !enabledOption.Enabled)
-                {
-                    return;
-                }
-
-                var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption == null || !spellOption.Enabled)
-                {
-                    return;
-                }
-
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:
@@ -276,20 +266,10 @@ namespace AIO.Champions
             ///     The Anti-Gapcloser E.
             /// </summary>
             if (SpellClass.E.Ready &&
-                !Invulnerable.Check(sender, DamageType.Magical, false))
+                MenuClass.Gapcloser2["enabled"].Enabled &&
+                MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"].Enabled &&
+				!Invulnerable.Check(sender, DamageType.Magical, false))
             {
-                var enabledOption2 = MenuClass.Gapcloser2["enabled"];
-                if (enabledOption2 == null || !enabledOption2.Enabled)
-                {
-                    return;
-                }
-
-                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption2 == null || !spellOption2.Enabled)
-                {
-                    return;
-                }
-
                 switch (args.Type)
                 {
                     case Gapcloser.Type.Targeted:

@@ -17,7 +17,7 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             Orbwalker.OnPreAttack += OnPreAttack;
-	        Renderer.OnPresent  += OnPresent;
+	        Renderer.OnRender  += OnRender;
 	        Renderer.OnEndScene += OnEndScene;
 			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
 		}

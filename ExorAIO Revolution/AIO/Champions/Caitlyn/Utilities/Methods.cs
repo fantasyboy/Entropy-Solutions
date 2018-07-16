@@ -20,7 +20,7 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             Spellbook.OnLocalCastSpell += OnLocalCastSpell;
-            Renderer.OnPresent += OnPresent;
+            Renderer.OnRender += OnRender;
 	        Renderer.OnEndScene += OnEndScene;
 	        Teleports.OnTeleport += OnTeleport;
 	        AIBaseClient.OnLevelUp += OnLevelUp;

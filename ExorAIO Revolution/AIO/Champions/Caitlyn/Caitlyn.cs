@@ -11,7 +11,6 @@ using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.Predictions.RecallPrediction;
-using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
 using Gapcloser = AIO.Utilities.Gapcloser;
 
@@ -45,11 +44,6 @@ namespace AIO.Champions
             ///     Initializes the spells.
             /// </summary>
             Spells();
-
-            /// <summary>
-            ///     Initializes the trap time check for each enemy.
-            /// </summary>
-            InitializeTrapTimeCheck();
         }
 
 		#endregion
@@ -193,7 +187,7 @@ namespace AIO.Champions
                                         CanTrap(bestTarget))
                                     {
                                         SpellClass.W.Cast(UtilityClass.Player.Position.Extend(bestTarget.Position, UtilityClass.Player.Distance(bestTarget) + bestTarget.BoundingRadius));
-                                        UpdateEnemyTrapTime(bestTarget.NetworkID);
+                                        //UpdateEnemyTrapTime(bestTarget.NetworkID);
                                     }
                                 }
                                 break;
@@ -207,7 +201,7 @@ namespace AIO.Champions
 	    ///     Fired on an incoming gapcloser.
 	    /// </summary>
 	    /// <param name="sender">The sender.</param>
-	    /// <param name="args">The <see cref="Utilities.Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+	    /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
 	    public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
@@ -223,19 +217,10 @@ namespace AIO.Champions
             /// <summary>
             ///     The Anti-Gapcloser E.
             /// </summary>
-            if (SpellClass.E.Ready)
+            if (SpellClass.E.Ready &&
+                MenuClass.Gapcloser2["enabled"].Enabled &&
+                MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"].Enabled)
             {
-                var enabledOption2 = MenuClass.Gapcloser2["enabled"];
-                if (enabledOption2 == null || !enabledOption2.Enabled)
-                {
-                    return;
-                }
-
-                var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption2 == null || !spellOption2.Enabled)
-                {
-                    return;
-                }
 
                 switch (args.Type)
                 {
@@ -243,7 +228,7 @@ namespace AIO.Champions
                         if (sender.IsMelee &&
                             args.Target.IsMe())
                         {
-                            var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -450);
+                            var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -400);
                             if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
@@ -253,7 +238,7 @@ namespace AIO.Champions
                         }
                         break;
                     default:
-                        var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -450);
+                        var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -400);
                         if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
@@ -267,31 +252,16 @@ namespace AIO.Champions
                 }
             }
 
-            if (!CanTrap(sender))
+			/// <summary>
+			///     The Anti-Gapcloser W.
+			/// </summary>
+			if (SpellClass.W.Ready &&
+				!Invulnerable.Check(sender, DamageType.Magical, false) &&
+			    MenuClass.Gapcloser["enabled"].Enabled &&
+			    MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"].Enabled &&
+				args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.W.Range)
             {
-                return;
-            }
-
-            /// <summary>
-            ///     The Anti-Gapcloser W.
-            /// </summary>
-            if (SpellClass.W.Ready &&
-                args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.W.Range)
-            {
-                var enabledOption = MenuClass.Gapcloser2["enabled"];
-                if (enabledOption == null || !enabledOption.Enabled)
-                {
-                    return;
-                }
-
-                var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption == null || !spellOption.Enabled)
-                {
-                    return;
-                }
-
-                SpellClass.W.Cast(args.EndPosition);
-                UpdateEnemyTrapTime(sender.NetworkID);
+				SpellClass.W.Cast(args.EndPosition);
             }
         }
 

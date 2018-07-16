@@ -35,8 +35,8 @@ namespace AIO.Champions
                 !Invulnerable.Check(heroTarget) &&
                 MenuClass.Spells["e"]["combo"].Enabled)
             {
-                if (heroTarget.IsValidTarget(SpellClass.E.Range - 250f) &&
-                    heroTarget.Distance(SpellClass.E.GetPrediction(heroTarget).CastPosition) < SpellClass.E.Range - 300f)
+                if (heroTarget.IsValidTarget(SpellClass.E.Range) &&
+                    heroTarget.Distance(SpellClass.E.GetPrediction(heroTarget).CastPosition) < SpellClass.E.Range)
                 {
                     SpellClass.E.Cast(heroTarget);
                 }

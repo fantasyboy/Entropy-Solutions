@@ -132,7 +132,7 @@ namespace AIO.Utilities
                     ChampionName = "Caitlyn",
                     Slot = SpellSlot.E,
                     IsReversedDash = true,
-                    PushBackDistance = 400,
+                    Range = 400,
                     SpellName = "caitlynentrapment",
                     SpellType = Type.SkillShot
                 });
@@ -943,7 +943,7 @@ namespace AIO.Utilities
                 return;
             }
 
-            foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1500).ToList())
+            foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1250).ToList())
             {
                 Gapclosers.Remove(needToDeleteValue.Key);
             }
@@ -987,13 +987,13 @@ namespace AIO.Utilities
                 var spell = Spells.FirstOrDefault(e => e.SpellName == argsName);
                 if (spell.IsReversedDash)
                 {
-                    unit.EndPosition = args.StartPosition.Extend(args.EndPosition, -spell.PushBackDistance);
+                    unit.EndPosition = args.StartPosition.Extend(args.EndPosition, -spell.Range);
                 }
                 else if (Math.Abs(spell.Range) > 0)
                 {
-                    unit.EndPosition = unit.Unit.Position.Extend(args.EndPosition, spell.Range);
+                    unit.EndPosition = args.StartPosition.Extend(args.EndPosition, spell.Range);
                 }
-                else
+	            else 
                 {
                     unit.EndPosition = args.EndPosition;
                 }
@@ -1003,8 +1003,20 @@ namespace AIO.Utilities
                 unit.EndPosition = args.EndPosition;
             }
 
-            unit.StartTick = Game.TickCount;
-        }
+			if (unit.EndPosition.IsWall())
+	        {
+		        for (var i = 25; i < args.StartPosition.Distance(unit.EndPosition); i += 25)
+		        {
+			        var endPos = args.StartPosition.Extend(unit.EndPosition, i);
+			        if (endPos.IsWall())
+			        {
+				        unit.EndPosition = endPos;
+			        }
+		        }
+			}
+
+	        unit.StartTick = Game.TickCount;
+		}
 
         #endregion
 
@@ -1029,11 +1041,9 @@ namespace AIO.Utilities
 
             public bool IsReversedDash { get; set; }
 
-            public int PushBackDistance { get; set; }
-
             public float Range { get; set; }
 
-            #endregion
+	        #endregion
         }
 
         public class GapcloserArgs

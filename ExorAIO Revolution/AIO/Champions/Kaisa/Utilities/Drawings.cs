@@ -22,7 +22,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the drawings.
         /// </summary>
-        public void OnPresent(EntropyEventArgs args)
+        public void OnRender(EntropyEventArgs args)
         {
             /// <summary>
             ///     Loads the W drawing.

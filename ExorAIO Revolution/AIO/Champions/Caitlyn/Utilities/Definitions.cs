@@ -1,8 +1,6 @@
 ﻿
-using System.Collections.Generic;
-using System.Linq;
 using Entropy;
-using AIO.Utilities;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -13,51 +11,17 @@ namespace AIO.Champions
     /// </summary>
     internal partial class Caitlyn
     {
-        #region Fields
+		#region Fields
 
-        /// <summary>
-        ///     Initializes the enemy's trap data.
-        /// </summary>
-        public Dictionary<uint, double> EnemyTrapData = new Dictionary<uint, double>();
-
-        /// <summary>
-        ///     Initializes the trap time check for each enemy.
-        /// </summary>
-        public void InitializeTrapTimeCheck()
+		/// <summary>
+		///     Returns true if an enemy can be trapped, else, false.
+		/// </summary>
+		/// <param name="hero">The hero.</param>
+		public bool CanTrap(AIHeroClient hero)
         {
-            foreach (var hero in GameObjects.EnemyHeroes)
-            {
-                EnemyTrapData.Add(hero.NetworkID, 0d);
-            }
+	        return !hero.HasBuff("caitlynyordletrapsight");
         }
 
-        /// <summary>
-        ///     Gets an enemy's last Trap time.
-        /// </summary>
-        /// <param name="networkId">The networkId.</param>
-        public double GetLastEnemyTrapTime(uint networkId)
-        {
-            return EnemyTrapData.FirstOrDefault(k => k.Key == networkId).Value;
-        }
-
-        /// <summary>
-        ///     Returns true if an enemy can be trapped, else, false.
-        /// </summary>
-        /// <param name="hero">The hero.</param>
-        public bool CanTrap(AIHeroClient hero)
-        {
-            return Game.TickCount - GetLastEnemyTrapTime(hero.NetworkID) >= 4000 - SpellClass.W.Delay * 1000;
-        }
-
-        /// <summary>
-        ///     Updates an enemy's last Trap time.
-        /// </summary>
-        /// <param name="networkId">The networkId.</param>
-        public void UpdateEnemyTrapTime(uint networkId)
-        {
-            EnemyTrapData[networkId] = Game.TickCount;
-        }
-
-        #endregion
-    }
+		#endregion
+	}
 }

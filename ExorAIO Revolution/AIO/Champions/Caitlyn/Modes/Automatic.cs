@@ -36,12 +36,12 @@ namespace AIO.Champions
                 MenuClass.Spells["w"]["logical"].Enabled)
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
-	                t.IsImmobile(SpellClass.W.Delay) &&
-					!t.HasBuff("caitlynyordletrapsight") &&
+					CanTrap(t) &&
+					t.IsImmobile(SpellClass.W.Delay) &&
                     t.DistanceToPlayer() < SpellClass.W.Range))
                 {
                     SpellClass.W.Cast(UtilityClass.Player.Position.Extend(target.Position, UtilityClass.Player.Distance(target)+target.BoundingRadius/2));
-                    UpdateEnemyTrapTime(target.NetworkID);
+                    //UpdateEnemyTrapTime(target.NetworkID);
                 }
             }
 
