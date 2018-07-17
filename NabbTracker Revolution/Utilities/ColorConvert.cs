@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Entropy.SDK.UI.Components;
 
 namespace NabbTracker.Utilities
 {
@@ -29,7 +28,7 @@ namespace NabbTracker.Utilities
             };
 
             var item = colorConvert.FirstOrDefault(i => i.Key == color);
-            var menuListValue = MenuClass.ColorblindMenu["mode"].As<MenuList>().Value;
+            var menuListValue = MenuClass.ColorblindMenu["mode"].Value;
 
             var r = item.Value[menuListValue, 0];
             var g = item.Value[menuListValue, 1];
