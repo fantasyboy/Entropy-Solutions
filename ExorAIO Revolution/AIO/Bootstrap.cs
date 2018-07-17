@@ -35,10 +35,7 @@ namespace AIO
 	                    e.ToolKitLog();
                         break;
                     case TypeLoadException _:
-                        for (var i = 1; i < 30; i++)
-                        {
-                            Logging.Log($"ExorAIO: Revolution - {UtilityClass.Player.CharName} is NOT supported yet.");
-                        }
+                        Logging.Log($"ExorAIO: Revolution - {UtilityClass.Player.CharName} is NOT supported yet.");
                         break;
                 }
             }

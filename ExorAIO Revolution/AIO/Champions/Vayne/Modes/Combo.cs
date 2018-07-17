@@ -5,7 +5,6 @@ using AIO.Utilities;
 using Entropy.SDK.Events;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -27,7 +26,7 @@ namespace AIO.Champions
             ///     The Q Engager Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["engage"].Enabled)
+                MenuClass.Root["q"]["engage"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null &&
@@ -49,7 +48,7 @@ namespace AIO.Champions
 			/// </summary>
 			if (SpellClass.E.Ready &&
 				!UtilityClass.Player.IsDashing() &&
-				MenuClass.Spells["e"]["emode"].As<MenuList>().Value != 2)
+				MenuClass.Root["e"]["emode"].Value != 2)
 			{
 				const int condemnPushDistance = 475;
 				const int threshold = 50;
@@ -59,11 +58,11 @@ namespace AIO.Champions
 						!t.IsDashing() &&
 						t.IsValidTarget(SpellClass.E.Range) &&
 						!Invulnerable.Check(t, DamageType.Magical, false) &&
-						MenuClass.Spells["e"]["whitelist"][t.CharName.ToLower()].Enabled))
+						MenuClass.Root["e"]["whitelist"][t.CharName.ToLower()].Enabled))
 				{
 					for (var i = UtilityClass.Player.BoundingRadius; i < condemnPushDistance - threshold; i += 10)
 					{
-						switch (MenuClass.Spells["e"]["emode"].As<MenuList>().Value)
+						switch (MenuClass.Root["e"]["emode"].Value)
 						{
 							case 0:
 								if (IsPerfectWallPosition(target.Position, target, UtilityClass.Player.Position, i))

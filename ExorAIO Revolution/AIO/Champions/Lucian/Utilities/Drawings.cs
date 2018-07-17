@@ -1,8 +1,8 @@
 ﻿
-using System.Drawing;
 using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.Rendering;
-using Entropy.SDK.UI.Components;
+using Color = SharpDX.Color;
 
 #pragma warning disable 1587
 
@@ -18,13 +18,13 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the drawings.
         /// </summary>
-        public void Drawings()
+        public void OnRender(EntropyEventArgs args)
         {
             /// <summary>
             ///     Loads the Q drawing.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Drawings["q"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["q"].Enabled)
             {
                 CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
             }
@@ -33,16 +33,16 @@ namespace AIO.Champions
             ///     Loads the Extended Q drawing.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Drawings["qextended"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["qextended"].Enabled)
             {
-                Render.Circle(UtilityClass.Player.Position, SpellClass.Q2.Range, 30, Color.Green);
+	            CircleRendering.Render(Color.Green, SpellClass.Q2.Range, UtilityClass.Player);
             }
 
             /// <summary>
             ///     Loads the W drawing.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Drawings["w"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["w"].Enabled)
             {
                 CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
@@ -51,7 +51,7 @@ namespace AIO.Champions
             ///     Loads the E drawing.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Drawings["e"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["e"].Enabled)
             {
                 CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
             }
@@ -60,7 +60,7 @@ namespace AIO.Champions
             ///     Loads the R drawing.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Drawings["r"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["r"].Enabled)
             {
                 CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
             }

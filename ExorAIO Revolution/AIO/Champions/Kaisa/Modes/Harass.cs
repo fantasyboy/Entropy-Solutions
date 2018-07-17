@@ -24,8 +24,8 @@ namespace AIO.Champions
 	        if (SpellClass.Q.Ready &&
 				UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > 0 &&
 	            UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["harass"]) &&
-	            MenuClass.Spells["q"]["harass"].Enabled)
+					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["harass"]) &&
+	            MenuClass.Root["q"]["harass"].Enabled)
 			{
 		        SpellClass.Q.Cast();
 	        }
@@ -35,13 +35,13 @@ namespace AIO.Champions
 			/// </summary>
 			if (SpellClass.W.Ready &&
 	            UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["harass"]) &&
-	            MenuClass.Spells["w"]["harass"].Enabled)
+					> ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Root["w"]["harass"]) &&
+	            MenuClass.Root["w"]["harass"].Enabled)
 	        {
 		        var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range / 2);
 		        if (bestTarget != null &&
 		            !Invulnerable.Check(bestTarget) &&
-		            MenuClass.Spells["w"]["whitelist"][bestTarget.CharName.ToLower()].Enabled)
+		            MenuClass.Root["w"]["whitelist"][bestTarget.CharName.ToLower()].Enabled)
 		        {
 			        SpellClass.W.Cast(bestTarget);
 		        }

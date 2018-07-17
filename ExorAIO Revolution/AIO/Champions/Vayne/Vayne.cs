@@ -8,7 +8,6 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 using SharpDX;
 using Gapcloser = AIO.Utilities.Gapcloser;
 
@@ -85,11 +84,13 @@ namespace AIO.Champions
                     invisibilityBuff.GetRemainingBuffTime() >
                     invisibilityBuff.ExpireTime - invisibilityBuff.StartTime - MenuClass.Miscellaneous["stealthtime"].Value / 1000f)
                 {
-                    args.Cancel = true;
+	                GameConsole.Print("AA Cancelled: Stealth time.");
+					args.Cancel = true;
                 }
 
                 if (UtilityClass.Player.HasBuff("summonerexhaust"))
                 {
+					GameConsole.Print("AA Cancelled: Exhaust and Stealthed.");
                     args.Cancel = true;
                 }
 
@@ -98,7 +99,8 @@ namespace AIO.Champions
                         t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))) >=
                     MenuClass.Miscellaneous["stealthcheck"].Value)
                 {
-                    args.Cancel = true;
+	                GameConsole.Print("AA Cancelled: Stealth enemies count.");
+					args.Cancel = true;
                 }
             }
 
@@ -150,8 +152,8 @@ namespace AIO.Champions
             }
 
             if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["emode"].As<MenuList>().Value != 2 &&
-                MenuClass.Spells["e"]["whitelist"][heroSender.CharName.ToLower()].Enabled)
+                MenuClass.Root["e"]["emode"].Value != 2 &&
+                MenuClass.Root["e"]["whitelist"][heroSender.CharName.ToLower()].Enabled)
             {
                 const int condemnPushDistance = 410;
                 for (var i = UtilityClass.Player.BoundingRadius; i < condemnPushDistance; i += 10)

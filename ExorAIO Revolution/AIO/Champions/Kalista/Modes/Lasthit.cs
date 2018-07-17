@@ -24,7 +24,7 @@ namespace AIO.Champions
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
 		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
-	            MenuClass.Spells["e"]["lasthit"].Enabled)
+	            MenuClass.Root["e"]["lasthit"].Enabled)
 	        {
 		        SpellClass.E.Cast();
 	        }

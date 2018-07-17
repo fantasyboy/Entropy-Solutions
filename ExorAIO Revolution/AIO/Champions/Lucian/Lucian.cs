@@ -5,7 +5,6 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -43,12 +42,12 @@ namespace AIO.Champions
 
         #region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired on an incoming gapcloser.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
+	    /// <summary>
+	    ///     Fired on an incoming gapcloser.
+	    /// </summary>
+	    /// <param name="sender">The sender.</param>
+	    /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+	    public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -56,7 +55,7 @@ namespace AIO.Champions
             }
 
             var enabledOption = MenuClass.Gapcloser["enabled"];
-            if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+            if (enabledOption == null || !enabledOption.Enabled)
             {
                 return;
             }
@@ -67,7 +66,7 @@ namespace AIO.Champions
             }
 
             var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-            if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+            if (spellOption == null || !spellOption.Enabled)
             {
                 return;
             }
@@ -83,7 +82,7 @@ namespace AIO.Champions
                         if (args.Target.IsMe())
                         {
                             var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.E.Range);
-                            if (targetPos..Position.IsUnderEnemyTurret())
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -93,7 +92,7 @@ namespace AIO.Champions
                         break;
                     default:
                         var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.E.Range);
-                        if (targetPos2..Position.IsUnderEnemyTurret())
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
@@ -110,7 +109,6 @@ namespace AIO.Champions
         /// <summary>
         ///     Called on do-cast.
         /// </summary>
-        
         /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
         public void OnPostAttack(OnPostAttackEventArgs args)
         {
@@ -120,26 +118,15 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Weaving(sender, args);
+                    Weaving(args);
                     break;
 
                 case OrbwalkingMode.LaneClear:
-                    Laneclear(sender, args);
-                    Jungleclear(sender, args);
-                    Buildingclear(sender, args);
+                    Laneclear(args);
+                    Jungleclear(args);
+                    Buildingclear(args);
                     break;
             }
-        }
-
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
         }
 
         /// <summary>

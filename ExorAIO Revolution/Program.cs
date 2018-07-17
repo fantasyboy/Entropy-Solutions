@@ -1,4 +1,5 @@
 ﻿using Entropy.SDK.Events;
+using Entropy.SDK.Utils;
 using Entropy.ToolKit;
 
 namespace AIO
@@ -24,10 +25,13 @@ namespace AIO
 		/// </summary>
 		private static void Loading_OnLoadingComplete()
         {
-            General.Menu();
-            General.Methods();
+			DelayAction.Queue(() =>
+				{
+					General.Menu();
+					General.Methods();
 
-            Bootstrap.LoadChampion();
+					Bootstrap.LoadChampion();
+				}, 2000); // Let it load the Champ Stats. (~3sec)
         }
 
 	    private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

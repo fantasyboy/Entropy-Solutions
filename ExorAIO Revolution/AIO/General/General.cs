@@ -36,8 +36,14 @@ namespace AIO
             var hydraItems = new[] { ItemID.TitanicHydra, ItemID.RavenousHydra, ItemID.Tiamat };
             if (MenuClass.Hydra != null)
             {
-                var hydraSlot = UtilityClass.Player.InventorySlots.FirstOrDefault(s => hydraItems.ToList().Contains((ItemID)s.ItemID));
-                if (hydraSlot != null)
+	            var getFirstHydraItem = LocalPlayer.Instance.InventorySlots.FirstOrDefault(i => hydraItems.Contains((ItemID)i.ItemID));
+	            if (getFirstHydraItem == null)
+	            {
+		            return;
+	            }
+
+				var hydra = LocalPlayer.Instance.GetItem((ItemID)getFirstHydraItem.ItemID);
+                if (hydra != null)
                 {
                     switch (Orbwalker.Mode)
                     {
@@ -73,13 +79,12 @@ namespace AIO
                             break; 
                     }
 
-                    var hydraSpellSlot = hydraSlot.Slot;
+                    var hydraSpellSlot = hydra.Slot;
                     if (hydraSpellSlot != SpellSlot.Unknown &&
                         UtilityClass.Player.Spellbook.GetSpellState(hydraSpellSlot).HasFlag(SpellState.Ready))
                     {
-						//Todo: WTF
-	                    //UtilityClass.Player.Spellbook.CastSpell(hydraSpellSlot);
-                    }
+						Spellbook.CastSpell(hydraSpellSlot);
+					}
                 }
             }
         }
@@ -87,7 +92,6 @@ namespace AIO
         /// <summary>
         ///     Called on preattack.
         /// </summary>
-        
         /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
         public static void OnPreAttack(OnPreAttackEventArgs args)
         {
@@ -102,7 +106,8 @@ namespace AIO
                                 MenuClass.General["disableaa"].Value &&
                         MenuClass.General["disableaa"].Enabled)
                     {
-                        args.Cancel = true;
+	                    GameConsole.Print("AA Cancelled: Disable AA.");
+						args.Cancel = true;
                     }
                     break;
 
@@ -115,7 +120,8 @@ namespace AIO
                     if (Extensions.GetEnemyLaneMinionsTargets().Contains(args.Target) &&
                         MenuClass.General["supportmode"].Enabled)
                     {
-                        args.Cancel = ObjectCache.AllyHeroes.Any(a => !a.IsMe() && a.DistanceToPlayer() < 2500);
+	                    GameConsole.Print("AA Cancelled: Support mode.");
+						args.Cancel = ObjectCache.AllyHeroes.Any(a => !a.IsMe() && a.DistanceToPlayer() < 2500);
                     }
                     break;
             }
@@ -158,7 +164,8 @@ namespace AIO
 
                 if (!UtilityClass.Player.HasBuff("windbladebuff"))
                 {
-                    args.Cancel = true;
+	                GameConsole.Print("AA Cancelled: Stormrazor check.");
+					args.Cancel = true;
                 }
             }
 		}
@@ -179,10 +186,10 @@ namespace AIO
                 var championSpellManaCosts = UtilityClass.ManaCostArray.FirstOrDefault(v => v.Key == UtilityClass.Player.CharName).Value;
                 if (championSpellManaCosts != null)
                 {
-                    var Spellbook = UtilityClass.Player.Spellbook;
+                    var spellbook = UtilityClass.Player.Spellbook;
                     var data = UtilityClass.PreserveManaData;
 
-                    var spell = Spellbook.GetSpell(slot);
+                    var spell = spellbook.GetSpell(slot);
                     var menuOption = MenuClass.PreserveMana[slot.ToString().ToLower()];
                     if (menuOption != null && menuOption.Enabled)
                     {
@@ -224,7 +231,6 @@ namespace AIO
                     var mana = UtilityClass.Player.MP;
                     if (!data.Keys.Contains(slot) && mana - spellCost < sum)
                     {
-                        Logging.Log($"Preserve Mana List: Denied Spell {slot} Usage (Mana: {mana}, Cost: {spellCost}), Preserve Mana Quantity: {sum}");
                         args.Execute = false;
                     }
                 }
@@ -243,7 +249,7 @@ namespace AIO
                                     UtilityClass.Player.GetAutoAttackDamage(target) *
                                     MenuClass.PreserveSpells[args.Slot.ToString().ToLower()].Value)
                             {
-                                args.Execute = false;
+								args.Execute = false;
                             }
                         }
                         break;

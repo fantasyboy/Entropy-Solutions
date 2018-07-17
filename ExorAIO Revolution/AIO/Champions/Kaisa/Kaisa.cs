@@ -105,8 +105,8 @@ namespace AIO.Champions
 	        ///     The W Combo Logic.
 	        /// </summary>
 	        if (SpellClass.W.Ready &&
-	            MenuClass.Spells["w"]["combo"].Enabled &&
-	            heroTarget.GetBuffCount("kaisapassivemarker") >= MenuClass.Spells["w"]["combo"].Value)
+	            MenuClass.Root["w"]["combo"].Enabled &&
+	            heroTarget.GetBuffCount("kaisapassivemarker") >= MenuClass.Root["w"]["combo"].Value)
 	        {
 				SpellClass.W.Cast(heroTarget);
 	        }
@@ -212,8 +212,8 @@ namespace AIO.Champions
 		    if (SpellClass.Q.Ready &&
 				args.Target.DistanceToPlayer() < UtilityClass.Player.GetAutoAttackRange() &&
 		        UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["nonkillable"]) &&
-		        MenuClass.Spells["q"]["nonkillable"].Enabled)
+					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["nonkillable"]) &&
+		        MenuClass.Root["q"]["nonkillable"].Enabled)
 		    {
 				SpellClass.Q.Cast();
 		    }

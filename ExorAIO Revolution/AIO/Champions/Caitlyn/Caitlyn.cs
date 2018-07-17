@@ -85,9 +85,6 @@ namespace AIO.Champions
 			        heroTarget.IsValidTarget(1250))
 			    {
 					LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
-				    LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
-				    LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
-				    LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
 				}
 			}
 	    }
@@ -103,7 +100,7 @@ namespace AIO.Champions
 		    ///     The Automatic W on Teleport Logic. 
 		    /// </summary>
 		    if (SpellClass.W.Ready &&
-		        MenuClass.Spells["w"]["teleport"].Enabled)
+		        MenuClass.Root["w"]["teleport"].Enabled)
 		    {
 			    DelayAction.Queue(() =>
 				    {
@@ -128,7 +125,7 @@ namespace AIO.Champions
             switch (args.Slot)
             {
                 case SpellSlot.Q:
-                    var safeQ = MenuClass.Spells["q"]["customization"]["safeq"];
+                    var safeQ = MenuClass.Root["q"]["customization"]["safeq"];
                     if (safeQ != null &&
                         UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeQ.Value)
                     {
@@ -144,7 +141,7 @@ namespace AIO.Champions
                     break;
 
                 case SpellSlot.E:
-                    var safeE = MenuClass.Spells["e"]["customization"]["safee"];
+                    var safeE = MenuClass.Root["e"]["customization"]["safee"];
                     if (safeE != null &&
                         UtilityClass.Player.Position.Extend(args.End, -400f).EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeE.Value)
                     {
@@ -201,7 +198,7 @@ namespace AIO.Champions
                             //case "CaitlynEntrapment":
                             case "CaitlynEntrapmentMissile":
                                 if (SpellClass.W.Ready &&
-                                    MenuClass.Spells["w"]["triplecombo"].Enabled)
+                                    MenuClass.Root["w"]["triplecombo"].Enabled)
                                 {
                                     var bestTarget = GameObjects.EnemyHeroes
                                         .Where(t => !Invulnerable.Check(t) && t.IsValidTarget(SpellClass.W.Range))

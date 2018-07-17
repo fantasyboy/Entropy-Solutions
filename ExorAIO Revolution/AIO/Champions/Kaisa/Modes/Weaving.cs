@@ -30,7 +30,7 @@ namespace AIO.Champions
 		    ///     The E Weaving Logic.
 		    /// </summary>
 		    if (SpellClass.E.Ready &&
-		        MenuClass.Spells["e"]["combo"].Enabled)
+		        MenuClass.Root["e"]["combo"].Enabled)
 		    {
 			    SpellClass.E.Cast();
 		    }

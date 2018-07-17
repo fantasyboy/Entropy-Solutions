@@ -75,11 +75,6 @@ namespace AIO.Utilities
         public static Menu Root { get; set; }
 
         /// <summary>
-        ///     Gets or sets the settings menu.
-        /// </summary>
-        public static Menu Spells { get; set; }
-
-        /// <summary>
         ///     Gets or sets the W Spell menu.
         /// </summary>
         public static Menu W { get; set; }

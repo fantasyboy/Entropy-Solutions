@@ -3,7 +3,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -30,10 +29,10 @@ namespace AIO.Champions
                 /// <summary>
                 ///     Normal.
                 /// </summary>
-                if (MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
+                if (MenuClass.Root["q"]["killsteal"].Enabled)
                 {
                     foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-                        UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q) >= t.GetRealHealth()))
+                        GetQDamage(t) >= t.GetRealHealth()))
                     {
                         SpellClass.Q.CastOnUnit(target);
                         break;
@@ -43,11 +42,11 @@ namespace AIO.Champions
                 /// <summary>
                 ///     Extended.
                 /// </summary>
-                if (MenuClass.Spells["q2"]["killsteal"].As<MenuBool>().Enabled)
+                if (MenuClass.Root["q2"]["killsteal"].Enabled)
                 {
                     foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
                         !t.IsValidTarget(SpellClass.Q.Range) &&
-                        UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q) >= t.GetRealHealth()))
+                        GetQDamage(t) >= t.GetRealHealth()))
                     {
                         foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
                         {
@@ -66,10 +65,10 @@ namespace AIO.Champions
             ///     The KillSteal W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.Root["w"]["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range).Where(t =>
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.W) >= t.GetRealHealth()))
+                    GetWDamage(t) >= t.GetRealHealth()))
                 {
                     SpellClass.W.Cast(target);
                     break;

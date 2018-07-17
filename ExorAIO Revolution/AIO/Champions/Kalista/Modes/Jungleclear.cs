@@ -29,8 +29,8 @@ namespace AIO.Champions
 	        /// </summary>
 	        if (SpellClass.E.Ready &&
 	            UtilityClass.Player.Level() >=
-					MenuClass.Spells["e"]["junglesteal"].Value &&
-	            MenuClass.Spells["e"]["junglesteal"].Enabled)
+					MenuClass.Root["e"]["junglesteal"].Value &&
+	            MenuClass.Root["e"]["junglesteal"].Enabled)
 	        {
 		        foreach (var minion in Extensions.GetGenericJungleMinionsTargets()
 			        .Where(m =>
@@ -38,7 +38,7 @@ namespace AIO.Champions
 						m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
 		        {
 			        if (UtilityClass.JungleList.Contains(minion.CharName) &&
-			            MenuClass.Spells["e"]["whitelist"][minion.CharName].Enabled)
+			            MenuClass.Root["e"]["whitelist"][minion.CharName].Enabled)
 			        {
 				        SpellClass.E.Cast();
 			        }
@@ -65,8 +65,8 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["jungleclear"]) &&
+                MenuClass.Root["q"]["jungleclear"].Enabled)
             {
                 SpellClass.Q.Cast(jungleTarget);
             }

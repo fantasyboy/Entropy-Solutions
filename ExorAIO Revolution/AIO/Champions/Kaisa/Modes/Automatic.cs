@@ -3,7 +3,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -25,8 +24,8 @@ namespace AIO.Champions
             ///     The Semi-Automatic R Management.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Spells["r"]["bool"].Enabled &&
-                MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
+                MenuClass.Root["r"]["bool"].Enabled &&
+                MenuClass.Root["r"]["key"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes.FirstOrDefault(t =>
 						!Invulnerable.Check(t) &&

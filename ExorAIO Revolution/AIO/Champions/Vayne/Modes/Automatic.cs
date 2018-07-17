@@ -5,7 +5,6 @@ using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -27,8 +26,8 @@ namespace AIO.Champions
             ///     The Semi-Automatic E Management.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["bool"].Enabled &&
-                MenuClass.Spells["e"]["key"].As<MenuKeyBind>().Enabled)
+                MenuClass.Root["e"]["bool"].Enabled &&
+                MenuClass.Root["e"]["key"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes.Where(t =>
                         t.IsValidTarget(SpellClass.E.Range) &&

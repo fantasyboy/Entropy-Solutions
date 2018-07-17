@@ -5,7 +5,6 @@ using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -37,8 +36,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Root["e"]["jungleclear"]) &&
+                MenuClass.Root["e"]["jungleclear"].Enabled)
             {
                 const int condemnPushDistance = 410;
                 var playerPos = UtilityClass.Player.Position;
@@ -54,7 +53,7 @@ namespace AIO.Champions
                         continue;
                     }
 
-                    if (MenuClass.Spells["e"]["emode"].As<MenuList>().Value == 0)
+                    if (MenuClass.Root["e"]["emode"].Value == 0)
                     {
                         if (!predPosition.Extend(playerPos, -i).IsWall() ||
                             !predPosition.Extend(playerPos, -i-60).IsWall())
@@ -72,8 +71,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["jungleclear"]) &&
+                MenuClass.Root["q"]["jungleclear"].Enabled)
             {
                 SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
             }

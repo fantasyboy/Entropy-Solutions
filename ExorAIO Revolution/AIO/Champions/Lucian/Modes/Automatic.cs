@@ -5,7 +5,6 @@ using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
 
 #pragma warning disable 1587
@@ -24,36 +23,34 @@ namespace AIO.Champions
         /// </summary>
         public void Automatic(EntropyEventArgs args)
         {
-            Orbwalker.AttackingEnabled = !IsCulling();
+	        /// <summary>
+	        ///     The Automatic R Orbwalking.
+	        /// </summary>
+	        if (MenuClass.Root["r"]["bool"].Enabled &&
+	            MenuClass.Root["r"]["key"].Enabled)
+	        {
+		        DelayAction.Queue(() =>
+			        {
+				        Orbwalker.Move(Hud.CursorPositionUnclipped);
+			        }, 100 + EnetClient.Ping);
+	        }
 
-            /// <summary>
-            ///     The Automatic R Orbwalking.
-            /// </summary>
-            if (MenuClass.Spells["r"]["bool"].As<MenuBool>().Enabled &&
-                MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
-            {
-                DelayAction.Queue(100 + Game.Ping, () =>
-                    {
-                        UtilityClass.Player.IssueOrder(OrderType.MoveTo, Hud.CursorPositionUnclipped);
-                    });
-            }
-
-            /// <summary>
-            ///     The Semi-Automatic R Management.
-            /// </summary>
-            if (SpellClass.R.Ready &&
-                MenuClass.Spells["r"]["bool"].As<MenuBool>().Enabled)
+			/// <summary>
+			///     The Semi-Automatic R Management.
+			/// </summary>
+			if (SpellClass.R.Ready &&
+                MenuClass.Root["r"]["bool"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
+                        MenuClass.Root["r"]["whitelist"][t.CharName.ToLower()].Enabled)
                     .MinBy(o => o.GetRealHealth());
 
                 if (!IsCulling() &&
                     bestTarget != null &&
-                    MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
+                    MenuClass.Root["r"]["key"].Enabled)
                 {
                     if (SpellClass.W.Ready &&
                         bestTarget.IsValidTarget(SpellClass.W.Range))
@@ -63,7 +60,7 @@ namespace AIO.Champions
                     SpellClass.R.Cast(bestTarget.Position);
                 }
                 else if (UtilityClass.Player.HasBuff("LucianR") &&
-                     !MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
+                     !MenuClass.Root["r"]["key"].Enabled)
                 {
                     SpellClass.R.Cast();
                 }

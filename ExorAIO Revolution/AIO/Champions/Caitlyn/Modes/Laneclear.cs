@@ -23,12 +23,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
-                MenuClass.Spells["q"]["laneclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["laneclear"]) &&
+                MenuClass.Root["q"]["laneclear"].Enabled)
             {
                 /*
                 var farmLocation = SpellClass.Q.GetLineFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.Q.Width);
-                if (farmLocation.MinionsHit >= MenuClass.Spells["q"]["customization"]["laneclear"].Value)
+                if (farmLocation.MinionsHit >= MenuClass.Root["q"]["customization"]["laneclear"].Value)
                 {
                     SpellClass.Q.Cast(farmLocation.Position);
                 }

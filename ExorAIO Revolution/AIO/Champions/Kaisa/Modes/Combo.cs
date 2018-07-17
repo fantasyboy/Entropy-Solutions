@@ -22,7 +22,7 @@ namespace AIO.Champions
 	        ///     The E Engager Logic.
 	        /// </summary>
 	        if (SpellClass.E.Ready &&
-	            MenuClass.Spells["e"]["engage"].Enabled)
+	            MenuClass.Root["e"]["engage"].Enabled)
 	        {
 		        var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(UtilityClass.Player.GetAutoAttackRange() + 300);
 		        if (bestTarget != null &&
@@ -37,8 +37,8 @@ namespace AIO.Champions
 			///     The Q Combo Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-				UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) >= MenuClass.Spells["q"]["combo"].Value &&
-				MenuClass.Spells["q"]["combo"].Enabled)
+				UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) >= MenuClass.Root["q"]["combo"].Value &&
+				MenuClass.Root["q"]["combo"].Enabled)
 	        {
 		        SpellClass.Q.Cast();
 	        }

@@ -18,7 +18,7 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             Orbwalker.OnPostAttack += OnPostAttack;
-            Render.OnPresent += OnPresent;
+            Renderer.OnRender += OnRender;
             Gapcloser.OnGapcloser += OnGapcloser;
         }
 

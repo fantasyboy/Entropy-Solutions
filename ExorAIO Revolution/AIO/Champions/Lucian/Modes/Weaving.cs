@@ -4,7 +4,6 @@ using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -24,17 +23,17 @@ namespace AIO.Champions
         public void ELogic(AIHeroClient target)
         {
             if (UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) <= UtilityClass.Player.GetAutoAttackRange() &&
-                MenuClass.Spells["e"]["customization"]["onlyeifmouseoutaarange"].As<MenuBool>().Enabled)
+                MenuClass.Root["e"]["customization"]["onlyeifmouseoutaarange"].Enabled)
             {
                 return;
             }
 
             var posAfterE = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
-            var eRangeCheck = MenuClass.Spells["e"]["customization"]["erangecheck"];
+            var eRangeCheck = MenuClass.Root["e"]["customization"]["erangecheck"];
             if (eRangeCheck != null)
             {
-                if (eRangeCheck.As<MenuSliderBool>().Enabled &&
-                    posAfterE.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= eRangeCheck.As<MenuSliderBool>().Value)
+                if (eRangeCheck.Enabled &&
+                    posAfterE.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() + UtilityClass.Player.BoundingRadius) >= eRangeCheck.Value)
                 {
                     return;
                 }
@@ -42,18 +41,18 @@ namespace AIO.Champions
 
             if (posAfterE.Distance(target) >
                     UtilityClass.Player.GetAutoAttackRange(target) &&
-                MenuClass.Spells["e"]["customization"]["noeoutaarange"].As<MenuBool>().Enabled)
+                MenuClass.Root["e"]["customization"]["noeoutaarange"].Enabled)
             {
                 return;
             }
 
-            if (posAfterE..Position.IsUnderEnemyTurret() &&
-                MenuClass.Spells["e"]["customization"]["noeturret"].As<MenuBool>().Enabled)
+            if (posAfterE.IsUnderEnemyTurret() &&
+                MenuClass.Root["e"]["customization"]["noeturret"].Enabled)
             {
                 return;
             }
 
-            switch (MenuClass.Spells["e"]["mode"].As<MenuList>().Value)
+            switch (MenuClass.Root["e"]["mode"].Value)
             {
                 case 0:
                     Vector3 point;
@@ -93,7 +92,7 @@ namespace AIO.Champions
                 return;
             }
 
-            switch (MenuClass.Spells["pattern"].As<MenuList>().Value)
+            switch (MenuClass.Root["pattern"].Value)
             {
                 case 0:
                 case 2:
@@ -101,7 +100,7 @@ namespace AIO.Champions
                     ///     The E Combo Logic.
                     /// </summary>
                     if (SpellClass.E.Ready &&
-                        MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["e"]["combo"].Enabled)
                     {
                         ELogic(heroTarget);
                         return;
@@ -113,7 +112,7 @@ namespace AIO.Champions
                     ///     The Q Combo Logic.
                     /// </summary>
                     if (SpellClass.Q.Ready &&
-                        MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["q"]["combo"].Enabled)
                     {
                         SpellClass.Q.CastOnUnit(heroTarget);
                         return;
@@ -125,7 +124,7 @@ namespace AIO.Champions
                     ///     The W Combo Logic.
                     /// </summary>
                     if (SpellClass.W.Ready &&
-                        MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["w"]["combo"].Enabled)
                     {
                         SpellClass.W.Cast(heroTarget);
                         return;
@@ -133,14 +132,14 @@ namespace AIO.Champions
                     break;
             }
 
-            switch (MenuClass.Spells["pattern"].As<MenuList>().Value)
+            switch (MenuClass.Root["pattern"].Value)
             {
                 case 0:
                     /// <summary>
                     ///     The Q Combo Logic.
                     /// </summary>
                     if (SpellClass.Q.Ready &&
-                        MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["q"]["combo"].Enabled)
                     {
                         SpellClass.Q.CastOnUnit(heroTarget);
                         return;
@@ -153,7 +152,7 @@ namespace AIO.Champions
                     ///     The E Combo Logic.
                     /// </summary>
                     if (SpellClass.E.Ready &&
-                        MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["e"]["combo"].Enabled)
                     {
                         ELogic(heroTarget);
                         return;
@@ -165,7 +164,7 @@ namespace AIO.Champions
                     ///     The W Combo Logic.
                     /// </summary>
                     if (SpellClass.W.Ready &&
-                        MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["w"]["combo"].Enabled)
                     {
                         SpellClass.W.Cast(heroTarget);
                         return;
@@ -173,7 +172,7 @@ namespace AIO.Champions
                     break;
             }
 
-            switch (MenuClass.Spells["pattern"].As<MenuList>().Value)
+            switch (MenuClass.Root["pattern"].Value)
             {
                 case 0:
                 case 1:
@@ -181,7 +180,7 @@ namespace AIO.Champions
                     ///     The W Combo Logic.
                     /// </summary>
                     if (SpellClass.W.Ready &&
-                        MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["w"]["combo"].Enabled)
                     {
                         SpellClass.W.Cast(heroTarget);
                     }
@@ -193,7 +192,7 @@ namespace AIO.Champions
                     ///     The Q Combo Logic.
                     /// </summary>
                     if (SpellClass.Q.Ready &&
-                        MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                        MenuClass.Root["q"]["combo"].Enabled)
                     {
                         SpellClass.Q.CastOnUnit(heroTarget);
                     }

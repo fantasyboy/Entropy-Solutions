@@ -33,8 +33,8 @@ namespace AIO.Champions
 	        ///     The Automatic E Logics.
 	        /// </summary>
 	        if (SpellClass.E.Ready &&
-	            MenuClass.Spells["e"]["beforedeath"].Enabled &&
-	            LocalPlayer.Instance.HPPercent() <= MenuClass.Spells["e"]["beforedeath"].Value)
+	            MenuClass.Root["e"]["beforedeath"].Enabled &&
+	            LocalPlayer.Instance.HPPercent() <= MenuClass.Root["e"]["beforedeath"].Value)
 	        {
 		        SpellClass.E.Cast();
 	        }
@@ -50,8 +50,8 @@ namespace AIO.Champions
                 /// </summary>
                 if (SoulBound.EnemyHeroesCount(800f) > 0 &&
                     SoulBound.HPPercent() <=
-                        MenuClass.Spells["r"]["lifesaver"].Value &&
-                    MenuClass.Spells["r"]["lifesaver"].Enabled)
+                        MenuClass.Root["r"]["lifesaver"].Value &&
+                    MenuClass.Root["r"]["lifesaver"].Enabled)
                 {
                     SpellClass.R.Cast();
                 }
@@ -67,7 +67,7 @@ namespace AIO.Champions
 
 		            var target = ObjectCache.EnemyHeroes.FirstOrDefault(t => t.HasBuff(buffName));
 		            if (target != null &&
-		                MenuClass.Spells["r"][menuOption].Enabled)
+		                MenuClass.Root["r"][menuOption].Enabled)
 		            {
 			            var buff = target.GetBuff(buffName);
 			            if (buff.Caster == SoulBound &&
@@ -87,8 +87,8 @@ namespace AIO.Champions
                 Orbwalker.Mode == OrbwalkingMode.None &&
                 UtilityClass.Player.EnemyHeroesCount(1500f) == 0 &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["logical"]) &&
-                MenuClass.Spells["w"]["logical"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Root["w"]["logical"]) &&
+                MenuClass.Root["w"]["logical"].Enabled)
             {
                 foreach (var loc in Locations.Where(l =>
                     UtilityClass.Player.Distance(l) <= SpellClass.W.Range &&

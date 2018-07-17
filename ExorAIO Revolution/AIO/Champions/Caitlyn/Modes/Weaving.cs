@@ -33,7 +33,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 !Invulnerable.Check(heroTarget) &&
-                MenuClass.Spells["e"]["combo"].Enabled)
+                MenuClass.Root["e"]["combo"].Enabled)
             {
                 if (heroTarget.IsValidTarget(SpellClass.E.Range) &&
                     heroTarget.Distance(SpellClass.E.GetPrediction(heroTarget).CastPosition) < SpellClass.E.Range)
