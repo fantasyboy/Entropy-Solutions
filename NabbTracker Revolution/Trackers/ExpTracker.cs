@@ -32,20 +32,20 @@ namespace NabbTracker.Trackers
                 }
 
                 if (hero.IsMe() &&
-                    !MenuClass.Root["e"]xpTracker["me"].Enabled)
+                    !MenuClass.ExpTracker["me"].Enabled)
                 {
                     continue;
                 }
 
                 if (hero.IsEnemy() &&
-                    !MenuClass.Root["e"]xpTracker["enemies"].Enabled)
+                    !MenuClass.ExpTracker["enemies"].Enabled)
                 {
                     continue;
                 }
 
                 if (!hero.IsMe() &&
                     hero.IsAlly() &&
-                    !MenuClass.Root["e"]xpTracker["allies"].Enabled)
+                    !MenuClass.ExpTracker["allies"].Enabled)
                 {
                     continue;
                 }
