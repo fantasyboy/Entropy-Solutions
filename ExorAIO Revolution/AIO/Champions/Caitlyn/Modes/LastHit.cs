@@ -2,20 +2,20 @@ using Entropy;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Caitlyn
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The champion class.
+	/// </summary>
+	internal partial class Caitlyn
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        public void LastHit(EntropyEventArgs args)
-        {
-        }
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		public void LastHit(EntropyEventArgs args)
+		{
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

@@ -5,28 +5,28 @@ using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The methods class.
-    /// </summary>
-    internal partial class Vayne
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The methods class.
+	/// </summary>
+	internal partial class Vayne
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Sets the methods.
-        /// </summary>
-        public void Methods()
-        {
-            Game.OnUpdate += OnUpdate;
-            Orbwalker.OnPreAttack += OnPreAttack;
-            Orbwalker.OnPostAttack += OnPostAttack;
-            Renderer.OnRender += OnRender;
-	        Renderer.OnEndScene += OnEndScene;
+		/// <summary>
+		///     Sets the methods.
+		/// </summary>
+		public void Methods()
+		{
+			Game.OnUpdate += OnUpdate;
+			Orbwalker.OnPreAttack += OnPreAttack;
+			Orbwalker.OnPostAttack += OnPostAttack;
+			Renderer.OnRender += OnRender;
+			Renderer.OnEndScene += OnEndScene;
 			Gapcloser.OnGapcloser += OnGapcloser;
-            Dash.OnNewDash += OnDash;
-	        Interrupter.OnInterruptableSpell += OnInterruptableSpell;
-        }
+			Dash.OnNewDash += OnDash;
+			Interrupter.OnInterruptableSpell += OnInterruptableSpell;
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

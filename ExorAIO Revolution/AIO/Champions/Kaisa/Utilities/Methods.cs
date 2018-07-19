@@ -6,31 +6,31 @@ using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The methods class.
-    /// </summary>
-    internal partial class Kaisa
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The methods class.
+	/// </summary>
+	internal partial class Kaisa
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Sets the methods.
-        /// </summary>
-        public void Methods()
-        {
-            Game.OnUpdate += OnUpdate;
-            Orbwalker.OnPreAttack += OnPreAttack;
-	        Orbwalker.OnPostAttack += OnPostAttack;
+		/// <summary>
+		///     Sets the methods.
+		/// </summary>
+		public void Methods()
+		{
+			Game.OnUpdate += OnUpdate;
+			Orbwalker.OnPreAttack += OnPreAttack;
+			Orbwalker.OnPostAttack += OnPostAttack;
 			Renderer.OnRender += OnRender;
-	        Renderer.OnEndScene += OnEndScene;
+			Renderer.OnEndScene += OnEndScene;
 			Gapcloser.OnGapcloser += OnGapcloser;
-	        Teleports.OnTeleport += OnTeleport;
-	        AIBaseClient.OnLevelUp += OnLevelUp;
-	        Orbwalker.OnNonKillableMinion += OnNonKillableMinion;
+			Teleports.OnTeleport += OnTeleport;
+			AIBaseClient.OnLevelUp += OnLevelUp;
+			Orbwalker.OnNonKillableMinion += OnNonKillableMinion;
 
-	        RecallPrediction.Initialize();
+			RecallPrediction.Initialize();
 		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

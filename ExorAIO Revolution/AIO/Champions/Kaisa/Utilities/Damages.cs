@@ -31,7 +31,10 @@ namespace AIO.Champions
 								: playerLevel < 16
 									? 0.19
 									: 0.2;
-			var passiveDamage = (passiveLevelScaling + 0.0375f * Math.Floor(UtilityClass.Player.CharIntermediate.TotalAbilityDamage() / 100)) * (target.MaxHP - target.HP);
+			var passiveDamage =
+				(passiveLevelScaling +
+				 0.0375f * Math.Floor(UtilityClass.Player.CharIntermediate.TotalAbilityDamage() / 100)) *
+				(target.MaxHP - target.HP);
 
 			switch (target.Type.TypeID)
 			{
@@ -42,11 +45,11 @@ namespace AIO.Champions
 						const float minimumPassiveDamageAgainstMonsters = 400f;
 						passiveDamage = Math.Min(minimumPassiveDamageAgainstMonsters, passiveDamage);
 					}
-					break;
 
+					break;
 			}
 
-			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, (float)passiveDamage);
+			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, (float) passiveDamage);
 		}
 
 		public double GetWDamage(AIBaseClient target)
@@ -54,9 +57,9 @@ namespace AIO.Champions
 			var playerData = UtilityClass.Player.CharIntermediate;
 			var wLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.W).Level;
 
-			var wBaseDamage = new[] { 20f, 45f, 70f, 95f, 120f }[wLevel - 1]
+			var wBaseDamage = new[] {20f, 45f, 70f, 95f, 120f}[wLevel - 1]
 			                  + 1.5f * playerData.TotalAttackDamage()
-							  + 0.6f * playerData.TotalAbilityDamage();
+			                  + 0.6f * playerData.TotalAbilityDamage();
 
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, wBaseDamage);
 		}

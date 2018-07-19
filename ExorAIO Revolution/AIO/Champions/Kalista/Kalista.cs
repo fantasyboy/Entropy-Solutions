@@ -1,4 +1,3 @@
-
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
@@ -12,33 +11,33 @@ using Entropy.SDK.Orbwalking.EventArgs;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Kalista
-    {
-        #region Constructors and Destructors
+	/// <summary>
+	///     The champion class.
+	/// </summary>
+	internal partial class Kalista
+	{
+		#region Constructors and Destructors
 
-        /// <summary>
-        ///     Loads Kalista.
-        /// </summary>
-        public Kalista()
-        {
-            /// <summary>
-            ///     Initializes the menus.
-            /// </summary>
-            Menus();
+		/// <summary>
+		///     Loads Kalista.
+		/// </summary>
+		public Kalista()
+		{
+			/// <summary>
+			///     Initializes the menus.
+			/// </summary>
+			Menus();
 
-            /// <summary>
-            ///     Initializes the spells.
-            /// </summary>
-            Spells();
+			/// <summary>
+			///     Initializes the spells.
+			/// </summary>
+			Spells();
 
-            /// <summary>
-            ///     Initializes the methods.
-            /// </summary>
-            Methods();
-        }
+			/// <summary>
+			///     Initializes the methods.
+			/// </summary>
+			Methods();
+		}
 
 		#endregion
 
@@ -54,7 +53,7 @@ namespace AIO.Champions
 			if (soulbound != null)
 			{
 				//Logging.Log($"SpellData.Name: {args.SpellData.Name}, ARGS.tARGET: {args.Target.CharName}");
-				if (args.Caster.IsMe()                         &&
+				if (args.Caster.IsMe() &&
 				    ObjectCache.AllyHeroes.Contains(soulbound) &&
 				    args.SpellData.Name == "KalistaPSpellCast")
 				{
@@ -63,78 +62,78 @@ namespace AIO.Champions
 			}
 		}
 
-        /// <summary>
-        ///     Called on pre attack.
-        /// </summary>
-        /// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPreAttack(OnPreAttackEventArgs args)
-        {
+		/// <summary>
+		///     Called on pre attack.
+		/// </summary>
+		/// <param name="args">The <see cref="OnPreAttackEventArgs" /> instance containing the event data.</param>
+		public void OnPreAttack(OnPreAttackEventArgs args)
+		{
 			/// <summary>
 			///     The Target Forcing Logic.
 			/// </summary>
 			if (MenuClass.Miscellaneous["focusw"].Enabled)
-            {
-	            if (Orbwalker.Mode != OrbwalkingMode.Combo &&
-	                Orbwalker.Mode != OrbwalkingMode.Harass)
-	            {
-		            return;
-	            }
+			{
+				if (Orbwalker.Mode != OrbwalkingMode.Combo &&
+				    Orbwalker.Mode != OrbwalkingMode.Harass)
+				{
+					return;
+				}
 
 				var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
-                        t.HasBuff("kalistacoopstrikemarkally") &&
-                        t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
-                if (forceTarget != null)
-                {
-                    args.Target = forceTarget;
-                }
-            }
-        }
+					t.HasBuff("kalistacoopstrikemarkally") &&
+					t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
+				if (forceTarget != null)
+				{
+					args.Target = forceTarget;
+				}
+			}
+		}
 
-	    #endregion
+		#endregion
 
-        #region Methods
+		#region Methods
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        private void OnUpdate(EntropyEventArgs args)
-        {
-            if (UtilityClass.Player.IsDead)
-            {
-                return;
-            }
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		private void OnUpdate(EntropyEventArgs args)
+		{
+			if (UtilityClass.Player.IsDead)
+			{
+				return;
+			}
 
-            /// <summary>
-            ///     Initializes the Automatic actions.
-            /// </summary>
-            Automatic();
+			/// <summary>
+			///     Initializes the Automatic actions.
+			/// </summary>
+			Automatic();
 
-            /// <summary>
-            ///     Initializes the Killsteal events.
-            /// </summary>
-            Killsteal();
+			/// <summary>
+			///     Initializes the Killsteal events.
+			/// </summary>
+			Killsteal();
 
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            switch (Orbwalker.Mode)
-            {
-                case OrbwalkingMode.Combo:
-                    Combo();
-                    break;
-                case OrbwalkingMode.Harass:
-                    Harass();
-                    break;
-                case OrbwalkingMode.LaneClear:
-                    LaneClear();
-                    JungleClear();
-                    break;
-                case OrbwalkingMode.LastHit:
-                    LastHit();
-                    break;
-            }
-        }
+			/// <summary>
+			///     Initializes the orbwalkingmodes.
+			/// </summary>
+			switch (Orbwalker.Mode)
+			{
+				case OrbwalkingMode.Combo:
+					Combo();
+					break;
+				case OrbwalkingMode.Harass:
+					Harass();
+					break;
+				case OrbwalkingMode.LaneClear:
+					LaneClear();
+					JungleClear();
+					break;
+				case OrbwalkingMode.LastHit:
+					LastHit();
+					break;
+			}
+		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

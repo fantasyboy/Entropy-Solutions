@@ -1,5 +1,4 @@
-﻿
-// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
+﻿// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
 using System.Linq;
 using Entropy;
@@ -16,126 +15,128 @@ using SharpDX;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The logics class.
-    /// </summary>
-    internal partial class Taliyah
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The logics class.
+	/// </summary>
+	internal partial class Taliyah
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        public void JungleClear(EntropyEventArgs args)
-        {
-            var jungleTarget = ObjectCache.AllMinions
-                .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
-                .MinBy(m => m.DistanceToPlayer());
-            if (jungleTarget == null ||
-                jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
-            {
-                return;
-            }
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		public void JungleClear(EntropyEventArgs args)
+		{
+			var jungleTarget = ObjectCache.AllMinions
+				.Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
+				.MinBy(m => m.DistanceToPlayer());
+			if (jungleTarget == null ||
+			    jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
+			{
+				return;
+			}
 
-            /// <summary>
-            ///     The Jungleclear Rylai Q Logic.
-            /// </summary>
-            if (SpellClass.Q.Ready &&
-                jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
-                UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter) &&
-                (IsNearWorkedGround() ||
-                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"])) &&
-                MenuClass.Q["jungleclear"].Enabled)
-            {
-                switch (MenuClass.Q["modes"]["jungleclear"].Value)
-                {
-                    case 0:
-                        if (!IsNearWorkedGround())
-                        {
-                            SpellClass.Q.Cast(jungleTarget);
-                        }
-                        break;
-                    case 1:
-                        SpellClass.Q.Cast(jungleTarget);
-                        break;
-                }
-            }
+			/// <summary>
+			///     The Jungleclear Rylai Q Logic.
+			/// </summary>
+			if (SpellClass.Q.Ready &&
+			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
+			    UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter) &&
+			    (IsNearWorkedGround() ||
+			     UtilityClass.Player.MPPercent()
+			     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"])) &&
+			    MenuClass.Q["jungleclear"].Enabled)
+			{
+				switch (MenuClass.Q["modes"]["jungleclear"].Value)
+				{
+					case 0:
+						if (!IsNearWorkedGround())
+						{
+							SpellClass.Q.Cast(jungleTarget);
+						}
 
-            var targetPosAfterW = new Vector3();
+						break;
+					case 1:
+						SpellClass.Q.Cast(jungleTarget);
+						break;
+				}
+			}
 
-            /// <summary>
-            ///     The Jungleclear W Logic.
-            /// </summary>
-            if (SpellClass.W.Ready &&
-                jungleTarget.IsValidTarget(SpellClass.W.Range) &&
-                UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
-                MenuClass.W["jungleclear"].Enabled)
-            {
-                var bestBoulderHitPos = GetBestBouldersHitPosition(jungleTarget);
-                var bestBoulderHitPosHitBoulders = GetBestBouldersHitPositionHitBoulders(jungleTarget);
-                var jungleTargetPredPos = SpellClass.W.GetPrediction(jungleTarget).CastPosition;
+			var targetPosAfterW = new Vector3();
 
-                if (SpellClass.E.Ready)
-                {
-                    if (UtilityClass.Player.Distance(GetUnitPositionAfterPull(jungleTarget)) >= 200f)
-                    {
-                        targetPosAfterW = GetUnitPositionAfterPull(jungleTarget);
-                    }
-                    else
-                    {
-                        targetPosAfterW = GetUnitPositionAfterPush(jungleTarget);
-                    }
+			/// <summary>
+			///     The Jungleclear W Logic.
+			/// </summary>
+			if (SpellClass.W.Ready &&
+			    jungleTarget.IsValidTarget(SpellClass.W.Range) &&
+			    UtilityClass.Player.MPPercent()
+			    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
+			    MenuClass.W["jungleclear"].Enabled)
+			{
+				var bestBoulderHitPos = GetBestBouldersHitPosition(jungleTarget);
+				var bestBoulderHitPosHitBoulders = GetBestBouldersHitPositionHitBoulders(jungleTarget);
+				var jungleTargetPredPos = SpellClass.W.GetPrediction(jungleTarget).CastPosition;
 
-                    //SpellClass.W.Cast(jungleTargetPredPos, targetPosAfterW);
-                    SpellClass.W.Cast(targetPosAfterW, jungleTargetPredPos);
-                }
-                else if (bestBoulderHitPos != Vector3.Zero && bestBoulderHitPosHitBoulders > 0)
-                {
-                    //SpellClass.W.Cast(jungleTargetPredPos, bestBoulderHitPos);
-                    SpellClass.W.Cast(bestBoulderHitPos, jungleTargetPredPos);
-                }
-            }
+				if (SpellClass.E.Ready)
+				{
+					if (UtilityClass.Player.Distance(GetUnitPositionAfterPull(jungleTarget)) >= 200f)
+					{
+						targetPosAfterW = GetUnitPositionAfterPull(jungleTarget);
+					}
+					else
+					{
+						targetPosAfterW = GetUnitPositionAfterPush(jungleTarget);
+					}
 
-            /// <summary>
-            ///     The Jungleclear E Logic.
-            /// </summary>
-            if (SpellClass.E.Ready &&
-                jungleTarget.IsValidTarget(SpellClass.E.Range) &&
-                UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
-                MenuClass.E["jungleclear"].Enabled)
-            {
-                SpellClass.E.Cast(SpellClass.W.Ready
-                    ? targetPosAfterW
-                    : jungleTarget.Position);
-            }
+					//SpellClass.W.Cast(jungleTargetPredPos, targetPosAfterW);
+					SpellClass.W.Cast(targetPosAfterW, jungleTargetPredPos);
+				}
+				else if (bestBoulderHitPos != Vector3.Zero && bestBoulderHitPosHitBoulders > 0)
+				{
+					//SpellClass.W.Cast(jungleTargetPredPos, bestBoulderHitPos);
+					SpellClass.W.Cast(bestBoulderHitPos, jungleTargetPredPos);
+				}
+			}
 
-            /// <summary>
-            ///     The Jungleclear Q Logic.
-            /// </summary>
-            if (SpellClass.Q.Ready &&
-                jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
-                UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
-                MenuClass.Q["jungleclear"].Enabled)
-            {
-                switch (MenuClass.Q["modes"]["jungleclear"].Value)
-                {
-                    case 0:
-                        if (!IsNearWorkedGround())
-                        {
-                            SpellClass.Q.Cast(jungleTarget);
-                        }
-                        break;
-                    case 1:
-                        SpellClass.Q.Cast(jungleTarget);
-                        break;
-                }
-            }
-        }
+			/// <summary>
+			///     The Jungleclear E Logic.
+			/// </summary>
+			if (SpellClass.E.Ready &&
+			    jungleTarget.IsValidTarget(SpellClass.E.Range) &&
+			    UtilityClass.Player.MPPercent()
+			    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
+			    MenuClass.E["jungleclear"].Enabled)
+			{
+				SpellClass.E.Cast(SpellClass.W.Ready
+					? targetPosAfterW
+					: jungleTarget.Position);
+			}
 
-        #endregion
-    }
+			/// <summary>
+			///     The Jungleclear Q Logic.
+			/// </summary>
+			if (SpellClass.Q.Ready &&
+			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
+			    UtilityClass.Player.MPPercent()
+			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+			    MenuClass.Q["jungleclear"].Enabled)
+			{
+				switch (MenuClass.Q["modes"]["jungleclear"].Value)
+				{
+					case 0:
+						if (!IsNearWorkedGround())
+						{
+							SpellClass.Q.Cast(jungleTarget);
+						}
+
+						break;
+					case 1:
+						SpellClass.Q.Cast(jungleTarget);
+						break;
+				}
+			}
+		}
+
+		#endregion
+	}
 }

@@ -6,48 +6,48 @@ using Entropy.SDK.Extensions.Objects;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Kaisa
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The champion class.
+	/// </summary>
+	internal partial class Kaisa
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        public void Harass(EntropyEventArgs args)
-        {
-	        /// <summary>
-	        ///     The Q Combo Logic.
-	        /// </summary>
-	        if (SpellClass.Q.Ready &&
-				UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > 0 &&
-	            UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["harass"]) &&
-	            MenuClass.Q["harass"].Enabled)
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		public void Harass(EntropyEventArgs args)
+		{
+			/// <summary>
+			///     The Q Combo Logic.
+			/// </summary>
+			if (SpellClass.Q.Ready &&
+			    UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > 0 &&
+			    UtilityClass.Player.MPPercent()
+			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["harass"]) &&
+			    MenuClass.Q["harass"].Enabled)
 			{
-		        SpellClass.Q.Cast();
-	        }
+				SpellClass.Q.Cast();
+			}
 
 			/// <summary>
 			///     The W Harass Logic.
 			/// </summary>
 			if (SpellClass.W.Ready &&
-	            UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["harass"]) &&
-	            MenuClass.W["harass"].Enabled)
-	        {
-		        var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range / 2);
-		        if (bestTarget != null &&
-		            !Invulnerable.Check(bestTarget) &&
-		            MenuClass.W["whitelist"][bestTarget.CharName.ToLower()].Enabled)
-		        {
-			        SpellClass.W.Cast(bestTarget);
-		        }
+			    UtilityClass.Player.MPPercent()
+			    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["harass"]) &&
+			    MenuClass.W["harass"].Enabled)
+			{
+				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range / 2);
+				if (bestTarget != null &&
+				    !Invulnerable.Check(bestTarget) &&
+				    MenuClass.W["whitelist"][bestTarget.CharName.ToLower()].Enabled)
+				{
+					SpellClass.W.Cast(bestTarget);
+				}
 			}
 		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

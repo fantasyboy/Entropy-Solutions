@@ -10,174 +10,178 @@ using Entropy.SDK.Orbwalking.EventArgs;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Lucian
-    {
-        #region Constructors and Destructors
+	/// <summary>
+	///     The champion class.
+	/// </summary>
+	internal partial class Lucian
+	{
+		#region Constructors and Destructors
 
-        /// <summary>
-        ///     Loads Lucian.
-        /// </summary>
-        public Lucian()
-        {
-            /// <summary>
-            ///     Initializes the menus.
-            /// </summary>
-            Menus();
+		/// <summary>
+		///     Loads Lucian.
+		/// </summary>
+		public Lucian()
+		{
+			/// <summary>
+			///     Initializes the menus.
+			/// </summary>
+			Menus();
 
-            /// <summary>
-            ///     Initializes the spells.
-            /// </summary>
-            Spells();
+			/// <summary>
+			///     Initializes the spells.
+			/// </summary>
+			Spells();
 
-            /// <summary>
-            ///     Initializes the methods.
-            /// </summary>
-            Methods();
-        }
+			/// <summary>
+			///     Initializes the methods.
+			/// </summary>
+			Methods();
+		}
 
-        #endregion
+		#endregion
 
-        #region Public Methods and Operators
+		#region Public Methods and Operators
 
-	    /// <summary>
-	    ///     Fired on an incoming gapcloser.
-	    /// </summary>
-	    /// <param name="sender">The sender.</param>
-	    /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-	    public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
-        {
-            if (UtilityClass.Player.IsDead)
-            {
-                return;
-            }
+		/// <summary>
+		///     Fired on an incoming gapcloser.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+		public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
+		{
+			if (UtilityClass.Player.IsDead)
+			{
+				return;
+			}
 
-            var enabledOption = MenuClass.Gapcloser["enabled"];
-            if (enabledOption == null || !enabledOption.Enabled)
-            {
-                return;
-            }
+			var enabledOption = MenuClass.Gapcloser["enabled"];
+			if (enabledOption == null || !enabledOption.Enabled)
+			{
+				return;
+			}
 
-            if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
-            {
-                return;
-            }
+			if (sender == null || !sender.IsEnemy() || !sender.IsMelee)
+			{
+				return;
+			}
 
-            var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-            if (spellOption == null || !spellOption.Enabled)
-            {
-                return;
-            }
+			var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
+			if (spellOption == null || !spellOption.Enabled)
+			{
+				return;
+			}
 
-            /// <summary>
-            ///     The Anti-Gapcloser E.
-            /// </summary>
-            if (SpellClass.E.Ready)
-            {
-                switch (args.Type)
-                {
-                    case Gapcloser.Type.Targeted:
-                        if (args.Target.IsMe())
-                        {
-                            var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.E.Range);
-                            if (targetPos.IsUnderEnemyTurret())
-                            {
-                                return;
-                            }
+			/// <summary>
+			///     The Anti-Gapcloser E.
+			/// </summary>
+			if (SpellClass.E.Ready)
+			{
+				switch (args.Type)
+				{
+					case Gapcloser.Type.Targeted:
+						if (args.Target.IsMe())
+						{
+							var targetPos =
+								UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.E.Range);
+							if (targetPos.IsUnderEnemyTurret())
+							{
+								return;
+							}
 
-                            SpellClass.E.Cast(targetPos);
-                        }
-                        break;
-                    default:
-                        var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.E.Range);
-                        if (targetPos2.IsUnderEnemyTurret())
-                        {
-                            return;
-                        }
+							SpellClass.E.Cast(targetPos);
+						}
 
-                        if (args.EndPosition.Distance(UtilityClass.Player.Position) <= UtilityClass.Player.GetAutoAttackRange())
-                        {
-                            SpellClass.E.Cast(targetPos2);
-                        }
-                        break;
-                }
-            }
-        }
+						break;
+					default:
+						var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.E.Range);
+						if (targetPos2.IsUnderEnemyTurret())
+						{
+							return;
+						}
 
-        /// <summary>
-        ///     Called on do-cast.
-        /// </summary>
-        /// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
-        public void OnPostAttack(OnPostAttackEventArgs args)
-        {
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            switch (Orbwalker.Mode)
-            {
-                case OrbwalkingMode.Combo:
-                    Weaving(args);
-                    break;
+						if (args.EndPosition.Distance(UtilityClass.Player.Position) <=
+						    UtilityClass.Player.GetAutoAttackRange())
+						{
+							SpellClass.E.Cast(targetPos2);
+						}
 
-                case OrbwalkingMode.LaneClear:
-                    Laneclear(args);
-                    Jungleclear(args);
-                    Buildingclear(args);
-                    break;
-            }
-        }
+						break;
+				}
+			}
+		}
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        public void OnUpdate(EntropyEventArgs args)
-        {
-            if (UtilityClass.Player.IsDead)
-            {
-                return;
-            }
+		/// <summary>
+		///     Called on do-cast.
+		/// </summary>
+		/// <param name="args">The <see cref="OnPostAttackEventArgs" /> instance containing the event data.</param>
+		public void OnPostAttack(OnPostAttackEventArgs args)
+		{
+			/// <summary>
+			///     Initializes the orbwalkingmodes.
+			/// </summary>
+			switch (Orbwalker.Mode)
+			{
+				case OrbwalkingMode.Combo:
+					Weaving(args);
+					break;
 
-            /// <summary>
-            ///     Initializes the Killsteal events.
-            /// </summary>
-            Killsteal(args);
+				case OrbwalkingMode.LaneClear:
+					Laneclear(args);
+					Jungleclear(args);
+					Buildingclear(args);
+					break;
+			}
+		}
 
-            if (Orbwalker.IsWindingUp)
-            {
-                return;
-            }
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		public void OnUpdate(EntropyEventArgs args)
+		{
+			if (UtilityClass.Player.IsDead)
+			{
+				return;
+			}
 
-            /// <summary>
-            ///     Initializes the Automatic actions.
-            /// </summary>
-            Automatic(args);
+			/// <summary>
+			///     Initializes the Killsteal events.
+			/// </summary>
+			Killsteal(args);
 
-            if (IsCulling())
-            {
-                return;
-            }
+			if (Orbwalker.IsWindingUp)
+			{
+				return;
+			}
 
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            switch (Orbwalker.Mode)
-            {
-                case OrbwalkingMode.Combo:
-                    Combo(args);
-                    break;
+			/// <summary>
+			///     Initializes the Automatic actions.
+			/// </summary>
+			Automatic(args);
 
-                case OrbwalkingMode.LaneClear:
-                    LaneClear(args);
-                    break;
+			if (IsCulling())
+			{
+				return;
+			}
 
-                case OrbwalkingMode.Harass:
-                    Harass(args);
-                    break;
-            }
-        }
+			/// <summary>
+			///     Initializes the orbwalkingmodes.
+			/// </summary>
+			switch (Orbwalker.Mode)
+			{
+				case OrbwalkingMode.Combo:
+					Combo(args);
+					break;
 
-        #endregion
-    }
+				case OrbwalkingMode.LaneClear:
+					LaneClear(args);
+					break;
+
+				case OrbwalkingMode.Harass:
+					Harass(args);
+					break;
+			}
+		}
+
+		#endregion
+	}
 }

@@ -1,4 +1,3 @@
-
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
@@ -10,45 +9,46 @@ using Entropy.SDK.Extensions.Objects;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Vayne
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The champion class.
+	/// </summary>
+	internal partial class Vayne
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        public void Combo(EntropyEventArgs args)
-        {
-            /// <summary>
-            ///     The Q Engager Logic.
-            /// </summary>
-            if (SpellClass.Q.Ready &&
-                MenuClass.Q["engage"].Enabled)
-            {
-                var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
-                if (bestTarget != null &&
-                    !Invulnerable.Check(bestTarget) &&
-                    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
-                {
-                    var posAfterQ = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
-                    if (posAfterQ.EnemyHeroesCount(1000f) < 3 &&
-                        UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) > UtilityClass.Player.GetAutoAttackRange() &&
-                        bestTarget.Distance(posAfterQ) < UtilityClass.Player.GetAutoAttackRange(bestTarget))
-                    {
-                        SpellClass.Q.Cast(posAfterQ);
-                    }
-                }
-            }
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		public void Combo(EntropyEventArgs args)
+		{
+			/// <summary>
+			///     The Q Engager Logic.
+			/// </summary>
+			if (SpellClass.Q.Ready &&
+			    MenuClass.Q["engage"].Enabled)
+			{
+				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
+				if (bestTarget != null &&
+				    !Invulnerable.Check(bestTarget) &&
+				    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
+				{
+					var posAfterQ = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
+					if (posAfterQ.EnemyHeroesCount(1000f) < 3 &&
+					    UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) >
+					    UtilityClass.Player.GetAutoAttackRange() &&
+					    bestTarget.Distance(posAfterQ) < UtilityClass.Player.GetAutoAttackRange(bestTarget))
+					{
+						SpellClass.Q.Cast(posAfterQ);
+					}
+				}
+			}
 
 			/// <summary>
 			///     The E Stun Logic.
 			/// </summary>
 			if (SpellClass.E.Ready &&
-				!UtilityClass.Player.IsDashing() &&
-				MenuClass.E["emode"].Value != 2)
+			    !UtilityClass.Player.IsDashing() &&
+			    MenuClass.E["emode"].Value != 2)
 			{
 				const int condemnPushDistance = 475;
 				const int threshold = 50;
@@ -74,11 +74,13 @@ namespace AIO.Champions
 									}
 
 									var estimatedPosition = EstimatedPosition(target, SpellClass.E.Delay);
-									if (IsPerfectWallPosition(estimatedPosition, target, UtilityClass.Player.Position, i))
+									if (IsPerfectWallPosition(estimatedPosition, target, UtilityClass.Player.Position,
+										i))
 									{
 										SpellClass.E.CastOnUnit(target);
 									}
 								}
+
 								break;
 
 							default:
@@ -86,6 +88,7 @@ namespace AIO.Champions
 								{
 									SpellClass.E.CastOnUnit(target);
 								}
+
 								break;
 						}
 					}
@@ -93,6 +96,6 @@ namespace AIO.Champions
 			}
 		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

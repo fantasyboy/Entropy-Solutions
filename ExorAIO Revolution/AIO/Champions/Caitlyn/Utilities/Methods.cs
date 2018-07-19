@@ -6,32 +6,32 @@ using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The methods class.
-    /// </summary>
-    internal partial class Caitlyn
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The methods class.
+	/// </summary>
+	internal partial class Caitlyn
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Initializes the methods.
-        /// </summary>
-        public void Methods()
-        {
-            Game.OnUpdate += OnUpdate;
-            Spellbook.OnLocalCastSpell += OnLocalCastSpell;
-            Renderer.OnRender += OnRender;
-	        Renderer.OnEndScene += OnEndScene;
-	        Teleports.OnTeleport += OnTeleport;
-	        BuffManager.OnGainBuff += OnGainBuff;
-	        AIBaseClient.OnLevelUp += OnLevelUp;
-            Orbwalker.OnPostAttack += OnPostAttack;
-            AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
-            Gapcloser.OnGapcloser += OnGapcloser;
+		/// <summary>
+		///     Initializes the methods.
+		/// </summary>
+		public void Methods()
+		{
+			Game.OnUpdate += OnUpdate;
+			Spellbook.OnLocalCastSpell += OnLocalCastSpell;
+			Renderer.OnRender += OnRender;
+			Renderer.OnEndScene += OnEndScene;
+			Teleports.OnTeleport += OnTeleport;
+			BuffManager.OnGainBuff += OnGainBuff;
+			AIBaseClient.OnLevelUp += OnLevelUp;
+			Orbwalker.OnPostAttack += OnPostAttack;
+			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
+			Gapcloser.OnGapcloser += OnGapcloser;
 
-	        RecallPrediction.Initialize();
+			RecallPrediction.Initialize();
 		}
 
-        #endregion
-    }
+		#endregion
+	}
 }

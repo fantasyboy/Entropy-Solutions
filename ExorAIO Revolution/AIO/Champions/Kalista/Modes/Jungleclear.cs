@@ -1,5 +1,4 @@
-﻿
-using System.Linq;
+﻿using System.Linq;
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Caching;
@@ -12,66 +11,67 @@ using Entropy.SDK.Extensions.Objects;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Kalista
-    {
-        #region Public Methods and Operators
+	/// <summary>
+	///     The champion class.
+	/// </summary>
+	internal partial class Kalista
+	{
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        public void JungleClear()
-        {
-	        /// <summary>
-	        ///     The E Jungleclear Logic.
-	        /// </summary>
-	        if (SpellClass.E.Ready &&
-	            UtilityClass.Player.Level() >=
-					MenuClass.E["junglesteal"].Value &&
-	            MenuClass.E["junglesteal"].Enabled)
-	        {
-		        foreach (var minion in Extensions.GetGenericJungleMinionsTargets()
-			        .Where(m =>
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		public void JungleClear()
+		{
+			/// <summary>
+			///     The E Jungleclear Logic.
+			/// </summary>
+			if (SpellClass.E.Ready &&
+			    UtilityClass.Player.Level() >=
+			    MenuClass.E["junglesteal"].Value &&
+			    MenuClass.E["junglesteal"].Enabled)
+			{
+				foreach (var minion in Extensions.GetGenericJungleMinionsTargets()
+					.Where(m =>
 						IsPerfectRendTarget(m) &&
 						m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
-		        {
-			        if (UtilityClass.JungleList.Contains(minion.CharName) &&
-			            MenuClass.E["whitelist"][minion.CharName].Enabled)
-			        {
-				        SpellClass.E.Cast();
-			        }
-			        else if (!UtilityClass.JungleList.Contains(minion.CharName) &&
-			                 MenuClass.General["junglesmall"].Enabled)
-			        {
-				        SpellClass.E.Cast();
-			        }
-		        }
-	        }
+				{
+					if (UtilityClass.JungleList.Contains(minion.CharName) &&
+					    MenuClass.E["whitelist"][minion.CharName].Enabled)
+					{
+						SpellClass.E.Cast();
+					}
+					else if (!UtilityClass.JungleList.Contains(minion.CharName) &&
+					         MenuClass.General["junglesmall"].Enabled)
+					{
+						SpellClass.E.Cast();
+					}
+				}
+			}
 
 			var jungleTarget = ObjectCache.EnemyMinions
-                .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
-                .MinBy(m => m.DistanceToPlayer());
-            if (jungleTarget == null ||
-                jungleTarget.GetRealHealth(DamageType.Physical) < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
-            {
-                return;
-            }
+				.Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
+				.MinBy(m => m.DistanceToPlayer());
+			if (jungleTarget == null ||
+			    jungleTarget.GetRealHealth(DamageType.Physical) <
+			    UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
+			{
+				return;
+			}
 
-            /// <summary>
-            ///     The Q Jungleclear Logic.
-            /// </summary>
-            if (SpellClass.Q.Ready &&
-                jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
-                UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
-                MenuClass.Q["jungleclear"].Enabled)
-            {
-                SpellClass.Q.Cast(jungleTarget);
-            }
+			/// <summary>
+			///     The Q Jungleclear Logic.
+			/// </summary>
+			if (SpellClass.Q.Ready &&
+			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
+			    UtilityClass.Player.MPPercent()
+			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+			    MenuClass.Q["jungleclear"].Enabled)
+			{
+				SpellClass.Q.Cast(jungleTarget);
+			}
 		}
 
-        #endregion
-    }
+		#endregion
+	}
 }
