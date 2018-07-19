@@ -33,8 +33,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["buildings"]) &&
-                MenuClass.Root["q"]["buildings"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["buildings"]) &&
+                MenuClass.Q["buildings"].Enabled)
             {
                 SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
             }

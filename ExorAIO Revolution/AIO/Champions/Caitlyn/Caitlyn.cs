@@ -100,7 +100,7 @@ namespace AIO.Champions
 		    ///     The Automatic W on Teleport Logic. 
 		    /// </summary>
 		    if (SpellClass.W.Ready &&
-		        MenuClass.Root["w"]["teleport"].Enabled)
+		        MenuClass.W["teleport"].Enabled)
 		    {
 			    DelayAction.Queue(() =>
 				    {
@@ -125,7 +125,7 @@ namespace AIO.Champions
             switch (args.Slot)
             {
                 case SpellSlot.Q:
-                    var safeQ = MenuClass.Root["q"]["customization"]["safeq"];
+                    var safeQ = MenuClass.Q["customization"]["safeq"];
                     if (safeQ != null &&
                         UtilityClass.Player.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeQ.Value)
                     {
@@ -141,7 +141,7 @@ namespace AIO.Champions
                     break;
 
                 case SpellSlot.E:
-                    var safeE = MenuClass.Root["e"]["customization"]["safee"];
+                    var safeE = MenuClass.E["customization"]["safee"];
                     if (safeE != null &&
                         UtilityClass.Player.Position.Extend(args.End, -400f).EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange()) > safeE.Value)
                     {
@@ -198,7 +198,7 @@ namespace AIO.Champions
                             //case "CaitlynEntrapment":
                             case "CaitlynEntrapmentMissile":
                                 if (SpellClass.W.Ready &&
-                                    MenuClass.Root["w"]["triplecombo"].Enabled)
+                                    MenuClass.W["triplecombo"].Enabled)
                                 {
                                     var bestTarget = GameObjects.EnemyHeroes
                                         .Where(t => !Invulnerable.Check(t) && t.IsValidTarget(SpellClass.W.Range))

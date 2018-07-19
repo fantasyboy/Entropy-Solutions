@@ -124,6 +124,21 @@
     <Compile Include="AIO\Champions\Lucian\Utilities\Menus.cs" />
     <Compile Include="AIO\Champions\Lucian\Utilities\Methods.cs" />
     <Compile Include="AIO\Champions\Lucian\Utilities\Spells.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Automatic.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Combo.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Harass.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Jungleclear.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Killsteal.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Laneclear.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Lasthit.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Modes\Weaving.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Taliyah.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Utilities\Damages.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Utilities\Definitions.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Utilities\Drawings.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Utilities\Menus.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Utilities\Methods.cs" />
+    <Compile Include="AIO\Champions\Taliyah\Utilities\Spells.cs" />
     <Compile Include="AIO\Champions\Vayne\Modes\Automatic.cs" />
     <Compile Include="AIO\Champions\Vayne\Modes\Buildingclear.cs" />
     <Compile Include="AIO\Champions\Vayne\Modes\Combo.cs" />
@@ -171,25 +186,8 @@
     <Compile Include="AIO\Utilities\SpellClass.cs" />
     <Compile Include="AIO\Utilities\Helpers\AntiGapcloser\AntiGapcloser.cs" />
     <Compile Include="AIO\Utilities\Helpers\Geometry\Vector2Geometry.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Data.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\CastType.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\CollisionableObjects.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\DamageScalingTarget.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\DamageScalingType.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\DangerLevel.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\GapcloserType.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\SpellEffectType.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\SpellTags.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Enumerations\SpellType.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\IFilter.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\JsonFactory.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Resources\ResourceFactory.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Resources\ResourceImportAttribute.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\Resources\ResourceLoader.cs" />
-    <Compile Include="AIO\Utilities\Helpers\SpellDatabase\SpellDatabase.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="AIO\Utilities\Helpers\SpellDatabase\SpellDatabase.json" />
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>

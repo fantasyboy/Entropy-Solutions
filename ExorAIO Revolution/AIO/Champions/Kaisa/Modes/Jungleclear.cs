@@ -35,8 +35,8 @@ namespace AIO.Champions
 	        /// </summary>
 	        if (SpellClass.Q.Ready &&
 	            UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["jungleclear"]) &&
-	            MenuClass.Root["q"]["jungleclear"].Enabled)
+					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+	            MenuClass.Q["jungleclear"].Enabled)
 	        {
 		        SpellClass.Q.Cast();
 	        }
@@ -46,8 +46,8 @@ namespace AIO.Champions
 	        /// </summary>
 	        if (SpellClass.W.Ready &&
 	            UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Root["w"]["jungleclear"]) &&
-	            MenuClass.Root["w"]["laneclear"].Enabled)
+					> ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
+	            MenuClass.W["laneclear"].Enabled)
 	        {
 		        SpellClass.W.Cast(jungleTarget);
 	        }
@@ -57,8 +57,8 @@ namespace AIO.Champions
 			/// </summary>
 			if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Root["e"]["jungleclear"]) &&
-                MenuClass.Root["e"]["jungleclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
+                MenuClass.E["jungleclear"].Enabled)
             {
 	            SpellClass.E.Cast();
             }

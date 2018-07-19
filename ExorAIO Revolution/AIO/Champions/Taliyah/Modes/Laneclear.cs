@@ -1,7 +1,6 @@
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -24,12 +23,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["laneclear"]) &&
-                MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["laneclear"]) &&
+                MenuClass.W["laneclear"].Enabled)
             {
                 /*
                 var farmLocation = SpellClass.W.GetCircularFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.W.Width);
-                if (farmLocation.MinionsHit >= MenuClass.Spells["w"]["customization"]["laneclear"].As<MenuSlider>().Value)
+                if (farmLocation.MinionsHit >= MenuClass.W["customization"]["laneclear"].Value)
                 {
                     SpellClass.W.Cast(farmLocation.Position);
                 }
@@ -41,12 +40,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
-                MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["laneclear"]) &&
+                MenuClass.E["laneclear"].Enabled)
             {
                 /*
                 var farmLocation = SpellClass.W.GetCircularFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.W.Width);
-                if (farmLocation.MinionsHit >= MenuClass.Spells["w"]["customization"]["laneclear"].As<MenuSlider>().Value)
+                if (farmLocation.MinionsHit >= MenuClass.W["customization"]["laneclear"].Value)
                 {
                     SpellClass.E.Cast(farmLocation.Position);
                 }
@@ -59,12 +58,12 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 (IsNearWorkedGround() ||
                  UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"])) &&
-                MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["laneclear"])) &&
+                MenuClass.Q["laneclear"].Enabled)
             {
                 /*
                 var farmLocation = SpellClass.Q.GetCircularFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.Q.Width*2);
-                switch (MenuClass.Spells["q"]["modes"]["laneclear"].As<MenuList>().Value)
+                switch (MenuClass.Q["modes"]["laneclear"].Value)
                 {
                     case 0:
                         if (!this.IsNearWorkedGround())

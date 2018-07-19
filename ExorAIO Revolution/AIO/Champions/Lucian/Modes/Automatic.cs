@@ -26,8 +26,8 @@ namespace AIO.Champions
 	        /// <summary>
 	        ///     The Automatic R Orbwalking.
 	        /// </summary>
-	        if (MenuClass.Root["r"]["bool"].Enabled &&
-	            MenuClass.Root["r"]["key"].Enabled)
+	        if (MenuClass.R["bool"].Enabled &&
+	            MenuClass.R["key"].Enabled)
 	        {
 		        DelayAction.Queue(() =>
 			        {
@@ -39,18 +39,18 @@ namespace AIO.Champions
 			///     The Semi-Automatic R Management.
 			/// </summary>
 			if (SpellClass.R.Ready &&
-                MenuClass.Root["r"]["bool"].Enabled)
+                MenuClass.R["bool"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Root["r"]["whitelist"][t.CharName.ToLower()].Enabled)
+                        MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)
                     .MinBy(o => o.GetRealHealth());
 
                 if (!IsCulling() &&
                     bestTarget != null &&
-                    MenuClass.Root["r"]["key"].Enabled)
+                    MenuClass.R["key"].Enabled)
                 {
                     if (SpellClass.W.Ready &&
                         bestTarget.IsValidTarget(SpellClass.W.Range))
@@ -60,7 +60,7 @@ namespace AIO.Champions
                     SpellClass.R.Cast(bestTarget.Position);
                 }
                 else if (UtilityClass.Player.HasBuff("LucianR") &&
-                     !MenuClass.Root["r"]["key"].Enabled)
+                     !MenuClass.R["key"].Enabled)
                 {
                     SpellClass.R.Cast();
                 }

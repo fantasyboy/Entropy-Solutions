@@ -3,11 +3,13 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Events;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.UI.Components;
+using Entropy.SDK.Predictions.RecallPrediction;
 using Entropy.SDK.Utils;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 #pragma warning disable 1587
 
@@ -51,66 +53,56 @@ namespace AIO.Champions
             ReloadWorkedGrounds();
         }
 
-        #endregion
+		#endregion
 
-        #region Public Methods and Operators
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Called on spell cast.
-        /// </summary>
-        /// <param name="sender">The Spellbook.</param>
-        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
-        {
-            if (sender.IsMe())
+		/// <summary>
+		///     Called on spell cast.
+		/// </summary>
+		/// <param name="args">The <see cref="SpellbookLocalCastSpellEventArgs" /> instance containing the event data.</param>
+		public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
+		{
+            switch (Orbwalker.Mode)
             {
-                switch (Orbwalker.Mode)
-                {
-                    case OrbwalkingMode.Combo:
-                        switch (args.Slot)
-                        {
-                            case SpellSlot.Q:
-                                if (Game.ClockTime - LastWTime < 0.75)
-                                {
-                                    args.Process = false;
-                                }
-                                break;
-
-                            case SpellSlot.W:
-                                if (SpellClass.E.Ready &&
-                                    UtilityClass.Player.Mana <
-                                        SpellSlot.W.GetManaCost() +
-                                        SpellSlot.E.GetManaCost())
-                                {
-                                    args.Process = false;
-                                }
-                                else
-                                {
-                                    LastWTime = Game.ClockTime;
-                                }
-                                break;
-                        }
-                        break;
-                }
+                case OrbwalkingMode.Combo:
+                    switch (args.Slot)
+                    {
+                        case SpellSlot.W:
+                            if (SpellClass.E.Ready &&
+                                UtilityClass.Player.MP <
+                                    SpellSlot.W.GetManaCost() +
+                                    SpellSlot.E.GetManaCost())
+                            {
+	                            args.Execute = false;
+                            }
+                            else
+                            {
+                                LastWTime = Game.ClockTime;
+                            }
+                            break;
+                    }
+                    break;
             }
         }
 
         /// <summary>
         ///     Fired upon GameObject creation.
         /// </summary>
-        public void OnCreate(GameObject obj)
+        public void OnCreate(GameObjectCreateEventArgs args)
         {
-            if (obj.IsValid)
-            {
+	        var obj = args.Sender;
+	        if (obj.IsValid)
+			{
                 switch (obj.Name)
                 {
-                    case "Taliyah_Base_Q_aoe.troy":
-                    case "Taliyah_Base_Q_aoe_river.troy":
-                        WorkedGrounds.Add(obj.NetworkID, screenPos);
+                    case "Taliyah_Base_Q_aoe":
+                    case "Taliyah_Base_Q_aoe_river":
+                        WorkedGrounds.Add(obj, obj.Position);
                         break;
 
-                    case "Taliyah_Base_E_Mines.troy":
-                        MineField.Add(obj.NetworkID, screenPos);
+                    case "Taliyah_Base_E_Mines":
+                        MineField.Add(obj, obj.Position);
                         break;
                 }
             }
@@ -119,39 +111,72 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired upon GameObject creation.
         /// </summary>
-        public void OnDestroy(GameObject obj)
+        public void OnDelete(GameObjectDeleteEventArgs args)
         {
-            if (obj.IsValid)
+	        var obj = args.Sender;
+			if (obj.IsValid)
             {
-                if (WorkedGrounds.Any(o => o.Key == obj.NetworkID))
+                if (WorkedGrounds.Any(o => o.Key == obj))
                 {
-                    WorkedGrounds.Remove(obj.NetworkID);
+                    WorkedGrounds.Remove(obj);
                 }
 
-                if (MineField.Any(o => o.Key == obj.NetworkID))
+                if (MineField.Any(o => o.Key == obj))
                 {
-                    MineField.Remove(obj.NetworkID);
+                    MineField.Remove(obj);
                 }
             }
         }
 
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
-        }
+	    /// <summary>
+	    ///     Fired on interruptable spells.
+	    /// </summary>
+	    /// <param name="sender">The sender.</param>
+	    /// <param name="args">The <see cref="Interrupter.InterruptableSpellEventArgs" /> instance containing the event data.</param>
+	    public void OnInterruptableSpell(AIBaseClient sender, Interrupter.InterruptableSpellEventArgs args)
+	    {
+		    if (UtilityClass.Player.IsDead)
+		    {
+			    return;
+		    }
 
-        /// <summary>
-        ///     Fired on an incoming gapcloser.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
+		    var heroSender = sender as AIHeroClient;
+		    if (heroSender == null || !heroSender.IsEnemy())
+		    {
+			    return;
+		    }
+
+		    /// <summary>
+		    ///     The Interrupter W.
+		    /// </summary>
+		    if (SpellClass.W.Ready &&
+		        !Invulnerable.Check(heroSender, DamageType.Magical, false))
+		    {
+			    var enabledOption = MenuClass.Interrupter["enabled"];
+			    if (enabledOption == null || !enabledOption.Enabled)
+			    {
+				    return;
+			    }
+
+			    var spellOption = MenuClass.SubInterrupter[$"{heroSender.CharName.ToLower()}.{args.Slot.ToString().ToLower()}"];
+			    if (spellOption == null || !spellOption.Enabled)
+			    {
+				    return;
+			    }
+
+			    if (heroSender.IsValidTarget(SpellClass.W.Range))
+			    {
+				    SpellClass.W.Cast(heroSender.Position, GetUnitPositionAfterPull(heroSender));
+			    }
+		    }
+	    }
+
+		/// <summary>
+		///     Fired on an incoming gapcloser.
+		/// </summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="args">The <see cref="Utilities.Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+		public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -170,13 +195,13 @@ namespace AIO.Champions
                 !Invulnerable.Check(sender, DamageType.Magical, false))
             {
                 var enabledOption = MenuClass.Gapcloser["enabled"];
-                if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+                if (enabledOption == null || !enabledOption.Enabled)
                 {
                     return;
                 }
 
                 var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+                if (spellOption == null || !spellOption.Enabled)
                 {
                     return;
                 }
@@ -205,13 +230,13 @@ namespace AIO.Champions
             if (SpellClass.E.Ready)
             {
                 var enabledOption2 = MenuClass.Gapcloser2["enabled"];
-                if (enabledOption2 == null || !enabledOption2.As<MenuBool>().Enabled)
+                if (enabledOption2 == null || !enabledOption2.Enabled)
                 {
                     return;
                 }
 
                 var spellOption2 = MenuClass.SubGapcloser2[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                if (spellOption2 == null || !spellOption2.As<MenuBool>().Enabled)
+                if (spellOption2 == null || !spellOption2.Enabled)
                 {
                     return;
                 }
@@ -235,35 +260,13 @@ namespace AIO.Champions
             }
         }
 
-        /*
-        /// <summary>
-        ///     Called on interruptable spell.
-        /// </summary>
-        /// <param name="sender">The object.</param>
-        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public void OnInterruptableTarget(Events.InterruptableTargetEventArgs args)
+		/// <summary>
+		///     Called while processing spellcast operations.
+		/// </summary>
+		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            if (UtilityClass.Player.IsDead || Invulnerable.Check(args.Sender, DamageType.Magical, false))
-            {
-                return;
-            }
-
-            if (SpellClass.W.State == SpellState.Ready && args.Sender.IsValidTarget(SpellClass.W.SpellData.Range)
-                && MenuClass.Spells["w"]["interrupter"].As<MenuBool>().Enabled)
-            {
-                SpellClass.W.Cast(args.Sender.Position, UtilityClass.Player.Position);
-            }
-        }
-        */
-
-        /// <summary>
-        ///     Called while processing spellcast operations.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
-        {
-            if (sender.IsMe())
+            if (args.Caster.IsMe())
             {
                 switch (args.Slot)
                 {
@@ -276,9 +279,9 @@ namespace AIO.Champions
                             switch (Orbwalker.Mode)
                             {
                                 case OrbwalkingMode.Combo:
-                                    if (MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
+                                    if (MenuClass.E["combo"].Enabled)
                                     {
-                                        SpellClass.E.Cast(args.End);
+										SpellClass.E.Cast(args.EndPosition);
                                     }
                                     break;
                             }
@@ -290,42 +293,80 @@ namespace AIO.Champions
                     /// </summary>
                     case SpellSlot.R:
                         if (SpellClass.R.Ready &&
-                            MenuClass.Spells["r"]["mountr"].As<MenuBool>().Enabled)
+                            MenuClass.R["mountr"].Enabled)
                         {
-                            DelayAction.Queue(500, () =>
+                            DelayAction.Queue(() =>
                                 {
-                                    SpellClass.R.Cast();
-                                });
+                                    SpellClass.R.CastOnUnit(UtilityClass.Player);
+                                }, 500);
                         }
                         break;
                 }
             }
         }
 
-        /// <summary>
-        ///     Fired when the game is updated.
-        /// </summary>
-        public void OnUpdate(EntropyEventArgs args)
+	    private static void OnLevelUp(AIBaseClientLevelUpEventArgs args)
+	    {
+		    if (args.Owner.IsMe())
+		    {
+			    switch (args.ToLevel)
+			    {
+				    case 6:
+					    SpellClass.R.Range = 3000;
+					    break;
+				    case 11:
+					    SpellClass.R.Range = 4500;
+					    break;
+				    case 16:
+					    SpellClass.R.Range = 6000;
+					    break;
+			    }
+		    }
+	    }
+
+	    private static void OnTeleport(Teleports.TeleportEventArgs args)
+	    {
+		    if (args.Type != TeleportType.Recall || args.Status != TeleportStatus.Start)
+		    {
+			    return;
+		    }
+
+		    if (SpellClass.E.Ready &&
+		        MenuClass.E["teleports"].Enabled)
+		    {
+			    DelayAction.Queue(() =>
+				    {
+					    var predictedPos = RecallPrediction.GetPrediction();
+					    if (predictedPos.IsZero || predictedPos.DistanceToPlayer() > SpellClass.E.Range)
+					    {
+						    return;
+					    }
+
+					    SpellClass.E.Cast(predictedPos);
+				    },
+				    250); // <- Gotta let SDK run first
+		    }
+	    }
+
+		/// <summary>
+		///     Fired when the game is updated.
+		/// </summary>
+		public void OnUpdate(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
-                return;
+				return;
             }
 
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(EntropyEventArgs args);
-
-            if (Orbwalker.IsWindingUp)
-            {
-                return;
-            }
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(EntropyEventArgs args);
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -333,14 +374,14 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(EntropyEventArgs args);
+                    Combo(args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(EntropyEventArgs args);
+                    Harass(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(EntropyEventArgs args);
-                    JungleClear(EntropyEventArgs args);
+                    LaneClear(args);
+                    JungleClear(args);
                     break;
             }
         }

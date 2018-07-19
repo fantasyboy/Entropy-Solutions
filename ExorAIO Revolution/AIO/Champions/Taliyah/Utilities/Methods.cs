@@ -1,5 +1,7 @@
 using Entropy;
-using AIO.Utilities;
+using Entropy.SDK.Events;
+using Entropy.SDK.Predictions.RecallPrediction;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
@@ -17,13 +19,16 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             GameObject.OnCreate += OnCreate;
-            GameObject.OnDestroy += OnDestroy;
+            GameObject.OnDelete += OnDelete;
             Spellbook.OnLocalCastSpell += OnLocalCastSpell;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
-            Render.OnPresent += OnPresent;
-            Gapcloser.OnGapcloser += OnGapcloser;
-
-            //Events.OnInterruptableTarget += Taliyah.OnInterruptableTarget;
+            Renderer.OnRender += OnRender;
+	        AIBaseClient.OnLevelUp += OnLevelUp;
+	        Teleports.OnTeleport += OnTeleport;
+			Renderer.OnEndScene += OnEndScene;
+			Gapcloser.OnGapcloser += OnGapcloser;
+	        Interrupter.OnInterruptableSpell += OnInterruptableSpell;
+			RecallPrediction.Initialize();
         }
 
         #endregion

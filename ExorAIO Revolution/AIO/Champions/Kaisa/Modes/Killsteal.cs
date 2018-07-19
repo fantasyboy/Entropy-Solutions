@@ -24,7 +24,7 @@ namespace AIO.Champions
             ///     The W KillSteal Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Root["w"]["killsteal"].Enabled)
+                MenuClass.W["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range)
 	                .Where(t => GetWDamage(t) + (t.GetBuffCount("kaisapassivemarker") >= 3 ? GetPassiveExplodeDamage(t) : 0) >= t.GetRealHealth(DamageType.Magical)))

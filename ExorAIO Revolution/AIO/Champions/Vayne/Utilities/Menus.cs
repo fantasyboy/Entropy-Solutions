@@ -132,7 +132,6 @@ namespace AIO.Champions
                     MenuClass.E.Add(new MenuSeperator("antigapclosernotneeded", "Anti-Gapcloser not needed"));
                 }
 
-                MenuClass.E.Add(new MenuSeperator("separator2"));
                 if (ObjectCache.EnemyHeroes.Any(t => Interrupter.SpellDatabase.Keys.Contains(t.CharName)))
                 {
 	                /// <summary>
@@ -166,10 +165,9 @@ namespace AIO.Champions
                 {
 	                MenuClass.E.Add(new MenuSeperator("interrupternotneeded", "Interrupter not needed"));
                 }
-                MenuClass.E.Add(new MenuSeperator("separator3"));
-
+                MenuClass.E.Add(new MenuSeperator("separator2"));
 				MenuClass.E.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
-                MenuClass.E.Add(new MenuSeperator("separator4"));
+                MenuClass.E.Add(new MenuSeperator("separator3"));
                 MenuClass.E.Add(new MenuBool("bool", "Semi-Automatic E"));
                 MenuClass.E.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.U, KeybindType.Hold));
 

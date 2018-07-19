@@ -26,7 +26,7 @@ namespace AIO.Champions
             ///     The Q Engager Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Root["q"]["engage"].Enabled)
+                MenuClass.Q["engage"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null &&
@@ -48,7 +48,7 @@ namespace AIO.Champions
 			/// </summary>
 			if (SpellClass.E.Ready &&
 				!UtilityClass.Player.IsDashing() &&
-				MenuClass.Root["e"]["emode"].Value != 2)
+				MenuClass.E["emode"].Value != 2)
 			{
 				const int condemnPushDistance = 475;
 				const int threshold = 50;
@@ -58,11 +58,11 @@ namespace AIO.Champions
 						!t.IsDashing() &&
 						t.IsValidTarget(SpellClass.E.Range) &&
 						!Invulnerable.Check(t, DamageType.Magical, false) &&
-						MenuClass.Root["e"]["whitelist"][t.CharName.ToLower()].Enabled))
+						MenuClass.E["whitelist"][t.CharName.ToLower()].Enabled))
 				{
 					for (var i = UtilityClass.Player.BoundingRadius; i < condemnPushDistance - threshold; i += 10)
 					{
-						switch (MenuClass.Root["e"]["emode"].Value)
+						switch (MenuClass.E["emode"].Value)
 						{
 							case 0:
 								if (IsPerfectWallPosition(target.Position, target, UtilityClass.Player.Position, i))

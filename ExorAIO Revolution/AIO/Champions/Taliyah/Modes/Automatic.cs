@@ -5,7 +5,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -23,8 +22,6 @@ namespace AIO.Champions
         /// </summary>
         public void Automatic(EntropyEventArgs args)
         {
-            SpellClass.R.Range = 1500 + 1500 * SpellClass.R.Level;
-
             if (UtilityClass.Player.IsRecalling())
             {
                 return;
@@ -34,7 +31,7 @@ namespace AIO.Champions
             ///     The Automatic W Logic. 
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["logical"].As<MenuBool>().Enabled)
+                MenuClass.W["logical"].Enabled)
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     t.IsImmobile(SpellClass.W.Delay) &&

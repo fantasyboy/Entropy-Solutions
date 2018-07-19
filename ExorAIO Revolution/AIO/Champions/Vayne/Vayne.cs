@@ -84,13 +84,11 @@ namespace AIO.Champions
                     invisibilityBuff.GetRemainingBuffTime() >
                     invisibilityBuff.ExpireTime - invisibilityBuff.StartTime - MenuClass.Miscellaneous["stealthtime"].Value / 1000f)
                 {
-	                GameConsole.Print("AA Cancelled: Stealth time.");
 					args.Cancel = true;
                 }
 
                 if (UtilityClass.Player.HasBuff("summonerexhaust"))
                 {
-					GameConsole.Print("AA Cancelled: Exhaust and Stealthed.");
                     args.Cancel = true;
                 }
 
@@ -99,7 +97,6 @@ namespace AIO.Champions
                         t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))) >=
                     MenuClass.Miscellaneous["stealthcheck"].Value)
                 {
-	                GameConsole.Print("AA Cancelled: Stealth enemies count.");
 					args.Cancel = true;
                 }
             }
@@ -152,8 +149,8 @@ namespace AIO.Champions
             }
 
             if (SpellClass.E.Ready &&
-                MenuClass.Root["e"]["emode"].Value != 2 &&
-                MenuClass.Root["e"]["whitelist"][heroSender.CharName.ToLower()].Enabled)
+                MenuClass.E["emode"].Value != 2 &&
+                MenuClass.E["whitelist"][heroSender.CharName.ToLower()].Enabled)
             {
                 const int condemnPushDistance = 410;
                 for (var i = UtilityClass.Player.BoundingRadius; i < condemnPushDistance; i += 10)

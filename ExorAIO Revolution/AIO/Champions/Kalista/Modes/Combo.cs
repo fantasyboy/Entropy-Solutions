@@ -41,7 +41,7 @@ namespace AIO.Champions
             ///     The Q Combo Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Root["q"]["combo"].Enabled)
+                MenuClass.Q["combo"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null)
@@ -70,10 +70,10 @@ namespace AIO.Champions
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
 		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
-	            MenuClass.Root["e"]["harass"].Enabled)
+	            MenuClass.E["harass"].Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)
-		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Root["e"]["dontharassslowed"].Enabled))
+		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.E["dontharassslowed"].Enabled))
 		        {
 			        SpellClass.E.Cast();
 		        }

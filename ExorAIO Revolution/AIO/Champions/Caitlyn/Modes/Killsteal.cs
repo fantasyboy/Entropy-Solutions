@@ -24,7 +24,7 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Root["q"]["killsteal"].Enabled)
+                MenuClass.Q["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
                     !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))))

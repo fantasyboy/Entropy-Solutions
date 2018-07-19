@@ -34,22 +34,22 @@ namespace AIO.Champions
             ///     The Q Weaving Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Root["q"]["combo"].Enabled)
+                MenuClass.Q["combo"].Enabled)
             {
                 if (heroTarget.GetBuffCount("vaynesilvereddebuff") != 1 &&
-                    MenuClass.Root["q"]["customization"]["wstacks"].Enabled)
+                    MenuClass.Q["customization"]["wstacks"].Enabled)
                 {
                     return;
                 }
 
                 if (UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) <= UtilityClass.Player.GetAutoAttackRange() &&
-                    MenuClass.Root["q"]["customization"]["onlyqifmouseoutaarange"].Enabled)
+                    MenuClass.Q["customization"]["onlyqifmouseoutaarange"].Enabled)
                 {
                     return;
                 }
 
                 var posAfterQ = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
-                var qRangeCheck = MenuClass.Root["q"]["customization"]["qrangecheck"];
+                var qRangeCheck = MenuClass.Q["customization"]["qrangecheck"];
                 if (qRangeCheck != null)
                 {
                     if (qRangeCheck.Enabled &&
@@ -61,13 +61,13 @@ namespace AIO.Champions
 
                 if (posAfterQ.Distance(heroTarget) >
                         UtilityClass.Player.GetAutoAttackRange(heroTarget) &&
-                    MenuClass.Root["q"]["customization"]["noqoutaarange"].Enabled)
+                    MenuClass.Q["customization"]["noqoutaarange"].Enabled)
                 {
                     return;
                 }
 
                 if (posAfterQ.IsUnderEnemyTurret() &&
-                    MenuClass.Root["q"]["customization"]["noqturret"].Enabled)
+                    MenuClass.Q["customization"]["noqturret"].Enabled)
                 {
                     return;
                 }
@@ -86,7 +86,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 !Invulnerable.Check(heroTarget) &&
                 heroTarget.IsValidTarget(SpellClass.E.Range+heroTarget.BoundingRadius) &&
-                MenuClass.Root["e"]["killsteal"].Enabled)
+                MenuClass.E["killsteal"].Enabled)
             {
                 var shouldIncludeWDamage = heroTarget.GetBuffCount("vaynesilvereddebuff") == 1;
                 if (UtilityClass.Player.GetAutoAttackDamage(heroTarget) + GetEDamage(heroTarget) +

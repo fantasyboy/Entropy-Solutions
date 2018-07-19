@@ -2,7 +2,6 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
@@ -26,15 +25,15 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 (IsNearWorkedGround() ||
                  UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["harass"])) &&
-                MenuClass.Spells["q"]["harass"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["harass"])) &&
+                MenuClass.Q["harass"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range - 100f);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical) &&
-                    MenuClass.Spells["q"]["whitelist"][bestTarget.CharName.ToLower()].As<MenuBool>().Enabled)
+                    MenuClass.Q["whitelist"][bestTarget.CharName.ToLower()].Enabled)
                 {
-                    switch (MenuClass.Spells["q"]["modes"]["harass"].As<MenuList>().Value)
+                    switch (MenuClass.Q["modes"]["harass"].Value)
                     {
                         case 0:
                             if (!IsNearWorkedGround())

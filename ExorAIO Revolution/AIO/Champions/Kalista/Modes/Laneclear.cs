@@ -25,8 +25,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["laneclear"]) &&
-                MenuClass.Root["q"]["laneclear"].Enabled)
+					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["laneclear"]) &&
+                MenuClass.Q["laneclear"].Enabled)
             {
 				/*
                 var farmLocation = Extensions.GetAllGenericMinionsTargets().Where(m => m.GetRealHealth(DamageType.Physical) < (float)UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q)).ToList();
@@ -41,11 +41,11 @@ namespace AIO.Champions
 			///     The E Laneclear Logics.
 			/// </summary>
 			if (SpellClass.E.Ready &&
-	            MenuClass.Root["e"]["laneclear"].Enabled)
+	            MenuClass.E["laneclear"].Enabled)
 	        {
 		        if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Count(m =>
 			                                                                                   IsPerfectRendTarget(m) &&
-			                                                                                   m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) >= MenuClass.Root["e"]["laneclear"].Value)
+			                                                                                   m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) >= MenuClass.E["laneclear"].Value)
 		        {
 			        SpellClass.E.Cast();
 		        }

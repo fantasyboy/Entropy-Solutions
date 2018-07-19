@@ -36,8 +36,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Root["e"]["jungleclear"]) &&
-                MenuClass.Root["e"]["jungleclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
+                MenuClass.E["jungleclear"].Enabled)
             {
                 const int condemnPushDistance = 410;
                 var playerPos = UtilityClass.Player.Position;
@@ -53,7 +53,7 @@ namespace AIO.Champions
                         continue;
                     }
 
-                    if (MenuClass.Root["e"]["emode"].Value == 0)
+                    if (MenuClass.E["emode"].Value == 0)
                     {
                         if (!predPosition.Extend(playerPos, -i).IsWall() ||
                             !predPosition.Extend(playerPos, -i-60).IsWall())
@@ -71,8 +71,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["jungleclear"]) &&
-                MenuClass.Root["q"]["jungleclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+                MenuClass.Q["jungleclear"].Enabled)
             {
                 SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
             }

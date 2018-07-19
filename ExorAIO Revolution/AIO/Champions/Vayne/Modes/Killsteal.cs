@@ -24,7 +24,7 @@ namespace AIO.Champions
             ///     The E KillSteal Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Root["e"]["killsteal"].Enabled)
+                MenuClass.E["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.E.Range)
 	                .Where(t => GetEDamage(t) + (t.GetBuffCount("vaynesilvereddebuff") == 2 ? GetWDamage(t) : 0) >= t.GetRealHealth(DamageType.Physical)))

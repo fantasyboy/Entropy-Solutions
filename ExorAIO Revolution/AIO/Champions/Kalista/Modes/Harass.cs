@@ -27,12 +27,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["harass"]) &&
-                MenuClass.Root["q"]["harass"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["harass"]) &&
+                MenuClass.Q["harass"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null &&
-                    MenuClass.Root["q"]["whitelist"][bestTarget.CharName.ToLower()].Enabled)
+                    MenuClass.Q["whitelist"][bestTarget.CharName.ToLower()].Enabled)
                 {
                     var collisions = SpellClass.Q.GetPrediction(bestTarget).CollisionObjects
                         .Where(c => Extensions.GetAllGenericUnitTargets().Contains(c));
@@ -58,10 +58,10 @@ namespace AIO.Champions
 	            Extensions.GetEnemyLaneMinionsTargets().Any(m =>
 		                                                        IsPerfectRendTarget(m) &&
 		                                                        m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
-	            MenuClass.Root["e"]["harass"].Enabled)
+	            MenuClass.E["harass"].Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)
-		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.Root["e"]["dontharassslowed"].Enabled))
+		                       .Any(enemy => !enemy.HasBuffOfType(BuffType.Slow) || !MenuClass.E["dontharassslowed"].Enabled))
 		        {
 			        SpellClass.E.Cast();
 		        }

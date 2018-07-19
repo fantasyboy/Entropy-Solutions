@@ -31,8 +31,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["farmhelper"]) &&
-                MenuClass.Root["q"]["farmhelper"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["farmhelper"]) &&
+                MenuClass.Q["farmhelper"].Enabled)
             {
                 var posAfterQ = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
                 if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)

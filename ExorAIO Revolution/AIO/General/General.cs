@@ -106,7 +106,6 @@ namespace AIO
                                 MenuClass.General["disableaa"].Value &&
                         MenuClass.General["disableaa"].Enabled)
                     {
-	                    GameConsole.Print("AA Cancelled: Disable AA.");
 						args.Cancel = true;
                     }
                     break;
@@ -120,7 +119,6 @@ namespace AIO
                     if (Extensions.GetEnemyLaneMinionsTargets().Contains(args.Target) &&
                         MenuClass.General["supportmode"].Enabled)
                     {
-	                    GameConsole.Print("AA Cancelled: Support mode.");
 						args.Cancel = ObjectCache.AllyHeroes.Any(a => !a.IsMe() && a.DistanceToPlayer() < 2500);
                     }
                     break;
@@ -164,7 +162,6 @@ namespace AIO
 
                 if (!UtilityClass.Player.HasBuff("windbladebuff"))
                 {
-	                GameConsole.Print("AA Cancelled: Stormrazor check.");
 					args.Cancel = true;
                 }
             }

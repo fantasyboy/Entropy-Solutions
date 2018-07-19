@@ -34,8 +34,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Root["e"]["buildings"]) &&
-                MenuClass.Root["e"]["buildings"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["buildings"]) &&
+                MenuClass.E["buildings"].Enabled)
             {
                 SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 25f));
                 return;
@@ -46,8 +46,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Root["w"]["buildings"]) &&
-                MenuClass.Root["w"]["buildings"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["buildings"]) &&
+                MenuClass.W["buildings"].Enabled)
             {
                 SpellClass.W.Cast(Hud.CursorPositionUnclipped);
             }

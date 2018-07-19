@@ -23,13 +23,13 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["harass"]) &&
-                MenuClass.Root["q"]["harass"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["harass"]) &&
+                MenuClass.Q["harass"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget) &&
-                    MenuClass.Root["q"]["whitelist"][bestTarget.CharName.ToLower()].Enabled)
+                    MenuClass.Q["whitelist"][bestTarget.CharName.ToLower()].Enabled)
                 {
                     SpellClass.Q.Cast(bestTarget);
                 }

@@ -33,7 +33,7 @@ namespace AIO.Champions
             ///     The Automatic W Logic. 
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Root["w"]["logical"].Enabled)
+                MenuClass.W["logical"].Enabled)
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
 					CanTrap(t) &&
@@ -49,7 +49,7 @@ namespace AIO.Champions
             ///     The Automatic Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Root["q"]["logical"].Enabled)
+                MenuClass.Q["logical"].Enabled)
             {
                 switch (Orbwalker.Mode)
                 {
@@ -71,14 +71,14 @@ namespace AIO.Champions
             ///     The Semi-Automatic R Management.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Root["r"]["bool"].Enabled &&
-                MenuClass.Root["r"]["key"].Enabled)
+                MenuClass.R["bool"].Enabled &&
+                MenuClass.R["key"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Root["r"]["whitelist"][t.CharName.ToLower()].Enabled)
+                        MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)
                     .MinBy(o => o.GetRealHealth());
                 if (bestTarget != null)
                 {

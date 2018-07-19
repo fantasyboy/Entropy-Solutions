@@ -28,8 +28,8 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
 				ObjectCache.EnemyLaneMinions.Count(m => m.DistanceToPlayer() < UtilityClass.Player.GetAutoAttackRange()) >= 3 &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["laneclear"]) &&
-                MenuClass.Root["q"]["laneclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["laneclear"]) &&
+                MenuClass.Q["laneclear"].Enabled)
             {
 	            SpellClass.Q.Cast();
             }
@@ -40,8 +40,8 @@ namespace AIO.Champions
 	        if (SpellClass.E.Ready &&
 	            ObjectCache.EnemyLaneMinions.Count(m => m.DistanceToPlayer() < UtilityClass.Player.GetAutoAttackRange()) >= 3 &&
 				UtilityClass.Player.MPPercent()
-					> ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Root["e"]["laneclear"]) &&
-	            MenuClass.Root["e"]["laneclear"].Enabled)
+					> ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["laneclear"]) &&
+	            MenuClass.E["laneclear"].Enabled)
 	        {
 		        SpellClass.E.Cast();
 	        }

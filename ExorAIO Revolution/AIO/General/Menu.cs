@@ -56,10 +56,10 @@ namespace AIO
                     MenuClass.Stormrazor = new Menu("stormrazormenu", "Stormrazor Menu");
                     {
                         MenuClass.Stormrazor.Add(new MenuSeperator("stormsep", "Stop AA'ing until it procs in:"));
-                        MenuClass.Stormrazor.Add(new MenuBool("combo", "Combo"));
-                        MenuClass.Stormrazor.Add(new MenuBool("laneclear", "Laneclear"));
-                        MenuClass.Stormrazor.Add(new MenuBool("mixed", "Harass"));
-                        MenuClass.Stormrazor.Add(new MenuBool("lasthit", "Lasthit"));
+                        MenuClass.Stormrazor.Add(new MenuBool("combo", "Combo", false));
+                        MenuClass.Stormrazor.Add(new MenuBool("laneclear", "Laneclear", false));
+                        MenuClass.Stormrazor.Add(new MenuBool("mixed", "Harass", false));
+                        MenuClass.Stormrazor.Add(new MenuBool("lasthit", "Lasthit", false));
                     }
 	                MenuClass.General.Add(MenuClass.Stormrazor);
 

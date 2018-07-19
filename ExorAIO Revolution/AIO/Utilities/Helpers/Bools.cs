@@ -138,20 +138,20 @@ namespace AIO.Utilities
             // Objects: Guardian Angel..
             var immobileObjectLinked = ObjectCache.AllGameObjects.FirstOrDefault(t => t.IsValid && t.Name == "LifeAura.troy");
             if (immobileObjectLinked != null &&
-                ObjectCache.EnemyHeroes.MinBy(t => t.Distance(immobileObjectLinked)) == hero)
+                ObjectCache.AllHeroes.MinBy(t => t.Distance(immobileObjectLinked)) == hero)
             {
                 return true;
             }
 
             // Minions: Zac Passive
             if (hero.CharName == "Zac" &&
-                ObjectCache.EnemyMinions.Any(m => m.Team == hero.Team && m.CharName == "ZacRebirthBloblet" && m.Distance(hero) < 500))
+                ObjectCache.AllMinions.Any(m => m.Team == hero.Team && m.CharName == "ZacRebirthBloblet" && m.Distance(hero) < 500))
             {
                 return true;
             }
 
-            // Buffs: Zilean's Chronoshift, Zhonyas, Aatrox's Blood Well, Anivia Egg,
-            var immobileBuffs = new[] { "chronorevive", "zhonyasringshield", "AatroxPassiveDeath", "rebirth" };
+            // Buffs: Zilean's Chronoshift, Zhonyas, Stopwatch, Anivia Egg,
+            var immobileBuffs = new[] { "chronorevive", "zhonyasringshield", "rebirth" };
             if (hero.GetActiveBuffs().Any(b => immobileBuffs.Contains(b.Name)))
             {
                 return true;

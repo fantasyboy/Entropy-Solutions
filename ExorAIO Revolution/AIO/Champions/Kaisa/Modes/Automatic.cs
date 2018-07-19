@@ -24,8 +24,8 @@ namespace AIO.Champions
             ///     The Semi-Automatic R Management.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Root["r"]["bool"].Enabled &&
-                MenuClass.Root["r"]["key"].Enabled)
+                MenuClass.R["bool"].Enabled &&
+                MenuClass.R["key"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes.FirstOrDefault(t =>
 						!Invulnerable.Check(t) &&

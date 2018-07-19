@@ -1,8 +1,7 @@
 ﻿
 using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.Rendering;
-using Entropy.SDK.UI.Components;
-using SharpDX;
 using Color = SharpDX.Color;
 
 #pragma warning disable 1587
@@ -19,13 +18,13 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the drawings.
         /// </summary>
-        public void Drawings()
+        public void OnRender(EntropyEventArgs args)
         {
             /// <summary>
             ///     Loads the Q drawing.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Drawings["q"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["q"].Enabled)
             {
                 CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
             }
@@ -34,7 +33,7 @@ namespace AIO.Champions
             ///     Loads the W drawing.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Drawings["w"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["w"].Enabled)
             {
                 CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
             }
@@ -43,56 +42,55 @@ namespace AIO.Champions
             ///     Loads the E drawing.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Drawings["e"].As<MenuBool>().Enabled)
+                MenuClass.Drawings["e"].Enabled)
             {
                 CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
             }
 
             /// <summary>
-            ///     Loads the R drawings.
+            ///     Loads the R drawing.
             /// </summary>
-            if (SpellClass.R.Ready)
+            if (SpellClass.R.Ready &&
+                MenuClass.Drawings["r"].Enabled)
             {
-                /// <summary>
-                ///     Loads the R range drawing.
-                /// </summary>
-                if (MenuClass.Drawings["r"].As<MenuBool>().Enabled)
-                {
-                    CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
-                }
-
-                /// <summary>
-                ///     Loads the R minimap drawing.
-                /// </summary>
-                if (MenuClass.Drawings["rmm"].As<MenuBool>().Enabled)
-                {
-	                TacticalMapRendering.Render(Color.White, UtilityClass.Player.Position, SpellClass.R.Range);
-                }
+                CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
             }
 
             /// <summary>
             ///     Loads the WorkedGrounds drawing.
             /// </summary>
-            if (MenuClass.Drawings["grounds"].As<MenuBool>().Enabled)
+            if (MenuClass.Drawings["grounds"].Enabled)
             {
                 foreach (var ground in WorkedGrounds)
                 {
-	                CircleRendering.Render(Color.Brown, WorkedGroundWidth, 30, new Vector2(ground.Value.X, ground.Value.Y));
+	                CircleRendering.Render(Color.Brown, WorkedGroundWidth, ground.Key);
                 }
             }
 
             /// <summary>
             ///     Loads the MineFields drawing.
             /// </summary>
-            if (MenuClass.Drawings["boulders"].As<MenuBool>().Enabled)
+            if (MenuClass.Drawings["boulders"].Enabled)
             {
                 foreach (var boulder in MineField)
                 {
-	                CircleRendering.Render(Color.Brown, BouldersWidth, 30, new Vector2(boulder.Value.X, boulder.Value.Y));
+	                CircleRendering.Render(Color.Brown, BouldersWidth, boulder.Key);
                 }
             }
         }
 
-        #endregion
+	    public void OnEndScene(EntropyEventArgs args)
+	    {
+		    /// <summary>
+		    ///     Loads the R minimap drawing.
+		    /// </summary>
+		    if (SpellClass.R.Ready &&
+		        MenuClass.Drawings["rmm"].Enabled)
+		    {
+			    TacticalMapRendering.Render(Color.White, UtilityClass.Player.Position, SpellClass.R.Range);
+		    }
+		}
+
+	    #endregion
     }
 }

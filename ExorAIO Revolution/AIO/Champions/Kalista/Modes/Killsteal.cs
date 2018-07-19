@@ -24,7 +24,7 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Root["q"]["killsteal"].Enabled)
+                MenuClass.Q["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
                                                  .Where(t => GetQDamage(t) >= t.GetRealHealth(DamageType.Physical)))
@@ -52,7 +52,7 @@ namespace AIO.Champions
 	        ///     The KillSteal E Logic.
 	        /// </summary>
 	        if (SpellClass.E.Ready &&
-	            MenuClass.Root["e"]["killsteal"].Enabled)
+	            MenuClass.E["killsteal"].Enabled)
 	        {
 		        if (ObjectCache.EnemyHeroes.Any(t =>
 			                                        IsPerfectRendTarget(t) &&

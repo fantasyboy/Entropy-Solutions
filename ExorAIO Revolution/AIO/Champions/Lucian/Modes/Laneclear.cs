@@ -60,8 +60,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Root["e"]["laneclear"]) &&
-                MenuClass.Root["e"]["laneclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["laneclear"]) &&
+                MenuClass.E["laneclear"].Enabled)
             {
                 SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, UtilityClass.Player.BoundingRadius));
             }
@@ -71,12 +71,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q"]["laneclear"]) &&
-                MenuClass.Root["q"]["laneclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["laneclear"]) &&
+                MenuClass.Q["laneclear"].Enabled)
             {
                 /*
                 var farmLocation = SpellClass.Q2.GetLineFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.Q2.Width);
-                if (farmLocation.MinionsHit >= MenuClass.Root["q"]["customization"]["laneclear"].Value)
+                if (farmLocation.MinionsHit >= MenuClass.Q["customization"]["laneclear"].Value)
                 {
                     SpellClass.Q.CastOnUnit(farmLocation.FirstMinion);
                     return;
@@ -89,12 +89,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Root["w"]["laneclear"]) &&
-                MenuClass.Root["w"]["laneclear"].Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["laneclear"]) &&
+                MenuClass.W["laneclear"].Enabled)
             {
                 /*
                 var farmLocation = SpellClass.W.GetCircularFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.W.Width);
-                if (farmLocation.MinionsHit >= MenuClass.Root["w"]["customization"]["laneclear"].Value)
+                if (farmLocation.MinionsHit >= MenuClass.W["customization"]["laneclear"].Value)
                 {
                     SpellClass.W.Cast(farmLocation.Position);
                 }

@@ -24,7 +24,7 @@ namespace AIO.Champions
             ///     The E Engager Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Root["e"]["engage"].Enabled)
+                MenuClass.E["engage"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.E.Range);
                 if (bestTarget != null &&

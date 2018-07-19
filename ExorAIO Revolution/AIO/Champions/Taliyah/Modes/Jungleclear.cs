@@ -1,13 +1,15 @@
 ﻿
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
+using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -26,7 +28,7 @@ namespace AIO.Champions
         /// </summary>
         public void JungleClear(EntropyEventArgs args)
         {
-            var jungleTarget = ObjectManager.Get<AIMinionClient>()
+            var jungleTarget = ObjectCache.AllMinions
                 .Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
                 .MinBy(m => m.DistanceToPlayer());
             if (jungleTarget == null ||
@@ -43,10 +45,10 @@ namespace AIO.Champions
                 UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter) &&
                 (IsNearWorkedGround() ||
                  UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"])) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"])) &&
+                MenuClass.Q["jungleclear"].Enabled)
             {
-                switch (MenuClass.Spells["q"]["modes"]["jungleclear"].As<MenuList>().Value)
+                switch (MenuClass.Q["modes"]["jungleclear"].Value)
                 {
                     case 0:
                         if (!IsNearWorkedGround())
@@ -68,8 +70,8 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.W.Range) &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["jungleclear"]) &&
-                MenuClass.Spells["w"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
+                MenuClass.W["jungleclear"].Enabled)
             {
                 var bestBoulderHitPos = GetBestBouldersHitPosition(jungleTarget);
                 var bestBoulderHitPosHitBoulders = GetBestBouldersHitPositionHitBoulders(jungleTarget);
@@ -102,8 +104,8 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.E.Range) &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
+                MenuClass.E["jungleclear"].Enabled)
             {
                 SpellClass.E.Cast(SpellClass.W.Ready
                     ? targetPosAfterW
@@ -116,10 +118,10 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+                MenuClass.Q["jungleclear"].Enabled)
             {
-                switch (MenuClass.Spells["q"]["modes"]["jungleclear"].As<MenuList>().Value)
+                switch (MenuClass.Q["modes"]["jungleclear"].Value)
                 {
                     case 0:
                         if (!IsNearWorkedGround())

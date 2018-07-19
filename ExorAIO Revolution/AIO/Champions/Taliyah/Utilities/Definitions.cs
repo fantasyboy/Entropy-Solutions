@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -47,12 +47,12 @@ namespace AIO.Champions
         /// <summary>
         ///     Returns the MineField position.
         /// </summary>
-        public Dictionary<int, Vector3> MineField = new Dictionary<int, Vector3>();
+        public Dictionary<GameObject, Vector3> MineField = new Dictionary<GameObject, Vector3>();
 
         /// <summary>
         ///     Returns the WorkedGrounds position.
         /// </summary>
-        public Dictionary<int, Vector3> WorkedGrounds = new Dictionary<int, Vector3>();
+        public Dictionary<GameObject, Vector3> WorkedGrounds = new Dictionary<GameObject, Vector3>();
 
         #endregion
 
@@ -73,7 +73,7 @@ namespace AIO.Champions
         /// <param name="range">The range.</param>
         public int CountTerrainsInRange(float range)
         {
-            return WorkedGrounds.Count(o => o.Value.Distance(UtilityClass.Player.Position) <= range);
+            return WorkedGrounds.Count(o => o.Value.DistanceToPlayer() <= range);
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace AIO.Champions
         public Vector3 GetTargetPositionAfterW(AIHeroClient target)
         {
             var position = new Vector3();
-            switch (MenuClass.Spells["w"]["selection"][target.CharName.ToLower()].As<MenuList>().Value)
+            switch (MenuClass.W["selection"][target.CharName.ToLower()].Value)
             {
                 case 0:
                     position = GetUnitPositionAfterPull(target);
@@ -163,10 +163,10 @@ namespace AIO.Champions
                 ///     Pull if killable else Push.
                 /// </summary>
                 case 2:
-                    var isKillable = target.GetRealHealth() < UtilityClass.Player.GetSpellDamage(target, SpellSlot.Q) * (IsNearWorkedGround() ? 1 : 3) +
-                                     UtilityClass.Player.GetSpellDamage(target, SpellSlot.W) +
-                                     UtilityClass.Player.GetSpellDamage(target, SpellSlot.E);
-                    if (isKillable)
+	                var isKillable = target.GetRealHealth() < (IsNearWorkedGround()
+		                                 ? GetQDamage(target)
+		                                 : GetQDamage(target, 3)) + GetWDamage(target) + GetEDamage(target);
+					if (isKillable)
                     {
                         position = GetUnitPositionAfterPull(target);
                     }
@@ -180,7 +180,7 @@ namespace AIO.Champions
                 ///     Pull if not near else Push.
                 /// </summary>
                 case 3:
-                    if (UtilityClass.Player.Distance(GetUnitPositionAfterPull(target)) >= 200f)
+                    if (target.DistanceToPlayer() >= UtilityClass.Player.GetAutoAttackRange(target))
                     {
                         position = GetUnitPositionAfterPull(target);
                     }
@@ -196,9 +196,9 @@ namespace AIO.Champions
                 case 4:
                     if (!GameObjects.EnemyHeroes.Any(t =>
                             t.IsValidTarget(SpellClass.W.Range) &&
-                            MenuClass.Spells["w"]["selection"][t.CharName.ToLower()].As<MenuList>().Value < 3))
+                            MenuClass.W["selection"][t.CharName.ToLower()].Value < 4))
                     {
-                        if (UtilityClass.Player.Distance(GetUnitPositionAfterPull(target)) >= 200f)
+                        if (target.DistanceToPlayer() >= UtilityClass.Player.GetAutoAttackRange(target))
                         {
                             position = GetUnitPositionAfterPull(target);
                         }
@@ -226,12 +226,12 @@ namespace AIO.Champions
         /// </summary>
         public void ReloadMineField()
         {
-            foreach (var mine in ObjectManager.Get<GameObject>().Where(o => o != null && o.IsValid))
+            foreach (var mine in ObjectCache.AllGameObjects.Where(o => o.IsValid))
             {
                 switch (mine.Name)
                 {
-                    case "Taliyah_Base_E_Mines.troy":
-                        MineField.Add(mine.NetworkID, mine.Position);
+                    case "Taliyah_Base_E_Mines":
+                        MineField.Add(mine, mine.Position);
                         break;
                 }
             }
@@ -242,13 +242,13 @@ namespace AIO.Champions
         /// </summary>
         public void ReloadWorkedGrounds()
         {
-            foreach (var ground in ObjectManager.Get<GameObject>().Where(o => o != null && o.IsValid))
-            {
+            foreach (var ground in ObjectCache.AllGameObjects.Where(o => o.IsValid))
+			{
                 switch (ground.Name)
                 {
-                    case "Taliyah_Base_Q_aoe.troy":
-                    case "Taliyah_Base_Q_aoe_river.troy":
-                        WorkedGrounds.Add(ground.NetworkID, ground.Position);
+                    case "Taliyah_Base_Q_aoe":
+                    case "Taliyah_Base_Q_aoe_river":
+                        WorkedGrounds.Add(ground, ground.Position);
                         break;
                 }
             }

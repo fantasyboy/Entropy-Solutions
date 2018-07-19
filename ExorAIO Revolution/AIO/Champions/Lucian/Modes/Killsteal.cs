@@ -29,7 +29,7 @@ namespace AIO.Champions
                 /// <summary>
                 ///     Normal.
                 /// </summary>
-                if (MenuClass.Root["q"]["killsteal"].Enabled)
+                if (MenuClass.Q["killsteal"].Enabled)
                 {
                     foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
                         GetQDamage(t) >= t.GetRealHealth()))
@@ -65,7 +65,7 @@ namespace AIO.Champions
             ///     The KillSteal W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Root["w"]["killsteal"].Enabled)
+                MenuClass.W["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range).Where(t =>
                     GetWDamage(t) >= t.GetRealHealth()))

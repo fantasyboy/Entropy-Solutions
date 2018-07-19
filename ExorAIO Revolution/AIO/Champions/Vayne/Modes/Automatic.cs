@@ -26,8 +26,8 @@ namespace AIO.Champions
             ///     The Semi-Automatic E Management.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Root["e"]["bool"].Enabled &&
-                MenuClass.Root["e"]["key"].Enabled)
+                MenuClass.E["bool"].Enabled &&
+                MenuClass.E["key"].Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes.Where(t =>
                         t.IsValidTarget(SpellClass.E.Range) &&
