@@ -7,6 +7,7 @@ using Entropy.SDK;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.TS;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -99,16 +100,19 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.E["combo"].Enabled)
 			{
-				if (!SpellClass.W.Ready &&
-				    MenuClass.E["customization"]["onlywready"].Enabled &&
-				    UtilityClass.Player.Spellbook.GetSpellState(SpellSlot.W) != SpellState.NotLearned)
+				if (!SpellClass.W.DidJustCast(500))
 				{
-					return;
-				}
+					if (!SpellClass.W.Ready &&
+					    MenuClass.E["customization"]["onlywready"].Enabled &&
+					    UtilityClass.Player.Spellbook.GetSpellState(SpellSlot.W) != SpellState.NotLearned)
+					{
+						return;
+					}
 
-				if (MenuClass.Root["pattern"].Value == 0)
-				{
-					return;
+					if (MenuClass.Root["pattern"].Value == 0)
+					{
+						return;
+					}
 				}
 
 				var bestETarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.E.Range - 150f);

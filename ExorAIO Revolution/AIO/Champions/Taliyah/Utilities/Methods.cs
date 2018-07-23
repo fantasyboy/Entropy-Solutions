@@ -1,6 +1,5 @@
 using Entropy;
 using Entropy.SDK.Events;
-using Entropy.SDK.Predictions.RecallPrediction;
 using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
@@ -28,7 +27,6 @@ namespace AIO.Champions
 			Renderer.OnEndScene += OnEndScene;
 			Gapcloser.OnGapcloser += OnGapcloser;
 			Interrupter.OnInterruptableSpell += OnInterruptableSpell;
-			RecallPrediction.Initialize();
 		}
 
 		#endregion

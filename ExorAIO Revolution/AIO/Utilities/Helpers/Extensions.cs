@@ -5,6 +5,7 @@ using Entropy.SDK;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Orbwalking;
+using Entropy.SDK.TS;
 
 namespace AIO.Utilities
 {

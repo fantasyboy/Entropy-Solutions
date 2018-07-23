@@ -6,7 +6,6 @@ using Entropy.SDK.Events;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.Predictions.RecallPrediction;
 using Entropy.SDK.Utils;
 using Gapcloser = AIO.Utilities.Gapcloser;
 
@@ -280,26 +279,6 @@ namespace AIO.Champions
 				switch (args.Slot)
 				{
 					/// <summary>
-					///     The W->E Combo Logic.
-					/// </summary>
-					case SpellSlot.W:
-						if (SpellClass.E.Ready)
-						{
-							switch (Orbwalker.Mode)
-							{
-								case OrbwalkingMode.Combo:
-									if (MenuClass.E["combo"].Enabled)
-									{
-										SpellClass.E.Cast(args.EndPosition);
-									}
-
-									break;
-							}
-						}
-
-						break;
-
-					/// <summary>
 					///     Automatically Mount on R Logic.
 					/// </summary>
 					case SpellSlot.R:
@@ -308,7 +287,6 @@ namespace AIO.Champions
 						{
 							DelayAction.Queue(() => { SpellClass.R.CastOnUnit(UtilityClass.Player); }, 500);
 						}
-
 						break;
 				}
 			}
@@ -340,20 +318,12 @@ namespace AIO.Champions
 				return;
 			}
 
+			var sender = args.Sender;
 			if (SpellClass.E.Ready &&
-			    MenuClass.E["teleports"].Enabled)
+			    MenuClass.E["teleports"].Enabled &&
+			    sender.DistanceToPlayer() <= SpellClass.E.Range)
 			{
-				DelayAction.Queue(() =>
-					{
-						var predictedPos = RecallPrediction.GetPrediction();
-						if (predictedPos.IsZero || predictedPos.DistanceToPlayer() > SpellClass.E.Range)
-						{
-							return;
-						}
-
-						SpellClass.E.Cast(predictedPos);
-					},
-					250); // <- Gotta let SDK run first
+				SpellClass.E.Cast(sender.Position);
 			}
 		}
 

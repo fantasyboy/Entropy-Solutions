@@ -7,7 +7,6 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.Predictions.RecallPrediction;
 using Entropy.SDK.Utils;
 using SharpDX;
 using Gapcloser = AIO.Utilities.Gapcloser;
@@ -118,20 +117,12 @@ namespace AIO.Champions
 				return;
 			}
 
+			var sender = args.Sender;
 			if (SpellClass.W.Ready &&
-			    MenuClass.W["teleports"].Enabled)
+			    MenuClass.W["teleports"].Enabled &&
+			    sender.DistanceToPlayer() <= SpellClass.W.Range)
 			{
-				DelayAction.Queue(() =>
-					{
-						var predictedPos = RecallPrediction.GetPrediction();
-						if (predictedPos.IsZero || predictedPos.DistanceToPlayer() > SpellClass.W.Range)
-						{
-							return;
-						}
-
-						SpellClass.W.Cast(predictedPos);
-					},
-					250); // <- Gotta let SDK run first
+				SpellClass.W.Cast(sender.Position);
 			}
 		}
 

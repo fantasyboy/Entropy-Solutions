@@ -1,7 +1,6 @@
 using Entropy;
 using Entropy.SDK.Events;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.Predictions.RecallPrediction;
 using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
@@ -28,8 +27,6 @@ namespace AIO.Champions
 			Orbwalker.OnPostAttack += OnPostAttack;
 			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
 			Gapcloser.OnGapcloser += OnGapcloser;
-
-			RecallPrediction.Initialize();
 		}
 
 		#endregion
