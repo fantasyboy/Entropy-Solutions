@@ -7,7 +7,6 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.Utils;
 using SharpDX;
 using Gapcloser = AIO.Utilities.Gapcloser;
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Entropy;
-using Entropy.SDK;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Orbwalking;

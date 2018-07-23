@@ -3,7 +3,6 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
-using Entropy.SDK;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Objects;
@@ -102,14 +101,21 @@ namespace AIO.Champions
 			{
 				if (!SpellClass.W.DidJustCast(500))
 				{
+					if (MenuClass.Root["pattern"].Value == 0)
+					{
+						return;
+					}
+
 					if (!SpellClass.W.Ready &&
 					    MenuClass.E["customization"]["onlywready"].Enabled &&
 					    UtilityClass.Player.Spellbook.GetSpellState(SpellSlot.W) != SpellState.NotLearned)
 					{
 						return;
 					}
-
-					if (MenuClass.Root["pattern"].Value == 0)
+				}
+				else
+				{
+					if (MenuClass.Root["pattern"].Value == 1)
 					{
 						return;
 					}

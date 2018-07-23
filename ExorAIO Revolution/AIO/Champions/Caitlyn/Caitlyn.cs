@@ -9,7 +9,6 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.Utils;
 using Gapcloser = AIO.Utilities.Gapcloser;
 
 #pragma warning disable 1587

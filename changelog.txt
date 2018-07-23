@@ -1178,3 +1178,6 @@ ExorAIO: Revolution Changelog:
   Taliyah: Now Ignores Manamanagers while casting Q on Worked Ground.
   Varus: Added new W Menu, with options to cast W on all modes, (It will use it before Q starts to charge).
   
+8.14.1.0:
+  AIO: Added Kai'Sa.
+  AIO: Porting in progress.
