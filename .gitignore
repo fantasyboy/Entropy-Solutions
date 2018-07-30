@@ -7,3 +7,5 @@
 *.user
 *.sln
 .vs/Aimtec Solutions/DesignTimeBuild/.dtbcache
+.vs/Entropy Solutions/v15/Server/sqlite3/db.lock
+.vs/Entropy Solutions/v15/Server/sqlite3/storage.ide-shm
