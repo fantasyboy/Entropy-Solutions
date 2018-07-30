@@ -44,7 +44,7 @@ namespace AIO.Champions
 				if (MenuClass.Root["q2"]["killsteal"].Enabled)
 				{
 					foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
-						!t.IsValidTarget(SpellClass.Q.Range) &&
+						!t.IsValidTargetEx(SpellClass.Q.Range) &&
 						GetQDamage(t) >= t.GetRealHealth()))
 					{
 						foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))

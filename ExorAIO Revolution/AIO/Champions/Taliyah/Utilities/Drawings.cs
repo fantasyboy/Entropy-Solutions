@@ -86,7 +86,8 @@ namespace AIO.Champions
 			if (SpellClass.R.Ready &&
 			    MenuClass.Drawings["rmm"].Enabled)
 			{
-				TacticalMapRendering.Render(Color.White, UtilityClass.Player.Position, SpellClass.R.Range);
+				var scale = (TacticalMap.ScaleX + TacticalMap.ScaleY) / 4;
+				TacticalMapRendering.Render(Color.White, UtilityClass.Player.Position, SpellClass.R.Range / scale);
 			}
 		}
 

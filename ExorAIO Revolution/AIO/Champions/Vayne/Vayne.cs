@@ -94,7 +94,7 @@ namespace AIO.Champions
 
 				if (MenuClass.Miscellaneous["stealthcheck"].Enabled &&
 				    GameObjects.EnemyHeroes.Count(t =>
-					    t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))) >=
+					    t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t))) >=
 				    MenuClass.Miscellaneous["stealthcheck"].Value)
 				{
 					args.Cancel = true;
@@ -114,7 +114,7 @@ namespace AIO.Champions
 
 				var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
 					t.GetBuffCount("vaynesilvereddebuff") == 2 &&
-					t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
+					t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)));
 				if (forceTarget != null)
 				{
 					args.Target = forceTarget;
@@ -143,7 +143,7 @@ namespace AIO.Champions
 			var endPos = args.EndPosition;
 			var playerPos = UtilityClass.Player.Position;
 
-			if (!heroSender.IsValidTarget(SpellClass.E.Range) &&
+			if (!heroSender.IsValidTargetEx(SpellClass.E.Range) &&
 			    endPos.Distance((Vector2) playerPos) > SpellClass.E.Range)
 			{
 				return;
@@ -203,7 +203,7 @@ namespace AIO.Champions
 					return;
 				}
 
-				if (heroSender.IsValidTarget(SpellClass.E.Range))
+				if (heroSender.IsValidTargetEx(SpellClass.E.Range))
 				{
 					SpellClass.E.CastOnUnit(heroSender);
 				}

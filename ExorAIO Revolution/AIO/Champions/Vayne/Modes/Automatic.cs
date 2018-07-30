@@ -3,7 +3,6 @@ using Entropy;
 using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
-using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -29,7 +28,7 @@ namespace AIO.Champions
 			    MenuClass.E["key"].Enabled)
 			{
 				var bestTarget = GameObjects.EnemyHeroes.Where(t =>
-						t.IsValidTarget(SpellClass.E.Range) &&
+						t.IsValidTargetEx(SpellClass.E.Range) &&
 						!Invulnerable.Check(t, DamageType.Magical, false))
 					.MinBy(o => o.DistanceToPlayer());
 				if (bestTarget != null)

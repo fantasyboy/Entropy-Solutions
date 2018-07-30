@@ -28,7 +28,7 @@ namespace AIO.Champions
 			{
 				var bestTarget = GameObjects.EnemyHeroes.FirstOrDefault(t =>
 					!Invulnerable.Check(t) &&
-					t.IsValidTarget(SpellClass.R.Range) &&
+					t.IsValidTargetEx(SpellClass.R.Range) &&
 					t.HasBuff("kaisapassivemarkerr"));
 				if (bestTarget != null)
 				{

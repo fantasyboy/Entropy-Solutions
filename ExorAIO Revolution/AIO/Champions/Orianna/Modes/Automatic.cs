@@ -2,9 +2,6 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
-using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -22,7 +19,7 @@ namespace AIO.Champions
         /// </summary>
         public void Automatic(EntropyEventArgs args)
         {
-            if (BallPosition == null)
+            if (GetBall() == null)
             {
                 return;
             }
@@ -31,14 +28,14 @@ namespace AIO.Champions
             ///     The Automatic R Logic.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Spells["r"]["aoe"] != null &&
-                MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Enabled)
+                MenuClass.R["aoe"] != null &&
+                MenuClass.R["aoe"].Enabled)
             {
                 var countValidTargets = GameObjects.EnemyHeroes.Count(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, (Vector3)BallPosition));
+                        t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, GetBall().Position));
             
-                if (countValidTargets >= MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Value)
+                if (countValidTargets >= MenuClass.R["aoe"].Value)
                 {
                     SpellClass.R.Cast();
                 }

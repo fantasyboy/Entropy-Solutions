@@ -948,7 +948,7 @@ namespace AIO.Utilities
 				Gapclosers.Remove(needToDeleteValue.Key);
 			}
 
-			foreach (var gapArgs in Gapclosers.Where(x => x.Value.Unit.IsValidTarget(allyIsValidTarget: true)))
+			foreach (var gapArgs in Gapclosers.Where(x => x.Value.Unit.IsValidTargetEx(allyIsValidTargetEx: true)))
 			{
 				OnGapcloser(gapArgs.Value.Unit, gapArgs.Value);
 			}
@@ -957,7 +957,7 @@ namespace AIO.Utilities
 		private static void OnProcessSpellCast(AIBaseClientCastEventArgs args)
 		{
 			var sender = args.Caster as AIHeroClient;
-			if (sender == null || !sender.IsValidTarget(allyIsValidTarget: true) ||
+			if (sender == null || !sender.IsValidTargetEx(allyIsValidTargetEx: true) ||
 			    sender.Type.TypeID != GameObjectTypeID.AIHeroClient)
 			{
 				return;

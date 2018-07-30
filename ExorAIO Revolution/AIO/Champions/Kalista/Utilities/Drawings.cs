@@ -79,18 +79,18 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.Drawings["edmg"].Enabled)
 			{
-				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(SpellClass.E.Range)))
+				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTargetEx(SpellClass.E.Range)))
 				{
 					DamageIndicatorRendering.Render(hero, GetEDamage(hero));
 				}
 
 				foreach (var jungleMob in ObjectCache.JungleMinions.Where(t =>
-					t.IsJungleMinion() && t.IsValidTarget(SpellClass.E.Range)))
+					t.IsJungleMinion() && t.IsValidTargetEx(SpellClass.E.Range)))
 				{
 					DamageIndicatorRendering.Render(jungleMob, GetEDamage(jungleMob));
 				}
 
-				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTarget(SpellClass.E.Range)))
+				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTargetEx(SpellClass.E.Range)))
 				{
 					DamageIndicatorRendering.Render(mob, GetEDamage(mob));
 				}

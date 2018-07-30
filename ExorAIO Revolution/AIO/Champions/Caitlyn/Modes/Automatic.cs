@@ -58,7 +58,7 @@ namespace AIO.Champions
 						foreach (var target in GameObjects.EnemyHeroes.Where(t =>
 							!Invulnerable.Check(t) &&
 							t.IsImmobile(SpellClass.Q.Delay) &&
-							t.IsValidTarget(SpellClass.Q.Range) &&
+							t.IsValidTargetEx(SpellClass.Q.Range) &&
 							t.HasBuff("caitlynyordletrapdebuff")))
 						{
 							SpellClass.Q.Cast(target.Position);
@@ -78,7 +78,7 @@ namespace AIO.Champions
 				var bestTarget = GameObjects.EnemyHeroes
 					.Where(t =>
 						!Invulnerable.Check(t) &&
-						t.IsValidTarget(SpellClass.R.Range) &&
+						t.IsValidTargetEx(SpellClass.R.Range) &&
 						MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)
 					.MinBy(o => o.GetRealHealth());
 				if (bestTarget != null)

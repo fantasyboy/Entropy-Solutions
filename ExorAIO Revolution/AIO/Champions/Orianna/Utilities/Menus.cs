@@ -24,7 +24,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Sets the spells menu.
             /// </summary>
-            MenuClass.Spells = new Menu("spells", "Spells");
+            MenuClass.Root = new Menu("spells", "Spells");
             {
                 /// <summary>
                 ///     Sets the menu for the Q.
@@ -67,7 +67,7 @@ namespace AIO.Champions
                         MenuClass.Q.Add(new MenuSeperator("exseparator", "Whitelist not needed"));
                     }
                 }
-                MenuClass.Spells.Add(MenuClass.Q);
+                MenuClass.Root.Add(MenuClass.Q);
 
                 /// <summary>
                 ///     Sets the menu for the W.
@@ -111,7 +111,7 @@ namespace AIO.Champions
                         MenuClass.W.Add(new MenuSeperator("exseparator", "Whitelist not needed"));
                     }
                 }
-                MenuClass.Spells.Add(MenuClass.W);
+                MenuClass.Root.Add(MenuClass.W);
 
                 /// <summary>
                 ///     Sets the menu for the E.
@@ -226,7 +226,7 @@ namespace AIO.Champions
                     }
                     MenuClass.E.Add(MenuClass.E2);
                 }
-                MenuClass.Spells.Add(MenuClass.E);
+                MenuClass.Root.Add(MenuClass.E);
 
                 /// <summary>
                 ///     Sets the menu for the R.
@@ -264,9 +264,9 @@ namespace AIO.Champions
                         MenuClass.R.Add(new MenuSeperator("exseparator", "Whitelist Menu not needed."));
                     }
                 }
-                MenuClass.Spells.Add(MenuClass.R);
+                MenuClass.Root.Add(MenuClass.R);
             }
-            MenuClass.Root.Add(MenuClass.Spells);
+            MenuClass.Root.Add(MenuClass.Root);
 
             /// <summary>
             ///     Sets the miscellaneous menu.

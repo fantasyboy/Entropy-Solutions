@@ -6,8 +6,6 @@ using AIO.Utilities;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -25,7 +23,7 @@ namespace AIO.Champions
         /// </summary>
         public void Killsteal(EntropyEventArgs args)
         {
-            if (BallPosition == null)
+            if (GetBall() == null)
             {
                 return;
             }
@@ -34,17 +32,17 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.Q["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range))
                 {
-                    SpellClass.Q.GetPredictionInput(target).From = (Vector3)BallPosition;
+                    SpellClass.Q.GetPredictionInput(target).From = GetBall().Position;
 
                     var collisions = SpellClass.Q.GetPrediction(target).CollisionObjects
                         .Where(c => Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.Q.Range).Contains(c))
                         .ToList();
                     var multiplier = 1 - 0.10 * Math.Min(6, collisions.Count);
-                    var damageToTarget = UtilityClass.Player.GetSpellDamage(target, SpellSlot.Q) * multiplier;
+                    var damageToTarget = GetQDamage(target) * multiplier;
 
                     if (damageToTarget >= target.GetRealHealth())
                     {
@@ -58,11 +56,11 @@ namespace AIO.Champions
             ///     The KillSteal W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.W["killsteal"].Enabled)
             {
                 if (GameObjects.EnemyHeroes.Any(t =>
-                        t.IsValidTarget(SpellClass.W.Width, checkRangeFrom: (Vector3)BallPosition) &&
-                        UtilityClass.Player.GetSpellDamage(t, SpellSlot.W) >= t.GetRealHealth()))
+                        t.IsValidTargetEx(SpellClass.W.Width, checkRangeFrom: GetBall().Position) &&
+                        GetWDamage(t) >= t.GetRealHealth()))
                 {
                     SpellClass.W.Cast();
                 }
@@ -72,28 +70,28 @@ namespace AIO.Champions
             ///     The KillSteal R Logic.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Spells["r"]["killstealwhitelist"] != null &&
-                MenuClass.Spells["r"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.R["killstealwhitelist"] != null &&
+                MenuClass.R["killsteal"].Enabled)
             {
                 foreach (var enemy in GameObjects.EnemyHeroes.Where(t =>
-                    MenuClass.Spells["r"]["killstealwhitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled &&
-                    t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: (Vector3)BallPosition)))
+                    MenuClass.R["killstealwhitelist"][t.CharName.ToLower()].Enabled &&
+                    t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position)))
                 {
-                    var dmg = UtilityClass.Player.GetSpellDamage(enemy, SpellSlot.R);
+                    var dmg = GetRDamage(enemy);
 
                     if (SpellClass.Q.Ready &&
-                        enemy.IsValidTarget(SpellClass.Q.Range))
+                        enemy.IsValidTargetEx(SpellClass.Q.Range))
                     {
-                        dmg += UtilityClass.Player.GetSpellDamage(enemy, SpellSlot.Q);
+                        dmg += GetQDamage(enemy);
                     }
 
                     if (SpellClass.W.Ready &&
-                       enemy.IsValidTarget(SpellClass.W.Width, checkRangeFrom: (Vector3)BallPosition))
+                       enemy.IsValidTargetEx(SpellClass.W.Width, checkRangeFrom: GetBall().Position))
                     {
-                        dmg += UtilityClass.Player.GetSpellDamage(enemy, SpellSlot.W);
+                        dmg += GetWDamage(enemy);
                     }
 
-                    if (UtilityClass.Player.Position.Distance((Vector3)BallPosition) < UtilityClass.Player.GetAutoAttackRange())
+                    if (UtilityClass.Player.Position.Distance(GetBall()) < UtilityClass.Player.GetAutoAttackRange())
                     {
                         dmg += UtilityClass.Player.GetAutoAttackDamage(enemy);
                     }

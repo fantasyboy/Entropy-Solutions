@@ -4,7 +4,6 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -23,7 +22,7 @@ namespace AIO.Champions
         /// </summary>
         public void Combo(EntropyEventArgs args)
         {
-            if (BallPosition == null)
+            if (GetBall() == null)
             {
                 return;
             }
@@ -32,11 +31,11 @@ namespace AIO.Champions
             ///     The W Combo Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.W["combo"].Enabled)
             {
                 if (GameObjects.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTarget(SpellClass.W.Width - t.BoundingRadius - SpellClass.W.Delay * t.BoundingRadius, false, false, (Vector3)BallPosition)))
+                        t.IsValidTargetEx(SpellClass.W.Width - t.BoundingRadius - SpellClass.W.Delay * t.BoundingRadius, false, false, GetBall().Position)))
                 {
                     SpellClass.W.Cast();
                 }
@@ -50,21 +49,21 @@ namespace AIO.Champions
                 /// <summary>
                 ///     The E Engager Logic.
                 /// </summary>
-                if (MenuClass.Spells["r"]["aoe"] != null &&
-                    MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Enabled &&
-                    MenuClass.Spells["e"]["engager"].As<MenuBool>().Enabled)
+                if (MenuClass.R["aoe"] != null &&
+                    MenuClass.R["aoe"].Enabled &&
+                    MenuClass.E["engager"].Enabled)
                 {
                     var bestAllies = GameObjects.AllyHeroes
                         .Where(a =>
                             !a.IsMe() &&
-                            a.IsValidTarget(SpellClass.E.Range, true) &&
-                            MenuClass.Spells["e"]["engagerswhitelist"][a.CharName.ToLower()].As<MenuBool>().Enabled);
+                            a.IsValidTargetEx(SpellClass.E.Range, true) &&
+                            MenuClass.E["engagerswhitelist"][a.CharName.ToLower()].Enabled);
 
                     var bestAlly = bestAllies
                         .FirstOrDefault(a =>
                             GameObjects.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
-                                t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, a.Position)) >= MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Value);
+                                t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, a.Position)) >= MenuClass.R["aoe"].Value);
 
                     if (bestAlly != null)
                     {
@@ -75,23 +74,23 @@ namespace AIO.Champions
                 /// <summary>
                 ///     The E Combo Logic.
                 /// </summary>
-                if (MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
+                if (MenuClass.E["combo"].Enabled)
                 {
                     var bestAllies = GameObjects.AllyHeroes
                         .Where(a =>
-                            a.IsValidTarget(SpellClass.E.Range, true) &&
-                            MenuClass.Spells["e"]["combowhitelist"][a.CharName.ToLower()].As<MenuBool>().Enabled)
+                            a.IsValidTargetEx(SpellClass.E.Range, true) &&
+                            MenuClass.E["combowhitelist"][a.CharName.ToLower()].Enabled)
                         .OrderBy(o => o.GetRealHealth());
 
                     foreach (var ally in bestAllies)
                     {
                         var allyToBallRectangle = new Vector2Geometry.Rectangle(
                             (Vector2)ally.Position,
-                            (Vector2)ally.Position.Extend((Vector3)BallPosition, ally.Distance((Vector3)BallPosition) + 30f),
+                            (Vector2)ally.Position.Extend(GetBall().Position, ally.Distance(GetBall().Position) + 30f),
                             SpellClass.E.Width);
 
                         if (GameObjects.EnemyHeroes.Any(t =>
-                                t.IsValidTarget() &&
+                                t.IsValidTargetEx() &&
                                 !Invulnerable.Check(t, DamageType.Magical) &&
                                 allyToBallRectangle.IsInside((Vector2)t.Position)))
                         {
@@ -106,21 +105,21 @@ namespace AIO.Champions
             ///     The Combo Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Q["combo"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget != null)
                 {
                     if (SpellClass.E.Ready &&
                         !UtilityClass.Player.HasBuff("orianaghostself") &&
-                        bestTarget.Distance((Vector3)BallPosition) >= bestTarget.DistanceToPlayer() &&
-                        MenuClass.E2["gaine"].As<MenuBool>().Enabled)
+                        bestTarget.Distance(GetBall().Position) >= bestTarget.DistanceToPlayer() &&
+                        MenuClass.E2["gaine"].Enabled)
                     {
                         SpellClass.E.CastOnUnit(UtilityClass.Player);
                         return;
                     }
 
-                    SpellClass.Q.GetPredictionInput(bestTarget).From = (Vector3)BallPosition;
+                    SpellClass.Q.GetPredictionInput(bestTarget).From = GetBall().Position;
                     SpellClass.Q.Cast(SpellClass.Q.GetPrediction(bestTarget).CastPosition);
                 }
             }

@@ -18,7 +18,7 @@ namespace AIO.Champions
             Game.OnUpdate += OnUpdate;
             Spellbook.OnLocalCastSpell += OnLocalCastSpell;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
-            Render.OnPresent += OnPresent;
+            Renderer.OnRender += OnRender;
             Gapcloser.OnGapcloser += OnGapcloser;
 
             //Events.OnInterruptableTarget += OnInterruptableTarget;

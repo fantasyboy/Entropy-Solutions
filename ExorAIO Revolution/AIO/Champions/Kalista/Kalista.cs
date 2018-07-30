@@ -81,7 +81,7 @@ namespace AIO.Champions
 
 				var forceTarget = Extensions.GetBestEnemyHeroesTargets().FirstOrDefault(t =>
 					t.HasBuff("kalistacoopstrikemarkally") &&
-					t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)));
+					t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)));
 				if (forceTarget != null)
 				{
 					args.Target = forceTarget;

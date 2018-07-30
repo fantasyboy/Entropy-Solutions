@@ -4,7 +4,6 @@ using System.Linq;
 using Entropy;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
-using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Spells;
 using SharpDX;
 
@@ -446,71 +445,20 @@ namespace AIO.Utilities
 		}
 
 		/// <summary>
-		///     Gets the health with Blitzcrank's Shield support.
-		/// </summary>
-		/// <param name="unit">
-		///     The unit.
-		/// </param>
-		/// <param name="type">
-		///     The damageType.
-		/// </param>
-		/// <returns>
-		///     The target Health with Shield support.
-		/// </returns>
-		public static float GetRealHealth(this AIBaseClient unit, DamageType type = DamageType.True)
-		{
-			var realHp = unit.HP + unit.AllShield;
-
-			var hero = unit as AIHeroClient;
-			if (hero == null)
-			{
-				return realHp;
-			}
-
-			switch (type)
-			{
-				case DamageType.Magical:
-					realHp += hero.MagicalShield;
-					break;
-				case DamageType.Physical:
-					realHp += hero.PhysicalShield;
-					break;
-				case DamageType.Mixed:
-					realHp += hero.PhysicalShield + hero.MagicalShield;
-					break;
-			}
-
-			switch (hero.CharName)
-			{
-				case "Blitzcrank":
-					var debuffer = 0f;
-					if (hero.CharName.Equals("Blitzcrank") &&
-					    !hero.HasBuff("BlitzcrankManaBarrierCD"))
-					{
-						debuffer += hero.MP / 2;
-					}
-
-					return realHp + debuffer;
-			}
-
-			return realHp;
-		}
-
-		/// <summary>
 		///     Determines whether the specified target is a valid target.
 		/// </summary>
 		/// <param name="target">The target.</param>
 		/// <param name="range">The range.</param>
-		/// <param name="allyIsValidTarget">if set to <c>true</c> allies will be set as valid targets.</param>
+		/// <param name="allyIsValidTargetEx">if set to <c>true</c> allies will be set as valid targets.</param>
 		/// <param name="includeBoundingRadius"></param>
 		/// <param name="checkRangeFrom">The check range from position.</param>
 		/// <returns>
 		///     <c>true</c> if the specified target is a valid target; otherwise, <c>false</c>.
 		/// </returns>
-		public static bool IsValidTarget(
+		public static bool IsValidTargetEx(
 			this AttackableUnit target,
 			float range = float.MaxValue,
-			bool allyIsValidTarget = false,
+			bool allyIsValidTargetEx = false,
 			bool includeBoundingRadius = false,
 			Vector3 checkRangeFrom = default(Vector3))
 		{
@@ -519,7 +467,7 @@ namespace AIO.Utilities
 				return false;
 			}
 
-			if (!allyIsValidTarget && target.Team == Player.Team)
+			if (!allyIsValidTargetEx && target.Team == Player.Team)
 			{
 				return false;
 			}

@@ -40,7 +40,7 @@ namespace AIO.Champions
 			///     The Jungleclear Rylai Q Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
+			    jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
 			    UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter) &&
 			    (IsNearWorkedGround() ||
 			     UtilityClass.Player.MPPercent()
@@ -68,7 +68,7 @@ namespace AIO.Champions
 			///     The Jungleclear W Logic.
 			/// </summary>
 			if (SpellClass.W.Ready &&
-			    jungleTarget.IsValidTarget(SpellClass.W.Range) &&
+			    jungleTarget.IsValidTargetEx(SpellClass.W.Range) &&
 			    UtilityClass.Player.MPPercent()
 			    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
 			    MenuClass.W["jungleclear"].Enabled)
@@ -102,7 +102,7 @@ namespace AIO.Champions
 			///     The Jungleclear E Logic.
 			/// </summary>
 			if (SpellClass.E.Ready &&
-			    jungleTarget.IsValidTarget(SpellClass.E.Range) &&
+			    jungleTarget.IsValidTargetEx(SpellClass.E.Range) &&
 			    UtilityClass.Player.MPPercent()
 			    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
 			    MenuClass.E["jungleclear"].Enabled)
@@ -116,7 +116,7 @@ namespace AIO.Champions
 			///     The Jungleclear Q Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
+			    jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
 			    UtilityClass.Player.MPPercent()
 			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
 			    MenuClass.Q["jungleclear"].Enabled)

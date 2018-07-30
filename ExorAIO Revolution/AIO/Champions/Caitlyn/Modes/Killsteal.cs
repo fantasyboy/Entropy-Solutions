@@ -26,7 +26,7 @@ namespace AIO.Champions
 			    MenuClass.Q["killsteal"].Enabled)
 			{
 				foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-					!t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t))))
+					!t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t))))
 				{
 					var collisions = SpellClass.Q.GetPrediction(target).CollisionObjects
 						.Where(c => Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.Q.Range).Contains(c))

@@ -3,8 +3,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -22,7 +20,7 @@ namespace AIO.Champions
         /// </summary>
         public void Harass(EntropyEventArgs args)
         {
-            if (BallPosition == null)
+            if (GetBall() == null)
             {
                 return;
             }
@@ -32,15 +30,15 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["harass"]) &&
-                MenuClass.Spells["q"]["harass"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["harass"]) &&
+                MenuClass.Q["harass"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
-                if (bestTarget.IsValidTarget() &&
+                if (bestTarget.IsValidTargetEx() &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical) &&
-                    MenuClass.Spells["q"]["whitelist"][bestTarget.CharName.ToLower()].As<MenuBool>().Enabled)
+                    MenuClass.Q["whitelist"][bestTarget.CharName.ToLower()].Enabled)
                 {
-                    SpellClass.Q.GetPredictionInput(bestTarget).From = (Vector3)BallPosition;
+                    SpellClass.Q.GetPredictionInput(bestTarget).From = GetBall().Position;
                     SpellClass.Q.Cast(SpellClass.Q.GetPrediction(bestTarget).CastPosition);
                 }
             }
@@ -50,13 +48,13 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["harass"]) &&
-                MenuClass.Spells["w"]["harass"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["harass"]) &&
+                MenuClass.W["harass"].Enabled)
             {
                 if (GameObjects.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTarget(SpellClass.W.Width - t.BoundingRadius - SpellClass.W.Delay * t.BoundingRadius, false, false, (Vector3)BallPosition) &&
-                        MenuClass.Spells["w"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled))
+                        t.IsValidTargetEx(SpellClass.W.Width - t.BoundingRadius - SpellClass.W.Delay * t.BoundingRadius, false, false, GetBall().Position) &&
+                        MenuClass.W["whitelist"][t.CharName.ToLower()].Enabled))
                 {
                     SpellClass.W.Cast();
                 }

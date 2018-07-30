@@ -28,7 +28,7 @@ namespace AIO.Champions
 				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.E.Range);
 				if (bestTarget != null &&
 				    !Invulnerable.Check(bestTarget) &&
-				    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
+				    !bestTarget.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
 				{
 					var posAfterE = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 425f);
 					if (posAfterE.EnemyHeroesCount(1000f) < 3 &&

@@ -85,7 +85,7 @@ namespace AIO.Champions
 			/// </summary>
 			if (SpellClass.E.Ready &&
 			    !Invulnerable.Check(heroTarget) &&
-			    heroTarget.IsValidTarget(SpellClass.E.Range + heroTarget.BoundingRadius) &&
+			    heroTarget.IsValidTargetEx(SpellClass.E.Range + heroTarget.BoundingRadius) &&
 			    MenuClass.E["killsteal"].Enabled)
 			{
 				var shouldIncludeWDamage = heroTarget.GetBuffCount("vaynesilvereddebuff") == 1;

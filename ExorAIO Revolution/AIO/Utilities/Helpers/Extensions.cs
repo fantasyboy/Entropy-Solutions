@@ -45,7 +45,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIBaseClient> GetAllGenericUnitTargetsInRange(float range)
 		{
-			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTarget(range))
+			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTargetEx(range))
 				.Concat<AIBaseClient>(GetAllGenericMinionsTargetsInRange(range)).ToList();
 		}
 
@@ -148,27 +148,27 @@ namespace AIO.Utilities
 			/*
             var selectedTarget = TargetSelector.GetSelectedTarget();
             if (selectedTarget != null &&
-                selectedTarget.IsValidTarget(range))
+                selectedTarget.IsValidTargetEx(range))
             {
                 return selectedTarget;
             }*/
 
 			var orbTarget = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
 			if (orbTarget != null &&
-			    orbTarget.IsValidTarget(range))
+			    orbTarget.IsValidTargetEx(range))
 			{
 				return orbTarget;
 			}
 
 			var tsTarget = TargetSelector.LastTarget;
 			if (tsTarget != null &&
-			    tsTarget.IsValidTarget(range))
+			    tsTarget.IsValidTargetEx(range))
 			{
 				return tsTarget;
 			}
 
 			var lastTarget = ObjectCache.EnemyHeroes.FirstOrDefault(t =>
-				t.IsValidTarget(range) && !t.IsZombie() && !Invulnerable.Check(t));
+				t.IsValidTargetEx(range) && !t.IsZombie() && !Invulnerable.Check(t));
 			if (lastTarget != null)
 			{
 				return lastTarget;
@@ -184,7 +184,7 @@ namespace AIO.Utilities
 		/// <param name="range">The range.</param>
 		public static bool IsValidSpellTarget(this AttackableUnit unit, float range = float.MaxValue)
 		{
-			if (!unit.IsValidTarget(range))
+			if (!unit.IsValidTargetEx(range))
 			{
 				return false;
 			}
@@ -254,7 +254,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIHeroClient> GetEnemyHeroesTargetsInRange(float range)
 		{
-			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTarget(range)).ToList();
+			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTargetEx(range)).ToList();
 		}
 
 		/// <summary>

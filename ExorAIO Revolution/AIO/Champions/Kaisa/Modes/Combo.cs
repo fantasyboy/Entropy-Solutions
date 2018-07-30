@@ -28,7 +28,7 @@ namespace AIO.Champions
 					Extensions.GetBestEnemyHeroTargetInRange(UtilityClass.Player.GetAutoAttackRange() + 300);
 				if (bestTarget != null &&
 				    !Invulnerable.Check(bestTarget) &&
-				    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
+				    !bestTarget.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
 				{
 					SpellClass.E.Cast();
 				}

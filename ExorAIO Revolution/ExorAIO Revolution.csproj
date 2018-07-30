@@ -48,11 +48,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="C5">
+      <HintPath>D:\Entropy\System\C5.dll</HintPath>
+    </Reference>
     <Reference Include="Entropy">
       <HintPath>D:\Entropy\System\Entropy.dll</HintPath>
     </Reference>
-    <Reference Include="Entropy.SDK">
-      <HintPath>..\..\Entropy.SDK\Build\Debug\Entropy.SDK.dll</HintPath>
+    <Reference Include="Entropy.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ea59f69f261dfc3b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Entropy\System\Entropy.Sandbox.dll</HintPath>
+    </Reference>
+    <Reference Include="Entropy.SDK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a9dd01c7a904d443, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Entropy\System\Entropy.SDK.dll</HintPath>
     </Reference>
     <Reference Include="Entropy.ToolKit">
       <HintPath>D:\Entropy\System\Entropy.ToolKit.dll</HintPath>
@@ -124,6 +132,21 @@
     <Compile Include="AIO\Champions\Lucian\Utilities\Menus.cs" />
     <Compile Include="AIO\Champions\Lucian\Utilities\Methods.cs" />
     <Compile Include="AIO\Champions\Lucian\Utilities\Spells.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Automatic.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Combo.cs" />
+    <Compile Include="AIO\Champions\Orianna\Utilities\Damages.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Harass.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Jungleclear.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Killsteal.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Laneclear.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Lasthit.cs" />
+    <Compile Include="AIO\Champions\Orianna\Modes\Weaving.cs" />
+    <Compile Include="AIO\Champions\Orianna\Orianna.cs" />
+    <Compile Include="AIO\Champions\Orianna\Utilities\Definitions.cs" />
+    <Compile Include="AIO\Champions\Orianna\Utilities\Drawings.cs" />
+    <Compile Include="AIO\Champions\Orianna\Utilities\Menus.cs" />
+    <Compile Include="AIO\Champions\Orianna\Utilities\Methods.cs" />
+    <Compile Include="AIO\Champions\Orianna\Utilities\Spells.cs" />
     <Compile Include="AIO\Champions\Taliyah\Modes\Automatic.cs" />
     <Compile Include="AIO\Champions\Taliyah\Modes\Combo.cs" />
     <Compile Include="AIO\Champions\Taliyah\Modes\Harass.cs" />

@@ -7,8 +7,6 @@ using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
-using Entropy.SDK.UI.Components;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -42,53 +40,40 @@ namespace AIO.Champions
             Methods();
         }
 
-        #endregion
+		#endregion
 
-        #region Public Methods and Operators
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Fired on spell cast.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
-        public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
+		/// <summary>
+		///     Fired on spell cast.
+		/// </summary>
+		/// <param name="args">The <see cref="SpellbookLocalCastSpellEventArgs" /> instance containing the event data.</param>
+		public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
-            if (!MenuClass.Miscellaneous["blockr"].As<MenuBool>().Enabled)
+            if (!MenuClass.Miscellaneous["blockr"].Enabled)
             {
                 return;
             }
 
-            if (sender.IsMe() &&
-                BallPosition != null &&
+            if (GetBall() != null &&
                 args.Slot == SpellSlot.R)
             {
                 var validTargets = GameObjects.EnemyHeroes.Where(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, (Vector3)BallPosition));
+                        t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, GetBall().Position));
                 if (!validTargets.Any())
                 {
-                    args.Process = false;
+                    args.Execute = false;
                 }
             }
         }
 
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
-        }
-
-        /// <summary>
-        ///     Fired on an incoming gapcloser.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
+	    /// <summary>
+	    ///     Fired on an incoming gapcloser.
+	    /// </summary>
+	    /// <param name="sender">The sender.</param>
+	    /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+	    public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {
@@ -111,13 +96,13 @@ namespace AIO.Champions
                 if (sender.IsEnemy() && sender.IsMelee)
                 {
                     var enabledOption = MenuClass.Gapcloser["enabled"];
-                    if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+                    if (enabledOption == null || !enabledOption.Enabled)
                     {
                         return;
                     }
 
                     var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-                    if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+                    if (spellOption == null || !spellOption.Enabled)
                     {
                         return;
                     }
@@ -140,8 +125,8 @@ namespace AIO.Champions
                                 var bestAlly = GameObjects.AllyHeroes
                                     .Where(a =>
                                         !a.IsMe() &&
-                                        a.IsValidTarget(SpellClass.E.Range, true) &&
-                                        args.EndPosition.Distance(a) <= a.AttackRange / 2)
+                                        a.IsValidTargetEx(SpellClass.E.Range, true) &&
+                                        args.EndPosition.Distance(a) <= a.GetAutoAttackRange() / 2)
                                     .MinBy(o => o.MaxHP);
 
                                 if (bestAlly != null)
@@ -154,8 +139,8 @@ namespace AIO.Champions
                 }
                 else if (sender.IsAlly())
                 {
-                    if (MenuClass.Spells["r"]["aoe"] == null ||
-                        !MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Enabled)
+                    if (MenuClass.R["aoe"] == null ||
+                        !MenuClass.R["aoe"].Enabled)
                     {
                         return;
                     }
@@ -163,13 +148,13 @@ namespace AIO.Champions
                     /// <summary>
                     ///     The E Engager Logic.
                     /// </summary>
-                    if (sender.IsValidTarget(SpellClass.E.Range, true) &&
-                        MenuClass.Spells["e"]["engager"].As<MenuBool>().Enabled)
+                    if (sender.IsValidTargetEx(SpellClass.E.Range, true) &&
+                        MenuClass.E["engager"].Enabled)
                     {
                         if (GameObjects.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
-                                t.IsValidTarget(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, false, false, args.EndPosition)) >= MenuClass.Spells["r"]["aoe"].As<MenuSliderBool>().Value &&
-                            MenuClass.Spells["e"]["engagerswhitelist"][sender.CharName.ToLower()].As<MenuBool>().Enabled)
+                                t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, false, false, args.EndPosition)) >= MenuClass.R["aoe"].Value &&
+                            MenuClass.E["engagerswhitelist"][sender.CharName.ToLower()].Enabled)
                         {
                             SpellClass.E.CastOnUnit(sender);
                         }
@@ -178,33 +163,11 @@ namespace AIO.Champions
             }
         }
 
-        /*
-        /// <summary>
-        ///     Called on interruptable spell.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Events.InterruptableTargetEventArgs" /> instance containing the event data.</param>
-        public void OnInterruptableTarget(Events.InterruptableTargetEventArgs args)
-        {
-            if (UtilityClass.Player.IsDead || Invulnerable.Check(args.Sender, DamageType.Magical, false))
-            {
-                return;
-            }
-
-            if (SpellClass.R.State == SpellState.Ready && ((Vector2)GetBallPosition).Distance(args.Sender.Position) < SpellClass.R.SpellData.Range
-                && MenuClass.Spells["r"]["interrupter"].As<MenuBool>().Enabled)
-            {
-                UtilityClass.Player.Spellbook.CastSpell(SpellSlot.R);
-            }
-        }
-        */
-
-        /// <summary>
-        ///     Called on process spell cast;
-        /// </summary>
-        
-        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnProcessSpellCast(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
+		/// <summary>
+		///     Called on process spell cast;
+		/// </summary>
+		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
             var target = args.Target as AIHeroClient;
             if (target == null ||
@@ -214,10 +177,10 @@ namespace AIO.Champions
             }
 
             if (SpellClass.E.Ready &&
-                Bools.ShouldShieldAgainstSender(sender) &&
-                MenuClass.Spells["e"]["protect"].As<MenuBool>().Enabled &&
-                MenuClass.Spells["e"]["protectwhitelist"][target.CharName.ToLower()].As<MenuSliderBool>().Enabled &&
-                target.HPPercent() <= MenuClass.Spells["e"]["protectwhitelist"][target.CharName.ToLower()].As<MenuSliderBool>().Value)
+                Bools.ShouldShieldAgainstSender(args.Caster) &&
+                MenuClass.E["protect"].Enabled &&
+                MenuClass.E["protectwhitelist"][target.CharName.ToLower()].Enabled &&
+                target.HPPercent() <= MenuClass.E["protectwhitelist"][target.CharName.ToLower()].Value)
             {
                 SpellClass.E.CastOnUnit(target);
             }
@@ -234,24 +197,14 @@ namespace AIO.Champions
             }
 
             /// <summary>
-            ///     Updates the position of the ball.
-            /// </summary>
-            UpdateBallPosition();
-
-            /// <summary>
-            ///     Updates the drawing position of the ball.
-            /// </summary>
-            UpdateDrawingBallPosition();
-
-            /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(EntropyEventArgs args);
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(EntropyEventArgs args);
+            Killsteal(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -259,17 +212,17 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(EntropyEventArgs args);
+                    Combo(args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(EntropyEventArgs args);
+                    Harass(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(EntropyEventArgs args);
-                    JungleClear(EntropyEventArgs args);
+                    LaneClear(args);
+                    JungleClear(args);
                     break;
                 case OrbwalkingMode.LastHit:
-                    LastHit(EntropyEventArgs args);
+                    LastHit(args);
                     break;
             }
         }
