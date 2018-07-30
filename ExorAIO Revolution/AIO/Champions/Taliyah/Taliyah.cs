@@ -218,7 +218,7 @@ namespace AIO.Champions
 
 						break;
 					default:
-						if (args.EndPosition.Distance(UtilityClass.Player.Position) <=
+						if (args.EndPosition.DistanceToPlayer() <=
 						    UtilityClass.Player.GetAutoAttackRange())
 						{
 							SpellClass.W.Cast(args.EndPosition,
@@ -250,14 +250,14 @@ namespace AIO.Champions
 				{
 					case Gapcloser.Type.Targeted:
 						if (sender.IsMelee &&
-						    args.Target.IsMe())
+						    args.Target.DistanceToPlayer() <= SpellClass.E.Range)
 						{
-							SpellClass.E.Cast(args.StartPosition);
+							SpellClass.E.Cast(UtilityClass.Player.Position.Extend(args.EndPosition, UtilityClass.Player.BoundingRadius));
 						}
 
 						break;
 					default:
-						if (args.EndPosition.Distance(UtilityClass.Player.Position) <=
+						if (args.EndPosition.DistanceToPlayer() <=
 						    UtilityClass.Player.GetAutoAttackRange())
 						{
 							SpellClass.E.Cast(args.StartPosition);
@@ -269,15 +269,19 @@ namespace AIO.Champions
 		}
 
 		/// <summary>
-		///     Called while processing spellcast operations.
+		///     Called after processing spellcast operations.
 		/// </summary>
 		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
-		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
+		public void OnFinishCast(AIBaseClientCastEventArgs args)
 		{
 			if (args.Caster.IsMe())
 			{
 				switch (args.Slot)
 				{
+					case SpellSlot.W when MenuClass.Root["pattern"].Value != 1:
+						SpellClass.E.Cast(args.EndPosition);
+						break;
+
 					/// <summary>
 					///     Automatically Mount on R Logic.
 					/// </summary>

@@ -496,7 +496,6 @@ namespace AIO.Utilities
 			return realHp;
 		}
 
-
 		/// <summary>
 		///     Determines whether the specified target is a valid target.
 		/// </summary>

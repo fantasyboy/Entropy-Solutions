@@ -22,8 +22,6 @@ namespace AIO.Champions
 		/// </summary>
 		public void Menus()
 		{
-			MenuClass.Root.Add(new MenuList("pattern", "Combo Pattern", new[] {"W->E", "E->W"}));
-
 			/// <summary>
 			///     Sets the menu for the Q.
 			/// </summary>
@@ -130,7 +128,6 @@ namespace AIO.Champions
 
 				MenuClass.W.Add(new MenuBool("combo", "Combo"));
 				MenuClass.W.Add(new MenuBool("boulders", "To boulders"));
-				MenuClass.W.Add(new MenuBool("logical", "On Hard-CC'd/Stasis Enemies"));
 				MenuClass.W.Add(new MenuSliderBool("laneclear", "Laneclear / if Mana >= x%", true, 75, 0, 99));
 				MenuClass.W.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
 				MenuClass.W.Add(new MenuSeperator("separator4"));
@@ -212,6 +209,17 @@ namespace AIO.Champions
 			/// </summary>
 			MenuClass.E = new Menu("e", "Use E to:");
 			{
+				/// <summary>
+				///     Sets the customization menu for the E spell.
+				/// </summary>
+				MenuClass.E2 = new Menu("customization", "Customization:");
+				{
+					MenuClass.E2.Add(new MenuBool("onlywready", "Combo: Don't Cast E if W on cooldown"));
+					//MenuClass.E2.Add(new MenuSeperator("separator3", "Laneclear settings:"));
+					MenuClass.E2.Add(new MenuSlider("laneclear", "Laneclear / if hittable minions >= x%", 3, 1, 10));
+				}
+				MenuClass.E.Add(MenuClass.E2);
+
 				MenuClass.E.Add(new MenuBool("combo", "Combo"));
 				MenuClass.E.Add(new MenuBool("teleports", "On Teleports"));
 				MenuClass.E.Add(new MenuSeperator("separator"));
@@ -251,17 +259,6 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuSeperator("separator2"));
 				MenuClass.E.Add(new MenuSliderBool("laneclear", "Laneclear / if Mana >= x%", true, 50, 0, 99));
 				MenuClass.E.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
-
-				/// <summary>
-				///     Sets the customization menu for the E spell.
-				/// </summary>
-				MenuClass.E2 = new Menu("customization", "Customization:");
-				{
-					MenuClass.E2.Add(new MenuBool("onlywready", "Combo: Don't Cast E if W on cooldown"));
-					//MenuClass.E2.Add(new MenuSeperator("separator3", "Laneclear settings:"));
-					MenuClass.E2.Add(new MenuSlider("laneclear", "Laneclear / if hittable minions >= x%", 3, 1, 10));
-				}
-				MenuClass.E.Add(MenuClass.E2);
 			}
 			MenuClass.Root.Add(MenuClass.E);
 
@@ -288,6 +285,8 @@ namespace AIO.Champions
 				MenuClass.Drawings.Add(new MenuBool("grounds", "Draw Worked Grounds", false));
 			}
 			MenuClass.Root.Add(MenuClass.Drawings);
+
+			MenuClass.Root.Add(new MenuList("pattern", "Combo Pattern", new[] { "W->E", "E->W" }));
 		}
 
 		#endregion

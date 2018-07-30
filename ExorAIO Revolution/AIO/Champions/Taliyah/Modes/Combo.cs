@@ -4,8 +4,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
-using Entropy.SDK.Enumerations;
-using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.TS;
 using SharpDX;
 
@@ -26,10 +24,10 @@ namespace AIO.Champions
 		public void Combo(EntropyEventArgs args)
 		{
 			/// <summary>
-			///     The Rylai Q Combo Logic.
+			///     The Q Combo Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-			    UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter))
+				MenuClass.Q["combo"].Enabled)
 			{
 				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
 				if (bestTarget != null &&
@@ -52,43 +50,48 @@ namespace AIO.Champions
 			}
 
 			/// <summary>
-			///     The W->Boulders Combo Logic.
+			///     The W Combo Logics.
 			/// </summary>
-			if (SpellClass.W.Ready &&
-			    MenuClass.W["boulders"].Enabled)
+			if (SpellClass.W.Ready)
 			{
-				var bestTargets = TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes)
-					.Where(t => MenuClass.W["selection"][t.CharName.ToLower()].Value < 4);
-
-				var objAiHeroes = bestTargets as AIHeroClient[] ?? bestTargets.ToArray();
-				foreach (var target in objAiHeroes)
+				/// <summary>
+				///     The W-> E Combo Logic.
+				/// </summary>
+				if (MenuClass.W["boulders"].Enabled)
 				{
-					var bestBoulderHitPos = GetBestBouldersHitPosition(target);
-					var bestBoulderHitPosHitBoulders = GetBestBouldersHitPositionHitBoulders(target);
-					if (bestBoulderHitPos != Vector3.Zero && bestBoulderHitPosHitBoulders > 0)
+					var bestTargets = TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes)
+						.Where(t => MenuClass.W["selection"][t.CharName.ToLower()].Value < 4);
+
+					var objAiHeroes = bestTargets as AIHeroClient[] ?? bestTargets.ToArray();
+					foreach (var target in objAiHeroes)
 					{
-						SpellClass.W.Cast(bestBoulderHitPos, SpellClass.W.GetPrediction(target).CastPosition);
+						var bestBoulderHitPos = GetBestBouldersHitPosition(target);
+						var bestBoulderHitPosHitBoulders = GetBestBouldersHitPositionHitBoulders(target);
+						if (bestBoulderHitPos != Vector3.Zero && bestBoulderHitPosHitBoulders > 0)
+						{
+							SpellClass.W.Cast(bestBoulderHitPos, SpellClass.W.GetPrediction(target).CastPosition);
+							return;
+						}
 					}
 				}
-			}
 
-			/// <summary>
-			///     The W-> E Combo Logic.
-			/// </summary>
-			if (SpellClass.W.Ready &&
-			    (SpellClass.E.Ready || !MenuClass.W["customization"]["onlyeready"].Enabled) &&
-			    MenuClass.W["combo"].Enabled)
-			{
-				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range);
-				if (bestTarget != null &&
-				    !Invulnerable.Check(bestTarget, DamageType.Magical, false))
+				/// <summary>
+				///     The W-> E Combo Logic.
+				/// </summary>
+				if ((SpellClass.E.Ready || !MenuClass.W["customization"]["onlyeready"].Enabled) &&
+				    MenuClass.W["combo"].Enabled)
 				{
-					switch (MenuClass.Root["pattern"].Value)
+					var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range);
+					if (bestTarget != null &&
+					    !Invulnerable.Check(bestTarget, DamageType.Magical, false))
 					{
-						case 0:
-							SpellClass.W.Cast(GetTargetPositionAfterW(bestTarget),
-								SpellClass.W.GetPrediction(bestTarget).CastPosition);
-							break;
+						switch (MenuClass.Root["pattern"].Value)
+						{
+							case 0:
+								SpellClass.W.Cast(GetTargetPositionAfterW(bestTarget),
+									SpellClass.W.GetPrediction(bestTarget).CastPosition);
+								break;
+						}
 					}
 				}
 			}
@@ -99,26 +102,16 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.E["combo"].Enabled)
 			{
-				if (!SpellClass.W.DidJustCast(500))
+				if (MenuClass.Root["pattern"].Value == 0)
 				{
-					if (MenuClass.Root["pattern"].Value == 0)
-					{
-						return;
-					}
-
-					if (!SpellClass.W.Ready &&
-					    MenuClass.E["customization"]["onlywready"].Enabled &&
-					    UtilityClass.Player.Spellbook.GetSpellState(SpellSlot.W) != SpellState.NotLearned)
-					{
-						return;
-					}
+					return;
 				}
-				else
+
+				if (!SpellClass.W.Ready &&
+				    MenuClass.E["customization"]["onlywready"].Enabled &&
+				    UtilityClass.Player.Spellbook.GetSpellState(SpellSlot.W) != SpellState.NotLearned)
 				{
-					if (MenuClass.Root["pattern"].Value == 1)
-					{
-						return;
-					}
+					return;
 				}
 
 				var bestETarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.E.Range - 150f);
@@ -126,32 +119,6 @@ namespace AIO.Champions
 				    !Invulnerable.Check(bestETarget, DamageType.Magical))
 				{
 					SpellClass.E.Cast(bestETarget.Position);
-				}
-			}
-
-			/// <summary>
-			///     The Q Combo Logic.
-			/// </summary>
-			if (SpellClass.Q.Ready &&
-			    MenuClass.Q["combo"].Enabled)
-			{
-				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
-				if (bestTarget != null &&
-				    !Invulnerable.Check(bestTarget, DamageType.Magical))
-				{
-					switch (MenuClass.Q["modes"]["combo"].Value)
-					{
-						case 0:
-							if (!IsNearWorkedGround())
-							{
-								SpellClass.Q.Cast(bestTarget);
-							}
-
-							break;
-						case 1:
-							SpellClass.Q.Cast(bestTarget);
-							break;
-					}
 				}
 			}
 		}

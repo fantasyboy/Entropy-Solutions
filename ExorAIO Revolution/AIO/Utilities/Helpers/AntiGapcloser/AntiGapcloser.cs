@@ -1,5 +1,6 @@
 ﻿using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.UI;
+using Entropy.SDK.Utils;
 using SharpDX;
 
 namespace AIO.Utilities
@@ -267,7 +268,8 @@ namespace AIO.Utilities
 					ChampionName = "Galio",
 					Slot = SpellSlot.E,
 					SpellName = "galioe",
-					SpellType = Type.SkillShot
+					SpellType = Type.SkillShot,
+					Delay = 500
 				});
 
 			#endregion
@@ -966,53 +968,55 @@ namespace AIO.Utilities
 			{
 				return;
 			}
-
-			if (!Gapclosers.ContainsKey(sender.NetworkID))
-			{
-				Gapclosers.Add(sender.NetworkID, new GapcloserArgs());
-			}
-
+			
+			var spell = Spells.FirstOrDefault(e => e.SpellName == argsName);
 			var unit = Gapclosers[sender.NetworkID];
-
-			unit.Unit = sender;
-			unit.Slot = args.Slot;
-			unit.Target = args.Target;
-			unit.Type = args.Target != null ? Type.Targeted : Type.SkillShot;
-			unit.SpellName = args.SpellData.Name;
-			unit.StartPosition = args.StartPosition;
-
-			if (Spells.Any(e => e.SpellName == argsName))
-			{
-				var spell = Spells.FirstOrDefault(e => e.SpellName == argsName);
-				if (spell.IsReversedDash)
+			DelayAction.Queue(() =>
 				{
-					unit.EndPosition = args.StartPosition.Extend(args.EndPosition, -spell.Range);
-				}
-				else if (Math.Abs(spell.Range) > 0)
-				{
-					unit.EndPosition = args.StartPosition.Extend(args.EndPosition, spell.Range);
-				}
-				else
-				{
-					unit.EndPosition = args.EndPosition;
-				}
-			}
-			else
-			{
-				unit.EndPosition = args.EndPosition;
-			}
-
-			if (unit.EndPosition.IsWall())
-			{
-				for (var i = 25; i < args.StartPosition.Distance(unit.EndPosition); i += 25)
-				{
-					var endPos = args.StartPosition.Extend(unit.EndPosition, i);
-					if (endPos.IsWall())
+					if (!Gapclosers.ContainsKey(sender.NetworkID))
 					{
-						unit.EndPosition = endPos;
+						Gapclosers.Add(sender.NetworkID, new GapcloserArgs());
 					}
-				}
-			}
+
+					unit.Unit = sender;
+					unit.Slot = args.Slot;
+					unit.Target = args.Target;
+					unit.Type = args.Target != null ? Type.Targeted : Type.SkillShot;
+					unit.SpellName = args.SpellData.Name;
+					unit.StartPosition = args.StartPosition;
+
+					if (Spells.Any(e => e.SpellName == argsName))
+					{
+						if (spell.IsReversedDash)
+						{
+							unit.EndPosition = args.StartPosition.Extend(args.EndPosition, -spell.Range);
+						}
+						else if (Math.Abs(spell.Range) > 0)
+						{
+							unit.EndPosition = args.StartPosition.Extend(args.EndPosition, spell.Range);
+						}
+						else
+						{
+							unit.EndPosition = args.EndPosition;
+						}
+					}
+					else
+					{
+						unit.EndPosition = args.EndPosition;
+					}
+
+					if (unit.EndPosition.IsWall())
+					{
+						for (var i = 25; i < args.StartPosition.Distance(unit.EndPosition); i += 25)
+						{
+							var endPos = args.StartPosition.Extend(unit.EndPosition, i);
+							if (endPos.IsWall())
+							{
+								unit.EndPosition = endPos;
+							}
+						}
+					}
+				}, spell.Delay);
 
 			unit.StartTick = Game.TickCount;
 		}
@@ -1039,6 +1043,8 @@ namespace AIO.Utilities
 			public Type SpellType { get; set; }
 
 			public bool IsReversedDash { get; set; }
+
+			public int Delay { get; set; }
 
 			public float Range { get; set; }
 

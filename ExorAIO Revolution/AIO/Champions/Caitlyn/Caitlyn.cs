@@ -249,7 +249,7 @@ namespace AIO.Champions
 								return;
 							}
 
-							SpellClass.E.Cast(args.StartPosition);
+							SpellClass.E.Cast(UtilityClass.Player.Position.Extend(args.EndPosition, UtilityClass.Player.BoundingRadius));
 						}
 
 						break;
@@ -260,7 +260,7 @@ namespace AIO.Champions
 							return;
 						}
 
-						if (args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.E.Range)
+						if (args.EndPosition.DistanceToPlayer() <= SpellClass.E.Range)
 						{
 							SpellClass.E.Cast(args.EndPosition);
 						}
@@ -276,7 +276,7 @@ namespace AIO.Champions
 			    !Invulnerable.Check(sender, DamageType.Magical, false) &&
 			    MenuClass.Gapcloser["enabled"].Enabled &&
 			    MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"].Enabled &&
-			    args.EndPosition.Distance(UtilityClass.Player.Position) <= SpellClass.W.Range)
+			    args.EndPosition.DistanceToPlayer() <= SpellClass.W.Range)
 			{
 				SpellClass.W.Cast(args.EndPosition);
 			}

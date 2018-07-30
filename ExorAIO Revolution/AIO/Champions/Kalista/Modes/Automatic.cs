@@ -70,7 +70,7 @@ namespace AIO.Champions
 					{
 						var buff = target.GetBuff(buffName);
 						if (buff.Caster == SoulBound &&
-						    target.Distance(UtilityClass.Player.Position) >
+						    target.DistanceToPlayer() >
 						    UtilityClass.Player.GetAutoAttackRange(target))
 						{
 							SpellClass.R.Cast();

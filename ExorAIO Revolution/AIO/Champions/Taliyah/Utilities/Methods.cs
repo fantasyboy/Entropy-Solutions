@@ -20,11 +20,11 @@ namespace AIO.Champions
 			GameObject.OnCreate += OnCreate;
 			GameObject.OnDelete += OnDelete;
 			Spellbook.OnLocalCastSpell += OnLocalCastSpell;
-			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
+			AIBaseClient.OnFinishCast += OnFinishCast;
 			Renderer.OnRender += OnRender;
 			AIBaseClient.OnLevelUp += OnLevelUp;
 			Teleports.OnTeleport += OnTeleport;
-			Renderer.OnEndScene += OnEndScene;
+			Renderer.OnPresent += OnEndScene;
 			Gapcloser.OnGapcloser += OnGapcloser;
 			Interrupter.OnInterruptableSpell += OnInterruptableSpell;
 		}

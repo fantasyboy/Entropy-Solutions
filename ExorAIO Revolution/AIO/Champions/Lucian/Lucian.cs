@@ -79,10 +79,10 @@ namespace AIO.Champions
 				switch (args.Type)
 				{
 					case Gapcloser.Type.Targeted:
-						if (args.Target.IsMe())
+						if (sender.IsMelee &&
+							args.Target.IsMe())
 						{
-							var targetPos =
-								UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.E.Range);
+							var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.E.Range);
 							if (targetPos.IsUnderEnemyTurret())
 							{
 								return;
@@ -99,7 +99,7 @@ namespace AIO.Champions
 							return;
 						}
 
-						if (args.EndPosition.Distance(UtilityClass.Player.Position) <=
+						if (args.EndPosition.DistanceToPlayer() <=
 						    UtilityClass.Player.GetAutoAttackRange())
 						{
 							SpellClass.E.Cast(targetPos2);

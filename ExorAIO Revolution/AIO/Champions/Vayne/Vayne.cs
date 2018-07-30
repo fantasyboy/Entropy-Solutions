@@ -237,7 +237,8 @@ namespace AIO.Champions
 				switch (args.Type)
 				{
 					case Gapcloser.Type.Targeted:
-						if (args.Target.IsMe())
+						if (sender.IsMelee &&
+							args.Target.IsMe())
 						{
 							Vector3 targetPos =
 								UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.Q.Range);

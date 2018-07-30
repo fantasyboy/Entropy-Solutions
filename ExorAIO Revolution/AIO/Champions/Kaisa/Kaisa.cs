@@ -182,19 +182,19 @@ namespace AIO.Champions
 				switch (args.Type)
 				{
 					case Gapcloser.Type.Targeted:
-						if (args.Target.IsMe())
+						if (sender.IsMelee &&
+							args.Target.IsMe())
 						{
 							SpellClass.E.Cast();
 						}
-
 						break;
+
 					default:
 						if (args.EndPosition.Distance((Vector2) UtilityClass.Player.Position) <=
 						    UtilityClass.Player.GetAutoAttackRange())
 						{
 							SpellClass.E.Cast();
 						}
-
 						break;
 				}
 			}
