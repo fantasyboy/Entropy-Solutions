@@ -49,11 +49,10 @@ namespace AIO.Champions
                 /// <summary>
                 ///     The E Engager Logic.
                 /// </summary>
-                if (MenuClass.R["aoe"] != null &&
-                    MenuClass.R["aoe"].Enabled &&
-                    MenuClass.E["engager"].Enabled)
+                if (MenuClass.E["engager"].Enabled &&
+                    GameObjects.EnemyHeroes.Count() >= 2)
                 {
-                    var bestAllies = GameObjects.AllyHeroes
+					var bestAllies = GameObjects.AllyHeroes
                         .Where(a =>
                             !a.IsMe() &&
                             a.IsValidTargetEx(SpellClass.E.Range, true) &&

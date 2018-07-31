@@ -1,4 +1,5 @@
-﻿using Entropy.SDK.Extensions.Geometry;
+﻿using Entropy.SDK.Events;
+using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.UI;
 using Entropy.SDK.Utils;
 using SharpDX;
@@ -52,7 +53,7 @@ namespace AIO.Utilities
 		{
 			InitSpells();
 
-			Game.OnUpdate += OnUpdate;
+			Tick.OnTick += OnTick;
 			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
 		}
 
@@ -936,7 +937,7 @@ namespace AIO.Utilities
 			*/
 		}
 
-		private static void OnUpdate(EntropyEventArgs args)
+		private static void OnTick(EntropyEventArgs args)
 		{
 			if (OnGapcloser == null)
 			{

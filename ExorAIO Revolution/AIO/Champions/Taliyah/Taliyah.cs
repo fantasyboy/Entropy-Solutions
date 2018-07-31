@@ -334,7 +334,7 @@ namespace AIO.Champions
 		/// <summary>
 		///     Fired when the game is updated.
 		/// </summary>
-		public void OnUpdate(EntropyEventArgs args)
+		public void OnTick(EntropyEventArgs args)
 		{
 			if (UtilityClass.Player.IsDead)
 			{

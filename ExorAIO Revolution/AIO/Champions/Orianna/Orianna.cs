@@ -4,9 +4,11 @@ using Entropy;
 using Entropy.SDK.Extensions;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
+using Entropy.SDK.Events;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 #pragma warning disable 1587
 
@@ -55,6 +57,25 @@ namespace AIO.Champions
                 return;
             }
 
+	        switch (args.Slot)
+	        {
+				case SpellSlot.Q:
+					LastECastTime = 0;
+					break;
+
+		        case SpellSlot.E:
+			        LastECastTime = Game.TickCount;
+			        break;
+
+				case SpellSlot.W:
+				case SpellSlot.R:
+					if (Game.TickCount - LastECastTime < 1000)
+					{
+						args.Execute = false;
+					}
+					break;
+	        }
+
             if (GetBall() != null &&
                 args.Slot == SpellSlot.R)
             {
@@ -72,7 +93,7 @@ namespace AIO.Champions
 	    ///     Fired on an incoming gapcloser.
 	    /// </summary>
 	    /// <param name="sender">The sender.</param>
-	    /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+	    /// <param name="args">The <see cref="Utilities.Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
 	    public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
@@ -139,8 +160,7 @@ namespace AIO.Champions
                 }
                 else if (sender.IsAlly())
                 {
-                    if (MenuClass.R["aoe"] == null ||
-                        !MenuClass.R["aoe"].Enabled)
+                    if (GameObjects.EnemyHeroes.Count() < 2)
                     {
                         return;
                     }
@@ -149,7 +169,8 @@ namespace AIO.Champions
                     ///     The E Engager Logic.
                     /// </summary>
                     if (sender.IsValidTargetEx(SpellClass.E.Range, true) &&
-                        MenuClass.E["engager"].Enabled)
+                        MenuClass.R["aoe"].Enabled &&
+						MenuClass.E["engager"].Enabled)
                     {
                         if (GameObjects.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
@@ -162,6 +183,50 @@ namespace AIO.Champions
                 }
             }
         }
+
+	    /// <summary>
+	    ///     Fired on interruptable spells.
+	    /// </summary>
+	    /// <param name="sender">The sender.</param>
+	    /// <param name="args">The <see cref="Interrupter.InterruptableSpellEventArgs" /> instance containing the event data.</param>
+	    public void OnInterruptableSpell(AIBaseClient sender, Interrupter.InterruptableSpellEventArgs args)
+	    {
+		    if (UtilityClass.Player.IsDead)
+		    {
+			    return;
+		    }
+
+		    var heroSender = sender as AIHeroClient;
+		    if (heroSender == null || !heroSender.IsEnemy())
+		    {
+			    return;
+		    }
+
+		    /// <summary>
+		    ///     The Interrupter R.
+		    /// </summary>
+		    if (SpellClass.R.Ready &&
+		        !Invulnerable.Check(heroSender, DamageType.Magical, false))
+		    {
+			    var enabledOption = MenuClass.Interrupter["enabled"];
+			    if (enabledOption == null || !enabledOption.Enabled)
+			    {
+				    return;
+			    }
+
+			    var spellOption =
+				    MenuClass.SubInterrupter[$"{heroSender.CharName.ToLower()}.{args.Slot.ToString().ToLower()}"];
+			    if (spellOption == null || !spellOption.Enabled)
+			    {
+				    return;
+			    }
+
+			    if (heroSender.IsValidTargetEx(SpellClass.R.Width, false, false, GetBall().Position))
+			    {
+				    SpellClass.R.Cast();
+			    }
+		    }
+	    }
 
 		/// <summary>
 		///     Called on process spell cast;
@@ -189,7 +254,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate(EntropyEventArgs args)
+        public void OnTick(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {

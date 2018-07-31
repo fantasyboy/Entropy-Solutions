@@ -17,7 +17,7 @@ namespace AIO.Champions
 		/// </summary>
 		public void Methods()
 		{
-			Game.OnUpdate += OnUpdate;
+			Tick.OnTick += OnTick;
 			Spellbook.OnLocalCastSpell += OnLocalCastSpell;
 			Renderer.OnRender += OnRender;
 			Renderer.OnEndScene += OnEndScene;

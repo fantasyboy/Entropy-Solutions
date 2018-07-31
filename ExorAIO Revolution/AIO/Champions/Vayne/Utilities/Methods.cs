@@ -17,7 +17,7 @@ namespace AIO.Champions
 		/// </summary>
 		public void Methods()
 		{
-			Game.OnUpdate += OnUpdate;
+			Tick.OnTick += OnTick;
 			Orbwalker.OnPreAttack += OnPreAttack;
 			Orbwalker.OnPostAttack += OnPostAttack;
 			Renderer.OnRender += OnRender;

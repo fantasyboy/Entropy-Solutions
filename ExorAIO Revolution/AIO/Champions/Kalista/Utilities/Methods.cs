@@ -1,4 +1,5 @@
 using Entropy;
+using Entropy.SDK.Events;
 using Entropy.SDK.Orbwalking;
 
 namespace AIO.Champions
@@ -15,7 +16,7 @@ namespace AIO.Champions
 		/// </summary>
 		public void Methods()
 		{
-			Game.OnUpdate += OnUpdate;
+			Tick.OnTick += OnTick;
 			Orbwalker.OnPreAttack += OnPreAttack;
 			Renderer.OnRender += OnRender;
 			Renderer.OnEndScene += OnEndScene;

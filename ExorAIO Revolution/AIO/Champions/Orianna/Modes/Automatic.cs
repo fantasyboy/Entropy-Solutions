@@ -24,12 +24,12 @@ namespace AIO.Champions
                 return;
             }
 
-            /// <summary>
+	        /// <summary>
             ///     The Automatic R Logic.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.R["aoe"] != null &&
-                MenuClass.R["aoe"].Enabled)
+                GameObjects.EnemyHeroes.Count() >= 2 &&
+				MenuClass.R["aoe"].Enabled)
             {
                 var countValidTargets = GameObjects.EnemyHeroes.Count(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&

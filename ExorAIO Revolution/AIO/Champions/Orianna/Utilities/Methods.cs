@@ -1,5 +1,6 @@
 using Entropy;
-using AIO.Utilities;
+using Entropy.SDK.Events;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
@@ -15,14 +16,13 @@ namespace AIO.Champions
         /// </summary>
         public void Methods()
         {
-            Game.OnUpdate += OnUpdate;
+	        Tick.OnTick += OnTick;
             Spellbook.OnLocalCastSpell += OnLocalCastSpell;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Renderer.OnRender += OnRender;
             Gapcloser.OnGapcloser += OnGapcloser;
-
-            //Events.OnInterruptableTarget += OnInterruptableTarget;
-        }
+	        Interrupter.OnInterruptableSpell += OnInterruptableSpell;
+		}
 
         #endregion
     }
