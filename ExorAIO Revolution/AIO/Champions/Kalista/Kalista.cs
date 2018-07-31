@@ -1,7 +1,6 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
-using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
@@ -42,25 +41,6 @@ namespace AIO.Champions
 		#endregion
 
 		#region Public Methods and Operators
-
-		/// <summary>
-		///     Called on processing spellcast operations.
-		/// </summary>
-		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
-		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
-		{
-			var soulbound = args.Target as AIHeroClient;
-			if (soulbound != null)
-			{
-				//Logging.Log($"SpellData.Name: {args.SpellData.Name}, ARGS.tARGET: {args.Target.CharName}");
-				if (args.Caster.IsMe() &&
-				    ObjectCache.AllyHeroes.Contains(soulbound) &&
-				    args.SpellData.Name == "KalistaPSpellCast")
-				{
-					SoulBound = soulbound;
-				}
-			}
-		}
 
 		/// <summary>
 		///     Called on pre attack.
