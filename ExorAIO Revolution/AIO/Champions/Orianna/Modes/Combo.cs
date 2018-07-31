@@ -35,7 +35,7 @@ namespace AIO.Champions
             {
                 if (GameObjects.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.W.Width - t.BoundingRadius - SpellClass.W.Delay * t.BoundingRadius, false, false, GetBall().Position)))
+                        t.IsValidTargetEx(SpellClass.W.Width, false, false, GetBall().Position)))
                 {
                     SpellClass.W.Cast();
                 }
