@@ -63,13 +63,10 @@ namespace AIO.Champions
 					LastECastTime = 0;
 					break;
 
-		        case SpellSlot.E:
-			        LastECastTime = Game.TickCount;
-			        break;
-
 				case SpellSlot.W:
 				case SpellSlot.R:
-					if (Game.TickCount - LastECastTime < 1000)
+					if (GetBall() == null ||
+					    Game.TickCount - LastECastTime < 500)
 					{
 						args.Execute = false;
 					}
@@ -81,7 +78,7 @@ namespace AIO.Champions
             {
                 var validTargets = GameObjects.EnemyHeroes.Where(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, GetBall().Position));
+                        t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position));
                 if (!validTargets.Any())
                 {
                     args.Execute = false;
@@ -174,7 +171,7 @@ namespace AIO.Champions
                     {
                         if (GameObjects.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
-                                t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, false, false, args.EndPosition)) >= MenuClass.R["aoe"].Value &&
+                                t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: args.EndPosition)) >= MenuClass.R["aoe"].Value &&
                             MenuClass.E["engagerswhitelist"][sender.CharName.ToLower()].Enabled)
                         {
                             SpellClass.E.CastOnUnit(sender);
@@ -221,7 +218,7 @@ namespace AIO.Champions
 				    return;
 			    }
 
-			    if (heroSender.IsValidTargetEx(SpellClass.R.Width, false, false, GetBall().Position))
+			    if (heroSender.IsValidTargetEx(SpellClass.R.Width, checkRangeFrom: GetBall().Position))
 			    {
 				    SpellClass.R.Cast();
 			    }
@@ -234,6 +231,16 @@ namespace AIO.Champions
 		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
 		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
+	        if (args.Caster.IsMe())
+	        {
+		        switch (args.Slot)
+		        {
+					case SpellSlot.E:
+						LastECastTime = Game.TickCount;
+						break;
+		        }
+	        }
+
             var target = args.Target as AIHeroClient;
             if (target == null ||
                 !Extensions.GetAllyHeroesTargetsInRange(SpellClass.E.Range).Contains(target))

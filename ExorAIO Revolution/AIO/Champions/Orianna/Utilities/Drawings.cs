@@ -49,7 +49,7 @@ namespace AIO.Champions
             {
                 for (var i = 0; i < MenuClass.Drawings["ball"].Value; i++)
                 {
-	                CircleRendering.Render(Color.OrangeRed, SpellClass.Q.Width + 5 * i, GetBall());
+	                CircleRendering.Render(Color.OrangeRed, 80 + 5 * i, GetBall());
 				}
             }
 

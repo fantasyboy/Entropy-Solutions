@@ -33,7 +33,7 @@ namespace AIO.Champions
             {
                 var countValidTargets = GameObjects.EnemyHeroes.Count(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, GetBall().Position));
+                        t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position));
             
                 if (countValidTargets >= MenuClass.R["aoe"].Value)
                 {

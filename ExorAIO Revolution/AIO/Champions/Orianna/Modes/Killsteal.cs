@@ -32,11 +32,12 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Q["killsteal"].Enabled)
+				MenuClass.Q["killsteal"].Enabled)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
+	                .Where(t => t.Distance(GetBall().Position) < t.DistanceToPlayer()))
                 {
-                    SpellClass.Q.GetPredictionInput(target).From = GetBall().Position;
+					SpellClass.Q.GetPredictionInput(target).From = GetBall().Position;
 
                     var collisions = SpellClass.Q.GetPrediction(target).CollisionObjects
                         .Where(c => Extensions.GetAllGenericMinionsTargetsInRange(SpellClass.Q.Range).Contains(c))
@@ -59,7 +60,7 @@ namespace AIO.Champions
                 MenuClass.W["killsteal"].Enabled)
             {
                 if (GameObjects.EnemyHeroes.Any(t =>
-                        t.IsValidTargetEx(SpellClass.W.Width, checkRangeFrom: GetBall().Position) &&
+                        t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position) &&
                         GetWDamage(t) >= t.GetRealHealth()))
                 {
                     SpellClass.W.Cast();

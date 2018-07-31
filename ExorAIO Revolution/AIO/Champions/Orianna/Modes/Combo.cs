@@ -35,7 +35,7 @@ namespace AIO.Champions
             {
                 if (GameObjects.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.W.Width - t.BoundingRadius, false, false, GetBall().Position)))
+                        t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position)))
                 {
                     SpellClass.W.Cast();
                 }
@@ -62,7 +62,7 @@ namespace AIO.Champions
                         .FirstOrDefault(a =>
                             GameObjects.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
-                                t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, false, false, a.Position)) >= MenuClass.R["aoe"].Value);
+                                t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: a.Position)) >= MenuClass.R["aoe"].Value);
 
                     if (bestAlly != null)
                     {
