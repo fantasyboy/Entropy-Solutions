@@ -4,7 +4,6 @@ using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -27,17 +26,16 @@ namespace AIO.Champions
 			/// </summary>
 			if (SpellClass.Q.Ready &&
 			    UtilityClass.Player.MPPercent()
-			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Root["q2"]["laneclear"]) &&
-			    MenuClass.Root["q2"]["laneclear"].Enabled)
+			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q3["laneclear"]) &&
+			    MenuClass.Q3["laneclear"].Enabled)
 			{
 				foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
 					!t.IsValidTargetEx(SpellClass.Q.Range) &&
-					MenuClass.Root["q2"]["whitelist"][t.CharName.ToLower()].Enabled))
+					MenuClass.Q3["whitelist"][t.CharName.ToLower()].Enabled))
 				{
 					foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
 					{
-						if (minion.NetworkID != target.NetworkID &&
-						    QRectangle(minion).IsInside((Vector2) target.Position))
+						if (QRectangle(minion).IsInsidePolygon(SpellClass.Q.GetPrediction(target).CastPosition))
 						{
 							SpellClass.Q.CastOnUnit(minion);
 							break;

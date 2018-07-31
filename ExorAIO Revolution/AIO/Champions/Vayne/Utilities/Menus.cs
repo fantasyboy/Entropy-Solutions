@@ -107,6 +107,29 @@ namespace AIO.Champions
 					new MenuList("emode", "Condemn Mode",
 							new[] {"Exory Perfect", "Exory Fast", "Don't Condemn to stun"})
 						.SetToolTip("Fast: Fastest condemn possible, Perfect: Slower but almost 100% accurate."));
+
+				if (GameObjects.EnemyHeroes.Any())
+				{
+					/// <summary>
+					///     Sets the menu for the E Whitelist.
+					/// </summary>
+					MenuClass.WhiteList = new Menu("whitelist", "Condemn: Whitelist");
+					{
+						//MenuClass.WhiteList.Add(new MenuSeperator("separator1", "WhiteList only works for Combo"));
+						//MenuClass.WhiteList.Add(new MenuSeperator("separator2", "not Killsteal (Automatic)"));
+						foreach (var target in GameObjects.EnemyHeroes)
+						{
+							MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(),
+								"Stun: " + target.CharName));
+						}
+					}
+					MenuClass.E.Add(MenuClass.WhiteList);
+				}
+				else
+				{
+					MenuClass.E.Add(new MenuSeperator("exseparator", "Whitelist not needed"));
+				}
+
 				MenuClass.E.Add(new MenuBool("killsteal", "KillSteal"));
 				MenuClass.E.Add(new MenuSeperator("separator"));
 
@@ -183,28 +206,6 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuSeperator("separator3"));
 				MenuClass.E.Add(new MenuBool("bool", "Semi-Automatic E"));
 				MenuClass.E.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.U, KeybindType.Hold));
-
-				if (GameObjects.EnemyHeroes.Any())
-				{
-					/// <summary>
-					///     Sets the menu for the E Whitelist.
-					/// </summary>
-					MenuClass.WhiteList = new Menu("whitelist", "Condemn: Whitelist");
-					{
-						//MenuClass.WhiteList.Add(new MenuSeperator("separator1", "WhiteList only works for Combo"));
-						//MenuClass.WhiteList.Add(new MenuSeperator("separator2", "not Killsteal (Automatic)"));
-						foreach (var target in GameObjects.EnemyHeroes)
-						{
-							MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(),
-								"Stun: " + target.CharName));
-						}
-					}
-					MenuClass.E.Add(MenuClass.WhiteList);
-				}
-				else
-				{
-					MenuClass.E.Add(new MenuSeperator("exseparator", "Whitelist not needed"));
-				}
 			}
 			MenuClass.Root.Add(MenuClass.E);
 

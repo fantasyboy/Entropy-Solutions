@@ -42,6 +42,11 @@ namespace AIO.Champions
 
 		#region Public Methods and Operators
 
+		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
+		{
+			GameConsole.Print(args.SpellData.Name);
+		}
+
 		/// <summary>
 		///     Fired on an incoming gapcloser.
 		/// </summary>

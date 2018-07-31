@@ -2,7 +2,6 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -41,7 +40,7 @@ namespace AIO.Champions
 				/// <summary>
 				///     Extended.
 				/// </summary>
-				if (MenuClass.Root["q2"]["killsteal"].Enabled)
+				if (MenuClass.Q3["killsteal"].Enabled)
 				{
 					foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
 						!t.IsValidTargetEx(SpellClass.Q.Range) &&
@@ -49,8 +48,7 @@ namespace AIO.Champions
 					{
 						foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
 						{
-							if (minion.NetworkID != target.NetworkID &&
-							    QRectangle(minion).IsInside((Vector2) target.Position))
+							if (QRectangle(minion).IsInsidePolygon(SpellClass.Q.GetPrediction(target).CastPosition))
 							{
 								SpellClass.Q.CastOnUnit(minion);
 								break;

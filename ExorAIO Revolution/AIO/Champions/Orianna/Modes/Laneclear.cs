@@ -2,9 +2,7 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
-using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -50,13 +48,8 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["laneclear"]) &&
                 MenuClass.E["laneclear"].Enabled)
             {
-                var polygon = new Vector2Geometry.Rectangle(
-                    (Vector2)UtilityClass.Player.Position,
-                    (Vector2)UtilityClass.Player.Position.Extend(GetBall().Position, UtilityClass.Player.Distance(GetBall().Position)),
-                    SpellClass.E.Width);
-
-                if (Extensions.GetEnemyLaneMinionsTargets().Count(t => t.IsValidTargetEx() && !polygon.IsOutside((Vector2)t.Position))
-                    >= MenuClass.E["customization"]["laneclear"].Value)
+                if (Extensions.GetEnemyLaneMinionsTargets()
+	                    .Count(t => t.IsValidTargetEx() && ERectangle(t).IsInsidePolygon(t.Position)) >= MenuClass.E["customization"]["laneclear"].Value)
                 {
                     SpellClass.E.CastOnUnit(UtilityClass.Player);
                 }

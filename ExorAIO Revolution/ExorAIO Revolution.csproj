@@ -48,42 +48,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5">
+    <Reference Include="C5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Entropy\System\C5.dll</HintPath>
     </Reference>
-    <Reference Include="Entropy">
+    <Reference Include="Entropy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=82986faa26f76839, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Entropy\System\Entropy.dll</HintPath>
     </Reference>
-    <Reference Include="Entropy.Sandbox, Version=1.0.0.0, Culture=neutral, PublicKeyToken=ea59f69f261dfc3b, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\Entropy.Sandbox.dll</HintPath>
-    </Reference>
-    <Reference Include="Entropy.SDK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a9dd01c7a904d443, processorArchitecture=x86">
+    <Reference Include="Entropy.SDK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a9dd01c7a904d443, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Entropy\System\Entropy.SDK.dll</HintPath>
     </Reference>
-    <Reference Include="Entropy.ToolKit">
+    <Reference Include="Entropy.ToolKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=167639b368a1a0ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>D:\Entropy\System\Entropy.ToolKit.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+    <Reference Include="SharpDX.Mathematics, Version=4.0.1.0, Culture=neutral, PublicKeyToken=74e2d0cc1937c2ee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX">
-      <HintPath>D:\Entropy\System\SharpDX.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Direct3D9">
-      <HintPath>D:\Entropy\System\SharpDX.Direct3D9.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Mathematics">
       <HintPath>D:\Entropy\System\SharpDX.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.XInput">
-      <HintPath>D:\Entropy\System\SharpDX.XInput.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AIO\Champions\Caitlyn\Caitlyn.cs" />
@@ -203,12 +189,10 @@
     <Compile Include="AIO\Utilities\UtilityClass.cs" />
     <Compile Include="AIO\Utilities\Helpers\ManaManager.cs" />
     <Compile Include="AIO\Utilities\Helpers\Extensions.cs" />
-    <Compile Include="AIO\Utilities\Helpers\Geometry\Vector3Geometry.cs" />
     <Compile Include="AIO\Utilities\Helpers\Invulnerable.cs" />
     <Compile Include="AIO\Utilities\MenuClass.cs" />
     <Compile Include="AIO\Utilities\SpellClass.cs" />
     <Compile Include="AIO\Utilities\Helpers\AntiGapcloser\AntiGapcloser.cs" />
-    <Compile Include="AIO\Utilities\Helpers\Geometry\Vector2Geometry.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

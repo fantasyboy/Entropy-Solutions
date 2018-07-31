@@ -9,6 +9,7 @@ using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using SharpDX;
+using Rectangle = Entropy.SDK.Geometry.Rectangle;
 
 #pragma warning disable 1587
 
@@ -36,7 +37,7 @@ namespace AIO.Champions
 		/// <summary>
 		///     Returns the W Push distance.
 		/// </summary>
-		public const float WPushDistance = 300f; //TODO: Find real push distance.
+		public const float WPushDistance = 300f;
 
 		/// <summary>
 		///     Returns the Worked Ground's width.
@@ -76,6 +77,23 @@ namespace AIO.Champions
 		}
 
 		/// <summary>
+		///     The W Rectangle.
+		/// </summary>
+		/// <param name="unit">The unit.</param>
+		/// <param name="mineCoord">The mine coord.</param>
+		public Rectangle WRectangle(AIBaseClient unit, Vector3 mineCoord)
+		{
+			var wPred = SpellClass.W.GetPrediction(unit).CastPosition;
+			var wRect = new Rectangle(Vector3.Zero, Vector3.Zero, unit.BoundingRadius)
+			{
+				StartPoint = wPred,
+				EndPoint = wPred.Extend(mineCoord, WPushDistance)
+			};
+
+			return wRect;
+		}
+
+		/// <summary>
 		///     Gets the Best position inside the MineField for W Cast.
 		/// </summary>
 		/// <param name="unit">The unit.</param>
@@ -85,9 +103,7 @@ namespace AIO.Champions
 			var mostBouldersHitPos = Vector3.Zero;
 			foreach (var mine in MineField)
 			{
-				var unitToMineRectangle = new Vector2Geometry.Rectangle((Vector2) unit.Position,
-					(Vector2) unit.Position.Extend((Vector2) mine.Value, WPushDistance), unit.BoundingRadius);
-				var bouldersHit = MineField.Count(o => unitToMineRectangle.IsInside((Vector2) o.Value));
+				var bouldersHit = MineField.Count(o => WRectangle(unit, mine.Value).IsInsidePolygon(o.Value));
 				if (bouldersHit > mostBouldersHit)
 				{
 					mostBouldersHit = bouldersHit;
@@ -112,9 +128,7 @@ namespace AIO.Champions
 			var mostBouldersHit = 0;
 			foreach (var mine in MineField)
 			{
-				var unitToMineRectangle = new Vector2Geometry.Rectangle((Vector2) unit.Position,
-					(Vector2) unit.Position.Extend((Vector2) mine.Value, WPushDistance), unit.BoundingRadius);
-				var bouldersHit = MineField.Count(o => unitToMineRectangle.IsInside((Vector2) o.Value));
+				var bouldersHit = MineField.Count(o => WRectangle(unit, mine.Value).IsInsidePolygon(o.Value));
 				if (bouldersHit > mostBouldersHit)
 				{
 					mostBouldersHit = bouldersHit;

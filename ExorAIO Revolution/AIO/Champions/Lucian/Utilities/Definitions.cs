@@ -5,6 +5,7 @@ using Entropy;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using SharpDX;
+using Rectangle = Entropy.SDK.Geometry.Rectangle;
 
 #pragma warning disable 1587
 
@@ -29,12 +30,16 @@ namespace AIO.Champions
 		///     The Q Rectangle.
 		/// </summary>
 		/// <param name="unit">The unit.</param>
-		public Vector2Geometry.Rectangle QRectangle(AIBaseClient unit)
+		public Rectangle QRectangle(AIBaseClient unit)
 		{
-			return new Vector2Geometry.Rectangle(
-				(Vector2) UtilityClass.Player.Position,
-				(Vector2) UtilityClass.Player.Position.Extend(unit.Position, SpellClass.Q2.Range - 100f),
-				SpellClass.Q2.Width);
+			var qPred = SpellClass.Q.GetPrediction(unit).CastPosition;
+			var qRect = new Rectangle(Vector3.Zero, Vector3.Zero, SpellClass.Q2.Width)
+			{
+				StartPoint = LocalPlayer.Instance.Position,
+				EndPoint = LocalPlayer.Instance.Position.Extend(qPred, SpellClass.Q2.Range)
+			};
+
+			return qRect;
 		}
 
 		#endregion

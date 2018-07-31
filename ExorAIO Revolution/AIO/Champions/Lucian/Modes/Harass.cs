@@ -2,7 +2,6 @@ using System.Linq;
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Extensions.Objects;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -34,8 +33,7 @@ namespace AIO.Champions
 				{
 					foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
 					{
-						if (minion.NetworkID != target.NetworkID &&
-						    QRectangle(minion).IsInside((Vector2) target.Position))
+						if (QRectangle(minion).IsInsidePolygon(SpellClass.Q.GetPrediction(target).CastPosition))
 						{
 							SpellClass.Q.CastOnUnit(minion);
 							break;

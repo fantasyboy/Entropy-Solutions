@@ -60,12 +60,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
                 MenuClass.E["jungleclear"].Enabled)
             {
-                var polygon = new Vector2Geometry.Rectangle(
-                    (Vector2)UtilityClass.Player.Position,
-                    (Vector2)UtilityClass.Player.Position.Extend(GetBall().Position, UtilityClass.Player.Distance(GetBall().Position)),
-                    SpellClass.E.Width);
-
-                if (!polygon.IsOutside((Vector2)jungleTarget.Position))
+                if (ERectangle(jungleTarget).IsInsidePolygon(jungleTarget.Position))
                 {
                     SpellClass.E.CastOnUnit(UtilityClass.Player);
                 }

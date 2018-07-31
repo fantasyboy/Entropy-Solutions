@@ -1,3 +1,4 @@
+using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
@@ -22,18 +23,17 @@ namespace AIO.Champions
 		public void ELogic(AIHeroClient target)
 		{
 			if (UtilityClass.Player.Distance(Hud.CursorPositionUnclipped) <= UtilityClass.Player.GetAutoAttackRange() &&
-			    MenuClass.E["customization"]["onlyeifmouseoutaarange"].Enabled)
+			    MenuClass.E2["onlyeifmouseoutaarange"].Enabled)
 			{
 				return;
 			}
 
 			var posAfterE = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
-			var eRangeCheck = MenuClass.E["customization"]["erangecheck"];
-			if (eRangeCheck != null)
+			if (GameObjects.EnemyHeroes.Count() > 1)
 			{
-				if (eRangeCheck.Enabled &&
+				if (MenuClass.E2["erangecheck"].Enabled &&
 				    posAfterE.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() +
-				                               UtilityClass.Player.BoundingRadius) >= eRangeCheck.Value)
+				                               UtilityClass.Player.BoundingRadius) >= MenuClass.E2["erangecheck"].Value)
 				{
 					return;
 				}
@@ -41,13 +41,13 @@ namespace AIO.Champions
 
 			if (posAfterE.Distance(target) >
 			    UtilityClass.Player.GetAutoAttackRange(target) &&
-			    MenuClass.E["customization"]["noeoutaarange"].Enabled)
+			    MenuClass.E2["noeoutaarange"].Enabled)
 			{
 				return;
 			}
 
 			if (posAfterE.IsUnderEnemyTurret() &&
-			    MenuClass.E["customization"]["noeturret"].Enabled)
+			    MenuClass.E2["noeturret"].Enabled)
 			{
 				return;
 			}
@@ -69,16 +69,16 @@ namespace AIO.Champions
 					}
 
 					SpellClass.E.Cast(point);
-					return;
+					break;
 
 				case 1:
 					SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 425f));
-					return;
+					break;
 
 				case 2:
 					SpellClass.E.Cast(UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped,
 						UtilityClass.Player.BoundingRadius));
-					return;
+					break;
 			}
 		}
 
@@ -107,7 +107,6 @@ namespace AIO.Champions
 						ELogic(heroTarget);
 						return;
 					}
-
 					break;
 
 				case 1:
@@ -120,7 +119,6 @@ namespace AIO.Champions
 						SpellClass.Q.CastOnUnit(heroTarget);
 						return;
 					}
-
 					break;
 
 				case 3:
@@ -130,10 +128,9 @@ namespace AIO.Champions
 					if (SpellClass.W.Ready &&
 					    MenuClass.W["combo"].Enabled)
 					{
-						SpellClass.W.Cast(heroTarget);
+						SpellClass.W.Cast(heroTarget.Position);
 						return;
 					}
-
 					break;
 			}
 
@@ -149,7 +146,6 @@ namespace AIO.Champions
 						SpellClass.Q.CastOnUnit(heroTarget);
 						return;
 					}
-
 					break;
 
 				case 1:
@@ -163,7 +159,6 @@ namespace AIO.Champions
 						ELogic(heroTarget);
 						return;
 					}
-
 					break;
 
 				case 2:
@@ -173,10 +168,9 @@ namespace AIO.Champions
 					if (SpellClass.W.Ready &&
 					    MenuClass.W["combo"].Enabled)
 					{
-						SpellClass.W.Cast(heroTarget);
+						SpellClass.W.Cast(heroTarget.Position);
 						return;
 					}
-
 					break;
 			}
 
@@ -190,9 +184,8 @@ namespace AIO.Champions
 					if (SpellClass.W.Ready &&
 					    MenuClass.W["combo"].Enabled)
 					{
-						SpellClass.W.Cast(heroTarget);
+						SpellClass.W.Cast(heroTarget.Position);
 					}
-
 					break;
 
 				case 2:
@@ -205,7 +198,6 @@ namespace AIO.Champions
 					{
 						SpellClass.Q.CastOnUnit(heroTarget);
 					}
-
 					break;
 			}
 		}

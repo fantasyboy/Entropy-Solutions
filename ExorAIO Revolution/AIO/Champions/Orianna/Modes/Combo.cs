@@ -4,7 +4,6 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -83,15 +82,10 @@ namespace AIO.Champions
 
                     foreach (var ally in bestAllies)
                     {
-                        var allyToBallRectangle = new Vector2Geometry.Rectangle(
-                            (Vector2)ally.Position,
-                            (Vector2)ally.Position.Extend(GetBall().Position, ally.Distance(GetBall().Position) + 30f),
-                            SpellClass.E.Width);
-
                         if (GameObjects.EnemyHeroes.Any(t =>
                                 t.IsValidTargetEx() &&
                                 !Invulnerable.Check(t, DamageType.Magical) &&
-                                allyToBallRectangle.IsInside((Vector2)t.Position)))
+                                ERectangle(ally).IsInsidePolygon(t.Position)))
                         {
                             SpellClass.E.CastOnUnit(ally);
                             return;
