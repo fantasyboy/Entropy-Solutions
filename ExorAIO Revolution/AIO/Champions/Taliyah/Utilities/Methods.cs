@@ -24,7 +24,7 @@ namespace AIO.Champions
 			Renderer.OnRender += OnRender;
 			AIBaseClient.OnLevelUp += OnLevelUp;
 			Teleports.OnTeleport += OnTeleport;
-			Renderer.OnPresent += OnEndScene;
+			Renderer.OnEndScene += OnEndScene;
 			Gapcloser.OnGapcloser += OnGapcloser;
 			Interrupter.OnInterruptableSpell += OnInterruptableSpell;
 		}

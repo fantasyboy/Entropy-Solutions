@@ -1,7 +1,10 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Orbwalking;
 
 #pragma warning disable 1587
 
@@ -19,6 +22,18 @@ namespace AIO.Champions
 		/// </summary>
 		public void LaneClear()
 		{
+			/// <summary>
+			///     Orbwalk on minions.
+			/// </summary>
+			var minion = ObjectCache.EnemyLaneMinions
+				.Where(m => m.IsValidSpellTarget(UtilityClass.Player.GetAutoAttackRange(m)))
+				.OrderBy(s => s.GetBuffCount("kalistaexpungemarker"))
+				.MinBy(o => o.HP);
+			if (minion != null)
+			{
+				Orbwalker.Attack(minion);
+			}
+
 			/// <summary>
 			///     The Q Laneclear Logic.
 			/// </summary>
