@@ -21,7 +21,6 @@ namespace AIO.Champions
 			Orbwalker.OnPostAttack += OnPostAttack;
 			Renderer.OnRender += OnRender;
 			Gapcloser.OnGapcloser += OnGapcloser;
-			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
 		}
 
 		#endregion
