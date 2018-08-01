@@ -57,6 +57,7 @@ namespace AIO.Champions
                 return;
             }
 
+			/*
 	        switch (args.Slot)
 	        {
 				case SpellSlot.Q:
@@ -71,7 +72,7 @@ namespace AIO.Champions
 						args.Execute = false;
 					}
 					break;
-	        }
+	        }*/
 
             if (GetBall() != null &&
                 args.Slot == SpellSlot.R)
@@ -231,6 +232,7 @@ namespace AIO.Champions
 		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
 		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
+			/*
 	        if (args.Caster.IsMe())
 	        {
 		        switch (args.Slot)
@@ -239,7 +241,7 @@ namespace AIO.Champions
 						LastECastTime = Game.TickCount;
 						break;
 		        }
-	        }
+	        }*/
 
             var target = args.Target as AIHeroClient;
             if (target == null ||
