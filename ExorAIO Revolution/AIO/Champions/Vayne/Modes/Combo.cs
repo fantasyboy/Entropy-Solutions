@@ -51,7 +51,7 @@ namespace AIO.Champions
 			    MenuClass.E["emode"].Value != 2)
 			{
 				const int condemnPushDistance = 475;
-				const int threshold = 50;
+				const int threshold = 75;
 
 				foreach (var target in
 					GameObjects.EnemyHeroes.Where(t =>
@@ -74,13 +74,11 @@ namespace AIO.Champions
 									}
 
 									var estimatedPosition = EstimatedPosition(target, SpellClass.E.Delay);
-									if (IsPerfectWallPosition(estimatedPosition, target, UtilityClass.Player.Position,
-										i))
+									if (IsPerfectWallPosition(estimatedPosition, target, UtilityClass.Player.Position, i))
 									{
 										SpellClass.E.CastOnUnit(target);
 									}
 								}
-
 								break;
 
 							default:
@@ -88,7 +86,6 @@ namespace AIO.Champions
 								{
 									SpellClass.E.CastOnUnit(target);
 								}
-
 								break;
 						}
 					}
