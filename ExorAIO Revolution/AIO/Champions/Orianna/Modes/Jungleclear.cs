@@ -7,16 +7,15 @@ using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using SharpDX;
 
 #pragma warning disable 1587
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The logics class.
-    /// </summary>
-    internal partial class Orianna
+	/// <summary>
+	///     The logics class.
+	/// </summary>
+	internal partial class Orianna
     {
         #region Public Methods and Operators
 

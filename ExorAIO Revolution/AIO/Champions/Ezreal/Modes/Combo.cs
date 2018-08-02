@@ -1,18 +1,17 @@
 
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
 namespace AIO.Champions
 {
-    using Entropy;
-    using Utilities;
+	using Entropy;
+	using Utilities;
 
 	/// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Ezreal
+	///     The champion class.
+	/// </summary>
+	internal partial class Ezreal
     {
         /// <summary>
         ///     Fired when the game is updated.

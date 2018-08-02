@@ -4,16 +4,15 @@ using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
-using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The champion class.
-    /// </summary>
-    internal partial class Ezreal
+	/// <summary>
+	///     The champion class.
+	/// </summary>
+	internal partial class Ezreal
     {
         #region Public Methods and Operators
 

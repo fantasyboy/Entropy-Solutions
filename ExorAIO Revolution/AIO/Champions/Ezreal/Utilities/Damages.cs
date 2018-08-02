@@ -1,5 +1,4 @@
-﻿using System;
-using AIO.Utilities;
+﻿using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Objects;

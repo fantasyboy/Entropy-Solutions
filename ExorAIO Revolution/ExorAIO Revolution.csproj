@@ -96,6 +96,7 @@
     <Compile Include="AIO\Champions\Ezreal\Modes\Laneclear.cs" />
     <Compile Include="AIO\Champions\Ezreal\Modes\Lasthit.cs" />
     <Compile Include="AIO\Champions\Ezreal\Modes\Weaving.cs" />
+    <Compile Include="AIO\Champions\Ezreal\Utilities\Damages.cs" />
     <Compile Include="AIO\Champions\Ezreal\Utilities\Definitions.cs" />
     <Compile Include="AIO\Champions\Ezreal\Utilities\Drawings.cs" />
     <Compile Include="AIO\Champions\Ezreal\Utilities\Menus.cs" />

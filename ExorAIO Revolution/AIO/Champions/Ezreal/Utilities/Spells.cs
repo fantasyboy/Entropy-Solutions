@@ -1,14 +1,13 @@
 using Entropy;
 using AIO.Utilities;
-using Entropy.SDK.Enumerations;
 using Entropy.SDK.Spells;
 
 namespace AIO.Champions
 {
-    /// <summary>
-    ///     The spells class.
-    /// </summary>
-    internal partial class Ezreal
+	/// <summary>
+	///     The spells class.
+	/// </summary>
+	internal partial class Ezreal
     {
         #region Public Methods and Operators
 
@@ -22,8 +21,8 @@ namespace AIO.Champions
             SpellClass.E = new Spell(SpellSlot.E, 475f);
             SpellClass.R = new Spell(SpellSlot.R, 1500f);
 
-            SpellClass.Q.SetSkillshot(0.25f, 60f, 2000f);
-            SpellClass.W.SetSkillshot(0.25f, 80f, 1600f, collision: false);
+            SpellClass.Q.SetSkillshot(0.25f, 60f+20f, 2000f);
+            SpellClass.W.SetSkillshot(0.25f, 80f, 1550f, collision: false);
             SpellClass.R.SetSkillshot(1f, 160f, 2000f, collision: false);
         }
 
