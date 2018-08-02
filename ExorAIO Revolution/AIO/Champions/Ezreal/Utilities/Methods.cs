@@ -19,8 +19,8 @@ namespace AIO.Champions
             Game.OnUpdate += OnUpdate;
             Orbwalker.OnPostAttack += OnPostAttack;
             Orbwalker.OnNonKillableMinion += OnNonKillableMinion;
-            Render.OnPresent += OnPresent;
-            AIBaseClient.OnProcessAutoAttack += OnProcessAutoAttack;
+            Renderer.OnRender += OnRender;
+            AIBaseClient.OnProcessBasicAttack += OnProcessBasicAttack;
             Gapcloser.OnGapcloser += OnGapcloser;
         }
 

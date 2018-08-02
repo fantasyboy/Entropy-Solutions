@@ -8,6 +8,7 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -35,10 +36,10 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.IsBeingGrabbed() &&
-                MenuClass.Spells["e"]["antigrab"].As<MenuBool>().Enabled)
+                MenuClass.E["antigrab"].Enabled)
             {
-                var firstTower = ObjectManager.Get<AITurretClient>()
-                    .Where(t => t.IsAlly() && t.IsValidTarget(allyIsValidTarget: true))
+                var firstTower = ObjectCache.AllyTurrets
+                    .Where(t => t.IsValidTargetEx(allyIsValidTargetEx: true))
                     .MinBy(t => t.DistanceToPlayer());
                 if (firstTower != null)
                 {
@@ -56,7 +57,7 @@ namespace AIO.Champions
                 !Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Any() &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Miscellaneous["tear"]) &&
-                MenuClass.Miscellaneous["tear"].As<MenuSliderBool>().Enabled)
+                MenuClass.Miscellaneous["tear"].Enabled)
             {
                 SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
             }
@@ -65,13 +66,13 @@ namespace AIO.Champions
             ///     The Semi-Automatic R Logic.
             /// </summary>
             if (SpellClass.R.Ready &&
-                MenuClass.Spells["r"]["bool"].As<MenuBool>().Enabled &&
-                MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
+                MenuClass.R["bool"].Enabled &&
+                MenuClass.R["key"].As<MenuKeyBind>().Enabled)
             {
                 var bestTarget = GameObjects.EnemyHeroes.Where(t =>
-                        t.IsValidTarget(2000f) &&
+                        t.IsValidTargetEx(2000f) &&
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
+                        MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)
                     .MinBy(o => o.GetRealHealth());
                 if (bestTarget != null)
                 {

@@ -34,7 +34,7 @@ namespace AIO.Champions
             ///     The Q Weaving Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Q["combo"].Enabled)
             {
                 SpellClass.Q.Cast(heroTarget);
                 return;
@@ -44,19 +44,19 @@ namespace AIO.Champions
             ///     The W Weaving Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.W["combo"].Enabled)
             {
-                var buffMenu = MenuClass.Spells["w"]["buff"];
+                var buffMenu = MenuClass.W["buff"];
                 if (buffMenu != null)
                 {
-                    if (UtilityClass.Player.TotalAbilityDamage < GetMinimumApForApMode() &&
+                    if (UtilityClass.Player.CharIntermediate.TotalAbilityDamage() < GetMinimumApForApMode() &&
                         UtilityClass.Player.MPPercent()
                             > ManaManager.GetNeededMana(SpellClass.W.Slot, buffMenu["logical"]) &&
-                        buffMenu["logical"].As<MenuSliderBool>().Enabled &&
+                        buffMenu["logical"].Enabled &&
                         GameObjects.AllyHeroes.Any(a =>
                             !a.IsMe() &&
-                            a.IsValidTarget(SpellClass.W.Range, true) &&
-                            buffMenu["allywhitelist"][a.CharName.ToLower()].As<MenuBool>().Enabled))
+                            a.IsValidTargetEx(SpellClass.W.Range, true) &&
+                            buffMenu["allywhitelist"][a.CharName.ToLower()].Enabled))
                     {
                         return;
                     }

@@ -39,32 +39,31 @@ namespace AIO.Champions
             Methods();
         }
 
-        #endregion
+		#endregion
 
-        #region Public Methods and Operators
+		#region Public Methods and Operators
 
-        /// <summary>
-        ///     Called on process autoattack.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnProcessAutoAttack(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
+		/// <summary>
+		///     Called on process autoattack.
+		/// </summary>
+		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+		public void OnProcessBasicAttack(AIBaseClientCastEventArgs args)
         {
-            if (UtilityClass.Player.TotalAbilityDamage >= GetMinimumApForApMode())
+            if (UtilityClass.Player.CharIntermediate.TotalAbilityDamage() >= GetMinimumApForApMode())
             {
                 return;
             }
 
-            var senderAlly = sender as AIHeroClient;
+			var sender = args.Caster as AIHeroClient;
             var unitTarget = args.Target as AIBaseClient;
-            if (unitTarget == null || senderAlly == null || !senderAlly.IsAlly() || senderAlly.IsMe())
+            if (unitTarget == null || sender == null || !sender.IsAlly() || sender.IsMe())
             {
                 return;
             }
 
-            var buffMenu = MenuClass.Spells["w"]["buff"];
+            var buffMenu = MenuClass.W["buff"];
             if (buffMenu == null ||
-                !buffMenu["allywhitelist"][senderAlly.CharName.ToLower()].As<MenuBool>().Enabled)
+                !buffMenu["allywhitelist"][sender.CharName.ToLower()].Enabled)
             {
                 return;
             }
@@ -73,17 +72,17 @@ namespace AIO.Champions
             ///     The Ally W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                senderAlly.IsValidTarget(SpellClass.W.Range, true) && 
+                sender.IsValidTargetEx(SpellClass.W.Range, true) && 
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, buffMenu["logical"]) &&
-                buffMenu["logical"].As<MenuSliderBool>().Enabled)
+                buffMenu["logical"].Enabled)
             {
                 var orbWhiteList = buffMenu["orbwhitelist"];
                 switch (Orbwalker.Mode)
                 {
                     case OrbwalkingMode.Combo:
                         if (!(unitTarget is AIHeroClient) ||
-                            !orbWhiteList["combo"].As<MenuBool>().Enabled)
+                            !orbWhiteList["combo"].Enabled)
                         {
                             return;
                         }
@@ -91,16 +90,18 @@ namespace AIO.Champions
 
                     case OrbwalkingMode.Harass:
                         if (!(unitTarget is AIHeroClient) ||
-                            !orbWhiteList["harass"].As<MenuBool>().Enabled)
+                            !orbWhiteList["harass"].Enabled)
                         {
                             return;
                         }
                         break;
 
                     case OrbwalkingMode.LaneClear:
-                        if (!unitTarget.IsStructure() &&
-                            !Extensions.GetLegendaryJungleMinionsTargets().Contains(unitTarget) ||
-                            !orbWhiteList["laneclear"].As<MenuBool>().Enabled)
+						var minionTarget = unitTarget as AIMinionClient;
+                        if (minionTarget == null ||
+							!unitTarget.IsStructure() &&
+                            !Extensions.GetLegendaryJungleMinionsTargets().Contains(minionTarget) ||
+                            !orbWhiteList["laneclear"].Enabled)
                         {
                             return;
                         }
@@ -109,16 +110,15 @@ namespace AIO.Champions
                         return;
                 }
 
-                SpellClass.W.CastOnUnit(senderAlly);
+                SpellClass.W.CastOnUnit(sender);
             }
         }
 
-        /// <summary>
-        ///     Called on non killable minion.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="NonKillableMinionEventArgs" /> instance containing the event data.</param>
-        public void OnNonKillableMinion(NonKillableMinionEventArgs args)
+		/// <summary>
+		///     Called on non killable minion.
+		/// </summary>
+		/// <param name="args">The <see cref="OnNonKillableMinionEventArgs" /> instance containing the event data.</param>
+		public void OnNonKillableMinion(OnNonKillableMinionEventArgs args)
         {
             var minion = args.Target as AIMinionClient;
             if (minion == null)
@@ -135,10 +135,10 @@ namespace AIO.Champions
                 case OrbwalkingMode.LastHit:
                 case OrbwalkingMode.Harass:
                     if (SpellClass.Q.Ready &&
-                        minion.GetRealHealth() < UtilityClass.Player.GetSpellDamage(minion, SpellSlot.Q) &&
+                        minion.GetRealHealth() < GetQDamage(minion) &&
                         UtilityClass.Player.MPPercent()
-                            > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["farmhelper"]) &&
-                        MenuClass.Spells["q"]["farmhelper"].As<MenuSliderBool>().Enabled)
+                            > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["farmhelper"]) &&
+                        MenuClass.Q["farmhelper"].Enabled)
                     {
                         SpellClass.Q.Cast(minion);
                     }
@@ -159,23 +159,12 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Weaving(sender, args);
+                    Weaving(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    Jungleclear(sender, args);
+                    Jungleclear(args);
                     break;
             }
-        }
-
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
         }
 
         /// <summary>
@@ -191,7 +180,7 @@ namespace AIO.Champions
             }
 
             var enabledOption = MenuClass.Gapcloser["enabled"];
-            if (enabledOption == null || !enabledOption.As<MenuBool>().Enabled)
+            if (enabledOption == null || !enabledOption.Enabled)
             {
                 return;
             }
@@ -202,7 +191,7 @@ namespace AIO.Champions
             }
 
             var spellOption = MenuClass.SubGapcloser[$"{sender.CharName.ToLower()}.{args.SpellName.ToLower()}"];
-            if (spellOption == null || !spellOption.As<MenuBool>().Enabled)
+            if (spellOption == null || !spellOption.Enabled)
             {
                 return;
             }
@@ -218,7 +207,7 @@ namespace AIO.Champions
                         if (args.Target.IsMe())
                         {
                             var targetPos = UtilityClass.Player.Position.Extend(args.StartPosition, -SpellClass.E.Range);
-                            if (targetPos..Position.IsUnderEnemyTurret())
+                            if (targetPos.IsUnderEnemyTurret())
                             {
                                 return;
                             }
@@ -228,7 +217,7 @@ namespace AIO.Champions
                         break;
                     default:
                         var targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.E.Range);
-                        if (targetPos2..Position.IsUnderEnemyTurret())
+                        if (targetPos2.IsUnderEnemyTurret())
                         {
                             return;
                         }
@@ -255,7 +244,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(EntropyEventArgs args);
+            Killsteal(args);
 
             if (Orbwalker.IsWindingUp)
             {
@@ -265,7 +254,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(EntropyEventArgs args);
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -273,16 +262,16 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(EntropyEventArgs args);
+                    Combo(args);
                     break;
                 case OrbwalkingMode.Harass:
-                    Harass(EntropyEventArgs args);
+                    Harass(args);
                     break;
                 case OrbwalkingMode.LastHit:
-                    LastHit(EntropyEventArgs args);
+                    LastHit(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(EntropyEventArgs args);
+                    LaneClear(args);
                     break;
             }
         }

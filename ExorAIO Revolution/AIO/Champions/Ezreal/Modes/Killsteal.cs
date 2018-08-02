@@ -25,11 +25,11 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.Q["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)) &&
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q) >= t.GetRealHealth()))
+                    !t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)) &&
+                    GetQDamage(t) >= t.GetRealHealth()))
                 {
                     SpellClass.Q.Cast(target);
                     break;
@@ -40,11 +40,11 @@ namespace AIO.Champions
             ///     The KillSteal W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.W["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range).Where(t =>
-                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)) &&
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.W) >= t.GetRealHealth()))
+                    !t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)) &&
+					GetWDamage(t) >= t.GetRealHealth()))
                 {
                     SpellClass.W.Cast(target);
                     break;

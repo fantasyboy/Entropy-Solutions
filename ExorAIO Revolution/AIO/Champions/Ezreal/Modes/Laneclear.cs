@@ -27,13 +27,13 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"])
-                && MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["laneclear"])
+                && MenuClass.Q["laneclear"].Enabled)
             {
                 var minionTarget = Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
                     .FirstOrDefault(m =>
-                        m.GetRealHealth() < UtilityClass.Player.GetSpellDamage(m, SpellSlot.Q) &&
-                        (m.GetRealHealth() > UtilityClass.Player.GetAutoAttackDamage(m) || !m.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(m))));
+                        m.GetRealHealth() < GetQDamage(m) &&
+                        (m.GetRealHealth() > UtilityClass.Player.GetAutoAttackDamage(m) || !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m))));
                 if (minionTarget != null)
                 {
                     SpellClass.Q.Cast(minionTarget);

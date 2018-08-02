@@ -23,12 +23,12 @@ namespace AIO.Champions
             ///     The W Combo Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.W["combo"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range-150f);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical) &&
-                    UtilityClass.Player.TotalAbilityDamage >= GetMinimumApForApMode())
+                    UtilityClass.Player.CharIntermediate.TotalAbilityDamage() >= GetMinimumApForApMode())
                 {
                     SpellClass.W.Cast(bestTarget);
                 }
@@ -38,12 +38,12 @@ namespace AIO.Champions
             ///     The Q Combo Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Q["combo"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range-100f);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget) &&
-                    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
+                    !bestTarget.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
                 {
                     SpellClass.Q.Cast(bestTarget);
                 }
