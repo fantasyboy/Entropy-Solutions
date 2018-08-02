@@ -48,30 +48,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="C5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\C5.dll</HintPath>
-    </Reference>
-    <Reference Include="Entropy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=82986faa26f76839, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\Entropy.dll</HintPath>
-    </Reference>
-    <Reference Include="Entropy.SDK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a9dd01c7a904d443, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\Entropy.SDK.dll</HintPath>
-    </Reference>
-    <Reference Include="Entropy.ToolKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=167639b368a1a0ae, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\Entropy.ToolKit.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpDX.Mathematics, Version=4.0.1.0, Culture=neutral, PublicKeyToken=74e2d0cc1937c2ee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\SharpDX.Mathematics.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="AIO\Champions\Caitlyn\Caitlyn.cs" />
     <Compile Include="AIO\Champions\Caitlyn\Modes\Automatic.cs" />
     <Compile Include="AIO\Champions\Caitlyn\Modes\Combo.cs" />
@@ -223,6 +199,29 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="C5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=282361b99ded7e8e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Entropy\System\C5.dll</HintPath>
+    </Reference>
+    <Reference Include="Entropy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=82986faa26f76839, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Entropy\System\Entropy.dll</HintPath>
+    </Reference>
+    <Reference Include="Entropy.SDK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a9dd01c7a904d443, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Entropy\System\Entropy.SDK.dll</HintPath>
+    </Reference>
+    <Reference Include="Entropy.ToolKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=167639b368a1a0ae, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Entropy\System\Entropy.ToolKit.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Mathematics, Version=4.0.1.0, Culture=neutral, PublicKeyToken=74e2d0cc1937c2ee, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>D:\Entropy\System\SharpDX.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
