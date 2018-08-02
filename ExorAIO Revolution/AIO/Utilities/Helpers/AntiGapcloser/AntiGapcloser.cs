@@ -1,15 +1,12 @@
-﻿using Entropy.SDK.Events;
-using Entropy.SDK.Extensions.Geometry;
-using Entropy.SDK.UI;
-using Entropy.SDK.Utils;
-using SharpDX;
-
-namespace AIO.Utilities
+﻿namespace AIO.Utilities
 {
+	using Entropy;
+	using Entropy.SDK.Extensions.Geometry;
+	using Entropy.SDK.UI;
+	using SharpDX;
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
-	using Entropy;
 
 	public static class Gapcloser
 	{
@@ -53,12 +50,13 @@ namespace AIO.Utilities
 		{
 			InitSpells();
 
-			Tick.OnTick += OnTick;
+			Game.OnUpdate += OnUpdate;
 			AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
 		}
 
 		private static void InitSpells()
 		{
+
 			#region Aatrox
 
 			Spells.Add(
@@ -269,8 +267,7 @@ namespace AIO.Utilities
 					ChampionName = "Galio",
 					Slot = SpellSlot.E,
 					SpellName = "galioe",
-					SpellType = Type.SkillShot,
-					Delay = 500
+					SpellType = Type.SkillShot
 				});
 
 			#endregion
@@ -363,28 +360,25 @@ namespace AIO.Utilities
 			#endregion
 
 			/*
-			#region JarvanIV
-
-			Spells.Add(
-			    new SpellData
-			    {
-			        ChampionName = "JarvanIV",
-			        Slot = SpellSlot.Q,
-			        SpellName = "jarvanivdragonstrike",
-			        SpellType = Type.SkillShot
-			    });
-
-			Spells.Add(
-			    new SpellData
-			    {
-			        ChampionName = "JarvanIV",
-			        Slot = SpellSlot.R,
-			        SpellName = "jarvanivcataclysm",
-			        SpellType = Type.SkillShot
-			    });
-
-			#endregion
-			*/
+            #region JarvanIV
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "JarvanIV",
+                    Slot = SpellSlot.Q,
+                    SpellName = "jarvanivdragonstrike",
+                    SpellType = Type.SkillShot
+                });
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "JarvanIV",
+                    Slot = SpellSlot.R,
+                    SpellName = "jarvanivcataclysm",
+                    SpellType = Type.SkillShot
+                });
+            #endregion
+            */
 
 			#region Jax
 
@@ -548,19 +542,17 @@ namespace AIO.Utilities
 			#endregion
 
 			/*
-			#region MasterYi
-
-			Spells.Add(
-			    new SpellData
-			    {
-			        ChampionName = "MasterYi",
-			        Slot = SpellSlot.Q,
-			        SpellName = "alphastrike",
-			        SpellType = Type.Targeted
-			    });
-
-			#endregion
-			*/
+            #region MasterYi
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "MasterYi",
+                    Slot = SpellSlot.Q,
+                    SpellName = "alphastrike",
+                    SpellType = Type.Targeted
+                });
+            #endregion
+            */
 
 			#region MonkeyKing
 
@@ -576,19 +568,17 @@ namespace AIO.Utilities
 			#endregion
 
 			/*
-			#region Nautilus
-
-			Spells.Add(
-			    new SpellData
-			    {
-			        ChampionName = "Nautilus",
-			        Slot = SpellSlot.Q,
-			        SpellName = "nautilusq",
-			        SpellType = Type.SkillShot
-			    });
-
-			#endregion
-			*/
+            #region Nautilus
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Nautilus",
+                    Slot = SpellSlot.Q,
+                    SpellName = "nautilusq",
+                    SpellType = Type.SkillShot
+                });
+            #endregion
+            */
 
 			#region Nidalee
 
@@ -853,19 +843,17 @@ namespace AIO.Utilities
 			#endregion
 
 			/*
-			#region Warwick
-
-			Spells.Add(
-			    new SpellData
-			    {
-			        ChampionName = "Warwick",
-			        Slot = SpellSlot.R,
-			        SpellName = "warwickr",
-			        SpellType = Type.SkillShot
-			    });
-
-			#endregion
-			*/
+            #region Warwick
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Warwick",
+                    Slot = SpellSlot.R,
+                    SpellName = "warwickr",
+                    SpellType = Type.SkillShot
+                });
+            #endregion
+            */
 
 			#region XinZhao
 
@@ -907,44 +895,40 @@ namespace AIO.Utilities
 			#endregion
 
 			/*
-			#region Zed
-
-			Spells.Add(
-			    new SpellData
-			    {
-			        ChampionName = "Zed",
-			        Slot = SpellSlot.R,
-			        SpellName = "zedr",
-			        SpellType = Type.Targeted
-			    });
-
-			#endregion
-			*/
+            #region Zed
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Zed",
+                    Slot = SpellSlot.R,
+                    SpellName = "zedr",
+                    SpellType = Type.Targeted
+                });
+            #endregion
+            */
 
 			/*
-			#region Ziggs
-
-			Spells.Add(
-			    new SpellData
-			    {
-			        ChampionName = "Ziggs",
-			        Slot = SpellSlot.W,
-			        SpellName = "ziggswtoggle",
-			        SpellType = Type.SkillShot
-			    });
-
-			#endregion
-			*/
+            #region Ziggs
+            Spells.Add(
+                new SpellData
+                {
+                    ChampionName = "Ziggs",
+                    Slot = SpellSlot.W,
+                    SpellName = "ziggswtoggle",
+                    SpellType = Type.SkillShot
+                });
+            #endregion
+            */
 		}
 
-		private static void OnTick(EntropyEventArgs args)
+		private static void OnUpdate(EntropyEventArgs args)
 		{
 			if (OnGapcloser == null)
 			{
 				return;
 			}
 
-			foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1250).ToList())
+			foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1500 + EnetClient.Ping).ToList())
 			{
 				Gapclosers.Remove(needToDeleteValue.Key);
 			}
@@ -957,67 +941,65 @@ namespace AIO.Utilities
 
 		private static void OnProcessSpellCast(AIBaseClientCastEventArgs args)
 		{
-			var sender = args.Caster as AIHeroClient;
-			if (sender == null || !sender.IsValidTargetEx(allyIsValidTargetEx: true) ||
-			    sender.Type.TypeID != GameObjectTypeID.AIHeroClient)
+			var heroSender = args.Caster as AIHeroClient;
+			if (heroSender == null ||
+				!heroSender.IsValidTargetEx(allyIsValidTargetEx: true))
 			{
 				return;
 			}
 
 			var argsName = args.SpellData.Name.ToLower();
-			if (Spells.All(x => !string.Equals(x.SpellName, argsName, StringComparison.CurrentCultureIgnoreCase)))
+			if (!Spells.Any(x => x.SpellName.ToLower().Equals(argsName.ToLower())))
 			{
 				return;
 			}
-			
-			var spell = Spells.FirstOrDefault(e => e.SpellName == argsName);
-			var unit = Gapclosers[sender.NetworkID];
-			DelayAction.Queue(() =>
+
+			if (!Gapclosers.ContainsKey(heroSender.NetworkID))
+			{
+				Gapclosers.Add(heroSender.NetworkID, new GapcloserArgs());
+			}
+
+			var unit = Gapclosers[heroSender.NetworkID];
+
+			unit.Unit = heroSender;
+			unit.Slot = args.Slot;
+			unit.Target = args.Target as AttackableUnit;
+			unit.Type = args.Target != null ? Type.Targeted : Type.SkillShot;
+			unit.SpellName = args.SpellData.Name;
+			unit.StartPosition = args.StartPosition;
+
+			if (Spells.Any(e => e.SpellName == argsName))
+			{
+				var spell = Spells.FirstOrDefault(e => e.SpellName == argsName);
+				if (spell.IsReversedDash)
 				{
-					if (!Gapclosers.ContainsKey(sender.NetworkID))
-					{
-						Gapclosers.Add(sender.NetworkID, new GapcloserArgs());
-					}
+					unit.EndPosition = unit.Unit.Position.Extend(args.EndPosition, -spell.Range);
+				}
+				else if (Math.Abs(spell.Range) > 0)
+				{
+					unit.EndPosition = unit.Unit.Position.Extend(args.EndPosition, spell.Range);
+				}
+				else
+				{
+					unit.EndPosition = args.EndPosition;
+				}
+			}
+			else
+			{
+				unit.EndPosition = args.EndPosition;
+			}
 
-					unit.Unit = sender;
-					unit.Slot = args.Slot;
-					unit.Target = args.Target;
-					unit.Type = args.Target != null ? Type.Targeted : Type.SkillShot;
-					unit.SpellName = args.SpellData.Name;
-					unit.StartPosition = args.StartPosition;
-
-					if (Spells.Any(e => e.SpellName == argsName))
+			if (unit.EndPosition.IsWall())
+			{
+				for (var i = 25; i < args.StartPosition.Distance(unit.EndPosition); i += 25)
+				{
+					var nextEndPos = args.StartPosition.Extend(unit.EndPosition, i * 2);
+					if (nextEndPos.IsWall())
 					{
-						if (spell.IsReversedDash)
-						{
-							unit.EndPosition = args.StartPosition.Extend(args.EndPosition, -spell.Range);
-						}
-						else if (Math.Abs(spell.Range) > 0)
-						{
-							unit.EndPosition = args.StartPosition.Extend(args.EndPosition, spell.Range);
-						}
-						else
-						{
-							unit.EndPosition = args.EndPosition;
-						}
+						unit.EndPosition = args.StartPosition.Extend(unit.EndPosition, i);
 					}
-					else
-					{
-						unit.EndPosition = args.EndPosition;
-					}
-
-					if (unit.EndPosition.IsWall())
-					{
-						for (var i = 25; i < args.StartPosition.Distance(unit.EndPosition); i += 25)
-						{
-							var endPos = args.StartPosition.Extend(unit.EndPosition, i);
-							if (endPos.IsWall())
-							{
-								unit.EndPosition = endPos;
-							}
-						}
-					}
-				}, spell.Delay);
+				}
+			}
 
 			unit.StartTick = Game.TickCount;
 		}
@@ -1044,8 +1026,6 @@ namespace AIO.Utilities
 			public Type SpellType { get; set; }
 
 			public bool IsReversedDash { get; set; }
-
-			public int Delay { get; set; }
 
 			public float Range { get; set; }
 

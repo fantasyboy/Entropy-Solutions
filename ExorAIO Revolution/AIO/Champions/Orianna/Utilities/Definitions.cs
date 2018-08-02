@@ -20,7 +20,7 @@ namespace AIO.Champions
     {
         #region Public Methods and Operators
 
-	    public int LastECastTime;
+	    //public int LastECastTime = 0;
 
 	    /// <summary>
 	    ///     The E Rectangle.
