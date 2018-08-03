@@ -30,7 +30,7 @@ namespace AIO.Champions
 				.OrderBy(s => s.GetBuffCount("kalistaexpungemarker"))
 				.MinBy(o => o.HP);
 			if (minion != null &&
-			    !ObjectCache.EnemyHeroes.Any(t => t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t) + 100f)) &&
+			    !ObjectCache.EnemyHeroes.Any(t => t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)+25)) &&
 			    MenuClass.Miscellaneous["minionsorbwalk"].Enabled)
 			{
 				Orbwalker.Attack(minion);
@@ -40,7 +40,8 @@ namespace AIO.Champions
 			///     The Q Combo Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-			    MenuClass.Q["combo"].Enabled)
+			    MenuClass.Q["combo"].Enabled &&
+				UtilityClass.Player.AutoAttacksPerSecond() < 1.5)
 			{
 				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
 				if (bestTarget != null)

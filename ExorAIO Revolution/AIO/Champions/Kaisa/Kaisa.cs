@@ -109,22 +109,6 @@ namespace AIO.Champions
 			}
 		}
 
-		private static void OnTeleport(Teleports.TeleportEventArgs args)
-		{
-			if (args.Type != TeleportType.Recall || args.Status != TeleportStatus.Start)
-			{
-				return;
-			}
-
-			var sender = args.Sender;
-			if (SpellClass.W.Ready &&
-			    MenuClass.W["teleports"].Enabled &&
-			    sender.DistanceToPlayer() <= SpellClass.W.Range)
-			{
-				SpellClass.W.Cast(sender.Position);
-			}
-		}
-
 		private static void OnLevelUp(AIBaseClientLevelUpEventArgs args)
 		{
 			if (args.Owner.IsMe())

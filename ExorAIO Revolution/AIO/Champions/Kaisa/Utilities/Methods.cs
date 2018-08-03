@@ -23,7 +23,6 @@ namespace AIO.Champions
 			Renderer.OnRender += OnRender;
 			Renderer.OnEndScene += OnEndScene;
 			Gapcloser.OnGapcloser += OnGapcloser;
-			Teleports.OnTeleport += OnTeleport;
 			AIBaseClient.OnLevelUp += OnLevelUp;
 			Orbwalker.OnNonKillableMinion += OnNonKillableMinion;
 		}
