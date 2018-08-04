@@ -50,7 +50,7 @@ namespace AIO.Champions
                         var target = validEnemiesInsideCone.FirstOrDefault();
                         if (target != null)
                         {
-                            SpellClass.R2.Cast(validEnemiesInsideCone.FirstOrDefault());
+                            SpellClass.R2.Cast(target);
                         }
                     }
                 }

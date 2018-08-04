@@ -69,7 +69,7 @@ namespace AIO.Champions
         public Sector UltimateCone()
         {
             var targetPos = End;
-            var range = SpellClass.R2.Range-UtilityClass.Player.BoundingRadius;
+            var range = SpellClass.R2.Range;
             var dir = (targetPos - UtilityClass.Player.Position).Normalized();
             var spot = targetPos + dir * range;
 
