@@ -48,7 +48,7 @@ namespace AIO.Champions
 		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
 		public void OnProcessBasicAttack(AIBaseClientCastEventArgs args)
         {
-            if (UtilityClass.Player.CharIntermediate.TotalAbilityDamage() >= GetMinimumApForApMode())
+            if (UtilityClass.PlayerData.TotalAbilityDamage() >= GetMinimumApForApMode())
             {
                 return;
             }

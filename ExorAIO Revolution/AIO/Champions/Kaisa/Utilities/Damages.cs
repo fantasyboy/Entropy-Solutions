@@ -33,7 +33,7 @@ namespace AIO.Champions
 									: 0.2;
 			var passiveDamage =
 				(passiveLevelScaling +
-				 0.0375f * Math.Floor(UtilityClass.Player.CharIntermediate.TotalAbilityDamage() / 100)) *
+				 0.0375f * Math.Floor(UtilityClass.PlayerData.TotalAbilityDamage() / 100)) *
 				(target.MaxHP - target.HP);
 
 			switch (target.Type.TypeID)
@@ -54,12 +54,11 @@ namespace AIO.Champions
 
 		public double GetWDamage(AIBaseClient target)
 		{
-			var playerData = UtilityClass.Player.CharIntermediate;
 			var wLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.W).Level;
 
 			var wBaseDamage = new[] {20f, 45f, 70f, 95f, 120f}[wLevel - 1]
-			                  + 1.5f * playerData.TotalAttackDamage()
-			                  + 0.6f * playerData.TotalAbilityDamage();
+			                  + 1.5f * UtilityClass.PlayerData.TotalAttackDamage()
+			                  + 0.6f * UtilityClass.PlayerData.TotalAbilityDamage();
 
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, wBaseDamage);
 		}

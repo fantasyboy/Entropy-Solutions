@@ -27,7 +27,7 @@ namespace AIO.Champions
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.W.Range-150f);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical) &&
-                    UtilityClass.Player.CharIntermediate.TotalAbilityDamage() >= GetMinimumApForApMode())
+                    UtilityClass.PlayerData.TotalAbilityDamage() >= GetMinimumApForApMode())
                 {
                     SpellClass.W.Cast(bestTarget);
                 }

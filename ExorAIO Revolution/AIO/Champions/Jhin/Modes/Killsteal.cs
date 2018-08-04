@@ -4,6 +4,7 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.UI.Components;
 using SharpDX;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -26,13 +27,14 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.R.Ready &&
                 IsUltimateShooting() &&
-                MenuClass.Spells["r"]["killsteal"].As<MenuBool>().Value)
+                MenuClass.R["killsteal"].As<MenuBool>().Value)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.R.Range).Where(t =>
-                    UltimateCone().IsInside((Vector2)t.Position) &&
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.R, HasUltimateFourthShot() ? DamageStage.Empowered : DamageStage.Default) >= t.GetRealHealth()))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.R2.Range)
+					.Where(t =>
+						UltimateCone().IsInsidePolygon(t.Position) &&
+						GetRDamage(t, HasUltimateFourthShot()) >= t.GetRealHealth()))
                 {
-                    SpellClass.R.Cast(target);
+                    SpellClass.R2.Cast(target);
                     break;
                 }
             }
@@ -41,10 +43,10 @@ namespace AIO.Champions
             ///     The KillSteal Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["killsteal"].As<MenuBool>().Value)
+                MenuClass.Q["killsteal"].As<MenuBool>().Value)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.Q) >= t.GetRealHealth()))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
+					.Where(t => GetQDamage(t) >= t.GetRealHealth()))
                 {
                     SpellClass.Q.CastOnUnit(target);
                     break;
@@ -55,10 +57,10 @@ namespace AIO.Champions
             ///     The KillSteal W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["killsteal"].As<MenuBool>().Value)
+                MenuClass.W["killsteal"].As<MenuBool>().Value)
             {
-                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range).Where(t =>
-                    UtilityClass.Player.GetSpellDamage(t, SpellSlot.W) >= t.GetRealHealth()))
+                foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range)
+					.Where(t => GetWDamage(t) >= t.GetRealHealth()))
                 {
                     SpellClass.W.Cast(target);
                     break;

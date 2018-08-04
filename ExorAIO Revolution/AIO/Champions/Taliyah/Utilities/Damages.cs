@@ -13,10 +13,9 @@ namespace AIO.Champions
 		public double GetQDamage(AIBaseClient target, int shards = 1)
 		{
 			var qLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.Q).Level;
-			var playerData = UtilityClass.Player.CharIntermediate;
 
 			var qBaseDamage = new[] {70, 95, 120, 145, 170}[qLevel - 1]
-			                  + 0.45f * playerData.TotalAbilityDamage();
+			                  + 0.45f * UtilityClass.PlayerData.TotalAbilityDamage();
 
 			var addSubsequentShardDamage = qBaseDamage;
 			switch (target.Type.TypeID)
@@ -34,20 +33,19 @@ namespace AIO.Champions
 		public double GetWDamage(AIBaseClient target)
 		{
 			var wLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.W).Level;
-			var playerData = UtilityClass.Player.CharIntermediate;
 
 			var wBaseDamage = new[] {60, 80, 100, 120, 140}[wLevel - 1]
-			                  + 0.4f * playerData.TotalAbilityDamage();
+			                  + 0.4f * UtilityClass.PlayerData.TotalAbilityDamage();
+
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, wBaseDamage);
 		}
 
 		public double GetEDamage(AIBaseClient target)
 		{
 			var eLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).Level;
-			var playerData = UtilityClass.Player.CharIntermediate;
 
 			var eBaseDamage = new[] {50, 75, 100, 125, 150}[eLevel - 1]
-			                  + 0.4f * playerData.TotalAbilityDamage();
+			                  + 0.4f * UtilityClass.PlayerData.TotalAbilityDamage();
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, eBaseDamage);
 		}
 	}

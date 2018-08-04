@@ -14,7 +14,7 @@ namespace AIO.Champions
 		{
 			var qLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.Q).Level;
 			var baseDamage = new[] { 60f, 90f, 120f, 150f, 180f }[qLevel - 1]
-			                 + 0.5f * UtilityClass.Player.CharIntermediate.TotalAbilityDamage();
+			                 + 0.5f * UtilityClass.PlayerData.TotalAbilityDamage();
 
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, baseDamage);
 		}
@@ -23,7 +23,7 @@ namespace AIO.Champions
 		{
 			var wLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.W).Level;
 			var baseDamage = new[] { 60f, 105f, 150f, 195f, 240f }[wLevel - 1]
-			                 + 0.7f * UtilityClass.Player.CharIntermediate.TotalAbilityDamage();
+			                 + 0.7f * UtilityClass.PlayerData.TotalAbilityDamage();
 
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, baseDamage);
 		}
@@ -32,7 +32,7 @@ namespace AIO.Champions
 		{
 			var eLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).Level;
 			var baseDamage = new[] { 60f, 90f, 120f, 150f, 180f }[eLevel - 1]
-			                 + 0.3f * UtilityClass.Player.CharIntermediate.TotalAbilityDamage();
+			                 + 0.3f * UtilityClass.PlayerData.TotalAbilityDamage();
 
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, baseDamage);
 		}
@@ -41,7 +41,7 @@ namespace AIO.Champions
 		{
 			var rLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.R).Level;
 			var baseDamage = new[] { 150f, 225f, 300f }[rLevel - 1]
-			                 + 0.7f * UtilityClass.Player.CharIntermediate.TotalAbilityDamage();
+			                 + 0.7f * UtilityClass.PlayerData.TotalAbilityDamage();
 
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Magical, baseDamage);
 		}

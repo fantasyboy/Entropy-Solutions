@@ -6,6 +6,7 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -35,7 +36,7 @@ namespace AIO.Champions
             ///     The Automatic W Logic. 
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["logical"].As<MenuBool>().Enabled)
+                MenuClass.W["logical"].As<MenuBool>().Enabled)
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     t.HasBuff("jhinespotteddebuff") &&
@@ -51,7 +52,7 @@ namespace AIO.Champions
             ///     The Automatic E Logic. 
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["logical"].As<MenuBool>().Enabled)
+                MenuClass.E["logical"].As<MenuBool>().Enabled)
             {
                 foreach (var target in GameObjects.EnemyHeroes.Where(t =>
                     t.IsImmobile(SpellClass.E.Delay) &&
@@ -65,9 +66,9 @@ namespace AIO.Champions
             ///     The Automatic E on Teleport Logic. 
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["teleport"].As<MenuBool>().Enabled)
+                MenuClass.E["teleport"].As<MenuBool>().Enabled)
             {
-                foreach (var minion in ObjectManager.Get<AIMinionClient>().Where(m =>
+                foreach (var minion in ObjectCache.AllAiBaseClients.Where(m =>
                     m.IsEnemy() &&
                     m.DistanceToPlayer() <= SpellClass.E.Range &&
                     m.GetActiveBuffs().Any(b => b.Name.Equals("teleport_target"))))

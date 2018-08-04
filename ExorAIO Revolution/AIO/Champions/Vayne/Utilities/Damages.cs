@@ -14,9 +14,9 @@ namespace AIO.Champions
 		public double GetQBonusDamage(AIBaseClient target)
 		{
 			var qLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.Q).Level;
-			var playerData = UtilityClass.Player.CharIntermediate;
 
-			var qBaseDamage = new[] {0.5f, 0.55f, 0.6f, 0.65f, 0.7f}[qLevel - 1] * playerData.TotalAttackDamage();
+			var qBaseDamage = new[] {0.5f, 0.55f, 0.6f, 0.65f, 0.7f}[qLevel - 1]
+				* UtilityClass.PlayerData.TotalAttackDamage();
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Physical, qBaseDamage);
 		}
 
@@ -58,9 +58,9 @@ namespace AIO.Champions
 		public double GetEDamage(AIBaseClient target)
 		{
 			var eLevel = UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).Level;
-			var playerData = UtilityClass.Player.CharIntermediate;
 
-			var eBaseDamage = new[] {50, 90, 120, 155, 190}[eLevel - 1] + 0.5f * playerData.FlatPhysicalDamageMod;
+			var eBaseDamage = new[] {50, 90, 120, 155, 190}[eLevel - 1]
+				+ 0.5f * UtilityClass.PlayerData.FlatPhysicalDamageMod;
 			return LocalPlayer.Instance.CalculateDamage(target, DamageType.Physical, eBaseDamage);
 		}
 	}

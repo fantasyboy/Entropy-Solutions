@@ -4,6 +4,9 @@ using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
+using Entropy.SDK.Caching;
+using System.Linq;
+using Entropy.SDK.Extensions.Geometry;
 
 #pragma warning disable 1587
 
@@ -34,27 +37,12 @@ namespace AIO.Champions
             ///     The Jungleclear Q Logics.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+				!HasFourthShot() &&
+				UtilityClass.Player.MPPercent()
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+                MenuClass.Q["jungleclear"].As<MenuSliderBool>().Enabled)
             {
                 SpellClass.Q.CastOnUnit(jungleTarget);
-            }
-
-            if (jungleTarget?.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
-            {
-                return;
-            }
-
-            /// <summary>
-            ///     The Jungleclear E Logics.
-            /// </summary>
-            if (SpellClass.E.Ready &&
-                UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
-            {
-                SpellClass.E.Cast(jungleTarget);
             }
         }
 
@@ -77,16 +65,12 @@ namespace AIO.Champions
             ///     The Jungleclear Q Logics.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+				HasFourthShot() &&
+				UtilityClass.Player.MPPercent()
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+                MenuClass.Q["jungleclear"].As<MenuSliderBool>().Enabled)
             {
                 SpellClass.Q.CastOnUnit(jungleTarget);
-            }
-
-            if (jungleTarget?.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
-            {
-                return;
             }
 
             /// <summary>
@@ -94,10 +78,11 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
+                MenuClass.E["jungleclear"].As<MenuSliderBool>().Enabled &&
+				jungleTarget?.GetRealHealth() > UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
             {
-                SpellClass.E.Cast(jungleTarget);
+				SpellClass.E.Cast(jungleTarget);
             }
         }
 
@@ -106,7 +91,9 @@ namespace AIO.Champions
         /// </summary>
         public void JungleClear(EntropyEventArgs args)
         {
-            var jungleTarget = ObjectManager.Get<AIMinionClient>().FirstOrDefault(m => Extensions.GetGenericJungleMinionsTargets().Contains(m));
+			var jungleTarget = ObjectCache.JungleMinions
+				.FirstOrDefault(m => Extensions.GetGenericJungleMinionsTargets()
+					.OrderBy(t => Hud.CursorPositionUnclipped.Distance(t)).Contains(m));
             if (jungleTarget == null)
             {
                 return;
@@ -118,15 +105,10 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+                MenuClass.Q["jungleclear"].As<MenuSliderBool>().Enabled)
             {
                 SpellClass.Q.CastOnUnit(jungleTarget);
-            }
-
-            if (jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
-            {
-                return;
             }
 
             /// <summary>
@@ -135,10 +117,11 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 jungleTarget.IsValidTarget(SpellClass.E.Range) &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
+                MenuClass.E["jungleclear"].As<MenuSliderBool>().Enabled &&
+				jungleTarget?.GetRealHealth() > UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
             {
-                SpellClass.E.Cast(jungleTarget);
+				SpellClass.E.Cast(jungleTarget);
             }
         }
 

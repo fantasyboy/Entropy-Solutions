@@ -1,10 +1,11 @@
 using System.Linq;
 using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 using SharpDX;
-using Color = System.Drawing.Color;
+using Color = SharpDX.Color;
 
 #pragma warning disable 1587
 
@@ -20,7 +21,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the drawings.
         /// </summary>
-        public void Drawings()
+        public void OnRender(EntropyEventArgs args)
         {
             /// <summary>
             ///     Loads the Q drawing.
@@ -52,29 +53,11 @@ namespace AIO.Champions
             /// <summary>
             ///     Loads the R drawings.
             /// </summary>
-            if (SpellClass.R.Ready)
+            if (SpellClass.R.Ready &&
+				!IsUltimateShooting() &&
+                MenuClass.Drawings["r"].As<MenuBool>().Enabled)
             {
-                /// <summary>
-                ///     Loads the R cone drawing.
-                /// </summary>
-                if (IsUltimateShooting() &&
-                    MenuClass.Drawings["rcone"].As<MenuBool>().Enabled)
-                {
-                    if (End != Vector3.Zero)
-                    {
-                        DrawUltimateCone().Draw(GameObjects.EnemyHeroes.Any(t => t.IsValidTarget() && UltimateCone().IsInside((Vector2)t.Position))
-                            ? Color.Green
-                            : Color.Red);
-                    }
-                }
-                /// <summary>
-                ///     Loads the R range drawing.
-                /// </summary>
-                else if (!IsUltimateShooting() &&
-                         MenuClass.Drawings["r"].As<MenuBool>().Enabled)
-                {
-                    CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
-                }
+                CircleRendering.Render(Color.Red, SpellClass.R2.Range, UtilityClass.Player);
             }
         }
 

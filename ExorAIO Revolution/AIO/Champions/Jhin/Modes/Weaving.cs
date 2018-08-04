@@ -32,7 +32,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 !HasFourthShot() &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Q["combo"].As<MenuBool>().Enabled)
             {
                 SpellClass.Q.CastOnUnit(heroTarget);
                 return;
@@ -43,7 +43,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 HasFourthShot() &&
-                MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.E["combo"].As<MenuBool>().Enabled)
             {
                 SpellClass.E.Cast(heroTarget);
             }
@@ -67,7 +67,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 HasFourthShot() &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Q["combo"].As<MenuBool>().Enabled)
             {
                 SpellClass.Q.CastOnUnit(heroTarget);
             }

@@ -3,6 +3,7 @@
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Geometry;
 using SharpDX;
 
 #pragma warning disable 1587
@@ -65,27 +66,14 @@ namespace AIO.Champions
         /// <summary>
         ///     The Ultimate Cone.
         /// </summary>
-        public Vector2Geometry.Sector UltimateCone()
+        public Sector UltimateCone()
         {
             var targetPos = End;
-            var range = SpellClass.R.Range-UtilityClass.Player.BoundingRadius;
+            var range = SpellClass.R2.Range-UtilityClass.Player.BoundingRadius;
             var dir = (targetPos - UtilityClass.Player.Position).Normalized();
             var spot = targetPos + dir * range;
 
-            return new Vector2Geometry.Sector((Vector2)End.Extend(UtilityClass.Player.Position, End.DistanceToPlayer()+UtilityClass.Player.BoundingRadius*3), (Vector2)spot, SpellClass.R2.Width, range);
-        }
-
-        /// <summary>
-        ///     The Ultimate Cone.
-        /// </summary>
-        public Vector3Geometry.Sector DrawUltimateCone()
-        {
-            var targetPos = End;
-            var range = SpellClass.R.Range - UtilityClass.Player.BoundingRadius;
-            var dir = (targetPos - UtilityClass.Player.Position).Normalized();
-            var spot = targetPos + dir * range;
-
-            return new Vector3Geometry.Sector(End.Extend(UtilityClass.Player.Position, End.DistanceToPlayer() + UtilityClass.Player.BoundingRadius * 3), spot, SpellClass.R2.Width, range);
+            return new Sector(UtilityClass.Player.Position, spot, SpellClass.R2.Width, range);
         }
 
         #endregion

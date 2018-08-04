@@ -18,7 +18,7 @@ namespace AIO.Champions
         {
             Game.OnUpdate += OnUpdate;
             Spellbook.OnLocalCastSpell += OnLocalCastSpell;
-            Render.OnPresent += OnPresent;
+            Renderer.OnRender += OnRender;
             AIBaseClient.OnProcessSpellCast += OnProcessSpellCast;
             Orbwalker.OnPreAttack += OnPreAttack;
             Orbwalker.OnPostAttack += OnPostAttack;

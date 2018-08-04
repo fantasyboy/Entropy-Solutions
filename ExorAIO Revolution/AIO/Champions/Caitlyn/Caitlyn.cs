@@ -123,7 +123,7 @@ namespace AIO.Champions
 				case SpellSlot.W:
 					if (ObjectCache.AllGameObjects.Any(m =>
 						m.Distance(args.End) <= SpellClass.W.Width &&
-						m.Name.Equals("caitlyn_Base_yordleTrap_idle_green.troy")))
+						m.Name.Equals("caitlyn_Base_yordleTrap_idle_green")))
 					{
 						args.Execute = false;
 					}

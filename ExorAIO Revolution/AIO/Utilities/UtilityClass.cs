@@ -74,6 +74,11 @@ namespace AIO.Utilities
 		public static AIHeroClient Player => LocalPlayer.Instance;
 
 		/// <summary>
+		///     Gets the Player Data.
+		/// </summary>
+		public static CharIntermediate PlayerData => Player.CharIntermediate;
+
+		/// <summary>
 		///     List of the Pet names.
 		/// </summary>
 		public static readonly string[] PetList =

@@ -23,18 +23,18 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["lasthit"]) &&
-                MenuClass.Spells["q"]["lasthit"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["lasthit"]) &&
+                MenuClass.Q["lasthit"].As<MenuSliderBool>().Enabled)
             {
                 if (!IsReloading() &&
-                    MenuClass.Spells["q"]["customization"]["lasthitonreload"].As<MenuBool>().Enabled)
+                    MenuClass.Q["customization"]["lasthitonreload"].As<MenuBool>().Enabled)
                 {
                     return;
                 }
 
                 foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range))
                 {
-                    if (minion.GetRealHealth() <= UtilityClass.Player.GetSpellDamage(minion, SpellSlot.Q))
+                    if (minion.GetRealHealth() <= GetQDamage(minion))
                     {
                         SpellClass.Q.CastOnUnit(minion);
                     }

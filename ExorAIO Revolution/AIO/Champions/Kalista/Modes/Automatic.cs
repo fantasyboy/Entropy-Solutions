@@ -24,15 +24,12 @@ namespace AIO.Champions
 		/// </summary>
 		public void Automatic()
 		{
-			if (SoulBound == null)
+			var passiveObject = ObjectCache.AllGameObjects.FirstOrDefault(o => o.IsValid && o.Name.Contains("Kalista") && o.Name.Contains("P_LinkIcon"));
+			if (passiveObject != null)
 			{
-				var passiveObject = ObjectCache.AllGameObjects.FirstOrDefault(o => o.IsValid && o.Name.Contains("Kalista") && o.Name.Contains("P_LinkIcon"));
-				if (passiveObject != null)
-				{
-					SoulBound = GameObjects.AllyHeroes
-						.Where(a => !a.IsMe())
-						.MinBy(o => o.Distance(passiveObject));
-				}
+				SoulBound = GameObjects.AllyHeroes
+					.Where(a => !a.IsMe())
+					.MinBy(o => o.Distance(passiveObject));
 			}
 
 			if (UtilityClass.Player.IsRecalling())

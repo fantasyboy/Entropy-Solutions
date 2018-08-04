@@ -51,25 +51,22 @@ namespace AIO.Champions
         /// <param name="args">The <see cref="SpellbookCastSpellEventArgs" /> instance containing the event data.</param>
         public void OnLocalCastSpell(SpellbookLocalCastSpellEventArgs args)
         {
-            if (sender.IsMe())
+            if (IsUltimateShooting() &&
+                args.Slot != SpellSlot.R)
             {
-                if (IsUltimateShooting() &&
-                    args.Slot != SpellSlot.R)
-                {
-                    args.Process = false;
-                }
+                args.Execute = false;
+            }
 
-                switch (args.Slot)
-                {
-                    case SpellSlot.E:
-                        var target = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
-                        if (target != null &&
-                            target.HasBuff("jhinetrapslow"))
-                        {
-                            args.Process = false;
-                        }
-                        break;
-                }
+            switch (args.Slot)
+            {
+                case SpellSlot.E:
+                    var target = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
+                    if (target != null &&
+                        target.HasBuff("jhinetrapslow"))
+                    {
+                        args.Execute = false;
+                    }
+                    break;
             }
         }
 
@@ -86,10 +83,10 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Weaving(sender, args);
+                    Weaving(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    Jungleclear(sender, args);
+                    Jungleclear(args);
                     break;
             }
         }
@@ -107,23 +104,12 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Weaving(sender, args);
+                    Weaving(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    Jungleclear(sender, args);
+                    Jungleclear(args);
                     break;
             }
-        }
-
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
         }
 
         /// <summary>
@@ -165,21 +151,21 @@ namespace AIO.Champions
             }
         }
 
-        /// <summary>
-        ///     Handles the <see cref="E:ProcessSpell" /> event.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnProcessSpellCast(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
+		/// <summary>
+		///     Handles the <see cref="E:ProcessSpell" /> event.
+		/// </summary>
+		/// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+		public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            if (sender.IsMe())
+            if (args.Caster.IsMe())
             {
                 switch (args.SpellData.Name)
                 {
                     case "JhinR":
                         UltimateShotsCount = 0;
-                        End = args.End;
+                        End = args.EndPosition;
                         break;
+
                     case "JhinRShot":
                         UltimateShotsCount++;
                         break;
@@ -187,18 +173,16 @@ namespace AIO.Champions
             }
         }
 
-        /// <summary>
-        ///     Fired on issuing an order.
-        /// </summary>
-        /// <param name="sender">The object.</param>
-        /// <param name="args">The <see cref="AIBaseClientIssueOrderEventArgs" /> instance containing the event data.</param>
-        public void OnIssueOrder(AIBaseClient sender, AIBaseClientIssueOrderEventArgs args)
+		/// <summary>
+		///     Fired on issuing an order.
+		/// </summary>
+		/// <param name="args">The <see cref="LocalPlayerIssueOrderEventArgs" /> instance containing the event data.</param>
+		public void OnIssueOrder(LocalPlayerIssueOrderEventArgs args)
         {
-            if (sender.IsMe() &&
-                IsUltimateShooting() &&
-                args.OrderType == OrderType.MoveTo)
+            if (IsUltimateShooting() &&
+                args.Order == HeroOrder.MoveTo)
             {
-                args.ProcessEvent = false;
+                args.Execute = false;
             }
         }
 
@@ -215,7 +199,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Killsteal events.
             /// </summary>
-            Killsteal(EntropyEventArgs args);
+            Killsteal(args);
 
             if (Orbwalker.IsWindingUp)
             {
@@ -225,7 +209,7 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(EntropyEventArgs args);
+            Automatic(args);
 
             /// <summary>
             ///     Initializes the orbwalkingmodes.
@@ -233,20 +217,20 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(EntropyEventArgs args);
+                    Combo(args);
                     break;
 
                 case OrbwalkingMode.Harass:
-                    Harass(EntropyEventArgs args);
+                    Harass(args);
                     break;
 
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(EntropyEventArgs args);
-                    JungleClear(EntropyEventArgs args);
+                    LaneClear(args);
+                    JungleClear(args);
                     break;
 
                 case OrbwalkingMode.LastHit:
-                    LastHit(EntropyEventArgs args);
+                    LastHit(args);
                     break;
             }
         }

@@ -29,20 +29,20 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.R.Ready &&
                 IsUltimateShooting() &&
-                MenuClass.Spells["r"]["combo"].As<MenuBool>().Value)
+                MenuClass.R["combo"].As<MenuBool>().Value)
             {
-                var validEnemiesInsideCone = Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R.Range)
-                    .Where(t => t.IsValidTarget() && !Invulnerable.Check(t) && UltimateCone().IsInside((Vector2)t.Position))
+                var validEnemiesInsideCone = Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R2.Range)
+                    .Where(t => t.IsValidTarget() && !Invulnerable.Check(t) && UltimateCone().IsInsidePolygon(t.Position))
                     .ToList();
                 if (validEnemiesInsideCone.Any())
                 {
                     // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
-                    if (MenuClass.Spells["r"]["customization"]["nearmouse"].As<MenuBool>().Value)
+                    if (MenuClass.R["customization"]["nearmouse"].As<MenuBool>().Value)
                     {
                         var target = validEnemiesInsideCone.MinBy(o => o.Distance(Hud.CursorPositionUnclipped));
                         if (target != null)
                         {
-                            SpellClass.R.Cast(target);
+                            SpellClass.R2.Cast(target);
                         }
                     }
                     else
@@ -50,13 +50,13 @@ namespace AIO.Champions
                         var target = validEnemiesInsideCone.FirstOrDefault();
                         if (target != null)
                         {
-                            SpellClass.R.Cast(validEnemiesInsideCone.FirstOrDefault());
+                            SpellClass.R2.Cast(validEnemiesInsideCone.FirstOrDefault());
                         }
                     }
                 }
                 else
                 {
-                    SpellClass.R.Cast(Hud.CursorPositionUnclipped);
+                    SpellClass.R2.Cast(Hud.CursorPositionUnclipped);
                 }
             }
 
@@ -65,11 +65,11 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 !UtilityClass.Player.Position.IsUnderEnemyTurret() &&
-                MenuClass.Spells["w"]["combo"].As<MenuBool>().Value)
+                MenuClass.W["combo"].As<MenuBool>().Value)
             {
                 if (!IsReloading() &&
                     GameObjects.EnemyHeroes.Any(t => t.DistanceToPlayer() < UtilityClass.Player.GetAutoAttackRange(t)) &&
-                    MenuClass.Spells["w"]["customization"]["noenemiesaa"].As<MenuBool>().Value)
+                    MenuClass.W["customization"]["noenemiesaa"].As<MenuBool>().Value)
                 {
                     return;
                 }
@@ -78,9 +78,9 @@ namespace AIO.Champions
                     t.HasBuff("jhinespotteddebuff") &&
                     t.IsValidTarget(SpellClass.W.Range - 100f) &&
                     !Invulnerable.Check(t, DamageType.Magical, false) &&
-                    MenuClass.Spells["w"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Value))
+                    MenuClass.W["whitelist"][t.CharName.ToLower()].As<MenuBool>().Value))
                 {
-                    if (MenuClass.Spells["w"]["customization"]["onlyslowed"].As<MenuBool>().Value)
+                    if (MenuClass.W["customization"]["onlyslowed"].As<MenuBool>().Value)
                     {
                         if (target.HasBuffOfType(BuffType.Slow))
                         {
@@ -99,7 +99,7 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 IsReloading() &&
-                MenuClass.Spells["q"]["customization"]["comboonreload"].As<MenuBool>().Enabled)
+                MenuClass.Q["customization"]["comboonreload"].As<MenuBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
                 if (bestTarget.IsValidTarget() &&
@@ -113,13 +113,13 @@ namespace AIO.Champions
             ///     The E Combo Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.E["combo"].As<MenuBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.E.Range);
                 if (bestTarget.IsValidTarget() &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical, false))
                 {
-                    if (MenuClass.Spells["e"]["customization"]["comboonreload"].As<MenuBool>().Enabled)
+                    if (MenuClass.E["customization"]["comboonreload"].As<MenuBool>().Enabled)
                     {
                         if (IsReloading())
                         {

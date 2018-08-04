@@ -48,7 +48,7 @@ namespace AIO.Champions
                 var buffMenu = MenuClass.W["buff"];
                 if (buffMenu != null)
                 {
-                    if (UtilityClass.Player.CharIntermediate.TotalAbilityDamage() < GetMinimumApForApMode() &&
+                    if (UtilityClass.PlayerData.TotalAbilityDamage() < GetMinimumApForApMode() &&
                         UtilityClass.Player.MPPercent()
                             > ManaManager.GetNeededMana(SpellClass.W.Slot, buffMenu["logical"]) &&
                         buffMenu["logical"].Enabled &&
