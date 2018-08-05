@@ -2,6 +2,7 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -28,10 +29,10 @@ namespace AIO.Champions
             ///     The Automatic R Logic.
             /// </summary>
             if (SpellClass.R.Ready &&
-                GameObjects.EnemyHeroes.Count() >= 2 &&
+                ObjectCache.EnemyHeroes.Count() >= 2 &&
 				MenuClass.R["aoe"].Enabled)
             {
-                var countValidTargets = GameObjects.EnemyHeroes.Count(t =>
+                var countValidTargets = ObjectCache.EnemyHeroes.Count(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
                         t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position));
             

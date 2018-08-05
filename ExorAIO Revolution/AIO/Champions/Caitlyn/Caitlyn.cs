@@ -193,7 +193,7 @@ namespace AIO.Champions
 								if (SpellClass.W.Ready &&
 								    MenuClass.W["triplecombo"].Enabled)
 								{
-									var bestTarget = GameObjects.EnemyHeroes
+									var bestTarget = ObjectCache.EnemyHeroes
 										.Where(t => !Invulnerable.Check(t) && t.IsValidTargetEx(SpellClass.W.Range))
 										.MinBy(o => o.Distance(args.EndPosition));
 									if (bestTarget != null &&

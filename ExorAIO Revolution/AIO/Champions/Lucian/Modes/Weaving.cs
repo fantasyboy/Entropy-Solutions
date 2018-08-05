@@ -5,6 +5,7 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using SharpDX;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -29,7 +30,7 @@ namespace AIO.Champions
 			}
 
 			var posAfterE = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
-			if (GameObjects.EnemyHeroes.Count() > 1)
+			if (ObjectCache.EnemyHeroes.Count() > 1)
 			{
 				if (MenuClass.E2["erangecheck"].Enabled &&
 				    posAfterE.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange() +

@@ -2,6 +2,7 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
@@ -37,14 +38,14 @@ namespace AIO.Champions
                 //MenuClass.Q.Add(new MenuSeperator("separator2", "Orbwalker cannot reach in time to kill."));
                 MenuClass.Q.Add(new MenuSliderBool("farmhelper", "FarmHelper / if Mana >= x%", true, 50, 0, 99));
 
-                if (GameObjects.EnemyHeroes.Any())
+                if (ObjectCache.EnemyHeroes.Any())
                 {
                     /// <summary>
                     ///     Sets the menu for the Q Whitelist.
                     /// </summary>
                     MenuClass.WhiteList = new Menu("whitelist", "Q Harass: Whitelist");
                     {
-                        foreach (var target in GameObjects.EnemyHeroes)
+                        foreach (var target in ObjectCache.EnemyHeroes)
                         {
                             MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                         }
@@ -74,7 +75,7 @@ namespace AIO.Champions
                 //MenuClass.W.Add(new MenuSeperator("separator3", "or doing Dragon, Baron or Herald"));
                 //MenuClass.W.Add(new MenuSeperator("separator4", "or during a Teamfight"));
 
-                if (GameObjects.AllyHeroes.Any(a => !a.IsMe()))
+                if (ObjectCache.AllyHeroes.Any(a => !a.IsMe()))
                 {
                     MenuClass.Buff = new Menu("buff", "W Buff Logic Settings");
                     {
@@ -96,7 +97,7 @@ namespace AIO.Champions
                         /// </summary>
                         MenuClass.WhiteList3 = new Menu("allywhitelist", "W Buff: Ally Whitelist");
                         {
-                            foreach (var target in GameObjects.AllyHeroes.Where(a => !a.IsMe()))
+                            foreach (var target in ObjectCache.AllyHeroes.Where(a => !a.IsMe()))
                             {
                                 MenuClass.WhiteList3.Add(new MenuBool(target.CharName.ToLower(), "Buff: " + target.CharName));
                             }
@@ -110,14 +111,14 @@ namespace AIO.Champions
                     MenuClass.W.Add(new MenuSeperator("exseparator", "No allies found, no need for a Buff Logic Settings Menu."));
                 }
 
-                if (GameObjects.EnemyHeroes.Any())
+                if (ObjectCache.EnemyHeroes.Any())
                 {
                     /// <summary>
                     ///     Sets the menu for the W Harass Whitelist.
                     /// </summary>
                     MenuClass.WhiteList4 = new Menu("whitelist", "W Harass: Whitelist");
                     {
-                        foreach (var target in GameObjects.EnemyHeroes)
+                        foreach (var target in ObjectCache.EnemyHeroes)
                         {
                             MenuClass.WhiteList4.Add(new MenuBool(target.CharName.ToLower(), "Harass: " + target.CharName));
                         }
@@ -139,7 +140,7 @@ namespace AIO.Champions
                 MenuClass.E.Add(new MenuBool("antigrab", "Anti-Grab"));
                 MenuClass.E.Add(new MenuSeperator("separator"));
 
-                if (GameObjects.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
+                if (ObjectCache.EnemyHeroes.Any(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                 {
                     /// <summary>
                     ///     Sets the menu for the Anti-Gapcloser E.
@@ -150,7 +151,7 @@ namespace AIO.Champions
                         MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
                         MenuClass.E.Add(MenuClass.Gapcloser);
 
-                        foreach (var enemy in GameObjects.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
+                        foreach (var enemy in ObjectCache.EnemyHeroes.Where(x => x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
                         {
                             MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
                             {
@@ -182,14 +183,14 @@ namespace AIO.Champions
                 MenuClass.R.Add(new MenuBool("bool", "Semi-Automatic R"));
                 MenuClass.R.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.U, KeybindType.Hold));
 
-                if (GameObjects.EnemyHeroes.Any())
+                if (ObjectCache.EnemyHeroes.Any())
                 {
                     /// <summary>
                     ///     Sets the menu for the R Whitelist.
                     /// </summary>
                     MenuClass.WhiteList5 = new Menu("whitelist", "Ultimate: Whitelist");
                     {
-                        foreach (var target in GameObjects.EnemyHeroes)
+                        foreach (var target in ObjectCache.EnemyHeroes)
                         {
                             MenuClass.WhiteList5.Add(new MenuBool(target.CharName.ToLower(), "Use against: " + target.CharName));
                         }

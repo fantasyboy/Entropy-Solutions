@@ -34,7 +34,7 @@ namespace AIO.Champions
 					.SetToolTip("Casts if enemy gets out of AA range");
 				MenuClass.Q.Add(new MenuSeperator("separator"));
 
-				if (GameObjects.EnemyHeroes.Any(x =>
+				if (ObjectCache.EnemyHeroes.Any(x =>
 					x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 				{
 					/// <summary>
@@ -46,7 +46,7 @@ namespace AIO.Champions
 						MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
 						MenuClass.Q.Add(MenuClass.Gapcloser);
 
-						foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+						foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 							x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 						{
 							MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
@@ -79,9 +79,9 @@ namespace AIO.Champions
 				{
 					MenuClass.Q2.Add(new MenuBool("noqoutaarange", "Don't Q out of AA range from target", false));
 					MenuClass.Q2.Add(new MenuBool("onlyqifmouseoutaarange", "Only Q if mouse out of AA Range", false));
-					if (GameObjects.EnemyHeroes.Any())
+					if (ObjectCache.EnemyHeroes.Any())
 					{
-						var count = GameObjects.EnemyHeroes.Count();
+						var count = ObjectCache.EnemyHeroes.Count();
 						MenuClass.Q2.Add(new MenuSliderBool("qrangecheck", "Don't Q if pos has >= X enemies in range",
 							false, count >= 3 ? 3 : count, 1, count));
 					}
@@ -108,7 +108,7 @@ namespace AIO.Champions
 							new[] {"Exory Perfect", "Exory Fast", "Don't Condemn to stun"})
 						.SetToolTip("Fast: Fastest condemn possible, Perfect: Slower but almost 100% accurate."));
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
 					/// <summary>
 					///     Sets the menu for the E Whitelist.
@@ -117,7 +117,7 @@ namespace AIO.Champions
 					{
 						//MenuClass.WhiteList.Add(new MenuSeperator("separator1", "WhiteList only works for Combo"));
 						//MenuClass.WhiteList.Add(new MenuSeperator("separator2", "not Killsteal (Automatic)"));
-						foreach (var target in GameObjects.EnemyHeroes)
+						foreach (var target in ObjectCache.EnemyHeroes)
 						{
 							MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(),
 								"Stun: " + target.CharName));
@@ -133,7 +133,7 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuBool("killsteal", "KillSteal"));
 				MenuClass.E.Add(new MenuSeperator("separator"));
 
-				if (GameObjects.EnemyHeroes.Any(x =>
+				if (ObjectCache.EnemyHeroes.Any(x =>
 					x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 				{
 					/// <summary>
@@ -145,7 +145,7 @@ namespace AIO.Champions
 						MenuClass.Gapcloser2.Add(new MenuSeperator(string.Empty));
 						MenuClass.E.Add(MenuClass.Gapcloser2);
 
-						foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+						foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 							x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 						{
 							MenuClass.SubGapcloser2 = new Menu(enemy.CharName.ToLower(), enemy.CharName);
@@ -218,9 +218,9 @@ namespace AIO.Champions
 				MenuClass.Miscellaneous.Add(new MenuSliderBool("stealthtime",
 					"Stay Invisible: For at least x ms [1000 ms = 1 second]", false, 0, 0, 1000));
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
-					var count = GameObjects.EnemyHeroes.Count();
+					var count = ObjectCache.EnemyHeroes.Count();
 					MenuClass.Miscellaneous.Add(new MenuSliderBool("stealthcheck",
 						"Stay Invisible: if >= x enemies in AA Range", false, Math.Min(count, 3), 1, count));
 				}

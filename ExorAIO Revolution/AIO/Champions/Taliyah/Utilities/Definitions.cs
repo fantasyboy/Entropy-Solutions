@@ -211,7 +211,7 @@ namespace AIO.Champions
 				///     Ignore Target If Possible.
 				/// </summary>
 				case 4:
-					if (!GameObjects.EnemyHeroes.Any(t =>
+					if (!ObjectCache.EnemyHeroes.Any(t =>
 						t.IsValidTargetEx(SpellClass.W.Range) &&
 						MenuClass.W["selection"][t.CharName.ToLower()].Value < 4))
 					{

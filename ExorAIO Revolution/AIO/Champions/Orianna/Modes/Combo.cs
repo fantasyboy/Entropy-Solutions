@@ -4,6 +4,7 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -32,7 +33,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.W["combo"].Enabled)
             {
-                if (GameObjects.EnemyHeroes.Any(t =>
+                if (ObjectCache.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
                         t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position)))
                 {
@@ -49,9 +50,9 @@ namespace AIO.Champions
                 ///     The E Engager Logic.
                 /// </summary>
                 if (MenuClass.E["engager"].Enabled &&
-                    GameObjects.EnemyHeroes.Count() >= 2)
+                    ObjectCache.EnemyHeroes.Count() >= 2)
                 {
-					var bestAllies = GameObjects.AllyHeroes
+					var bestAllies = ObjectCache.AllyHeroes
                         .Where(a =>
                             !a.IsMe() &&
                             a.IsValidTargetEx(SpellClass.E.Range, true) &&
@@ -59,7 +60,7 @@ namespace AIO.Champions
 
                     var bestAlly = bestAllies
                         .FirstOrDefault(a =>
-                            GameObjects.EnemyHeroes.Count(t =>
+                            ObjectCache.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
                                 t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: a.Position)) >= MenuClass.R["aoe"].Value);
 
@@ -74,7 +75,7 @@ namespace AIO.Champions
                 /// </summary>
                 if (MenuClass.E["combo"].Enabled)
                 {
-                    var bestAllies = GameObjects.AllyHeroes
+                    var bestAllies = ObjectCache.AllyHeroes
                         .Where(a =>
                             a.IsValidTargetEx(SpellClass.E.Range, true) &&
                             MenuClass.E["combowhitelist"][a.CharName.ToLower()].Enabled)
@@ -82,7 +83,7 @@ namespace AIO.Champions
 
                     foreach (var ally in bestAllies)
                     {
-                        if (GameObjects.EnemyHeroes.Any(t =>
+                        if (ObjectCache.EnemyHeroes.Any(t =>
                                 t.IsValidTargetEx() &&
                                 !Invulnerable.Check(t, DamageType.Magical) &&
                                 ERectangle(ally).IsInsidePolygon(t.Position)))

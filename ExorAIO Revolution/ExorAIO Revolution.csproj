@@ -170,7 +170,6 @@
     <Compile Include="AIO\Champions\Vayne\Utilities\Methods.cs" />
     <Compile Include="AIO\Champions\Vayne\Utilities\Spells.cs" />
     <Compile Include="AIO\Champions\Vayne\Vayne.cs" />
-    <Compile Include="AIO\Utilities\Helpers\GameObjects.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AIO\Bootstrap.cs" />
@@ -226,7 +225,7 @@
     </Reference>
     <Reference Include="Entropy.SDK, Version=1.0.0.0, Culture=neutral, PublicKeyToken=a9dd01c7a904d443, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Entropy\System\Entropy.SDK.dll</HintPath>
+      <HintPath>..\..\Entropy.SDK\Build\Debug\Entropy.SDK.dll</HintPath>
     </Reference>
     <Reference Include="Entropy.ToolKit, Version=1.0.0.0, Culture=neutral, PublicKeyToken=167639b368a1a0ae, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

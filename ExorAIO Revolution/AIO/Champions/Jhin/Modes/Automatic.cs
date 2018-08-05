@@ -38,7 +38,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.W["logical"].As<MenuBool>().Enabled)
             {
-                foreach (var target in GameObjects.EnemyHeroes.Where(t =>
+                foreach (var target in ObjectCache.EnemyHeroes.Where(t =>
                     t.HasBuff("jhinespotteddebuff") &&
                     t.IsImmobile(SpellClass.W.Delay) &&
                     t.IsValidTarget(SpellClass.W.Range) &&
@@ -54,7 +54,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.E["logical"].As<MenuBool>().Enabled)
             {
-                foreach (var target in GameObjects.EnemyHeroes.Where(t =>
+                foreach (var target in ObjectCache.EnemyHeroes.Where(t =>
                     t.IsImmobile(SpellClass.E.Delay) &&
                     t.DistanceToPlayer() < SpellClass.E.Range))
                 {

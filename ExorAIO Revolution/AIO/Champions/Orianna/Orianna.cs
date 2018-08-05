@@ -9,6 +9,7 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Gapcloser = AIO.Utilities.Gapcloser;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -77,7 +78,7 @@ namespace AIO.Champions
             if (GetBall() != null &&
                 args.Slot == SpellSlot.R)
             {
-                var validTargets = GameObjects.EnemyHeroes.Where(t =>
+                var validTargets = ObjectCache.EnemyHeroes.Where(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
                         t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position));
                 if (!validTargets.Any())
@@ -141,7 +142,7 @@ namespace AIO.Champions
                             }
                             else
                             {
-                                var bestAlly = GameObjects.AllyHeroes
+                                var bestAlly = ObjectCache.AllyHeroes
                                     .Where(a =>
                                         !a.IsMe() &&
                                         a.IsValidTargetEx(SpellClass.E.Range, true) &&
@@ -158,7 +159,7 @@ namespace AIO.Champions
                 }
                 else if (sender.IsAlly())
                 {
-                    if (GameObjects.EnemyHeroes.Count() < 2)
+                    if (ObjectCache.EnemyHeroes.Count() < 2)
                     {
                         return;
                     }
@@ -170,7 +171,7 @@ namespace AIO.Champions
                         MenuClass.R["aoe"].Enabled &&
 						MenuClass.E["engager"].Enabled)
                     {
-                        if (GameObjects.EnemyHeroes.Count(t =>
+                        if (ObjectCache.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
                                 t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: args.EndPosition)) >= MenuClass.R["aoe"].Value &&
                             MenuClass.E["engagerswhitelist"][sender.CharName.ToLower()].Enabled)

@@ -50,7 +50,7 @@ namespace AIO.Champions
 		        return null;
 	        }
 
-	        var possiblePosition = GameObjects.AllyHeroes.FirstOrDefault(a =>
+	        var possiblePosition = ObjectCache.AllyHeroes.FirstOrDefault(a =>
 		        !a.IsMe() &&
 		        a.GetActiveBuffs().Any(b =>
 			        b.Caster.IsMe() &&
@@ -60,7 +60,7 @@ namespace AIO.Champions
 		        return possiblePosition;
 	        }
 
-			var possiblePosition2 = GameObjects.AllyMinions.FirstOrDefault(m =>
+			var possiblePosition2 = ObjectCache.AllyMinions.FirstOrDefault(m =>
                     Math.Abs(m.HP) > 0 &&
                     m.ModelName.Equals("OriannaBall"));
             if (possiblePosition2 != null)

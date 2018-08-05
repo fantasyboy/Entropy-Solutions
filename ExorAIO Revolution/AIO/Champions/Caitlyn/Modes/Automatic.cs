@@ -6,6 +6,7 @@ using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -34,7 +35,7 @@ namespace AIO.Champions
 			if (SpellClass.W.Ready &&
 			    MenuClass.W["logical"].Enabled)
 			{
-				foreach (var target in GameObjects.EnemyHeroes.Where(t =>
+				foreach (var target in ObjectCache.EnemyHeroes.Where(t =>
 					CanTrap(t) &&
 					t.IsImmobile(SpellClass.W.Delay) &&
 					t.DistanceToPlayer() < SpellClass.W.Range))
@@ -55,7 +56,7 @@ namespace AIO.Champions
 				{
 					case OrbwalkingMode.Combo:
 					case OrbwalkingMode.Harass:
-						foreach (var target in GameObjects.EnemyHeroes.Where(t =>
+						foreach (var target in ObjectCache.EnemyHeroes.Where(t =>
 							!Invulnerable.Check(t) &&
 							t.IsImmobile(SpellClass.Q.Delay) &&
 							t.IsValidTargetEx(SpellClass.Q.Range) &&
@@ -75,7 +76,7 @@ namespace AIO.Champions
 			    MenuClass.R["bool"].Enabled &&
 			    MenuClass.R["key"].Enabled)
 			{
-				var bestTarget = GameObjects.EnemyHeroes
+				var bestTarget = ObjectCache.EnemyHeroes
 					.Where(t =>
 						!Invulnerable.Check(t) &&
 						t.IsValidTargetEx(SpellClass.R.Range) &&

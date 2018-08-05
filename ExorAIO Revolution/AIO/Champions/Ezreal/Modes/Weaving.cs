@@ -2,6 +2,7 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 
@@ -52,7 +53,7 @@ namespace AIO.Champions
                         UtilityClass.Player.MPPercent()
                             > ManaManager.GetNeededMana(SpellClass.W.Slot, buffMenu["logical"]) &&
                         buffMenu["logical"].Enabled &&
-                        GameObjects.AllyHeroes.Any(a =>
+                        ObjectCache.AllyHeroes.Any(a =>
                             !a.IsMe() &&
                             a.IsValidTargetEx(SpellClass.W.Range, true) &&
                             buffMenu["allywhitelist"][a.CharName.ToLower()].Enabled))

@@ -69,7 +69,7 @@ namespace AIO.Champions
                 MenuClass.R["bool"].Enabled &&
                 MenuClass.R["key"].As<MenuKeyBind>().Enabled)
             {
-                var bestTarget = GameObjects.EnemyHeroes.Where(t =>
+                var bestTarget = ObjectCache.EnemyHeroes.Where(t =>
                         t.IsValidTargetEx(2000f) &&
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
                         MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)

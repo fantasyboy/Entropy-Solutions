@@ -9,6 +9,7 @@ using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
 using SharpDX;
 using Gapcloser = AIO.Utilities.Gapcloser;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -93,7 +94,7 @@ namespace AIO.Champions
 				}
 
 				if (MenuClass.Miscellaneous["stealthcheck"].Enabled &&
-				    GameObjects.EnemyHeroes.Count(t =>
+				    ObjectCache.EnemyHeroes.Count(t =>
 					    t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t))) >=
 				    MenuClass.Miscellaneous["stealthcheck"].Value)
 				{

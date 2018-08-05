@@ -76,7 +76,7 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuBool("engage", "Engager")).SetToolTip("Casts if enemy gets out of AA range");
 				MenuClass.E.Add(new MenuSeperator("separator"));
 
-				if (GameObjects.EnemyHeroes.Any(x =>
+				if (ObjectCache.EnemyHeroes.Any(x =>
 					x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 				{
 					/// <summary>
@@ -88,7 +88,7 @@ namespace AIO.Champions
 						MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
 						MenuClass.E.Add(MenuClass.Gapcloser);
 
-						foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+						foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 							x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 						{
 							MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);

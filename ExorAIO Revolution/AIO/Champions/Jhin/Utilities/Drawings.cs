@@ -53,11 +53,19 @@ namespace AIO.Champions
             /// <summary>
             ///     Loads the R drawings.
             /// </summary>
-            if (SpellClass.R.Ready &&
-				!IsUltimateShooting() &&
-                MenuClass.Drawings["r"].As<MenuBool>().Enabled)
+            if (SpellClass.R.Ready)
             {
-                CircleRendering.Render(Color.Red, SpellClass.R2.Range, UtilityClass.Player);
+				if (!IsUltimateShooting() &&
+					MenuClass.Drawings["r"].As<MenuBool>().Enabled)
+				{
+					CircleRendering.Render(Color.Red, SpellClass.R2.Range, UtilityClass.Player);
+				}
+
+				if (IsUltimateShooting() &&
+					MenuClass.Drawings["rcone"].As<MenuBool>().Enabled)
+				{
+					UltimateCone.Render(Color.Red);
+				}
             }
         }
 

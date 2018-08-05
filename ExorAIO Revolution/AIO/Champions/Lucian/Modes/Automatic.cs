@@ -5,6 +5,7 @@ using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Utils;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -37,7 +38,7 @@ namespace AIO.Champions
 			if (SpellClass.R.Ready &&
 			    MenuClass.R["bool"].Enabled)
 			{
-				var bestTarget = GameObjects.EnemyHeroes
+				var bestTarget = ObjectCache.EnemyHeroes
 					.Where(t =>
 						!Invulnerable.Check(t) &&
 						t.IsValidTargetEx(SpellClass.R.Range) &&

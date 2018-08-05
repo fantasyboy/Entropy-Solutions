@@ -7,6 +7,7 @@ using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 using SharpDX;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -32,7 +33,7 @@ namespace AIO.Champions
                 MenuClass.R["combo"].As<MenuBool>().Value)
             {
                 var validEnemiesInsideCone = Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R2.Range)
-                    .Where(t => t.IsValidTarget() && !Invulnerable.Check(t) && UltimateCone().IsInsidePolygon(t.Position))
+                    .Where(t => t.IsValidTarget() && !Invulnerable.Check(t) && UltimateCone.IsInsidePolygon(t.Position))
                     .ToList();
                 if (validEnemiesInsideCone.Any())
                 {
@@ -68,13 +69,13 @@ namespace AIO.Champions
                 MenuClass.W["combo"].As<MenuBool>().Value)
             {
                 if (!IsReloading() &&
-                    GameObjects.EnemyHeroes.Any(t => t.DistanceToPlayer() < UtilityClass.Player.GetAutoAttackRange(t)) &&
+                    ObjectCache.EnemyHeroes.Any(t => t.DistanceToPlayer() < UtilityClass.Player.GetAutoAttackRange(t)) &&
                     MenuClass.W["customization"]["noenemiesaa"].As<MenuBool>().Value)
                 {
                     return;
                 }
 
-                foreach (var target in GameObjects.EnemyHeroes.Where(t =>
+                foreach (var target in ObjectCache.EnemyHeroes.Where(t =>
                     t.HasBuff("jhinespotteddebuff") &&
                     t.IsValidTarget(SpellClass.W.Range - 100f) &&
                     !Invulnerable.Check(t, DamageType.Magical, false) &&

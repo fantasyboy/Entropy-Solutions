@@ -1,6 +1,7 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
 
@@ -36,10 +37,10 @@ namespace AIO.Champions
 				/// </summary>
 				MenuClass.Q2 = new Menu("customization", "Customization:");
 				{
-					if (GameObjects.EnemyHeroes.Any())
+					if (ObjectCache.EnemyHeroes.Any())
 					{
 						MenuClass.Q2.Add(new MenuSlider("safeq", "Combo: Only Q if enemies in AA Range <= x", 1, 0,
-							GameObjects.EnemyHeroes.Count()));
+							ObjectCache.EnemyHeroes.Count()));
 					}
 					else
 					{
@@ -52,14 +53,14 @@ namespace AIO.Champions
 				}
 				MenuClass.Q.Add(MenuClass.Q2);
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
 					/// <summary>
 					///     Sets the menu for the Q Whitelist.
 					/// </summary>
 					MenuClass.WhiteList = new Menu("whitelist", "Harass: Whitelist");
 					{
-						foreach (var target in GameObjects.EnemyHeroes)
+						foreach (var target in ObjectCache.EnemyHeroes)
 						{
 							MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(),
 								"Harass: " + target.CharName));
@@ -84,7 +85,7 @@ namespace AIO.Champions
 				MenuClass.W.Add(new MenuBool("teleport", "On Teleport"));
 				MenuClass.W.Add(new MenuSeperator("separator"));
 
-				if (GameObjects.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
+				if (ObjectCache.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 				{
 					/// <summary>
 					///     Sets the menu for the Anti-Gapcloser W.
@@ -95,7 +96,7 @@ namespace AIO.Champions
 						MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
 						MenuClass.W.Add(MenuClass.Gapcloser);
 
-						foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+						foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 							Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 						{
 							MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
@@ -126,7 +127,7 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuBool("combo", "Combo"));
 				MenuClass.E.Add(new MenuSeperator("separator"));
 
-				if (GameObjects.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
+				if (ObjectCache.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 				{
 					/// <summary>
 					///     Sets the menu for the Anti-Gapcloser E.
@@ -137,7 +138,7 @@ namespace AIO.Champions
 						MenuClass.Gapcloser2.Add(new MenuSeperator(string.Empty));
 						MenuClass.E.Add(MenuClass.Gapcloser2);
 
-						foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+						foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 							Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 						{
 							MenuClass.SubGapcloser2 = new Menu(enemy.CharName.ToLower(), enemy.CharName);
@@ -167,10 +168,10 @@ namespace AIO.Champions
 				/// </summary>
 				MenuClass.E2 = new Menu("customization", "Customization:");
 				{
-					if (GameObjects.EnemyHeroes.Any())
+					if (ObjectCache.EnemyHeroes.Any())
 					{
 						MenuClass.E2.Add(new MenuSlider("safee", "Combo: Only E if enemies in Dash Position <= x", 1, 0,
-							GameObjects.EnemyHeroes.Count()));
+							ObjectCache.EnemyHeroes.Count()));
 					}
 					else
 					{
@@ -192,14 +193,14 @@ namespace AIO.Champions
 				MenuClass.R.Add(new MenuBool("bool", "Semi-Automatic R"));
 				MenuClass.R.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.U, KeybindType.Hold));
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
 					/// <summary>
 					///     Sets the menu for the R Whitelist.
 					/// </summary>
 					MenuClass.WhiteList2 = new Menu("whitelist", "Ultimate: Whitelist");
 					{
-						foreach (var target in GameObjects.EnemyHeroes)
+						foreach (var target in ObjectCache.EnemyHeroes)
 						{
 							MenuClass.WhiteList2.Add(new MenuBool(target.CharName.ToLower(),
 								"Use against: " + target.CharName));

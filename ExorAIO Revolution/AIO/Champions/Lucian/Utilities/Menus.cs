@@ -1,6 +1,7 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
 
@@ -57,7 +58,7 @@ namespace AIO.Champions
 				MenuClass.Q3.Add(new MenuSliderBool("mixed", "Harass / if Mana >= %", true, 50, 0, 99));
 				MenuClass.Q3.Add(new MenuSliderBool("laneclear", "Laneclear / if Mana >= %", true, 50, 0, 99));
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
 					/// <summary>
 					///     Sets the Whitelist menu for the Extended Q.
@@ -65,7 +66,7 @@ namespace AIO.Champions
 					MenuClass.WhiteList = new Menu("whitelist", "Extended Harass: Whitelist");
 					{
 						//MenuClass.WhiteList.Add(new MenuSeperator("extendedsep", "Note: The Whitelist only works for Mixed and Laneclear."));
-						foreach (var target in GameObjects.EnemyHeroes)
+						foreach (var target in ObjectCache.EnemyHeroes)
 						{
 							MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(),
 								"Harass: " + target.CharName));
@@ -118,7 +119,7 @@ namespace AIO.Champions
 					MenuClass.E2.Add(new MenuBool("noeoutaarange", "Don't E out of AA range"));
 					MenuClass.E2.Add(new MenuBool("onlyeifmouseoutaarange", "Only if mouse out AA Range", false));
 
-					var count = GameObjects.EnemyHeroes.Count();
+					var count = ObjectCache.EnemyHeroes.Count();
 					if (count > 1)
 					{
 						MenuClass.E2.Add(new MenuSliderBool("erangecheck", "Don't E if X enemies in range from pos",
@@ -144,7 +145,7 @@ namespace AIO.Champions
 				/// </summary>
 				MenuClass.Gapcloser = new Menu("gapcloser", "Anti-Gapcloser");
 				{
-					if (GameObjects.EnemyHeroes.Any(x =>
+					if (ObjectCache.EnemyHeroes.Any(x =>
 						x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 					{
 						/// <summary>
@@ -156,7 +157,7 @@ namespace AIO.Champions
 							MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
 							MenuClass.E.Add(MenuClass.Gapcloser);
 
-							foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+							foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 								x.IsMelee && Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 							{
 								MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
@@ -198,14 +199,14 @@ namespace AIO.Champions
 				MenuClass.R.Add(new MenuBool("bool", "Semi-Automatic R", false));
 				MenuClass.R.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.T, KeybindType.Hold));
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
 					/// <summary>
 					///     Sets the menu for the R Whitelist.
 					/// </summary>
 					MenuClass.WhiteList2 = new Menu("whitelist", "Ultimate: Whitelist");
 					{
-						foreach (var target in GameObjects.EnemyHeroes)
+						foreach (var target in ObjectCache.EnemyHeroes)
 						{
 							MenuClass.WhiteList2.Add(new MenuBool(target.CharName.ToLower(),
 								"Use against: " + target.CharName));

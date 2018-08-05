@@ -6,6 +6,7 @@ using AIO.Utilities;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -59,7 +60,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.W["killsteal"].Enabled)
             {
-                if (GameObjects.EnemyHeroes.Any(t =>
+                if (ObjectCache.EnemyHeroes.Any(t =>
                         t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position) &&
                         GetWDamage(t) >= t.GetRealHealth()))
                 {
@@ -74,7 +75,7 @@ namespace AIO.Champions
                 MenuClass.R["killstealwhitelist"] != null &&
                 MenuClass.R["killsteal"].Enabled)
             {
-                foreach (var enemy in GameObjects.EnemyHeroes.Where(t =>
+                foreach (var enemy in ObjectCache.EnemyHeroes.Where(t =>
                     MenuClass.R["killstealwhitelist"][t.CharName.ToLower()].Enabled &&
                     t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position)))
                 {

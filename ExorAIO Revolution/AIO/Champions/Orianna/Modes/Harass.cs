@@ -3,6 +3,7 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -51,7 +52,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["harass"]) &&
                 MenuClass.W["harass"].Enabled)
             {
-                if (GameObjects.EnemyHeroes.Any(t =>
+                if (ObjectCache.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
                         t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position) &&
                         MenuClass.W["whitelist"][t.CharName.ToLower()].Enabled))

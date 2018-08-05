@@ -57,14 +57,14 @@ namespace AIO.Champions
 				}
 				MenuClass.Q.Add(MenuClass.Q3);
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
 					/// <summary>
 					///     Sets the menu for the Q Whitelist.
 					/// </summary>
 					MenuClass.WhiteList = new Menu("whitelist", "Harass: Whitelist");
 					{
-						foreach (var target in GameObjects.EnemyHeroes)
+						foreach (var target in ObjectCache.EnemyHeroes)
 						{
 							MenuClass.WhiteList.Add(new MenuBool(target.CharName.ToLower(),
 								"Harass: " + target.CharName));
@@ -99,14 +99,14 @@ namespace AIO.Champions
 				}
 				MenuClass.W.Add(MenuClass.W2);
 
-				if (GameObjects.EnemyHeroes.Any())
+				if (ObjectCache.EnemyHeroes.Any())
 				{
 					/// <summary>
 					///     Sets the menu for the selection.
 					/// </summary>
 					MenuClass.WhiteList = new Menu("selection", "Combo: Pull / Push Selection");
 					{
-						foreach (var enemy in GameObjects.EnemyHeroes)
+						foreach (var enemy in ObjectCache.EnemyHeroes)
 						{
 							MenuClass.WhiteList.Add(
 								new MenuList(
@@ -132,7 +132,7 @@ namespace AIO.Champions
 				MenuClass.W.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
 				MenuClass.W.Add(new MenuSeperator("separator4"));
 
-				if (GameObjects.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
+				if (ObjectCache.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 				{
 					/// <summary>
 					///     Sets the menu for the Anti-Gapcloser W.
@@ -143,7 +143,7 @@ namespace AIO.Champions
 						MenuClass.Gapcloser.Add(new MenuSeperator(string.Empty));
 						MenuClass.W.Add(MenuClass.Gapcloser);
 
-						foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+						foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 							Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 						{
 							MenuClass.SubGapcloser = new Menu(enemy.CharName.ToLower(), enemy.CharName);
@@ -224,7 +224,7 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuBool("teleports", "On Teleports"));
 				MenuClass.E.Add(new MenuSeperator("separator"));
 
-				if (GameObjects.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
+				if (ObjectCache.EnemyHeroes.Any(x => Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 				{
 					/// <summary>
 					///     Sets the menu for the Anti-Gapcloser E.
@@ -235,7 +235,7 @@ namespace AIO.Champions
 						MenuClass.Gapcloser2.Add(new MenuSeperator(string.Empty));
 						MenuClass.E.Add(MenuClass.Gapcloser2);
 
-						foreach (var enemy in GameObjects.EnemyHeroes.Where(x =>
+						foreach (var enemy in ObjectCache.EnemyHeroes.Where(x =>
 							Gapcloser.Spells.Any(spell => x.CharName == spell.ChampionName)))
 						{
 							MenuClass.SubGapcloser2 = new Menu(enemy.CharName.ToLower(), enemy.CharName);

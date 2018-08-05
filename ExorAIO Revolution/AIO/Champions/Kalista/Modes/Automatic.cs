@@ -27,7 +27,7 @@ namespace AIO.Champions
 			var passiveObject = ObjectCache.AllGameObjects.FirstOrDefault(o => o.IsValid && o.Name.Contains("Kalista") && o.Name.Contains("P_LinkIcon"));
 			if (passiveObject != null)
 			{
-				SoulBound = GameObjects.AllyHeroes
+				SoulBound = ObjectCache.AllyHeroes
 					.Where(a => !a.IsMe())
 					.MinBy(o => o.Distance(passiveObject));
 			}

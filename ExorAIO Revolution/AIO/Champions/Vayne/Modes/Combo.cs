@@ -4,6 +4,7 @@ using AIO.Utilities;
 using Entropy.SDK.Events;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -54,7 +55,7 @@ namespace AIO.Champions
 				const int threshold = 75;
 
 				foreach (var target in
-					GameObjects.EnemyHeroes.Where(t =>
+					ObjectCache.EnemyHeroes.Where(t =>
 						!t.IsDashing() &&
 						t.IsValidTargetEx(SpellClass.E.Range) &&
 						!Invulnerable.Check(t, DamageType.Magical, false) &&

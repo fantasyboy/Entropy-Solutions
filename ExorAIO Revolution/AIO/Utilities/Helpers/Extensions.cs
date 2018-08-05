@@ -289,11 +289,11 @@ namespace AIO.Utilities
 		{
 			if (MenuClass.General["junglesmall"].Enabled)
 			{
-				return GameObjects.Jungle.Where(m => m.IsValidSpellTarget(range)).ToList();
+				return ObjectCache.JungleMinions.Where(m => m.IsValidSpellTarget(range)).ToList();
 			}
 
-			return GameObjects.Jungle.Where(m =>
-					(!GameObjects.JungleSmall.Contains(m) || m.CharName.Equals("Sru_Crab")) &&
+			return ObjectCache.JungleMinions.Where(m =>
+					(!ObjectCache.SmallJungleMinions.Contains(m) || m.CharName.Equals("Sru_Crab")) &&
 					m.IsValidSpellTarget(range))
 				.ToList();
 		}
@@ -311,7 +311,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIMinionClient> GetLargeJungleMinionsTargetsInRange(float range)
 		{
-			return GameObjects.JungleLarge.Where(m => m.IsValidSpellTarget(range)).ToList();
+			return ObjectCache.LargeJungleMinions.Where(m => m.IsValidSpellTarget(range)).ToList();
 		}
 
 		/// <summary>
@@ -327,7 +327,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIMinionClient> GetLegendaryJungleMinionsTargetsInRange(float range)
 		{
-			return GameObjects.JungleLegendary.Where(m => m.IsValidSpellTarget(range)).ToList();
+			return ObjectCache.LegendaryJungleMinions.Where(m => m.IsValidSpellTarget(range)).ToList();
 		}
 
 		/// <summary>
@@ -343,7 +343,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIMinionClient> GetSmallJungleMinionsTargetsInRange(float range)
 		{
-			return GameObjects.JungleSmall.Where(m => m.IsValidSpellTarget(range)).ToList();
+			return ObjectCache.SmallJungleMinions.Where(m => m.IsValidSpellTarget(range)).ToList();
 		}
 
 		#endregion
