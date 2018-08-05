@@ -930,11 +930,13 @@
 
 			foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1500 + EnetClient.Ping).ToList())
 			{
+				GameConsole.Print($"Gapclosers Remove: {needToDeleteValue.Key}");
 				Gapclosers.Remove(needToDeleteValue.Key);
 			}
 
 			foreach (var gapArgs in Gapclosers.Where(x => x.Value.Unit.IsValidTargetEx(allyIsValidTargetEx: true)))
 			{
+				GameConsole.Print($"OnGapcloser: {gapArgs.Value.Unit}, {gapArgs.Value}");
 				OnGapcloser(gapArgs.Value.Unit, gapArgs.Value);
 			}
 		}
@@ -949,13 +951,14 @@
 			}
 
 			var argsName = args.SpellData.Name.ToLower();
-			if (!Spells.Any(x => x.SpellName.ToLower().Equals(argsName.ToLower())))
+			if (!Spells.Any(x => x.SpellName.ToLower().Equals(argsName)))
 			{
 				return;
 			}
 
 			if (!Gapclosers.ContainsKey(heroSender.NetworkID))
 			{
+				GameConsole.Print($"Gapclosers Add: {heroSender.NetworkID}");
 				Gapclosers.Add(heroSender.NetworkID, new GapcloserArgs());
 			}
 

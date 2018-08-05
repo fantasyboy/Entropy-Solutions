@@ -145,7 +145,7 @@ namespace AIO.Champions
 			var playerPos = UtilityClass.Player.Position;
 
 			if (!heroSender.IsValidTargetEx(SpellClass.E.Range) &&
-			    endPos.Distance((Vector2) playerPos) > SpellClass.E.Range)
+			    endPos.DistanceToPlayer() > SpellClass.E.Range)
 			{
 				return;
 			}
@@ -157,7 +157,7 @@ namespace AIO.Champions
 				const int condemnPushDistance = 410;
 				for (var i = UtilityClass.Player.BoundingRadius; i < condemnPushDistance; i += 10)
 				{
-					if (!endPos.Extend((Vector2) playerPos, -i).IsWall())
+					if (!endPos.Extend(playerPos, -i).IsWall())
 					{
 						continue;
 					}
@@ -250,8 +250,8 @@ namespace AIO.Champions
 
 							SpellClass.Q.Cast(targetPos);
 						}
-
 						break;
+
 					default:
 						Vector3 targetPos2 = UtilityClass.Player.Position.Extend(args.EndPosition, -SpellClass.Q.Range);
 						if (targetPos2.IsUnderEnemyTurret())
@@ -263,7 +263,6 @@ namespace AIO.Champions
 						{
 							SpellClass.Q.Cast(targetPos2);
 						}
-
 						break;
 				}
 			}
@@ -283,15 +282,13 @@ namespace AIO.Champions
 						{
 							SpellClass.E.CastOnUnit(sender);
 						}
-
 						break;
+
 					default:
-						if (args.EndPosition.Distance((Vector2) UtilityClass.Player.Position) <=
-						    UtilityClass.Player.GetAutoAttackRange())
+						if (args.EndPosition.DistanceToPlayer() <= UtilityClass.Player.GetAutoAttackRange())
 						{
 							SpellClass.E.CastOnUnit(sender);
 						}
-
 						break;
 				}
 			}

@@ -28,12 +28,11 @@ namespace AIO.Champions
 	    /// <param name="unit">The unit.</param>
 	    public Rectangle ERectangle(AIBaseClient unit)
 	    {
-		    var ePred = SpellClass.E.GetPrediction(unit).CastPosition;
 		    var eRect = new Rectangle(Vector3.Zero, Vector3.Zero, SpellClass.E.Width)
 		    {
-			    StartPoint = LocalPlayer.Instance.Position,
-			    EndPoint = LocalPlayer.Instance.Position.Extend(ePred, SpellClass.E.Range)
-		    };
+			    StartPoint = GetBall().Position,
+			    EndPoint = LocalPlayer.Instance.Position
+			};
 
 		    return eRect;
 	    }
@@ -41,36 +40,30 @@ namespace AIO.Champions
 		/// <summary>
 		///     Gets the ball.
 		/// </summary>
-		public AIBaseClient GetBall()
+		public GameObject GetBall()
         {
-			// Return null if ball is traveling
-	        if (ObjectCache.AllGameObjects.Any(o =>
-		        o.Type.TypeID == GameObjectTypeID.DrawFX && o.IsValid && o.Name == "OrianaIzuna"))
-	        {
-		        return null;
-	        }
+			// Model is only called Orianna if the player has the ball on himself.
+			if (UtilityClass.Player.ModelName.Equals("Orianna"))
+			{
+				return UtilityClass.Player;
+			}
 
+			// Check if any ally has the ball.
 	        var possiblePosition = ObjectCache.AllyHeroes.FirstOrDefault(a =>
-		        !a.IsMe() &&
 		        a.GetActiveBuffs().Any(b =>
-			        b.Caster.IsMe() &&
+					b.Caster.IsMe() &&
 			        b.Name.Equals("orianaghost")));
 	        if (possiblePosition != null)
 	        {
 		        return possiblePosition;
 	        }
 
-			var possiblePosition2 = ObjectCache.AllyMinions.FirstOrDefault(m =>
-                    Math.Abs(m.HP) > 0 &&
-                    m.ModelName.Equals("OriannaBall"));
+			var possiblePosition2 = ObjectCache.AllGameObjects.FirstOrDefault(o =>
+                    o.IsValid &&
+                    o.Name.Contains("Orianna_") && o.Name.Contains("_yomu_ring_"));
             if (possiblePosition2 != null)
             {
                 return possiblePosition2;
-            }
-
-            if (UtilityClass.Player.HasBuff("orianaghostself"))
-            {
-                return UtilityClass.Player;
             }
 
             return null;

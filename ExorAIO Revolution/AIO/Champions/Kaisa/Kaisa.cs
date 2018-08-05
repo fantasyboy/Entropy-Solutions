@@ -174,8 +174,7 @@ namespace AIO.Champions
 						break;
 
 					default:
-						if (args.EndPosition.Distance((Vector2) UtilityClass.Player.Position) <=
-						    UtilityClass.Player.GetAutoAttackRange())
+						if (args.EndPosition.DistanceToPlayer() <= UtilityClass.Player.GetAutoAttackRange())
 						{
 							SpellClass.E.Cast();
 						}

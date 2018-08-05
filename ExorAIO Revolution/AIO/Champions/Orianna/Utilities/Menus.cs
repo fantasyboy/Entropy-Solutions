@@ -267,8 +267,6 @@ namespace AIO.Champions
 				    MenuClass.R.Add(new MenuSeperator("exseparator", "Whitelist Menu not needed."));
 			    }
 
-			    MenuClass.R.Add(new MenuSeperator("separator2"));
-
 			    if (ObjectCache.EnemyHeroes.Any(t => Interrupter.SpellDatabase.Keys.Contains(t.CharName)))
 			    {
 				    /// <summary>
