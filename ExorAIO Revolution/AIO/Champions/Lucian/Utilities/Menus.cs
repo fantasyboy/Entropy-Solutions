@@ -137,7 +137,7 @@ namespace AIO.Champions
 
 				MenuClass.E.Add(new MenuSeperator("separator"));
 				MenuClass.E.Add(new MenuBool("combo", "Combo"));
-				MenuClass.E.Add(new MenuBool("engage", "Engage"));
+				MenuClass.E.Add(new MenuBool("engage", "Engager", false));
 				MenuClass.E.Add(new MenuSeperator("separator2"));
 
 				/// <summary>

@@ -930,13 +930,13 @@
 
 			foreach (var needToDeleteValue in Gapclosers.Where(x => Game.TickCount - x.Value.StartTick > 1500 + EnetClient.Ping).ToList())
 			{
-				GameConsole.Print($"Gapclosers Remove: {needToDeleteValue.Key}");
+				//GameConsole.Print($"Gapclosers Remove: {needToDeleteValue.Key}");
 				Gapclosers.Remove(needToDeleteValue.Key);
 			}
 
 			foreach (var gapArgs in Gapclosers.Where(x => x.Value.Unit.IsValidTargetEx(allyIsValidTargetEx: true)))
 			{
-				GameConsole.Print($"OnGapcloser: {gapArgs.Value.Unit}, {gapArgs.Value}");
+				//GameConsole.Print($"OnGapcloser: {gapArgs.Value.Unit}, {gapArgs.Value}");
 				OnGapcloser(gapArgs.Value.Unit, gapArgs.Value);
 			}
 		}
