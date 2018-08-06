@@ -57,7 +57,6 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.E["laneclear"].Enabled)
 			{
-				GameConsole.Print("wtf");
 				if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Count(m =>
 					    IsPerfectRendTarget(m) &&
 					    m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) >= MenuClass.E["laneclear"].Value)

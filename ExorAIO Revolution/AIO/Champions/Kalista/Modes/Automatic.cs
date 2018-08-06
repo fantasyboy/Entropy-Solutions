@@ -24,12 +24,13 @@ namespace AIO.Champions
 		/// </summary>
 		public void Automatic()
 		{
-			var passiveObject = ObjectCache.AllGameObjects.FirstOrDefault(o => o.IsValid && o.Name.Contains("Kalista") && o.Name.Contains("P_LinkIcon"));
-			if (passiveObject != null)
+			if (SoulBound == null)
 			{
-				SoulBound = ObjectCache.AllyHeroes
-					.Where(a => !a.IsMe())
-					.MinBy(o => o.Distance(passiveObject));
+				var possibleSoulBound = ObjectCache.AllyHeroes.FirstOrDefault(a => a.HasBuff("kalistacoopstrikeally"));
+				if (possibleSoulBound != null)
+				{
+					SoulBound = possibleSoulBound;
+				}
 			}
 
 			if (UtilityClass.Player.IsRecalling())

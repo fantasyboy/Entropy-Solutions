@@ -64,7 +64,7 @@ namespace AIO.Champions
 				if (IsUltimateShooting() &&
 					MenuClass.Drawings["rcone"].As<MenuBool>().Enabled)
 				{
-					UltimateCone.Render(Color.Red);
+					UltimateCone?.Render(Color.Red);
 				}
             }
         }

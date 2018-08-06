@@ -958,7 +958,7 @@
 
 			if (!Gapclosers.ContainsKey(heroSender.NetworkID))
 			{
-				GameConsole.Print($"Gapclosers Add: {heroSender.NetworkID}");
+				//GameConsole.Print($"Gapclosers Add: {heroSender.NetworkID}");
 				Gapclosers.Add(heroSender.NetworkID, new GapcloserArgs());
 			}
 
