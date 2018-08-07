@@ -7,6 +7,7 @@ using Entropy.SDK.UI.Components;
 using Entropy.SDK.Caching;
 using System.Linq;
 using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions;
 
 #pragma warning disable 1587
 
@@ -91,9 +92,8 @@ namespace AIO.Champions
         /// </summary>
         public void JungleClear(EntropyEventArgs args)
         {
-			var jungleTarget = ObjectCache.JungleMinions
-				.FirstOrDefault(m => Extensions.GetGenericJungleMinionsTargets()
-					.OrderBy(t => Hud.CursorPositionUnclipped.Distance(t)).Contains(m));
+			var jungleTarget = Extensions.GetGenericJungleMinionsTargetsInRange(SpellClass.Q.Range)
+				.MinBy(m => m.Distance(Hud.CursorPositionUnclipped));
             if (jungleTarget == null)
             {
                 return;

@@ -29,7 +29,7 @@ namespace AIO.Champions
 			if (SpellClass.Q.Ready &&
 			    MenuClass.Drawings["q"].Enabled)
 			{
-				CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.Q.Range, Color.LightGreen);
 			}
 
 			/// <summary>
@@ -38,7 +38,7 @@ namespace AIO.Champions
 			if (SpellClass.W.Ready &&
 			    MenuClass.Drawings["w"].Enabled)
 			{
-				CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.W.Range, Color.Yellow);
 			}
 
 			/// <summary>
@@ -47,7 +47,7 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.Drawings["e"].Enabled)
 			{
-				CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.E.Range, Color.Cyan);
 			}
 
 			/// <summary>
@@ -56,7 +56,7 @@ namespace AIO.Champions
 			if (SpellClass.R.Ready &&
 			    MenuClass.Drawings["r"].Enabled)
 			{
-				CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.R.Range, Color.Red);
 			}
 		}
 
@@ -105,8 +105,7 @@ namespace AIO.Champions
 
 				if (UtilityClass.Player.HasBuff("caitlynheadshot"))
 				{
-					foreach (var jungleMob in ObjectCache.JungleMinions.Where(t =>
-						t.IsJungleMinion() && t.IsValidTargetEx(1250f)))
+					foreach (var jungleMob in ObjectCache.LargeJungleMinions.Where(t => t.IsValidTargetEx(1250f)))
 					{
 						DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 					}

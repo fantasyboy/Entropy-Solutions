@@ -44,8 +44,9 @@ namespace AIO.Champions
             }
 
 
-            var jungleTarget = ObjectCache.JungleMinions.MinBy(m => m.DistanceToPlayer());
-            if (jungleTarget == null ||
+			var jungleTarget = Extensions.GetGenericJungleMinionsTargetsInRange(SpellClass.Q.Range)
+				.MinBy(m => m.Distance(Hud.CursorPositionUnclipped));
+			if (jungleTarget == null ||
                 jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
             {
                 return;

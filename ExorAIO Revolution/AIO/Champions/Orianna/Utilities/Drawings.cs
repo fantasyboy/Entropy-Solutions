@@ -25,7 +25,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Drawings["q"].Enabled)
             {
-                CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
+                Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.Q.Range, Color.LightGreen);
             }
 
             /// <summary>
@@ -34,7 +34,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.Drawings["e"].Enabled)
             {
-                CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
+                Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.E.Range, Color.Cyan);
             }
 
             if (GetBall() == null)
@@ -47,10 +47,7 @@ namespace AIO.Champions
             /// </summary>
             if (MenuClass.Drawings["ball"].Enabled)
             {
-                for (var i = 0; i < MenuClass.Drawings["ball"].Value; i++)
-                {
-	                CircleRendering.Render(Color.OrangeRed, 80 + 5 * i, GetBall());
-				}
+				Renderer.DrawCircularRangeIndicator(GetBall().Position, SpellClass.Q.Width, Color.Aquamarine);
             }
 
             /// <summary>
@@ -59,7 +56,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["ballw"].Enabled)
             {
-				CircleRendering.Render(Color.Yellow, SpellClass.W.Width, GetBall());
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.W.Width, Color.Yellow);
 			}
 
             /// <summary>
@@ -68,7 +65,7 @@ namespace AIO.Champions
             if (SpellClass.R.Ready &&
                 MenuClass.Drawings["ballr"].Enabled)
             {
-				CircleRendering.Render(Color.Red, SpellClass.R.Width, GetBall());
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.R.Width, Color.Red);
 			}
         }
 

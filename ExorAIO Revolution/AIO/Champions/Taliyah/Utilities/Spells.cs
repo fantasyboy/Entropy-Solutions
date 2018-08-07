@@ -24,7 +24,7 @@ namespace AIO.Champions
 				1500 + 1500 * UtilityClass.Player.Spellbook.GetSpell(SpellSlot.R).Level);
 
 			SpellClass.Q.SetSkillshot(0.5f, 100f, 3600f);
-			SpellClass.W.SetSkillshot(1f, 200f, float.MaxValue, SkillshotType.Circle, false, true);
+			SpellClass.W.SetSkillshot(1f, 200f, float.MaxValue, SkillshotType.Circle, false);
 		}
 
 		#endregion

@@ -29,7 +29,7 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Drawings["q"].As<MenuBool>().Enabled)
             {
-                CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
+                Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.Q.Range, Color.LightGreen);
             }
 
             /// <summary>
@@ -38,7 +38,7 @@ namespace AIO.Champions
             if (SpellClass.W.Ready &&
                 MenuClass.Drawings["w"].As<MenuBool>().Enabled)
             {
-                CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
+                Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.W.Range, Color.Yellow);
             }
 
             /// <summary>
@@ -47,7 +47,7 @@ namespace AIO.Champions
             if (SpellClass.E.Ready &&
                 MenuClass.Drawings["e"].As<MenuBool>().Enabled)
             {
-                CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
+                Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.E.Range, Color.Cyan);
             }
 
             /// <summary>
@@ -58,7 +58,7 @@ namespace AIO.Champions
 				if (!IsUltimateShooting() &&
 					MenuClass.Drawings["r"].As<MenuBool>().Enabled)
 				{
-					CircleRendering.Render(Color.Red, SpellClass.R2.Range, UtilityClass.Player);
+					Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.R2.Range, Color.Red);
 				}
 
 				if (IsUltimateShooting() &&

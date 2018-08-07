@@ -29,7 +29,7 @@ namespace AIO.Champions
 			if (SpellClass.W.Ready &&
 			    MenuClass.Drawings["w"].Enabled)
 			{
-				CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.W.Range, Color.Yellow);
 			}
 
 			/// <summary>
@@ -38,7 +38,7 @@ namespace AIO.Champions
 			if (SpellClass.R.Ready &&
 			    MenuClass.Drawings["r"].Enabled)
 			{
-				CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.R.Range, Color.Red);
 			}
 		}
 
@@ -54,8 +54,7 @@ namespace AIO.Champions
 					DamageIndicatorRendering.Render(hero, UtilityClass.Player.GetAutoAttackDamage(hero));
 				}
 
-				foreach (var jungleMob in ObjectCache.JungleMinions.Where(t =>
-					t.IsJungleMinion() && t.GetBuffCount("kaisapassivemarker") == 4))
+				foreach (var jungleMob in ObjectCache.LargeJungleMinions.Where(t => t.GetBuffCount("kaisapassivemarker") == 4))
 				{
 					DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 				}

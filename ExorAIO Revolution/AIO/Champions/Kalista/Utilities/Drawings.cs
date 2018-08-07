@@ -28,7 +28,7 @@ namespace AIO.Champions
 			if (SpellClass.Q.Ready &&
 			    MenuClass.Drawings["q"].Enabled)
 			{
-				CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.Q.Range, Color.LightGreen);
 			}
 
 			/// <summary>
@@ -37,7 +37,7 @@ namespace AIO.Champions
 			if (SpellClass.W.Ready &&
 			    MenuClass.Drawings["w"].Enabled)
 			{
-				CircleRendering.Render(Color.Yellow, SpellClass.W.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.W.Range, Color.Yellow);
 			}
 
 			/// <summary>
@@ -46,7 +46,7 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.Drawings["e"].Enabled)
 			{
-				CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.E.Range, Color.Cyan);
 			}
 
 			/// <summary>
@@ -55,7 +55,7 @@ namespace AIO.Champions
 			if (SpellClass.R.Ready &&
 			    MenuClass.Drawings["r"].Enabled)
 			{
-				CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.R.Range, Color.Red);
 			}
 
 			/// <summary>
@@ -64,10 +64,7 @@ namespace AIO.Champions
 			if (SoulBound != null &&
 			    MenuClass.Drawings["soulbound"].Enabled)
 			{
-				for (var i = 0; i < MenuClass.Drawings["soulbound"].Value; i++)
-				{
-					CircleRendering.Render(Color.Cyan, SoulBound.BoundingRadius + 5 * i, SoulBound);
-				}
+				Renderer.DrawCircularRangeIndicator(SoulBound.Position, SoulBound.BoundingRadius, Color.Aquamarine);
 			}
 		}
 
@@ -79,18 +76,17 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.Drawings["edmg"].Enabled)
 			{
-				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTargetEx(SpellClass.E.Range)))
+				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => IsPerfectRendTarget(t)))
 				{
 					DamageIndicatorRendering.Render(hero, GetEDamage(hero));
 				}
 
-				foreach (var jungleMob in ObjectCache.JungleMinions.Where(t =>
-					t.IsJungleMinion() && t.IsValidTargetEx(SpellClass.E.Range)))
+				foreach (var jungleMob in ObjectCache.LargeJungleMinions.Where(t => IsPerfectRendTarget(t)))
 				{
 					DamageIndicatorRendering.Render(jungleMob, GetEDamage(jungleMob));
 				}
 
-				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTargetEx(SpellClass.E.Range)))
+				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => IsPerfectRendTarget(t)))
 				{
 					DamageIndicatorRendering.Render(mob, GetEDamage(mob));
 				}

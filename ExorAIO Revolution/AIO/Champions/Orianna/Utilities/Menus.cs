@@ -320,7 +320,7 @@ namespace AIO.Champions
 		    {
 			    MenuClass.Drawings.Add(new MenuBool("q", "Q Range", false));
 			    MenuClass.Drawings.Add(new MenuBool("e", "E Range", false));
-			    MenuClass.Drawings.Add(new MenuSliderBool("ball", "Ball Position / Draw X circles", true, 2, 1, 5));
+			    MenuClass.Drawings.Add(new MenuBool("ball", "Draw Ball"));
 			    MenuClass.Drawings.Add(new MenuBool("ballw", "Ball W Range", false));
 			    MenuClass.Drawings.Add(new MenuBool("ballr", "Ball R Range", false));
 		    }

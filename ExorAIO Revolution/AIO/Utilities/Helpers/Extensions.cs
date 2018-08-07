@@ -289,12 +289,13 @@ namespace AIO.Utilities
 		{
 			if (MenuClass.General["junglesmall"].Enabled)
 			{
-				return ObjectCache.JungleMinions.Where(m => m.IsValidSpellTarget(range)).ToList();
+				return ObjectCache.JungleMinions
+					.Where(m => m.IsValidSpellTarget(range))
+					.ToList();
 			}
 
-			return ObjectCache.JungleMinions.Where(m =>
-					(!ObjectCache.SmallJungleMinions.Contains(m) || m.CharName.Equals("Sru_Crab")) &&
-					m.IsValidSpellTarget(range))
+			return ObjectCache.JungleMinions
+				.Where(m => !ObjectCache.SmallJungleMinions.Contains(m) && m.IsValidSpellTarget(range))
 				.ToList();
 		}
 

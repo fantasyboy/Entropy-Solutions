@@ -148,7 +148,7 @@ namespace AIO.Champions
 				MenuClass.Drawings.Add(new MenuBool("e", "E Range", false));
 				MenuClass.Drawings.Add(new MenuBool("edmg", "E Damage"));
 				MenuClass.Drawings.Add(new MenuBool("r", "R Range", false));
-				MenuClass.Drawings.Add(new MenuSliderBool("soulbound", "Soulbound / Draw X circles", true, 2, 1, 5));
+				MenuClass.Drawings.Add(new MenuBool("soulbound", "Draw Soulbound"));
 			}
 			MenuClass.Root.Add(MenuClass.Drawings);
 		}

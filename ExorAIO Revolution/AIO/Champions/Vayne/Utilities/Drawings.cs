@@ -29,7 +29,7 @@ namespace AIO.Champions
 			if (SpellClass.Q.Ready &&
 			    MenuClass.Drawings["q"].Enabled)
 			{
-				CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.Q.Range, Color.LightGreen);
 			}
 
 			/// <summary>
@@ -38,7 +38,7 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.Drawings["e"].Enabled)
 			{
-				CircleRendering.Render(Color.Cyan, SpellClass.E.Range, UtilityClass.Player);
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.E.Range, Color.Cyan);
 			}
 		}
 
@@ -54,8 +54,7 @@ namespace AIO.Champions
 					DamageIndicatorRendering.Render(hero, UtilityClass.Player.GetAutoAttackDamage(hero));
 				}
 
-				foreach (var jungleMob in ObjectCache.JungleMinions.Where(t =>
-					t.IsJungleMinion() && t.GetBuffCount("vaynesilvereddebuff") == 2))
+				foreach (var jungleMob in ObjectCache.LargeJungleMinions.Where(t => t.GetBuffCount("vaynesilvereddebuff") == 2))
 				{
 					DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 				}
