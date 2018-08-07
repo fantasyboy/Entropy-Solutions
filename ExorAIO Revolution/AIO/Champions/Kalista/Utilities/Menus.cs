@@ -91,7 +91,7 @@ namespace AIO.Champions
 				MenuClass.E.Add(MenuClass.WhiteList2);
 
 				MenuClass.E.Add(new MenuBool("killsteal", "KillSteal"));
-				MenuClass.E.Add(new MenuSliderBool("beforedeath", "Before death", true, 10, 1, 15));
+				MenuClass.E.Add(new MenuSliderBool("beforedeath", "Before death / If HP Percent <= x%", true, 10, 10, 25));
 				MenuClass.E.Add(new MenuSeperator("separator"));
 				MenuClass.E.Add(new MenuBool("harass", "Harass with minions"));
 				MenuClass.E.Add(new MenuBool("dontharassslowed", "^ Don't Harass already slowed enemies"));

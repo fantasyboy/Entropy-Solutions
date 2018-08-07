@@ -2,6 +2,8 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -20,22 +22,15 @@ namespace AIO.Champions
         /// </summary>
         public void Killsteal(EntropyEventArgs args)
         {
-        }
-
-        /// <summary>
-        ///     Fired as fast as possible.
-        /// </summary>
-        public void BladeCallerKillsteal(EntropyEventArgs args)
-        {
             /// <summary>
             ///     The KillSteal E Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["killsteal"].As<MenuBool>().Enabled)
+                MenuClass.E["killsteal"].As<MenuBool>().Enabled)
             {
-                if (GameObjects.EnemyHeroes.Any(h =>
+                if (ObjectCache.EnemyHeroes.Any(h =>
                     IsPerfectFeatherTarget(h) &&
-                    h.GetRealHealth() < GetPerfectFeatherDamage(h, CountFeathersHitOnUnit(h))))
+                    h.GetRealHealth(DamageType.Physical) < GetEDamage(h, CountFeathersHitOnUnit(h))))
                 {
                     SpellClass.E.Cast();
                 }

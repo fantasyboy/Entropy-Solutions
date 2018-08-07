@@ -1,5 +1,6 @@
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
 
@@ -31,11 +32,11 @@ namespace AIO.Champions
             ///     The Q Combo Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Q["combo"].As<MenuBool>().Enabled)
             {
                 if (MenuClass.Miscellaneous["feathersweaving"].As<MenuBool>().Enabled)
                 {
-                    if (UtilityClass.Player.GetRealBuffCount("XayahPassiveActive") <= 3)
+                    if (UtilityClass.Player.GetBuffCount("XayahPassiveActive") <= 3)
                     {
                         SpellClass.Q.Cast(heroTarget);
                         return;
@@ -51,11 +52,11 @@ namespace AIO.Champions
             ///     The W Combo Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                MenuClass.Spells["w"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.W["combo"].As<MenuBool>().Enabled)
             {
                 if (MenuClass.Miscellaneous["feathersweaving"].As<MenuBool>().Enabled)
                 {
-                    if (UtilityClass.Player.GetRealBuffCount("XayahPassiveActive") <= 3)
+                    if (UtilityClass.Player.GetBuffCount("XayahPassiveActive") <= 3)
                     {
                         SpellClass.W.Cast();
                     }

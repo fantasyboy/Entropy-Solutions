@@ -7,6 +7,7 @@ using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -47,7 +48,7 @@ namespace AIO.Champions
 			var jungleTarget = Extensions.GetGenericJungleMinionsTargetsInRange(SpellClass.Q.Range)
 				.MinBy(m => m.Distance(Hud.CursorPositionUnclipped));
 			if (jungleTarget == null ||
-                jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
+                jungleTarget.HP < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
             {
                 return;
             }
@@ -60,7 +61,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
                 MenuClass.E["jungleclear"].Enabled)
             {
-                if (ERectangle(jungleTarget).IsInsidePolygon(jungleTarget.Position))
+                if (ERectangle(jungleTarget).IsInsidePolygon((Vector2)jungleTarget.Position))
                 {
                     SpellClass.E.CastOnUnit(UtilityClass.Player);
                 }

@@ -31,7 +31,7 @@ namespace AIO.Champions
 				.Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
 				.MinBy(m => m.DistanceToPlayer());
 			if (jungleTarget == null ||
-			    jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
+			    jungleTarget.HP < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
 			{
 				return;
 			}

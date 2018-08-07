@@ -26,7 +26,7 @@ namespace AIO.Champions
 			    MenuClass.Q["killsteal"].Enabled)
 			{
 				foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-					GetQDamage(t, 3) >= t.GetRealHealth()))
+					GetQDamage(t, 3) >= t.GetRealHealth(DamageType.Magical)))
 				{
 					SpellClass.Q.Cast(target);
 					break;

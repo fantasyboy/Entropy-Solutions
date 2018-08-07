@@ -7,6 +7,8 @@ using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
+using Entropy.SDK.Caching;
+using Entropy.SDK.Predictions;
 
 #pragma warning disable 1587
 
@@ -37,50 +39,44 @@ namespace AIO.Champions
             /// </summary>
             if (IsFlying())
             {
-                DelayAction.Queue(100 + Game.Ping, () =>
+                DelayAction.Queue(() =>
                     {
-                        UtilityClass.Player.IssueOrder(OrderType.MoveTo, Hud.CursorPositionUnclipped);
-                    });
+                        Orbwalker.Move(Hud.CursorPositionUnclipped);
+                    }, 100 + EnetClient.Ping);
             }
 
-            /// <summary>
-            ///     The Semi-Automatic R Management.
-            /// </summary>
-            if (SpellClass.R.Ready &&
-                MenuClass.Spells["r"]["bool"].As<MenuBool>().Enabled &&
-                MenuClass.Spells["r"]["key"].As<MenuKeyBind>().Enabled)
+			/// <summary>
+			///     The E Before death Logic.
+			/// </summary>
+			if (SpellClass.E.Ready &&
+				MenuClass.E["beforedeath"].Enabled &&
+				LocalPlayer.Instance.HPPercent() <= MenuClass.E["beforedeath"].Value)
+			{
+				SpellClass.E.Cast();
+			}
+
+			/// <summary>
+			///     The Semi-Automatic R Management.
+			/// </summary>
+			if (SpellClass.R.Ready &&
+                MenuClass.R["bool"].As<MenuBool>().Enabled &&
+                MenuClass.R["key"].As<MenuKeyBind>().Enabled)
             {
-                var bestTarget = GameObjects.EnemyHeroes
+                var bestTarget = ObjectCache.EnemyHeroes
                     .Where(t =>
                         !Invulnerable.Check(t) &&
                         t.IsValidTarget(SpellClass.R.Range) &&
-                        MenuClass.Spells["r"]["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
-                    .MinBy(o => o.GetRealHealth());
+                        MenuClass.R["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
+                    .MinBy(o => o.GetRealHealth(DamageType.Physical));
                 if (bestTarget != null)
                 {
-                    if (MenuClass.Spells["r"]["mode"].As<MenuList>().Value == 1)
+                    if (MenuClass.R["mode"].As<MenuList>().Value == 1)
                     {
                         SpellClass.Q.Cast(bestTarget);
                     }
 
                     SpellClass.R.Cast(bestTarget);
                 }
-            }
-        }
-
-        /// <summary>
-        ///     Fired as fast as possible.
-        /// </summary>
-        public void BladeCallerAutomatic(EntropyEventArgs args)
-        {
-            /// <summary>
-            ///     The E Before death Logic.
-            /// </summary>
-            if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["ondeath"].As<MenuBool>().Enabled &&
-                ImplementationClass.IHealthPrediction.GetPrediction(UtilityClass.Player, 1000 + Game.Ping) <= 0)
-            {
-                SpellClass.E.Cast();
             }
         }
 

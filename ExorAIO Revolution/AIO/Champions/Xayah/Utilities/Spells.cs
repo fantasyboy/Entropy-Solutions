@@ -1,7 +1,7 @@
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
-using Spell = Entropy.SDK.Spell;
+using Entropy.SDK.Spells;
 
 namespace AIO.Champions
 {
@@ -22,9 +22,9 @@ namespace AIO.Champions
             SpellClass.E = new Spell(SpellSlot.E, float.MaxValue);
             SpellClass.R = new Spell(SpellSlot.R, 1100f);
 
-            SpellClass.Q.SetSkillshot(0.25f, 60f, 1400f, false, SkillshotType.Line);
-            SpellClass.E.SetSkillshot(0.5f,  45f, 2000f, false, SkillshotType.Line);
-            SpellClass.R.SetSkillshot(0.25f, 80f, 2000f, false, SkillshotType.Line);
+            SpellClass.Q.SetSkillshot(0.25f, 60f, 1400f, collision: false);
+            SpellClass.E.SetSkillshot(0.5f,  45f, 2000f, collision: false);
+            SpellClass.R.SetSkillshot(0.25f, 80f, 2000f, collision: false);
         }
 
         #endregion

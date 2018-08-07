@@ -32,8 +32,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["buildings"]) &&
-                MenuClass.Spells["w"]["buildings"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["buildings"]) &&
+                MenuClass.W["buildings"].As<MenuSliderBool>().Enabled)
             {
                 SpellClass.W.Cast();
             }

@@ -81,7 +81,7 @@ namespace AIO.Champions
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
                 MenuClass.E["jungleclear"].As<MenuSliderBool>().Enabled &&
-				jungleTarget?.GetRealHealth() > UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
+				jungleTarget?.HP > UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
             {
 				SpellClass.E.Cast(jungleTarget);
             }
@@ -119,7 +119,7 @@ namespace AIO.Champions
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
                 MenuClass.E["jungleclear"].As<MenuSliderBool>().Enabled &&
-				jungleTarget?.GetRealHealth() > UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
+				jungleTarget?.HP > UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 4)
             {
 				SpellClass.E.Cast(jungleTarget);
             }

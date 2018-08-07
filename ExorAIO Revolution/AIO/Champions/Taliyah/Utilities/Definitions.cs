@@ -178,7 +178,7 @@ namespace AIO.Champions
 				///     Pull if killable else Push.
 				/// </summary>
 				case 2:
-					var isKillable = target.GetRealHealth() < (IsNearWorkedGround()
+					var isKillable = target.GetRealHealth(DamageType.Magical) < (IsNearWorkedGround()
 						                 ? GetQDamage(target)
 						                 : GetQDamage(target, 3)) + GetWDamage(target) + GetEDamage(target);
 					if (isKillable)

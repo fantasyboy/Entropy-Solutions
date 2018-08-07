@@ -33,7 +33,7 @@ namespace AIO.Champions
 						.ToList();
 
 					if (GetQDamage(target, collisions.Any() && !target.HasBuff("caitlynyordletrapsight")) >=
-					    target.GetRealHealth())
+					    target.GetRealHealth(DamageType.Physical))
 					{
 						SpellClass.Q.Cast(target);
 						break;

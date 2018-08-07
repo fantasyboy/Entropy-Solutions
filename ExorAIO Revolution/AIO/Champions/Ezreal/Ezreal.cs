@@ -134,7 +134,7 @@ namespace AIO.Champions
                 case OrbwalkingMode.LastHit:
                 case OrbwalkingMode.Harass:
                     if (SpellClass.Q.Ready &&
-                        minion.GetRealHealth() < GetQDamage(minion) &&
+                        minion.HP < GetQDamage(minion) &&
                         UtilityClass.Player.MPPercent()
                             > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["farmhelper"]) &&
                         MenuClass.Q["farmhelper"].Enabled)
@@ -233,7 +233,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate(EntropyEventArgs args)
+        public void OnTick(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {

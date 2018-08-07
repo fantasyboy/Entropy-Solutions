@@ -31,13 +31,11 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellSlot.Q, MenuClass.Q["farmhelper"]) &&
                 MenuClass.Q["farmhelper"].Enabled)
             {
-                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range).Where(m => !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m))))
+                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
+					.Where(m => !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m)) && m.HP < GetQDamage(m)))
                 {
-                    if (minion.GetRealHealth() < GetQDamage(minion))
-                    {
-                        SpellClass.Q.GetPredictionInput(minion).From = GetBall().Position;
-                        SpellClass.Q.Cast(SpellClass.Q.GetPrediction(minion).CastPosition);
-                    }
+                    SpellClass.Q.GetPredictionInput(minion).From = GetBall().Position;
+                    SpellClass.Q.Cast(SpellClass.Q.GetPrediction(minion).CastPosition);
                 }
             }
         }

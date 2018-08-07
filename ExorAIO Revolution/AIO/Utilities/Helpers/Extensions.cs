@@ -236,8 +236,8 @@ namespace AIO.Utilities
 			var targets = TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes)
 				.Where(t =>
 					!t.IsZombie() &&
-					!Invulnerable.Check(t, damageType, ignoreShields) &&
-					t.DistanceToPlayer() < range);
+					t.IsValidTargetEx(range) &&
+					!Invulnerable.Check(t, damageType, ignoreShields));
 			return targets;
 		}
 

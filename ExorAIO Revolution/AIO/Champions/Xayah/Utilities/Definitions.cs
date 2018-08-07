@@ -8,6 +8,7 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
 using SharpDX;
+using Entropy.SDK.Caching;
 
 // ReSharper disable LoopCanBeConvertedToQuery
 
@@ -25,7 +26,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Returns the Feathers.
         /// </summary>
-        public Dictionary<int, Vector3> Feathers = new Dictionary<int, Vector3>();
+        public Dictionary<uint, Vector3> Feathers = new Dictionary<uint, Vector3>();
 
         public float LastCastedETime = 0;
 
@@ -59,8 +60,8 @@ namespace AIO.Champions
             var hit = 0;
             foreach (var feather in Feathers)
             {
-                var playerToFeatherRectangle = new Vector2Geometry.Rectangle((Vector2)UtilityClass.Player.Position, (Vector2)feather.Value, SpellClass.E.Width);
-                if (playerToFeatherRectangle.IsInside((Vector2)unit.Position))
+                var playerToFeatherRectangle = new Entropy.SDK.Geometry.Rectangle(feather.Value, UtilityClass.Player.Position, SpellClass.E.Width);
+                if (playerToFeatherRectangle.IsInsidePolygon((Vector2)unit.Position))
                 {
                     hit++;
                 }
@@ -74,25 +75,7 @@ namespace AIO.Champions
         /// </summary>
         public int CountFeathersKillableMinions()
         {
-            return Extensions.GetAllGenericMinionsTargets().Count(m => GetPerfectFeatherDamage(m, CountFeathersHitOnUnit(m)) >= m.GetRealHealth());
-        }
-
-        /// <summary>
-        ///     Gets the real Damage the E spell would deal to a determined enemy unit.
-        /// </summary>
-        /// <param name="unit">The unit.</param>
-        /// <param name="feathers">The number of feathers.</param>
-        public double GetPerfectFeatherDamage(AIBaseClient unit, int feathers)
-        {
-            double damage = 0;
-            double multiplier = 1;
-            for (var cycle = 1; cycle < feathers-1; cycle++)
-            {
-                multiplier -= 0.1 * cycle;
-                damage += UtilityClass.Player.GetSpellDamage(unit, SpellSlot.E) * Math.Max(0.1, multiplier);
-            }
-
-            return damage;
+            return Extensions.GetAllGenericMinionsTargets().Count(m => GetEDamage(m, CountFeathersHitOnUnit(m)) >= m.GetRealHealth(DamageType.Physical));
         }
 
         /// <summary>
@@ -104,12 +87,12 @@ namespace AIO.Champions
             if (unit.IsValidTarget() &&
                 CanFeathersHitUnit(unit))
             {
-                switch (unit.Type)
+                switch (unit.Type.TypeID)
                 {
-                    case GameObjectType.AIMinionClient:
+                    case GameObjectTypeID.AIMinionClient:
                         return true;
 
-                    case GameObjectType.AIHeroClient:
+                    case GameObjectTypeID.AIHeroClient:
                         return !Invulnerable.Check((AIHeroClient)unit, DamageType.Physical, false);
                 }
             }
@@ -122,7 +105,7 @@ namespace AIO.Champions
         /// </summary>
         public void ReloadFeathers()
         {
-            foreach (var feather in ObjectManager.Get<GameObject>().Where(o => o != null && o.IsValid))
+            foreach (var feather in ObjectCache.AllGameObjects.Where(o => o.IsValid))
             {
                 switch (feather.Name)
                 {

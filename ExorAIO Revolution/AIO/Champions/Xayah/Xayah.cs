@@ -53,14 +53,15 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired upon GameObject creation.
         /// </summary>
-        public void OnCreate(GameObject obj)
+        public void OnCreate(GameObjectCreateEventArgs args)
         {
-            if (obj.IsValid)
-            {
+			var obj = args.Sender;
+			if (obj.IsValid)
+			{
                 switch (obj.Name)
                 {
                     case "Xayah_Base_Passive_Dagger_Mark8s":
-                        Feathers.Add(obj.NetworkID, screenPos);
+                        Feathers.Add(obj.NetworkID, obj.Position);
                         break;
                 }
             }
@@ -69,10 +70,11 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired upon GameObject creation.
         /// </summary>
-        public void OnDestroy(GameObject obj)
+        public void OnDelete(GameObjectDeleteEventArgs args)
         {
-            if (obj.IsValid)
-            {
+			var obj = args.Sender;
+			if (obj.IsValid)
+			{
                 if (Feathers.Any(o => o.Key == obj.NetworkID))
                 {
                     Feathers.Remove(obj.NetworkID);
@@ -93,46 +95,11 @@ namespace AIO.Champions
             switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Weaving(sender, args);
+                    Weaving(args);
                     break;
                 case OrbwalkingMode.LaneClear:
-                    Buildingclear(sender, args);
-                    Jungleclear(sender, args);
-                    break;
-            }
-        }
-
-        /// <summary>
-        ///     Fired on present.
-        /// </summary>
-        public void OnPresent()
-        {
-            /// <summary>
-            ///     Initializes the drawings.
-            /// </summary>
-            Drawings();
-
-            /// <summary>
-            ///     Initializes the Killsteal events.
-            /// </summary>
-            BladeCallerKillsteal(EntropyEventArgs args);
-
-            /// <summary>
-            ///     Initializes the Automatic events.
-            /// </summary>
-            BladeCallerAutomatic(EntropyEventArgs args);
-
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            switch (Orbwalker.Mode)
-            {
-                case OrbwalkingMode.Combo:
-                    BladeCallerCombo(EntropyEventArgs args);
-                    break;
-                case OrbwalkingMode.LaneClear:
-                    BladeCallerLaneClear(EntropyEventArgs args);
-                    BladeCallerJungleClear(EntropyEventArgs args);
+                    Buildingclear(args);
+                    Jungleclear(args);
                     break;
             }
         }
@@ -140,11 +107,10 @@ namespace AIO.Champions
         /// <summary>
         ///     Called while processing spellcast operations.
         /// </summary>
-        
-        /// <param name="args">The <see cref="AIBaseClientMissileClientDataEventArgs" /> instance containing the event data.</param>
-        public void OnProcessSpellCast(AIBaseClient sender, AIBaseClientMissileClientDataEventArgs args)
+        /// <param name="args">The <see cref="AIBaseClientCastEventArgs" /> instance containing the event data.</param>
+        public void OnProcessSpellCast(AIBaseClientCastEventArgs args)
         {
-            if (sender.IsMe())
+            if (args.Caster.IsMe())
             {
                 switch (args.Slot)
                 {
@@ -210,14 +176,9 @@ namespace AIO.Champions
         /// <summary>
         ///     Fired when the game is updated.
         /// </summary>
-        public void OnUpdate(EntropyEventArgs args)
+        public void OnTick(EntropyEventArgs args)
         {
             if (UtilityClass.Player.IsDead)
-            {
-                return;
-            }
-
-            if (Orbwalker.IsWindingUp)
             {
                 return;
             }
@@ -225,25 +186,30 @@ namespace AIO.Champions
             /// <summary>
             ///     Initializes the Automatic actions.
             /// </summary>
-            Automatic(EntropyEventArgs args);
+            Automatic(args);
 
-            /// <summary>
-            ///     Initializes the orbwalkingmodes.
-            /// </summary>
-            switch (Orbwalker.Mode)
+			/// <summary>
+			///     Initializes the Killsteal events.
+			/// </summary>
+			Killsteal(args);
+
+			/// <summary>
+			///     Initializes the orbwalkingmodes.
+			/// </summary>
+			switch (Orbwalker.Mode)
             {
                 case OrbwalkingMode.Combo:
-                    Combo(EntropyEventArgs args);
+                    Combo(args);
                     break;
 
                 case OrbwalkingMode.Harass:
-                    Harass(EntropyEventArgs args);
+                    Harass(args);
                     break;
 
                 case OrbwalkingMode.LaneClear:
-                    LaneClear(EntropyEventArgs args);
+                    LaneClear(args);
                     break;
-            }
+			}
         }
 
         #endregion

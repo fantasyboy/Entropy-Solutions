@@ -6,7 +6,7 @@ using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 using SharpDX;
-using Color = System.Drawing.Color;
+using Entropy.SDK.Caching;
 
 #pragma warning disable 1587
 
@@ -22,7 +22,7 @@ namespace AIO.Champions
         /// <summary>
         ///     Initializes the drawings.
         /// </summary>
-        public void Drawings()
+        public void OnRender(EntropyEventArgs args)
         {
             /// <summary>
             ///     Loads the Q drawing.
@@ -30,39 +30,38 @@ namespace AIO.Champions
             if (SpellClass.Q.Ready &&
                 MenuClass.Drawings["q"].As<MenuBool>().Enabled)
             {
-                CircleRendering.Render(Color.LightGreen, SpellClass.Q.Range, UtilityClass.Player);
-            }
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.Q.Range, Color.LightGreen);
+			}
 
-            /// <summary>
-            ///     Loads the Feather linking drawing.
-            /// </summary>
-            if (!UtilityClass.Player.Spellbook.GetSpell(SpellSlot.E).State.HasFlag(SpellState.Cooldown) &&
-                MenuClass.Drawings["feathers"].As<MenuBool>().Enabled)
-            {
-                foreach (var feather in Feathers)
-                {
-                    var drawFeatherPos = feather.Value.FixHeight();
-                    var realFeatherHitbox = new Vector2Geometry.Rectangle((Vector2)UtilityClass.Player.Position, (Vector2)drawFeatherPos, SpellClass.E.Width);
-                    var drawFeatherHitbox = new Vector3Geometry.Rectangle(UtilityClass.Player.Position, drawFeatherPos, SpellClass.E.Width);
+			/// <summary>
+			///     Loads the Feather linking drawing.
+			/// </summary>
+			if (!UtilityClass.Player.Spellbook.GetSpellState(SpellSlot.E).HasFlag(SpellState.Cooldown) &&
+				MenuClass.Drawings["feathers"].As<MenuBool>().Enabled)
+			{
+				foreach (var feather in Feathers)
+				{
+					var drawFeatherPos = feather.Value.FixHeight();
+					var realFeatherHitbox = new Entropy.SDK.Geometry.Rectangle(UtilityClass.Player.Position, drawFeatherPos, SpellClass.E.Width);
 
-                    drawFeatherHitbox.Draw(
-                        GameObjects.EnemyHeroes.Any(h =>
-                            h.IsValidTarget() &&
-                            realFeatherHitbox.IsInside((Vector2)h.Position))
-                                ? Color.Blue
-                                : Color.Yellow);
-                    Render.Circle(drawFeatherPos, SpellClass.E.Width, 5, Color.OrangeRed);
-                }
-            }
+					realFeatherHitbox.Render(
+						ObjectCache.EnemyHeroes.Any(h =>
+							h.IsValidTarget() &&
+							realFeatherHitbox.IsInsidePolygon((Vector2)h.Position))
+								? Color.Blue
+								: Color.Yellow);
+					CircleRendering.Render(Color.OrangeRed, SpellClass.E.Width, 5, (Vector2)drawFeatherPos);
+				}
+			}
 
-            /// <summary>
-            ///     Loads the R drawing.
-            /// </summary>
-            if (SpellClass.R.Ready &&
+			/// <summary>
+			///     Loads the R drawing.
+			/// </summary>
+			if (SpellClass.R.Ready &&
                 MenuClass.Drawings["r"].As<MenuBool>().Enabled)
             {
-                CircleRendering.Render(Color.Red, SpellClass.R.Range, UtilityClass.Player);
-            }
+				Renderer.DrawCircularRangeIndicator(UtilityClass.Player.Position, SpellClass.R.Range, Color.Red);
+			}
         }
 
         #endregion

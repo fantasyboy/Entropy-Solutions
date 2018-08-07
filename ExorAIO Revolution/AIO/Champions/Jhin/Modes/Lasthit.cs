@@ -2,6 +2,7 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI.Components;
+using System.Linq;
 
 #pragma warning disable 1587
 namespace AIO.Champions
@@ -32,12 +33,10 @@ namespace AIO.Champions
                     return;
                 }
 
-                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range))
+                foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
+					.Where(m => m.HP <= GetQDamage(m)))
                 {
-                    if (minion.GetRealHealth() <= GetQDamage(minion))
-                    {
-                        SpellClass.Q.CastOnUnit(minion);
-                    }
+					SpellClass.Q.CastOnUnit(minion);
                 }
             }
         }

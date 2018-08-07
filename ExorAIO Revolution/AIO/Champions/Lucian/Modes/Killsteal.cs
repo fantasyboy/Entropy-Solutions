@@ -30,7 +30,7 @@ namespace AIO.Champions
 				if (MenuClass.Q["killsteal"].Enabled)
 				{
 					foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-						GetQDamage(t) >= t.GetRealHealth()))
+						GetQDamage(t) >= t.GetRealHealth(DamageType.Physical)))
 					{
 						SpellClass.Q.CastOnUnit(target);
 						break;
@@ -44,7 +44,7 @@ namespace AIO.Champions
 				{
 					foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
 						!t.IsValidTargetEx(SpellClass.Q.Range) &&
-						GetQDamage(t) >= t.GetRealHealth()))
+						GetQDamage(t) >= t.GetRealHealth(DamageType.Physical)))
 					{
 						foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))
 						{
@@ -65,7 +65,7 @@ namespace AIO.Champions
 			    MenuClass.W["killsteal"].Enabled)
 			{
 				foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range).Where(t =>
-					GetWDamage(t) >= t.GetRealHealth()))
+					GetWDamage(t) >= t.GetRealHealth(DamageType.Magical)))
 				{
 					SpellClass.W.Cast(target);
 					break;

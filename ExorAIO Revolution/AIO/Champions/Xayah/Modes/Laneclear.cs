@@ -26,12 +26,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["laneclear"]) &&
-                MenuClass.Spells["q"]["laneclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["laneclear"]) &&
+                MenuClass.Q["laneclear"].As<MenuSliderBool>().Enabled)
             {
                 /*
                 var farmLocation = SpellClass.Q.GetLineFarmLocation(Extensions.GetEnemyLaneMinionsTargets(), SpellClass.Q.Width);
-                if (farmLocation.MinionsHit >= MenuClass.Spells["q"]["customization"]["laneclear"].As<MenuSlider>().Value)
+                if (farmLocation.MinionsHit >= MenuClass.Q["customization"]["laneclear"].As<MenuSlider>().Value)
                 {
                     SpellClass.Q.Cast(farmLocation.Position);
                 }
@@ -43,8 +43,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["laneclear"]) &&
-                MenuClass.Spells["w"]["laneclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["laneclear"]) &&
+                MenuClass.W["laneclear"].As<MenuSliderBool>().Enabled)
             {
                 if (Extensions.GetEnemyLaneMinionsTargetsInRange(UtilityClass.Player.GetAutoAttackRange()).Any())
                 {
@@ -63,10 +63,10 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["laneclear"]) &&
-                MenuClass.Spells["e"]["laneclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["laneclear"]) &&
+                MenuClass.E["laneclear"].As<MenuSliderBool>().Enabled)
             {
-                if (CountFeathersKillableMinions() >= MenuClass.Spells["e"]["customization"]["laneclear"].As<MenuSlider>().Value)
+                if (CountFeathersKillableMinions() >= MenuClass.E["customization"]["laneclear"].As<MenuSlider>().Value)
                 {
                     SpellClass.E.Cast();
                 }

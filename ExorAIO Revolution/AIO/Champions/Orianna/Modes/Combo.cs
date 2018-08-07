@@ -5,6 +5,7 @@ using AIO.Utilities;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Caching;
+using SharpDX;
 
 #pragma warning disable 1587
 
@@ -86,7 +87,7 @@ namespace AIO.Champions
                         if (ObjectCache.EnemyHeroes.Any(t =>
                                 t.IsValidTargetEx() &&
                                 !Invulnerable.Check(t, DamageType.Magical) &&
-                                ERectangle(ally).IsInsidePolygon(t.Position)))
+                                ERectangle(ally).IsInsidePolygon((Vector2)t.Position)))
                         {
                             SpellClass.E.CastOnUnit(ally);
                             return;

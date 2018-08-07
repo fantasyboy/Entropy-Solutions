@@ -73,7 +73,7 @@ namespace AIO.Champions
                         t.IsValidTargetEx(2000f) &&
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
                         MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)
-                    .MinBy(o => o.GetRealHealth());
+                    .MinBy(o => o.GetRealHealth(DamageType.Magical));
                 if (bestTarget != null)
                 {
                     SpellClass.R.Cast(bestTarget);

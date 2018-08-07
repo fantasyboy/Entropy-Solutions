@@ -31,8 +31,8 @@ namespace AIO.Champions
             {
                 var minionTarget = Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
                     .FirstOrDefault(m =>
-                        m.GetRealHealth() < GetQDamage(m) &&
-                        (m.GetRealHealth() > UtilityClass.Player.GetAutoAttackDamage(m) || !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m))));
+                        m.HP < GetQDamage(m) &&
+                        (m.HP > UtilityClass.Player.GetAutoAttackDamage(m) || !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m))));
                 if (minionTarget != null)
                 {
                     SpellClass.Q.Cast(minionTarget);

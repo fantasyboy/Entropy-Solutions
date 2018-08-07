@@ -2,6 +2,7 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy;
+using Entropy.SDK.Caching;
 using Entropy.SDK.UI.Components;
 
 #pragma warning disable 1587
@@ -24,13 +25,13 @@ namespace AIO.Champions
             ///     The Q Combo Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                MenuClass.Spells["q"]["combo"].As<MenuBool>().Enabled)
+                MenuClass.Q["combo"].As<MenuBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range - 100f);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget))
                 {
-                    switch (MenuClass.Spells["q"]["modes"]["combo"].As<MenuList>().Value)
+                    switch (MenuClass.Q["modes"]["combo"].As<MenuList>().Value)
                     {
                         case 1:
                             SpellClass.Q.Cast(bestTarget);
@@ -38,22 +39,16 @@ namespace AIO.Champions
                     }
                 }
             }
-        }
 
-        /// <summary>
-        ///     Fired as fast as possible.
-        /// </summary>
-        public void BladeCallerCombo(EntropyEventArgs args)
-        {
             /// <summary>
             ///     The E Combo Logic.
             /// </summary>
             if (SpellClass.E.Ready &&
-                MenuClass.Spells["e"]["combo"].As<MenuSliderBool>().Enabled)
+                MenuClass.E["combo"].As<MenuSliderBool>().Enabled)
             {
-                if (GameObjects.EnemyHeroes.Any(t =>
+                if (ObjectCache.EnemyHeroes.Any(t =>
                     IsPerfectFeatherTarget(t) &&
-                    CountFeathersHitOnUnit(t) >= MenuClass.Spells["e"]["combo"].As<MenuSliderBool>().Value))
+                    CountFeathersHitOnUnit(t) >= MenuClass.E["combo"].As<MenuSliderBool>().Value))
                 {
                     SpellClass.E.Cast();
                 }

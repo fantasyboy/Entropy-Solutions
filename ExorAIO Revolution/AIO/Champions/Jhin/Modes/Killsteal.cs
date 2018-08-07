@@ -32,7 +32,7 @@ namespace AIO.Champions
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.R2.Range)
 					.Where(t =>
 						UltimateCone.IsInsidePolygon(t.Position) &&
-						GetRDamage(t, HasUltimateFourthShot()) >= t.GetRealHealth()))
+						GetRDamage(t, HasUltimateFourthShot()) >= t.GetRealHealth(DamageType.Physical)))
                 {
                     SpellClass.R2.Cast(target);
                     break;
@@ -46,7 +46,7 @@ namespace AIO.Champions
                 MenuClass.Q["killsteal"].As<MenuBool>().Value)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range)
-					.Where(t => GetQDamage(t) >= t.GetRealHealth()))
+					.Where(t => GetQDamage(t) >= t.GetRealHealth(DamageType.Physical)))
                 {
                     SpellClass.Q.CastOnUnit(target);
                     break;
@@ -60,7 +60,7 @@ namespace AIO.Champions
                 MenuClass.W["killsteal"].As<MenuBool>().Value)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range)
-					.Where(t => GetWDamage(t) >= t.GetRealHealth()))
+					.Where(t => GetWDamage(t) >= t.GetRealHealth(DamageType.Physical)))
                 {
                     SpellClass.W.Cast(target);
                     break;

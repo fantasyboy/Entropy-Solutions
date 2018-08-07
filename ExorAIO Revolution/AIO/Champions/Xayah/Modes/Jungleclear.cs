@@ -28,7 +28,7 @@ namespace AIO.Champions
             var jungleTarget = args.Target as AIMinionClient;
             if (jungleTarget == null ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget) ||
-                jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
+                jungleTarget.HP < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
             {
                 return;
             }
@@ -38,8 +38,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.Q.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Spells["q"]["jungleclear"]) &&
-                MenuClass.Spells["q"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+                MenuClass.Q["jungleclear"].As<MenuSliderBool>().Enabled)
             {
                 SpellClass.Q.Cast(jungleTarget);
             }
@@ -49,8 +49,8 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.W.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.Spells["w"]["jungleclear"]) &&
-                MenuClass.Spells["w"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
+                MenuClass.W["jungleclear"].As<MenuSliderBool>().Enabled)
             {
                 SpellClass.W.Cast();
             }
@@ -66,12 +66,12 @@ namespace AIO.Champions
             /// </summary>
             if (SpellClass.E.Ready &&
                 UtilityClass.Player.MPPercent()
-                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.Spells["e"]["jungleclear"]) &&
-                MenuClass.Spells["e"]["jungleclear"].As<MenuSliderBool>().Enabled)
+                    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
+                MenuClass.E["jungleclear"].As<MenuSliderBool>().Enabled)
             {
                 if (Extensions.GetGenericJungleMinionsTargets().Any(h =>
                         IsPerfectFeatherTarget(h) &&
-                        h.GetRealHealth() < GetPerfectFeatherDamage(h, CountFeathersHitOnUnit(h))))
+                        h.GetRealHealth(DamageType.Physical) < GetEDamage(h, CountFeathersHitOnUnit(h))))
                 {
                     SpellClass.E.Cast();
                 }

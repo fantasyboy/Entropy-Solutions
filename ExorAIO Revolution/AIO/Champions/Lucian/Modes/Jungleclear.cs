@@ -25,7 +25,7 @@ namespace AIO.Champions
 			var jungleTarget = args.Target as AIMinionClient;
 			if (jungleTarget == null ||
 			    !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget) ||
-			    jungleTarget.GetRealHealth() < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
+			    jungleTarget.HP < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)
 			{
 				return;
 			}

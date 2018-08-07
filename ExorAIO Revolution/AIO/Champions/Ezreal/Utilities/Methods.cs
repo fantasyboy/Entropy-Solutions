@@ -1,6 +1,7 @@
 using Entropy;
-using AIO.Utilities;
 using Entropy.SDK.Orbwalking;
+using Entropy.SDK.Events;
+using Gapcloser = AIO.Utilities.Gapcloser;
 
 namespace AIO.Champions
 {
@@ -16,12 +17,12 @@ namespace AIO.Champions
         /// </summary>
         public void Methods()
         {
-            Game.OnUpdate += OnUpdate;
+            Tick.OnTick += OnTick;
             Orbwalker.OnPostAttack += OnPostAttack;
             Orbwalker.OnNonKillableMinion += OnNonKillableMinion;
             Renderer.OnRender += OnRender;
             AIBaseClient.OnProcessBasicAttack += OnProcessBasicAttack;
-            Gapcloser.OnGapcloser += OnGapcloser;
+			Gapcloser.OnGapcloser += OnGapcloser;
         }
 
         #endregion

@@ -46,7 +46,7 @@ namespace AIO.Champions
                     var multiplier = 1 - 0.10 * Math.Min(6, collisions.Count);
                     var damageToTarget = GetQDamage(target) * multiplier;
 
-                    if (damageToTarget >= target.GetRealHealth())
+                    if (damageToTarget >= target.GetRealHealth(DamageType.Magical))
                     {
                         SpellClass.Q.Cast(target);
                         break;
@@ -62,7 +62,7 @@ namespace AIO.Champions
             {
                 if (ObjectCache.EnemyHeroes.Any(t =>
                         t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position) &&
-                        GetWDamage(t) >= t.GetRealHealth()))
+                        GetWDamage(t) >= t.GetRealHealth(DamageType.Magical)))
                 {
                     SpellClass.W.Cast();
                 }
@@ -98,7 +98,7 @@ namespace AIO.Champions
                         dmg += UtilityClass.Player.GetAutoAttackDamage(enemy);
                     }
 
-                    if (dmg >= enemy.GetRealHealth())
+                    if (dmg >= enemy.GetRealHealth(DamageType.Magical))
                     {
                         SpellClass.R.Cast();
                     }
