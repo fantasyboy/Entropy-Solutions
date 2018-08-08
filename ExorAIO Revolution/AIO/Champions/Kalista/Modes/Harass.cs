@@ -54,9 +54,8 @@ namespace AIO.Champions
 			///     The E Minion Harass Logic.
 			/// </summary>
 			if (SpellClass.E.Ready &&
-			    Extensions.GetEnemyLaneMinionsTargets().Any(m =>
-				    IsPerfectRendTarget(m) &&
-				    m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) &&
+			    Extensions.GetEnemyLaneMinionsTargets()
+					.Any(m => IsPerfectRendTarget(m) && m.HP <= GetEDamage(m)) &&
 			    MenuClass.E["harass"].Enabled)
 			{
 				if (ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget)

@@ -28,20 +28,18 @@ namespace AIO.Champions
 			/// </summary>
 			if (SpellClass.E.Ready &&
 			    UtilityClass.Player.Level() >=
-			    MenuClass.E["junglesteal"].Value &&
+					MenuClass.E["junglesteal"].Value &&
 			    MenuClass.E["junglesteal"].Enabled)
 			{
 				foreach (var minion in Extensions.GetGenericJungleMinionsTargets()
-					.Where(m =>
-						IsPerfectRendTarget(m) &&
-						m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
+					.Where(m => IsPerfectRendTarget(m) && m.HP <= GetEDamage(m)))
 				{
-					if (UtilityClass.JungleList.Contains(minion.CharName) &&
+					if (minion.IsLargeJungleMinion() &&
 					    MenuClass.E["whitelist"][minion.CharName].Enabled)
 					{
 						SpellClass.E.Cast();
 					}
-					else if (!UtilityClass.JungleList.Contains(minion.CharName) &&
+					else if (!minion.IsLargeJungleMinion() &&
 					         MenuClass.General["junglesmall"].Enabled)
 					{
 						SpellClass.E.Cast();
@@ -53,8 +51,7 @@ namespace AIO.Champions
 				.Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
 				.MinBy(m => m.DistanceToPlayer());
 			if (jungleTarget == null ||
-			    jungleTarget.GetRealHealth(DamageType.Physical) <
-			    UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
+			    jungleTarget.HP < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
 			{
 				return;
 			}
@@ -65,7 +62,7 @@ namespace AIO.Champions
 			if (SpellClass.Q.Ready &&
 			    jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
 			    UtilityClass.Player.MPPercent()
-			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
+					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
 			    MenuClass.Q["jungleclear"].Enabled)
 			{
 				SpellClass.Q.Cast(jungleTarget);

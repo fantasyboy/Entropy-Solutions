@@ -28,7 +28,7 @@ namespace AIO.Champions
         public void Jungleclear(OnPostAttackEventArgs args)
         {
             var jungleTarget = args.Target as AIMinionClient;
-            if (!jungleTarget.IsValidTarget() ||
+            if (!jungleTarget.IsValidTargetEx() ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget))
             {
                 return;
@@ -56,7 +56,7 @@ namespace AIO.Champions
         {
             var jungleTarget = args.Target as AIMinionClient;
             if (!HasFourthShot() ||
-                !jungleTarget.IsValidTarget() ||
+                !jungleTarget.IsValidTargetEx() ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget))
             {
                 return;
@@ -103,7 +103,7 @@ namespace AIO.Champions
             ///     The Jungleclear Q Logics.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
+                jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
                 MenuClass.Q["jungleclear"].As<MenuSliderBool>().Enabled)
@@ -115,7 +115,7 @@ namespace AIO.Champions
             ///     The Jungleclear E Logics.
             /// </summary>
             if (SpellClass.E.Ready &&
-                jungleTarget.IsValidTarget(SpellClass.E.Range) &&
+                jungleTarget.IsValidTargetEx(SpellClass.E.Range) &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
                 MenuClass.E["jungleclear"].As<MenuSliderBool>().Enabled &&

@@ -25,7 +25,7 @@ namespace AIO.Champions
 
             SpellClass.W.SetSkillshot(0.75f, 40f, float.MaxValue, collision: false);
             SpellClass.E.SetSkillshot(1f, 260f, 1000f, SkillshotType.Circle, false);
-            SpellClass.R2.SetSkillshot(0.25f, UtilityClass.GetAngleByDegrees(55), 5000f, collision: false);
+            SpellClass.R2.SetSkillshot(0.25f, 60f, 5000f, collision: false);
         }
 
         #endregion

@@ -28,7 +28,7 @@ namespace AIO.Champions
                 MenuClass.Q["harass"].As<MenuSliderBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
-                if (!bestTarget.IsValidTarget() ||
+                if (!bestTarget.IsValidTargetEx() ||
                     Invulnerable.Check(bestTarget) ||
                     !MenuClass.Q["whitelist"][bestTarget.CharName.ToLower()].As<MenuBool>().Enabled)
                 {

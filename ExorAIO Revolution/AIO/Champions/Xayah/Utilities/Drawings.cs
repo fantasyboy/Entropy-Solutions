@@ -46,7 +46,7 @@ namespace AIO.Champions
 
 					realFeatherHitbox.Render(
 						ObjectCache.EnemyHeroes.Any(h =>
-							h.IsValidTarget() &&
+							h.IsValidTargetEx() &&
 							realFeatherHitbox.IsInsidePolygon((Vector2)h.Position))
 								? Color.Blue
 								: Color.Yellow);

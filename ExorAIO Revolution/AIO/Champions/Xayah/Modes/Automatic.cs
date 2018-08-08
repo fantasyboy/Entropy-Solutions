@@ -65,7 +65,7 @@ namespace AIO.Champions
                 var bestTarget = ObjectCache.EnemyHeroes
                     .Where(t =>
                         !Invulnerable.Check(t) &&
-                        t.IsValidTarget(SpellClass.R.Range) &&
+                        t.IsValidTargetEx(SpellClass.R.Range) &&
                         MenuClass.R["whitelist"][t.CharName.ToLower()].As<MenuBool>().Enabled)
                     .MinBy(o => o.GetRealHealth(DamageType.Physical));
                 if (bestTarget != null)

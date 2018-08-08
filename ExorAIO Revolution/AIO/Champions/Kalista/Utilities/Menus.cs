@@ -1,6 +1,7 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
 
@@ -99,9 +100,6 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuBool("lasthit", "Lasthit"));
 				MenuClass.E.Add(new MenuSliderBool("laneclear", "Laneclear / If killable minions >= x", true, 1, 1, 5));
 				MenuClass.E.Add(new MenuSliderBool("junglesteal", "Junglesteal / If Level >=", true, 2, 1, 18));
-				//MenuClass.E.Add(new MenuSeperator("separator"));
-				//MenuClass.E.Add(new MenuSeperator("separator1", "It will cast E if there are any minions with"));
-				//MenuClass.E.Add(new MenuSeperator("separator2", "stacks the Orbwalker cannot reach in time to kill them."));
 			}
 			MenuClass.Root.Add(MenuClass.E);
 

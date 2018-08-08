@@ -38,8 +38,7 @@ namespace AIO.Champions
 						m.Distance(posAfterQ) < UtilityClass.Player.GetAutoAttackRange() &&
 						m != Orbwalker.GetOrbwalkingTarget() &&
 						posAfterQ.EnemyHeroesCount(UtilityClass.Player.GetAutoAttackRange(m)) <= 2 &&
-						m.GetRealHealth(DamageType.Physical) <
-						UtilityClass.Player.GetAutoAttackDamage(m) + GetQBonusDamage(m)))
+						m.HP <= UtilityClass.Player.GetAutoAttackDamage(m) + GetQBonusDamage(m)))
 				{
 					SpellClass.Q.Cast(Hud.CursorPositionUnclipped);
 				}

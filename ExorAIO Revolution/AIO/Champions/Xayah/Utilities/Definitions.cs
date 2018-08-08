@@ -75,7 +75,7 @@ namespace AIO.Champions
         /// </summary>
         public int CountFeathersKillableMinions()
         {
-            return Extensions.GetAllGenericMinionsTargets().Count(m => GetEDamage(m, CountFeathersHitOnUnit(m)) >= m.GetRealHealth(DamageType.Physical));
+            return Extensions.GetAllGenericMinionsTargets().Count(m => GetEDamage(m, CountFeathersHitOnUnit(m)) >= m.HP);
         }
 
         /// <summary>
@@ -84,7 +84,7 @@ namespace AIO.Champions
         /// <param name="unit">The unit.</param>
         public bool IsPerfectFeatherTarget(AIBaseClient unit)
         {
-            if (unit.IsValidTarget() &&
+            if (unit.IsValidTargetEx() &&
                 CanFeathersHitUnit(unit))
             {
                 switch (unit.Type.TypeID)

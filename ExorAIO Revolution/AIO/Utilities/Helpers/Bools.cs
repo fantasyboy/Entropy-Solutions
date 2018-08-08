@@ -29,15 +29,6 @@ namespace AIO.Utilities
 		}
 
 		/// <summary>
-		///     Returns if a Spell is usable.
-		/// </summary>
-		/// <param name="spell">The spell.</param>
-		public static bool CanUseSpell(Spell spell)
-		{
-			return UtilityClass.SpellStates.All(state => !spell.State.HasFlag(state));
-		}
-
-		/// <summary>
 		///     Returns if the name is an auto attack
 		/// </summary>
 		/// <param name="name">Name of spell</param>

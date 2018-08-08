@@ -57,16 +57,14 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.E["laneclear"].Enabled)
 			{
-				if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range).Count(m =>
-					    IsPerfectRendTarget(m) &&
-					    m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)) >= MenuClass.E["laneclear"].Value)
+				if (Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.E.Range)
+						.Count(m => IsPerfectRendTarget(m) && m.HP <= GetEDamage(m)) >= MenuClass.E["laneclear"].Value)
 				{
 					SpellClass.E.Cast();
 				}
 
-				else if (Extensions.GetEnemyPetsInRange(SpellClass.E.Range).Any(m =>
-					IsPerfectRendTarget(m) &&
-					m.GetRealHealth(DamageType.Physical) <= GetEDamage(m)))
+				else if (Extensions.GetEnemyPetsInRange(SpellClass.E.Range)
+					.Any(m => IsPerfectRendTarget(m) && m.HP <= GetEDamage(m)))
 				{
 					SpellClass.E.Cast();
 				}
