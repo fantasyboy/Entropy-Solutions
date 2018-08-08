@@ -3,7 +3,6 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Enumerations;
-using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;

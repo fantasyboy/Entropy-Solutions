@@ -7,7 +7,6 @@ using Entropy.SDK.Events;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.Spells;
 using SharpDX;
 
 namespace AIO.Utilities

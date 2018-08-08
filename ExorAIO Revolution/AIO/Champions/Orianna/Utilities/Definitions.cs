@@ -1,10 +1,7 @@
-﻿
-using System;
-using System.Linq;
+﻿using System.Linq;
 using AIO.Utilities;
 using Entropy;
 using Entropy.SDK.Caching;
-using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using SharpDX;
 using Rectangle = Entropy.SDK.Geometry.Rectangle;

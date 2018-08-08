@@ -1,13 +1,11 @@
 using System.Linq;
 using Entropy;
-using Entropy.SDK.Events;
 using AIO.Utilities;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.Orbwalking.EventArgs;
-using SharpDX;
 using Gapcloser = AIO.Utilities.Gapcloser;
 
 #pragma warning disable 1587

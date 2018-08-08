@@ -1,6 +1,5 @@
 ﻿using AIO.Utilities;
 using Entropy;
-using Entropy.SDK.Rendering;
 using Color = SharpDX.Color;
 
 #pragma warning disable 1587

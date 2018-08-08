@@ -1,6 +1,5 @@
 using Entropy;
 using AIO.Utilities;
-using Entropy.SDK.Enumerations;
 using Entropy.SDK.Spells;
 
 namespace AIO.Champions

@@ -2,7 +2,6 @@
 using System.Linq;
 using Entropy;
 using AIO.Utilities;
-using Entropy.SDK.Caching;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;

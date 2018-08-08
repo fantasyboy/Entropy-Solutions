@@ -4,8 +4,6 @@ using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
 using Entropy.SDK.UI.Components;
-using Entropy.SDK.Caching;
-using System.Linq;
 using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Extensions;
 

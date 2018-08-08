@@ -1,10 +1,6 @@
-using System.Linq;
 using AIO.Utilities;
 using Entropy;
-using Entropy.SDK.Extensions.Objects;
-using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
-using SharpDX;
 using Color = SharpDX.Color;
 
 #pragma warning disable 1587

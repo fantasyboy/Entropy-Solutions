@@ -3,7 +3,6 @@ using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Rendering;
-using Entropy.SDK.Extensions.Objects;
 using Color = SharpDX.Color;
 
 #pragma warning disable 1587

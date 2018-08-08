@@ -8,7 +8,6 @@ using Entropy.SDK.Orbwalking;
 using Entropy.SDK.UI.Components;
 using Entropy.SDK.Utils;
 using Entropy.SDK.Caching;
-using Entropy.SDK.Predictions;
 
 #pragma warning disable 1587
 

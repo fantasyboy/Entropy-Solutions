@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using AIO.Utilities;
-using Entropy;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions;

@@ -1,7 +1,5 @@
 using System.Linq;
 using AIO.Utilities;
-using Entropy;
-using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 namespace AIO.Champions
