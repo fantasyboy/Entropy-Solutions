@@ -1,6 +1,5 @@
 using System.Linq;
 using AIO.Utilities;
-using Entropy;
 using Entropy.SDK.Caching;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
@@ -114,16 +113,6 @@ namespace AIO.Champions
 				MenuClass.E.Add(new MenuSliderBool("jungleclear", "Jungleclear / if Mana >= x%", true, 50, 0, 99));
 			}
 			MenuClass.Root.Add(MenuClass.E);
-
-			/// <summary>
-			///     Sets the menu for the R.
-			/// </summary>
-			MenuClass.R = new Menu("r", "Use R to:");
-			{
-				MenuClass.R.Add(new MenuBool("bool", "Semi-Automatic R"));
-				MenuClass.R.Add(new MenuKeyBind("key", "Key:", WindowMessageWParam.U, KeybindType.Hold));
-			}
-			MenuClass.Root.Add(MenuClass.R);
 
 			/// <summary>
 			///     Sets the miscellaneous menu.

@@ -54,7 +54,9 @@ namespace AIO.Champions
 					DamageIndicatorRendering.Render(hero, UtilityClass.Player.GetAutoAttackDamage(hero));
 				}
 
-				foreach (var jungleMob in ObjectCache.LargeJungleMinions.Where(t => t.GetBuffCount("vaynesilvereddebuff") == 2))
+				var bigJungleMinions =
+					Extensions.GetLargeJungleMinionsTargets().Concat(Extensions.GetLegendaryJungleMinionsTargets());
+				foreach (var jungleMob in bigJungleMinions.Where(h => h.GetBuffCount("vaynesilvereddebuff") == 2))
 				{
 					DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 				}

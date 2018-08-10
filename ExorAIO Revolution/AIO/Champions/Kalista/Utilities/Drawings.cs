@@ -75,17 +75,19 @@ namespace AIO.Champions
 			if (SpellClass.E.Ready &&
 			    MenuClass.Drawings["edmg"].Enabled)
 			{
-				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => IsPerfectRendTarget(t)))
+				foreach (var hero in ObjectCache.EnemyHeroes.Where(IsPerfectRendTarget))
 				{
 					DamageIndicatorRendering.Render(hero, GetEDamage(hero));
 				}
 
-				foreach (var jungleMob in ObjectCache.LargeJungleMinions.Where(t => IsPerfectRendTarget(t)))
+				var bigJungleMinions =
+					Extensions.GetLargeJungleMinionsTargets().Concat(Extensions.GetLegendaryJungleMinionsTargets());
+				foreach (var jungleMob in bigJungleMinions.Where(IsPerfectRendTarget))
 				{
 					DamageIndicatorRendering.Render(jungleMob, GetEDamage(jungleMob));
 				}
 
-				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => IsPerfectRendTarget(t)))
+				foreach (var mob in ObjectCache.EnemyLaneMinions.Where(IsPerfectRendTarget))
 				{
 					DamageIndicatorRendering.Render(mob, GetEDamage(mob));
 				}

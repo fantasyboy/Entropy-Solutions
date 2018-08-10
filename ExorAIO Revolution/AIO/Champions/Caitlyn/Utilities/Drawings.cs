@@ -105,7 +105,9 @@ namespace AIO.Champions
 
 				if (UtilityClass.Player.HasBuff("caitlynheadshot"))
 				{
-					foreach (var jungleMob in ObjectCache.LargeJungleMinions.Where(t => t.IsValidTargetEx(1250f)))
+					var bigJungleMinions =
+						Extensions.GetLargeJungleMinionsTargets().Concat(Extensions.GetLegendaryJungleMinionsTargets());
+					foreach (var jungleMob in bigJungleMinions.Where(t => t.IsValidTargetEx(1250f)))
 					{
 						DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 					}

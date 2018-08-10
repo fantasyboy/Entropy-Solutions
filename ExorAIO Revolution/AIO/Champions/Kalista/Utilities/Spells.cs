@@ -21,7 +21,7 @@ namespace AIO.Champions
 			SpellClass.E = new Spell(SpellSlot.E, 1000f);
 			SpellClass.R = new Spell(SpellSlot.R, 1100f);
 
-			SpellClass.Q.SetSkillshot(0.25f, 60f, 1750f);
+			SpellClass.Q.SetSkillshot(0.25f, SpellClass.Q.SpellData.LineWidth, SpellClass.Q.SpellData.MissileSpeed);
 		}
 
 		#endregion

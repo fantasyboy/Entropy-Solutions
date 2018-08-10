@@ -46,8 +46,8 @@ namespace AIO.Champions
                 /// </summary>
                 MenuClass.Q3 = new Menu("modes", "Modes:");
                 {
-                    MenuClass.Q3.Add(new MenuList("combo", "Combo Mode:", new[] { "After Attack", "Always" }, 0));
-                    MenuClass.Q3.Add(new MenuList("harass", "Harass Mode:", new[] { "Always" }, 0));
+                    MenuClass.Q3.Add(new MenuList("combo", "Combo Mode:", new[] { "After Attack", "Always" }));
+                    MenuClass.Q3.Add(new MenuList("harass", "Harass Mode:", new[] { "Always" }));
                 }
                 MenuClass.Q.Add(MenuClass.Q3);
 
@@ -151,7 +151,7 @@ namespace AIO.Champions
                 //MenuClass.R.Add(new MenuSeperator("separator2", "It will ult the lowest on health,"));
                 //MenuClass.R.Add(new MenuSeperator("separator3", "whitelisted and non-invulnerable enemy in range."));
                 MenuClass.R.Add(new MenuBool("bool", "Semi-Automatic R"));
-                MenuClass.R.Add(new MenuList("mode", "Semi-Automatic R mode", new[] { "R", "Q->R" }, 0));
+                MenuClass.R.Add(new MenuList("mode", "Semi-Automatic R mode", new[] { "R", "Q->R" }));
                 MenuClass.R.Add(new MenuKeyBind("key", "Key:", Entropy.WindowMessageWParam.U, KeybindType.Hold));
 
                 if (ObjectCache.EnemyHeroes.Any())
