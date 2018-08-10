@@ -109,7 +109,7 @@ namespace AIO.Champions
                         return;
                 }
 
-                SpellClass.W.CastOnUnit(sender);
+                SpellClass.W.Cast(sender);
             }
         }
 
