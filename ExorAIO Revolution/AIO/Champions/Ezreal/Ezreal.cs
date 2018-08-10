@@ -54,7 +54,7 @@ namespace AIO.Champions
             }
 
 			var sender = args.Caster as AIHeroClient;
-            var unitTarget = args.Target as AIBaseClient;
+            var unitTarget = args.Target;
             if (unitTarget == null || sender == null || !sender.IsAlly() || sender.IsMe())
             {
                 return;
@@ -99,7 +99,7 @@ namespace AIO.Champions
 						var minionTarget = unitTarget as AIMinionClient;
                         if (minionTarget == null ||
 							!unitTarget.IsStructure() &&
-                            !Extensions.GetLegendaryJungleMinionsTargets().Contains(minionTarget) ||
+                            !minionTarget.IsLegendaryJungleMinion() ||
                             !orbWhiteList["laneclear"].Enabled)
                         {
                             return;
@@ -166,12 +166,12 @@ namespace AIO.Champions
             }
         }
 
-        /// <summary>
-        ///     Fired on an incoming gapcloser.
-        /// </summary>
-        
-        /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
-        public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
+	    /// <summary>
+	    ///     Fired on an incoming gapcloser.
+	    /// </summary>
+	    /// <param name="sender">The sender.</param>
+	    /// <param name="args">The <see cref="Gapcloser.GapcloserArgs" /> instance containing the event data.</param>
+	    public void OnGapcloser(AIHeroClient sender, Gapcloser.GapcloserArgs args)
         {
             if (UtilityClass.Player.IsDead)
             {

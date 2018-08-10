@@ -967,7 +967,7 @@
 
 			unit.Unit = heroSender;
 			unit.Slot = args.Slot;
-			unit.Target = args.Target as AttackableUnit;
+			unit.Target = args.Target;
 			unit.Type = args.Target != null ? Type.Targeted : Type.SkillShot;
 			unit.SpellName = args.SpellData.Name;
 			unit.StartPosition = args.StartPosition;
