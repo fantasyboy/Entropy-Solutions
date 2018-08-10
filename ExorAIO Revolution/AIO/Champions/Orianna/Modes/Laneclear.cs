@@ -33,7 +33,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["laneclear"]) &&
                 MenuClass.W["laneclear"].Enabled)
             {
-                if (Extensions.GetEnemyLaneMinionsTargets().Count(m => m.IsValidTargetEx(SpellClass.W.Width, false, true, GetBall().Position))
+                if (Extensions.GetEnemyLaneMinionsTargets().Count(m => m.IsValidTarget(SpellClass.W.Width, GetBall().Position))
                     >= MenuClass.W["customization"]["laneclear"].Value)
                 {
                     SpellClass.W.Cast();
@@ -49,7 +49,7 @@ namespace AIO.Champions
                 MenuClass.E["laneclear"].Enabled)
             {
                 if (Extensions.GetEnemyLaneMinionsTargets()
-	                    .Count(t => t.IsValidTargetEx() && ERectangle(t).IsInsidePolygon(t.Position)) >= MenuClass.E["customization"]["laneclear"].Value)
+	                    .Count(t => t.IsValidTarget() && ERectangle(t).IsInsidePolygon(t.Position)) >= MenuClass.E["customization"]["laneclear"].Value)
                 {
                     SpellClass.E.CastOnUnit(UtilityClass.Player);
                 }
@@ -64,7 +64,7 @@ namespace AIO.Champions
                 MenuClass.Q["farmhelper"].Enabled)
             {
 				foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
-					.Where(m => !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m)) && m.HP < GetQDamage(m)))
+					.Where(m => !m.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(m)) && m.HP < GetQDamage(m)))
 				{
 					SpellClass.Q.GetPredictionInput(minion).From = GetBall().Position;
                     SpellClass.Q.Cast(SpellClass.Q.GetPrediction(minion).CastPosition);

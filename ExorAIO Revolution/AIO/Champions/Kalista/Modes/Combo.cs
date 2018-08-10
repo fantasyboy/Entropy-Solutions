@@ -30,7 +30,7 @@ namespace AIO.Champions
 				.OrderBy(s => s.GetBuffCount("kalistaexpungemarker"))
 				.MinBy(o => o.HP);
 			if (minion != null &&
-			    !ObjectCache.EnemyHeroes.Any(t => t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)+25)) &&
+			    !ObjectCache.EnemyHeroes.Any(t => t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)+25)) &&
 			    MenuClass.Miscellaneous["minionsorbwalk"].Enabled)
 			{
 				Orbwalker.Attack(minion);

@@ -212,7 +212,7 @@ namespace AIO.Champions
 				/// </summary>
 				case 4:
 					if (!ObjectCache.EnemyHeroes.Any(t =>
-						t.IsValidTargetEx(SpellClass.W.Range) &&
+						t.IsValidTarget(SpellClass.W.Range) &&
 						MenuClass.W["selection"][t.CharName.ToLower()].Value < 4))
 					{
 						if (target.DistanceToPlayer() >= UtilityClass.Player.GetAutoAttackRange(target))

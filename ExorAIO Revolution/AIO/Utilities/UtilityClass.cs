@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Entropy;
 using Entropy.SDK.Enumerations;
-using Entropy.SDK.Extensions.Geometry;
 using Entropy.SDK.Spells;
-using SharpDX;
 
 #pragma warning disable 1587
 
@@ -116,17 +114,6 @@ namespace AIO.Utilities
 			"yorickdecayedghoulbasicattack", "yorickravenousghoulbasicattack",
 			"zyragraspingplantattack", "zyragraspingplantattack2",
 			"zyragraspingplantattackfire", "zyragraspingplantattack2fire"
-		};
-
-		/// <summary>
-		///     The jungle HP bar offset list.
-		/// </summary>
-		internal static readonly string[] JungleList =
-		{
-			"SRU_Dragon_Air", "SRU_Dragon_Fire", "SRU_Dragon_Water",
-			"SRU_Dragon_Earth", "SRU_Dragon_Elder", "SRU_Baron",
-			"SRU_RiftHerald", "SRU_Red", "SRU_Blue", "SRU_Gromp",
-			"Sru_Crab", "SRU_Krug", "SRU_Razorbeak", "SRU_Murkwolf"
 		};
 
 		#endregion
@@ -447,39 +434,6 @@ namespace AIO.Utilities
 		public static double GetRemainingCooldownTime(this Spell spell)
 		{
 			return spell.CooldownExpires - Game.ClockTime;
-		}
-
-		/// <summary>
-		///     Determines whether the specified target is a valid target.
-		/// </summary>
-		/// <param name="target">The target.</param>
-		/// <param name="range">The range.</param>
-		/// <param name="allyIsValidTargetEx">if set to <c>true</c> allies will be set as valid targets.</param>
-		/// <param name="includeBoundingRadius"></param>
-		/// <param name="checkRangeFrom">The check range from position.</param>
-		/// <returns>
-		///     <c>true</c> if the specified target is a valid target; otherwise, <c>false</c>.
-		/// </returns>
-		public static bool IsValidTargetEx(
-			this AttackableUnit target,
-			float range = float.MaxValue,
-			bool allyIsValidTargetEx = false,
-			bool includeBoundingRadius = false,
-			Vector3 checkRangeFrom = default(Vector3))
-		{
-			if (target == null || !target.IsValid || target.IsDead || !target.IsVisible || !target.IsTargetable)
-			{
-				return false;
-			}
-
-			if (!allyIsValidTargetEx && target.Team == Player.Team)
-			{
-				return false;
-			}
-
-			var fromPoint = checkRangeFrom != Vector3.Zero ? checkRangeFrom : Player.Position;
-			var boundingRadius = includeBoundingRadius ? Player.BoundingRadius + target.BoundingRadius : 0;
-			return target.Distance(fromPoint) < range + boundingRadius;
 		}
 
 		#endregion

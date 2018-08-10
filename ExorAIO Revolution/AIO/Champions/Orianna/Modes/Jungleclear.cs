@@ -37,7 +37,7 @@ namespace AIO.Champions
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
                 MenuClass.W["jungleclear"].Enabled)
             {
-                if (Extensions.GetGenericJungleMinionsTargets().Any(m => m.IsValidTargetEx(SpellClass.W.Width, false, true, GetBall().Position)))
+                if (Extensions.GetGenericJungleMinionsTargets().Any(m => m.IsValidTarget(SpellClass.W.Width, GetBall().Position)))
                 {
                     SpellClass.W.Cast();
                 }
@@ -70,7 +70,7 @@ namespace AIO.Champions
             ///     The Jungleclear Q Logic.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
+                jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
                 MenuClass.Q["jungleclear"].Enabled)

@@ -30,7 +30,7 @@ namespace AIO.Champions
 			    MenuClass.Q3["laneclear"].Enabled)
 			{
 				foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
-					!t.IsValidTargetEx(SpellClass.Q.Range) &&
+					!t.IsValidTarget(SpellClass.Q.Range) &&
 					MenuClass.Q3["whitelist"][t.CharName.ToLower()].Enabled))
 				{
 					foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))

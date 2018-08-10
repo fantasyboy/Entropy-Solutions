@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using AIO.Utilities;
-using Entropy.SDK.Caching;
+using Entropy;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions;
 using Entropy.SDK.Extensions.Geometry;
@@ -30,25 +30,15 @@ namespace AIO.Champions
 					MenuClass.E["junglesteal"].Value &&
 			    MenuClass.E["junglesteal"].Enabled)
 			{
-				foreach (var minion in Extensions.GetGenericJungleMinionsTargets()
-					.Where(m => IsPerfectRendTarget(m) && m.HP <= GetEDamage(m)))
+				if (Extensions.GetGenericJungleMinionsTargets()
+				              .Any(m => IsPerfectRendTarget(m) && m.HP <= GetEDamage(m) && MenuClass.E["whitelist"][m.ModelName.ToLower()].Enabled))
 				{
-					if (minion.IsLargeJungleMinion() &&
-					    MenuClass.E["whitelist"][minion.CharName].Enabled)
-					{
-						SpellClass.E.Cast();
-					}
-					else if (!minion.IsLargeJungleMinion() &&
-					         MenuClass.General["junglesmall"].Enabled)
-					{
-						SpellClass.E.Cast();
-					}
+					SpellClass.E.Cast();
 				}
 			}
 
-			var jungleTarget = ObjectCache.EnemyMinions
-				.Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
-				.MinBy(m => m.DistanceToPlayer());
+			var jungleTarget = Extensions.GetGenericJungleMinionsTargets()
+			                             .MinBy(m => Hud.CursorPositionUnclipped.DistanceToPlayer());
 			if (jungleTarget == null ||
 			    jungleTarget.HP < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
 			{
@@ -59,7 +49,7 @@ namespace AIO.Champions
 			///     The Q Jungleclear Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-			    jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
+			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
 			    UtilityClass.Player.MPPercent()
 					> ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
 			    MenuClass.Q["jungleclear"].Enabled)

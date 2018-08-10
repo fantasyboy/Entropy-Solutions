@@ -28,7 +28,7 @@ namespace AIO.Champions
 			    MenuClass.Root["q2"]["mixed"].Enabled)
 			{
 				foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q2.Range).Where(t =>
-					!t.IsValidTargetEx(SpellClass.Q.Range) &&
+					!t.IsValidTarget(SpellClass.Q.Range) &&
 					MenuClass.Root["q2"]["whitelist"][t.CharName.ToLower()].Enabled))
 				{
 					foreach (var minion in Extensions.GetAllGenericUnitTargetsInRange(SpellClass.Q.Range))

@@ -35,7 +35,7 @@ namespace AIO.Champions
                 MenuClass.Q["harass"].Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
-                if (bestTarget.IsValidTargetEx() &&
+                if (bestTarget.IsValidTarget() &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical) &&
                     MenuClass.Q["whitelist"][bestTarget.CharName.ToLower()].Enabled)
                 {
@@ -54,7 +54,7 @@ namespace AIO.Champions
             {
                 if (ObjectCache.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position) &&
+                        t.IsValidTarget(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, GetBall().Position) &&
                         MenuClass.W["whitelist"][t.CharName.ToLower()].Enabled))
                 {
                     SpellClass.W.Cast();

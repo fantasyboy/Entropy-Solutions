@@ -1,6 +1,7 @@
 using System.Linq;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.UI;
 using Entropy.SDK.UI.Components;
 
@@ -83,7 +84,7 @@ namespace AIO.Champions
 				/// </summary>
 				MenuClass.WhiteList2 = new Menu("whitelist", "Junglesteal Rend: Whitelist");
 				{
-					foreach (var target in UtilityClass.JungleList)
+					foreach (var target in AIMinionClientEx.largeJungleMinionNames.Concat(AIMinionClientEx.legendaryJungleMinionNames))
 					{
 						MenuClass.WhiteList2.Add(new MenuBool(target, "Rend: " + target));
 					}

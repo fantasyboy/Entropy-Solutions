@@ -41,7 +41,7 @@ namespace AIO.Champions
 				var bestTarget = ObjectCache.EnemyHeroes
 					.Where(t =>
 						!Invulnerable.Check(t) &&
-						t.IsValidTargetEx(SpellClass.R.Range) &&
+						t.IsValidTarget(SpellClass.R.Range) &&
 						MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)
 					.MinBy(o => o.GetRealHealth(DamageType.Physical));
 
@@ -50,7 +50,7 @@ namespace AIO.Champions
 				    MenuClass.R["key"].Enabled)
 				{
 					if (SpellClass.W.Ready &&
-					    bestTarget.IsValidTargetEx(SpellClass.W.Range))
+					    bestTarget.IsValidTarget(SpellClass.W.Range))
 					{
 						SpellClass.W.Cast(bestTarget.Position);
 					}

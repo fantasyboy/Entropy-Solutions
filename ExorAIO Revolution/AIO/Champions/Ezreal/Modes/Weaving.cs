@@ -55,7 +55,7 @@ namespace AIO.Champions
                         buffMenu["logical"].Enabled &&
                         ObjectCache.AllyHeroes.Any(a =>
                             !a.IsMe() &&
-                            a.IsValidTargetEx(SpellClass.W.Range, true) &&
+                            a.IsValidTarget(SpellClass.W.Range, true) &&
                             buffMenu["allywhitelist"][a.CharName.ToLower()].Enabled))
                     {
                         return;

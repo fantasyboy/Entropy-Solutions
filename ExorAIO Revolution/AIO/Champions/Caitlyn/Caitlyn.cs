@@ -79,7 +79,7 @@ namespace AIO.Champions
 				var buff = args.BuffInstance;
 				if (buff.Name.ToLower() == "caitlynyordletrapinternal" &&
 				    heroTarget.DistanceToPlayer() >= 650 + UtilityClass.Player.BoundingRadius &&
-				    heroTarget.IsValidTargetEx(1250))
+				    heroTarget.IsValidTarget(1250))
 				{
 					LocalPlayer.IssueOrder(HeroOrder.AttackUnit, heroTarget);
 				}
@@ -194,7 +194,7 @@ namespace AIO.Champions
 								    MenuClass.W["triplecombo"].Enabled)
 								{
 									var bestTarget = ObjectCache.EnemyHeroes
-										.Where(t => !Invulnerable.Check(t) && t.IsValidTargetEx(SpellClass.W.Range))
+										.Where(t => !Invulnerable.Check(t) && t.IsValidTarget(SpellClass.W.Range))
 										.MinBy(o => o.Distance(args.EndPosition));
 									if (bestTarget != null &&
 									    CanTrap(bestTarget))

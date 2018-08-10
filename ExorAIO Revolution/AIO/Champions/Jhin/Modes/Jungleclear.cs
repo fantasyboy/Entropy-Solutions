@@ -26,7 +26,7 @@ namespace AIO.Champions
         public void Jungleclear(OnPostAttackEventArgs args)
         {
             var jungleTarget = args.Target as AIMinionClient;
-            if (!jungleTarget.IsValidTargetEx() ||
+            if (!jungleTarget.IsValidTarget() ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget))
             {
                 return;
@@ -54,7 +54,7 @@ namespace AIO.Champions
         {
             var jungleTarget = args.Target as AIMinionClient;
             if (!HasFourthShot() ||
-                !jungleTarget.IsValidTargetEx() ||
+                !jungleTarget.IsValidTarget() ||
                 !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget))
             {
                 return;
@@ -90,8 +90,8 @@ namespace AIO.Champions
         /// </summary>
         public void JungleClear(EntropyEventArgs args)
         {
-			var jungleTarget = Extensions.GetGenericJungleMinionsTargetsInRange(SpellClass.Q.Range)
-				.MinBy(m => m.Distance(Hud.CursorPositionUnclipped));
+			var jungleTarget = Extensions.GetGenericJungleMinionsTargets()
+			                             .MinBy(m => m.Distance(Hud.CursorPositionUnclipped));
             if (jungleTarget == null)
             {
                 return;
@@ -101,7 +101,7 @@ namespace AIO.Champions
             ///     The Jungleclear Q Logics.
             /// </summary>
             if (SpellClass.Q.Ready &&
-                jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
+                jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
                 MenuClass.Q["jungleclear"].As<MenuSliderBool>().Enabled)
@@ -113,7 +113,7 @@ namespace AIO.Champions
             ///     The Jungleclear E Logics.
             /// </summary>
             if (SpellClass.E.Ready &&
-                jungleTarget.IsValidTargetEx(SpellClass.E.Range) &&
+                jungleTarget.IsValidTarget(SpellClass.E.Range) &&
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
                 MenuClass.E["jungleclear"].As<MenuSliderBool>().Enabled &&

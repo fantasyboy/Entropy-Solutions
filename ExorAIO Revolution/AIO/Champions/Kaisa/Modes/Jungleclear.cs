@@ -1,5 +1,5 @@
-﻿using Entropy;
-using AIO.Utilities;
+﻿using AIO.Utilities;
+using Entropy;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking.EventArgs;
@@ -21,7 +21,7 @@ namespace AIO.Champions
 		public void Jungleclear(OnPostAttackEventArgs args)
 		{
 			var jungleTarget = args.Target as AIMinionClient;
-			if (jungleTarget == null ||
+			if (jungleTarget == null                                                ||
 			    !Extensions.GetGenericJungleMinionsTargets().Contains(jungleTarget) ||
 			    jungleTarget.GetRealHealth(DamageType.Physical) <
 			    UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 2)

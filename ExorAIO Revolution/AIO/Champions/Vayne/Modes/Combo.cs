@@ -31,7 +31,7 @@ namespace AIO.Champions
 				var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
 				if (bestTarget != null &&
 				    !Invulnerable.Check(bestTarget) &&
-				    !bestTarget.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
+				    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
 				{
 					var posAfterQ = UtilityClass.Player.Position.Extend(Hud.CursorPositionUnclipped, 300f);
 					if (posAfterQ.EnemyHeroesCount(1000f) < 3 &&
@@ -57,7 +57,7 @@ namespace AIO.Champions
 				foreach (var target in
 					ObjectCache.EnemyHeroes.Where(t =>
 						!t.IsDashing() &&
-						t.IsValidTargetEx(SpellClass.E.Range) &&
+						t.IsValidTarget(SpellClass.E.Range) &&
 						!Invulnerable.Check(t, DamageType.Magical, false) &&
 						MenuClass.E["whitelist"][t.CharName.ToLower()].Enabled))
 				{

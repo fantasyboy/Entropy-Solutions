@@ -32,7 +32,7 @@ namespace AIO.Champions
                 MenuClass.R["combo"].As<MenuBool>().Value)
             {
                 var validEnemiesInsideCone = Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R2.Range)
-                    .Where(t => t.IsValidTargetEx() && !Invulnerable.Check(t) && UltimateCone.IsInsidePolygon(t.Position))
+                    .Where(t => t.IsValidTarget() && !Invulnerable.Check(t) && UltimateCone.IsInsidePolygon(t.Position))
                     .ToList();
                 if (validEnemiesInsideCone.Any())
                 {
@@ -76,7 +76,7 @@ namespace AIO.Champions
 
                 foreach (var target in ObjectCache.EnemyHeroes.Where(t =>
                     t.HasBuff("jhinespotteddebuff") &&
-                    t.IsValidTargetEx(SpellClass.W.Range - 100f) &&
+                    t.IsValidTarget(SpellClass.W.Range - 100f) &&
                     !Invulnerable.Check(t, DamageType.Magical, false) &&
                     MenuClass.W["whitelist"][t.CharName.ToLower()].As<MenuBool>().Value))
                 {
@@ -102,7 +102,7 @@ namespace AIO.Champions
                 MenuClass.Q["customization"]["comboonreload"].As<MenuBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range);
-                if (bestTarget.IsValidTargetEx() &&
+                if (bestTarget.IsValidTarget() &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical, false))
                 {
                     SpellClass.Q.CastOnUnit(bestTarget);
@@ -116,7 +116,7 @@ namespace AIO.Champions
                 MenuClass.E["combo"].As<MenuBool>().Enabled)
             {
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.E.Range);
-                if (bestTarget.IsValidTargetEx() &&
+                if (bestTarget.IsValidTarget() &&
                     !Invulnerable.Check(bestTarget, DamageType.Magical, false))
                 {
                     if (MenuClass.E["customization"]["comboonreload"].As<MenuBool>().Enabled)

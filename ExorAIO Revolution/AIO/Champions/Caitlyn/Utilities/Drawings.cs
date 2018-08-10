@@ -81,7 +81,7 @@ namespace AIO.Champions
 				/// </summary>
 				if (MenuClass.Drawings["rdmg"].Enabled)
 				{
-					foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTargetEx(SpellClass.R.Range)))
+					foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(SpellClass.R.Range)))
 					{
 						DamageIndicatorRendering.Render(hero, GetRDamage(hero));
 					}
@@ -93,7 +93,7 @@ namespace AIO.Champions
 			/// </summary>
 			if (MenuClass.Drawings["passivedmg"].Enabled)
 			{
-				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTargetEx(1250f)))
+				foreach (var hero in ObjectCache.EnemyHeroes.Where(t => t.IsValidTarget(1250f)))
 				{
 					if (UtilityClass.Player.HasBuff("caitlynheadshot") ||
 					    UtilityClass.Player.HasBuff("caitlynheadshotrangecheck") &&
@@ -107,12 +107,12 @@ namespace AIO.Champions
 				{
 					var bigJungleMinions =
 						Extensions.GetLargeJungleMinionsTargets().Concat(Extensions.GetLegendaryJungleMinionsTargets());
-					foreach (var jungleMob in bigJungleMinions.Where(t => t.IsValidTargetEx(1250f)))
+					foreach (var jungleMob in bigJungleMinions.Where(t => t.IsValidTarget(1250f)))
 					{
 						DamageIndicatorRendering.Render(jungleMob, UtilityClass.Player.GetAutoAttackDamage(jungleMob));
 					}
 
-					foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTargetEx(1250f)))
+					foreach (var mob in ObjectCache.EnemyLaneMinions.Where(t => t.IsValidTarget(1250f)))
 					{
 						DamageIndicatorRendering.Render(mob, UtilityClass.Player.GetAutoAttackDamage(mob));
 					}

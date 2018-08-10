@@ -71,7 +71,7 @@ namespace AIO.Champions
             ///     The Ally W Logic.
             /// </summary>
             if (SpellClass.W.Ready &&
-                sender.IsValidTargetEx(SpellClass.W.Range, true) && 
+                sender.IsValidTarget(SpellClass.W.Range, true) && 
                 UtilityClass.Player.MPPercent()
                     > ManaManager.GetNeededMana(SpellClass.W.Slot, buffMenu["logical"]) &&
                 buffMenu["logical"].Enabled)

@@ -39,7 +39,7 @@ namespace AIO.Champions
                 MenuClass.E["antigrab"].Enabled)
             {
                 var firstTower = ObjectCache.AllyTurrets
-                    .Where(t => t.IsValidTargetEx(allyIsValidTargetEx: true))
+                    .Where(t => t.IsValidTarget(isAllyAllowed: true))
                     .MinBy(t => t.DistanceToPlayer());
                 if (firstTower != null)
                 {
@@ -70,7 +70,7 @@ namespace AIO.Champions
                 MenuClass.R["key"].As<MenuKeyBind>().Enabled)
             {
                 var bestTarget = ObjectCache.EnemyHeroes.Where(t =>
-                        t.IsValidTargetEx(2000f) &&
+                        t.IsValidTarget(2000f) &&
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
                         MenuClass.R["whitelist"][t.CharName.ToLower()].Enabled)
                     .MinBy(o => o.GetRealHealth(DamageType.Magical));

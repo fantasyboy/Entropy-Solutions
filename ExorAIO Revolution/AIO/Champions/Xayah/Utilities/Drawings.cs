@@ -6,6 +6,7 @@ using Entropy.SDK.Rendering;
 using Entropy.SDK.UI.Components;
 using SharpDX;
 using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -45,7 +46,7 @@ namespace AIO.Champions
 
 					realFeatherHitbox.Render(
 						ObjectCache.EnemyHeroes.Any(h =>
-							h.IsValidTargetEx() &&
+							h.IsValidTarget() &&
 							realFeatherHitbox.IsInsidePolygon((Vector2)h.Position))
 								? Color.Blue
 								: Color.Yellow);

@@ -1,9 +1,7 @@
 ﻿// ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
-using System.Linq;
 using Entropy;
 using AIO.Utilities;
-using Entropy.SDK.Caching;
 using Entropy.SDK.Damage;
 using Entropy.SDK.Enumerations;
 using Entropy.SDK.Extensions;
@@ -27,9 +25,8 @@ namespace AIO.Champions
 		/// </summary>
 		public void JungleClear(EntropyEventArgs args)
 		{
-			var jungleTarget = ObjectCache.AllMinions
-				.Where(m => Extensions.GetGenericJungleMinionsTargets().Contains(m))
-				.MinBy(m => m.DistanceToPlayer());
+			var jungleTarget = Extensions.GetGenericJungleMinionsTargets()
+			                             .MinBy(m => Hud.CursorPositionUnclipped.DistanceToPlayer());
 			if (jungleTarget == null ||
 			    jungleTarget.HP < UtilityClass.Player.GetAutoAttackDamage(jungleTarget) * 3)
 			{
@@ -40,7 +37,7 @@ namespace AIO.Champions
 			///     The Jungleclear Rylai Q Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-			    jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
+			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
 			    UtilityClass.Player.HasItem(ItemID.RylaisCrystalScepter) &&
 			    (IsNearWorkedGround() ||
 			     UtilityClass.Player.MPPercent()
@@ -68,7 +65,7 @@ namespace AIO.Champions
 			///     The Jungleclear W Logic.
 			/// </summary>
 			if (SpellClass.W.Ready &&
-			    jungleTarget.IsValidTargetEx(SpellClass.W.Range) &&
+			    jungleTarget.IsValidTarget(SpellClass.W.Range) &&
 			    UtilityClass.Player.MPPercent()
 			    > ManaManager.GetNeededMana(SpellClass.W.Slot, MenuClass.W["jungleclear"]) &&
 			    MenuClass.W["jungleclear"].Enabled)
@@ -102,7 +99,7 @@ namespace AIO.Champions
 			///     The Jungleclear E Logic.
 			/// </summary>
 			if (SpellClass.E.Ready &&
-			    jungleTarget.IsValidTargetEx(SpellClass.E.Range) &&
+			    jungleTarget.IsValidTarget(SpellClass.E.Range) &&
 			    UtilityClass.Player.MPPercent()
 			    > ManaManager.GetNeededMana(SpellClass.E.Slot, MenuClass.E["jungleclear"]) &&
 			    MenuClass.E["jungleclear"].Enabled)
@@ -116,7 +113,7 @@ namespace AIO.Champions
 			///     The Jungleclear Q Logic.
 			/// </summary>
 			if (SpellClass.Q.Ready &&
-			    jungleTarget.IsValidTargetEx(SpellClass.Q.Range) &&
+			    jungleTarget.IsValidTarget(SpellClass.Q.Range) &&
 			    UtilityClass.Player.MPPercent()
 			    > ManaManager.GetNeededMana(SpellClass.Q.Slot, MenuClass.Q["jungleclear"]) &&
 			    MenuClass.Q["jungleclear"].Enabled)

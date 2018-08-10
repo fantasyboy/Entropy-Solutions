@@ -41,7 +41,7 @@ namespace AIO.Champions
                 foreach (var target in ObjectCache.EnemyHeroes.Where(t =>
                     t.HasBuff("jhinespotteddebuff") &&
                     t.IsImmobile(SpellClass.W.Delay) &&
-                    t.IsValidTargetEx(SpellClass.W.Range) &&
+                    t.IsValidTarget(SpellClass.W.Range) &&
                     !Invulnerable.Check(t, DamageType.Magical, false)))
                 {
                     SpellClass.W.Cast(target.Position);

@@ -42,7 +42,7 @@ namespace AIO.Champions
                 var bestTarget = Extensions.GetBestEnemyHeroTargetInRange(SpellClass.Q.Range-100f);
                 if (bestTarget != null &&
                     !Invulnerable.Check(bestTarget) &&
-                    !bestTarget.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
+                    !bestTarget.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(bestTarget)))
                 {
                     SpellClass.Q.Cast(bestTarget);
                 }

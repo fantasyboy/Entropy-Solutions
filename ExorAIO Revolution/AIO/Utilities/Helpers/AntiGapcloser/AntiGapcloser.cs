@@ -2,6 +2,7 @@
 {
 	using Entropy;
 	using Entropy.SDK.Extensions.Geometry;
+	using Entropy.SDK.Extensions.Objects;
 	using Entropy.SDK.UI;
 	using SharpDX;
 	using System;
@@ -934,7 +935,7 @@
 				Gapclosers.Remove(needToDeleteValue.Key);
 			}
 
-			foreach (var gapArgs in Gapclosers.Where(x => x.Value.Unit.IsValidTargetEx(allyIsValidTargetEx: true)))
+			foreach (var gapArgs in Gapclosers.Where(x => x.Value.Unit.IsValidTarget(isAllyAllowed: true)))
 			{
 				//GameConsole.Print($"OnGapcloser: {gapArgs.Value.Unit}, {gapArgs.Value}");
 				OnGapcloser(gapArgs.Value.Unit, gapArgs.Value);
@@ -945,7 +946,7 @@
 		{
 			var heroSender = args.Caster as AIHeroClient;
 			if (heroSender == null ||
-				!heroSender.IsValidTargetEx(allyIsValidTargetEx: true))
+				!heroSender.IsValidTarget(isAllyAllowed: true))
 			{
 				return;
 			}

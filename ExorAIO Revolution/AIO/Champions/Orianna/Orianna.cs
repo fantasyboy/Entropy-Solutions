@@ -80,7 +80,7 @@ namespace AIO.Champions
             {
                 var validTargets = ObjectCache.EnemyHeroes.Where(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position));
+                        t.IsValidTarget(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, GetBall().Position));
                 if (!validTargets.Any())
                 {
                     args.Execute = false;
@@ -145,7 +145,7 @@ namespace AIO.Champions
                                 var bestAlly = ObjectCache.AllyHeroes
                                     .Where(a =>
                                         !a.IsMe() &&
-                                        a.IsValidTargetEx(SpellClass.E.Range, true) &&
+                                        a.IsValidTarget(SpellClass.E.Range, true) &&
                                         args.EndPosition.Distance(a) <= a.GetAutoAttackRange() / 2)
                                     .MinBy(o => o.MaxHP);
 
@@ -167,13 +167,13 @@ namespace AIO.Champions
                     /// <summary>
                     ///     The E Engager Logic.
                     /// </summary>
-                    if (sender.IsValidTargetEx(SpellClass.E.Range, true) &&
+                    if (sender.IsValidTarget(SpellClass.E.Range, true) &&
                         MenuClass.R["aoe"].Enabled &&
 						MenuClass.E["engager"].Enabled)
                     {
                         if (ObjectCache.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
-                                t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: args.EndPosition)) >= MenuClass.R["aoe"].Value &&
+                                t.IsValidTarget(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, args.EndPosition)) >= MenuClass.R["aoe"].Value &&
                             MenuClass.E["engagerswhitelist"][sender.CharName.ToLower()].Enabled)
                         {
                             SpellClass.E.CastOnUnit(sender);
@@ -220,7 +220,7 @@ namespace AIO.Champions
 				    return;
 			    }
 
-			    if (heroSender.IsValidTargetEx(SpellClass.R.Width, checkRangeFrom: GetBall().Position))
+			    if (heroSender.IsValidTarget(SpellClass.R.Width, GetBall().Position))
 			    {
 				    SpellClass.R.Cast();
 			    }

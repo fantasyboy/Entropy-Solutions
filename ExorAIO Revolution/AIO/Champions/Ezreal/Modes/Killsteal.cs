@@ -27,7 +27,7 @@ namespace AIO.Champions
                 MenuClass.Q["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.Q.Range).Where(t =>
-                    !t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)) &&
+                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)) &&
                     GetQDamage(t) >= t.GetRealHealth(DamageType.Physical)))
                 {
                     SpellClass.Q.Cast(target);
@@ -42,7 +42,7 @@ namespace AIO.Champions
                 MenuClass.W["killsteal"].Enabled)
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.W.Range).Where(t =>
-                    !t.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(t)) &&
+                    !t.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(t)) &&
 					GetWDamage(t) >= t.GetRealHealth(DamageType.Magical)))
                 {
                     SpellClass.W.Cast(target);

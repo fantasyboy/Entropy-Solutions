@@ -61,7 +61,7 @@ namespace AIO.Champions
                 MenuClass.W["killsteal"].Enabled)
             {
                 if (ObjectCache.EnemyHeroes.Any(t =>
-                        t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position) &&
+                        t.IsValidTarget(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, GetBall().Position) &&
                         GetWDamage(t) >= t.GetRealHealth(DamageType.Magical)))
                 {
                     SpellClass.W.Cast();
@@ -77,18 +77,18 @@ namespace AIO.Champions
             {
                 foreach (var enemy in ObjectCache.EnemyHeroes.Where(t =>
                     MenuClass.R["killstealwhitelist"][t.CharName.ToLower()].Enabled &&
-                    t.IsValidTargetEx(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position)))
+                    t.IsValidTarget(SpellClass.R.Width - t.BoundingRadius - SpellClass.R.Delay * t.BoundingRadius, GetBall().Position)))
                 {
                     var dmg = GetRDamage(enemy);
 
                     if (SpellClass.Q.Ready &&
-                        enemy.IsValidTargetEx(SpellClass.Q.Range))
+                        enemy.IsValidTarget(SpellClass.Q.Range))
                     {
                         dmg += GetQDamage(enemy);
                     }
 
                     if (SpellClass.W.Ready &&
-                       enemy.IsValidTargetEx(SpellClass.W.Width, checkRangeFrom: GetBall().Position))
+                       enemy.IsValidTarget(SpellClass.W.Width, GetBall().Position))
                     {
                         dmg += GetWDamage(enemy);
                     }

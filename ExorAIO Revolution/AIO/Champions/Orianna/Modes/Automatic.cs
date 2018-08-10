@@ -3,6 +3,7 @@ using System.Linq;
 using Entropy;
 using AIO.Utilities;
 using Entropy.SDK.Caching;
+using Entropy.SDK.Extensions.Objects;
 
 #pragma warning disable 1587
 
@@ -34,7 +35,7 @@ namespace AIO.Champions
             {
                 var countValidTargets = ObjectCache.EnemyHeroes.Count(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position));
+                        t.IsValidTarget(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, GetBall().Position));
             
                 if (countValidTargets >= MenuClass.R["aoe"].Value)
                 {

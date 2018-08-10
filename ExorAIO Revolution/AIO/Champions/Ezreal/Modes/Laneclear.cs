@@ -32,7 +32,7 @@ namespace AIO.Champions
                 var minionTarget = Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
                     .FirstOrDefault(m =>
                         m.HP < GetQDamage(m) &&
-                        (m.HP > UtilityClass.Player.GetAutoAttackDamage(m) || !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m))));
+                        (m.HP > UtilityClass.Player.GetAutoAttackDamage(m) || !m.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(m))));
                 if (minionTarget != null)
                 {
                     SpellClass.Q.Cast(minionTarget);

@@ -83,7 +83,7 @@ namespace AIO.Champions
         /// <param name="unit">The unit.</param>
         public bool IsPerfectFeatherTarget(AIBaseClient unit)
         {
-            if (unit.IsValidTargetEx() &&
+            if (unit.IsValidTarget() &&
                 CanFeathersHitUnit(unit))
             {
                 switch (unit.Type.TypeID)

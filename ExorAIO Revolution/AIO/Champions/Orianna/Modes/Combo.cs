@@ -36,7 +36,7 @@ namespace AIO.Champions
             {
                 if (ObjectCache.EnemyHeroes.Any(t =>
                         !Invulnerable.Check(t, DamageType.Magical, false) &&
-                        t.IsValidTargetEx(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, checkRangeFrom: GetBall().Position)))
+                        t.IsValidTarget(SpellClass.W.Width - SpellClass.W.Delay * t.BoundingRadius, GetBall().Position)))
                 {
                     SpellClass.W.Cast();
                 }
@@ -56,14 +56,14 @@ namespace AIO.Champions
 					var bestAllies = ObjectCache.AllyHeroes
                         .Where(a =>
                             !a.IsMe() &&
-                            a.IsValidTargetEx(SpellClass.E.Range, true) &&
+                            a.IsValidTarget(SpellClass.E.Range, true) &&
                             MenuClass.E["engagerswhitelist"][a.CharName.ToLower()].Enabled);
 
                     var bestAlly = bestAllies
                         .FirstOrDefault(a =>
                             ObjectCache.EnemyHeroes.Count(t =>
                                 !Invulnerable.Check(t, DamageType.Magical, false) &&
-                                t.IsValidTargetEx(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, checkRangeFrom: a.Position)) >= MenuClass.R["aoe"].Value);
+                                t.IsValidTarget(SpellClass.R.Width - SpellClass.R.Delay * t.BoundingRadius, a.Position)) >= MenuClass.R["aoe"].Value);
 
                     if (bestAlly != null)
                     {
@@ -78,14 +78,14 @@ namespace AIO.Champions
                 {
                     var bestAllies = ObjectCache.AllyHeroes
                         .Where(a =>
-                            a.IsValidTargetEx(SpellClass.E.Range, true) &&
+                            a.IsValidTarget(SpellClass.E.Range, true) &&
                             MenuClass.E["combowhitelist"][a.CharName.ToLower()].Enabled)
                         .OrderBy(o => o.GetRealHealth());
 
                     foreach (var ally in bestAllies)
                     {
                         if (ObjectCache.EnemyHeroes.Any(t =>
-                                t.IsValidTargetEx() &&
+                                t.IsValidTarget() &&
                                 !Invulnerable.Check(t, DamageType.Magical) &&
                                 ERectangle(ally).IsInsidePolygon((Vector2)t.Position)))
                         {

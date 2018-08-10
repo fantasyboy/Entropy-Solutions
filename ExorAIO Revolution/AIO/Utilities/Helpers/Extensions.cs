@@ -3,6 +3,7 @@ using System.Linq;
 using Entropy;
 using Entropy.SDK.Caching;
 using Entropy.SDK.Extensions.Geometry;
+using Entropy.SDK.Extensions.Objects;
 using Entropy.SDK.Orbwalking;
 using Entropy.SDK.TS;
 
@@ -45,7 +46,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIBaseClient> GetAllGenericUnitTargetsInRange(float range)
 		{
-			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTargetEx(range))
+			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTarget(range))
 				.Concat<AIBaseClient>(GetAllGenericMinionsTargetsInRange(range)).ToList();
 		}
 
@@ -148,27 +149,27 @@ namespace AIO.Utilities
 			/*
             var selectedTarget = TargetSelector.GetSelectedTarget();
             if (selectedTarget != null &&
-                selectedTarget.IsValidTargetEx(range))
+                selectedTarget.IsValidTarget(range))
             {
                 return selectedTarget;
             }*/
 
 			var orbTarget = Orbwalker.GetOrbwalkingTarget() as AIHeroClient;
 			if (orbTarget != null &&
-			    orbTarget.IsValidTargetEx(range))
+			    orbTarget.IsValidTarget(range))
 			{
 				return orbTarget;
 			}
 
 			var tsTarget = TargetSelector.LastTarget;
 			if (tsTarget != null &&
-			    tsTarget.IsValidTargetEx(range))
+			    tsTarget.IsValidTarget(range))
 			{
 				return tsTarget;
 			}
 
 			var lastTarget = ObjectCache.EnemyHeroes.FirstOrDefault(t =>
-				t.IsValidTargetEx(range) && !t.IsZombie() && !Invulnerable.Check(t));
+				t.IsValidTarget(range) && !t.IsZombie() && !Invulnerable.Check(t));
 			if (lastTarget != null)
 			{
 				return lastTarget;
@@ -184,7 +185,7 @@ namespace AIO.Utilities
 		/// <param name="range">The range.</param>
 		public static bool IsValidSpellTarget(this AttackableUnit unit, float range = float.MaxValue)
 		{
-			if (!unit.IsValidTargetEx(range))
+			if (!unit.IsValidTarget(range))
 			{
 				return false;
 			}
@@ -236,7 +237,7 @@ namespace AIO.Utilities
 			var targets = TargetSelector.GetOrderedTargets(ObjectCache.EnemyHeroes)
 				.Where(t =>
 					!t.IsZombie() &&
-					t.IsValidTargetEx(range) &&
+					t.IsValidTarget(range) &&
 					!Invulnerable.Check(t, damageType, ignoreShields));
 			return targets;
 		}
@@ -254,7 +255,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIHeroClient> GetEnemyHeroesTargetsInRange(float range)
 		{
-			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTargetEx(range)).ToList();
+			return ObjectCache.EnemyHeroes.Where(h => h.IsValidTarget(range)).ToList();
 		}
 
 		/// <summary>
@@ -270,8 +271,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIMinionClient> GetEnemyLaneMinionsTargetsInRange(float range)
 		{
-			return ObjectCache.EnemyMinions.Where(m =>
-				m.IsValidSpellTarget(range) && m.CharName.Contains("Minion") && !m.CharName.Contains("Odin")).ToList();
+			return ObjectCache.EnemyLaneMinions.ToList();
 		}
 
 		/// <summary>
@@ -287,15 +287,8 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIMinionClient> GetGenericJungleMinionsTargetsInRange(float range)
 		{
-			if (MenuClass.General["junglesmall"].Enabled)
-			{
-				return ObjectCache.JungleMinions
-					.Where(m => m.IsValidSpellTarget(range))
-					.ToList();
-			}
-
 			return ObjectCache.JungleMinions
-				.Where(m => !ObjectCache.SmallJungleMinions.Contains(m) && m.IsValidSpellTarget(range))
+				.Where(m => (!m.IsSmallJungleMinion() || MenuClass.General["junglesmall"].Enabled) && m.IsValidSpellTarget(range))
 				.ToList();
 		}
 

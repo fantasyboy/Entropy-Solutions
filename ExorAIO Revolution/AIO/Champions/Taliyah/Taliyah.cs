@@ -165,7 +165,7 @@ namespace AIO.Champions
 					return;
 				}
 
-				if (heroSender.IsValidTargetEx(SpellClass.W.Range))
+				if (heroSender.IsValidTarget(SpellClass.W.Range))
 				{
 					SpellClass.W.Cast(heroSender.Position, GetUnitPositionAfterPull(heroSender));
 				}

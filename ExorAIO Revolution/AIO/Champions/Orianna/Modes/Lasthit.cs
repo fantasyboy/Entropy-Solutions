@@ -32,7 +32,7 @@ namespace AIO.Champions
                 MenuClass.Q["farmhelper"].Enabled)
             {
                 foreach (var minion in Extensions.GetEnemyLaneMinionsTargetsInRange(SpellClass.Q.Range)
-					.Where(m => !m.IsValidTargetEx(UtilityClass.Player.GetAutoAttackRange(m)) && m.HP < GetQDamage(m)))
+					.Where(m => !m.IsValidTarget(UtilityClass.Player.GetAutoAttackRange(m)) && m.HP < GetQDamage(m)))
                 {
                     SpellClass.Q.GetPredictionInput(minion).From = GetBall().Position;
                     SpellClass.Q.Cast(SpellClass.Q.GetPrediction(minion).CastPosition);
