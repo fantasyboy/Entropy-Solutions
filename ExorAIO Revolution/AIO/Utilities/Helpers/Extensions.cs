@@ -271,7 +271,7 @@ namespace AIO.Utilities
 		/// </summary>
 		public static List<AIMinionClient> GetEnemyLaneMinionsTargetsInRange(float range)
 		{
-			return ObjectCache.EnemyLaneMinions.ToList();
+			return ObjectCache.EnemyLaneMinions.Where(h => h.IsValidTarget(range)).ToList();
 		}
 
 		/// <summary>
