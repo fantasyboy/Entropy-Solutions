@@ -30,7 +30,7 @@ namespace AIO.Champions
             {
                 foreach (var target in Extensions.GetBestSortedTargetsInRange(SpellClass.R2.Range)
 					.Where(t =>
-						UltimateCone.IsInsidePolygon(t.Position) &&
+						UltimateCone().IsInsidePolygon(t.Position) &&
 						GetRDamage(t, HasUltimateFourthShot()) >= t.GetRealHealth(DamageType.Physical)))
                 {
                     SpellClass.R2.Cast(target);

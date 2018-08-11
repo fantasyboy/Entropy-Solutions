@@ -32,7 +32,7 @@ namespace AIO.Champions
                 MenuClass.R["combo"].As<MenuBool>().Value)
             {
                 var validEnemiesInsideCone = Extensions.GetBestEnemyHeroesTargetsInRange(SpellClass.R2.Range)
-                    .Where(t => t.IsValidTarget() && !Invulnerable.Check(t) && UltimateCone.IsInsidePolygon(t.Position))
+                    .Where(t => t.IsValidTarget() && !Invulnerable.Check(t) && UltimateCone().IsInsidePolygon(t.Position))
                     .ToList();
                 if (validEnemiesInsideCone.Any())
                 {

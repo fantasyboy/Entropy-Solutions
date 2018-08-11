@@ -20,7 +20,7 @@ namespace AIO.Champions
         /// <summary>
         ///     The args End.
         /// </summary>
-        public static Vector3 End = Vector3.Zero;
+        public Vector3 End = Vector3.Zero;
 
         /// <returns>
         ///     The Jhin's ultimate shot count.
@@ -63,11 +63,17 @@ namespace AIO.Champions
             return SpellClass.R.Name.Equals("JhinRShot");
         }
 
-		/// <summary>
-		///     The Ultimate Cone.
-		/// </summary>
-		public Sector UltimateCone = new Sector(UtilityClass.Player.Position, End + (End - UtilityClass.Player.Position).Normalized() * SpellClass.R2.Range, SpellClass.R2.Width, SpellClass.R2.Range);
+	    /// <summary>
+	    ///     The Ultimate Cone.
+	    /// </summary>
+	    public Sector UltimateCone()
+	    {
+		    var range = SpellClass.R2.Range;
+		    var direction = (End - UtilityClass.Player.Position).Normalized();
+		    var spot = End + direction * range;
+		    return new Sector(UtilityClass.Player.Position, spot, SpellClass.R.Width, range);
+	    }
 
-        #endregion
-    }
+		#endregion
+	}
 }

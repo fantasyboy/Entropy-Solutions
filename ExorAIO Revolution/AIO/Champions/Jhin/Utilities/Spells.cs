@@ -23,9 +23,11 @@ namespace AIO.Champions
             SpellClass.R = new Spell(SpellSlot.R);
             SpellClass.R2 = new Spell(SpellSlot.R, 3500f);
 
-            SpellClass.W.SetSkillshot(0.75f, 40f, float.MaxValue, collision: false);
-            SpellClass.E.SetSkillshot(1f, 260f, 1000f, SkillshotType.Circle, false);
-            SpellClass.R2.SetSkillshot(0.25f, 60f, 5000f, collision: false);
+            SpellClass.W.SetSkillshot(0.75f, 40, float.MaxValue, collision: false);
+            SpellClass.E.SetSkillshot(1, 260, 1000, SkillshotType.Circle, false);
+
+	        SpellClass.R.Width = 55; // Cone Angle degrees.
+			SpellClass.R2.SetSkillshot(0.25f, 80, 5000, collision: false);
         }
 
         #endregion
